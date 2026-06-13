@@ -1,0 +1,351 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{78120e3d-d0ab-4f9e-8a3a-c5e6c5ed0b2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Plugin">
+      <UniqueIdentifier>{29e08cac-b659-428b-bf02-c70f84b41ddf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{7b823eb7-8f35-4529-a4c1-555b53468c58}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{4da94837-4922-4930-b2ec-472d16090ed6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Adornment">
+      <UniqueIdentifier>{f4d0ea15-864b-4254-8cf7-7f7467887f82}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Formes">
+      <UniqueIdentifier>{3e0d0d60-4403-4e51-b178-56539b501b97}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\From Core">
+      <UniqueIdentifier>{baf5cffa-be8e-40ac-bd8b-f3e3caf8294c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Images">
+      <UniqueIdentifier>{aa0e6fc8-5536-496e-8c58-eea94b129932}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\inCopy">
+      <UniqueIdentifier>{6270dbb0-be75-4477-bd8e-3a45660e7685}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Menu">
+      <UniqueIdentifier>{285d72ac-d581-4721-9d73-2bfd12eb630c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Textes">
+      <UniqueIdentifier>{2f29c96b-2cf8-4fab-bb96-c7bd702d592c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utils">
+      <UniqueIdentifier>{14c3110c-993d-4b6e-a709-c810df535911}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Adornment\Forme">
+      <UniqueIdentifier>{13705e43-19d1-4cee-a79e-4e5e9766097e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Formes\MatchingStyle">
+      <UniqueIdentifier>{80ceeaae-0d3c-4640-b560-3d7e84825ec6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Formes\UpdateMatchingStyle">
+      <UniqueIdentifier>{81a8468e-9624-4e17-a96d-161415b2c017}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Images\XRail">
+      <UniqueIdentifier>{eb5ae895-671e-4f3f-bd15-e58eda7b3dff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Images\XRail\InCopy">
+      <UniqueIdentifier>{b800b6ad-b0ff-4cd8-8e5d-eb1f2b2bb2d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Textes\TreeView">
+      <UniqueIdentifier>{745a1983-cf2c-464c-813f-59ebe3c9b6e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Textes\XRail">
+      <UniqueIdentifier>{877e68dc-7223-4f52-b43b-ec3e6719ecf7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Articles">
+      <UniqueIdentifier>{2c806e10-044b-4f13-8fbe-47163ddf8d29}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="source\XPGUIID.cpp">
+      <Filter>Source Files\Plugin</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGUINoStrip.cpp">
+      <Filter>Source Files\Plugin</Filter>
+    </ClCompile>
+    <ClCompile Include="source\TriggerResourceDeps.cpp">
+      <Filter>Source Files\Plugin</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGUIPlacedFormeContentAdornment.cpp">
+      <Filter>Source Files\Adornment\Forme</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGUIPlacedFormeFooterAdornment.cpp">
+      <Filter>Source Files\Adornment\Forme</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGUIPlacedFormeHeaderAdornment.cpp">
+      <Filter>Source Files\Adornment\Forme</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGUIArticleAdornment.cpp">
+      <Filter>Source Files\Adornment</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGUIAssemblagesPanelObserver.cpp">
+      <Filter>Source Files\Formes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGUIAssemblagesTVHierarchyAdapter.cpp">
+      <Filter>Source Files\Formes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGUIDisplayImageFormePanelView.cpp">
+      <Filter>Source Files\Formes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGUIFormeAdornmentShape.cpp">
+      <Filter>Source Files\Formes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGUIFormeDragDropSource.cpp">
+      <Filter>Source Files\Formes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGUIFormeDropTarget.cpp">
+      <Filter>Source Files\Formes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGUIFormeFileHandler.cpp">
+      <Filter>Source Files\Formes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGUIFormeNodeID.cpp">
+      <Filter>Source Files\Formes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGUIFormesPanelObserver.cpp">
+      <Filter>Source Files\Formes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGUIFormesTVHierarchyAdapter.cpp">
+      <Filter>Source Files\Formes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGUIFormesTVWidgetMgr.cpp">
+      <Filter>Source Files\Formes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGUIImagesFormesViewObserver.cpp">
+      <Filter>Source Files\Formes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGUINewAssemblageDialogController.cpp">
+      <Filter>Source Files\Formes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGUINewClasseurDialogController.cpp">
+      <Filter>Source Files\Formes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGUIXRailNewFormeDialogController.cpp">
+      <Filter>Source Files\Formes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGUIXRailNewFormeDialogObserver.cpp">
+      <Filter>Source Files\Formes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGUIMatchingStylesList.cpp">
+      <Filter>Source Files\Formes\MatchingStyle</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGUIStyleMatchingNodeID.cpp">
+      <Filter>Source Files\Formes\MatchingStyle</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGUIUpdateFormeDialogController.cpp">
+      <Filter>Source Files\Formes\UpdateMatchingStyle</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGUIUpdateStyleMatchingWidgetMgr.cpp">
+      <Filter>Source Files\Formes\UpdateMatchingStyle</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGUIUpdateStyleMatchingHierarchyAdapter.cpp">
+      <Filter>Source Files\Formes\UpdateMatchingStyle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Core\source\XPGImageDataNode.cpp">
+      <Filter>Source Files\From Core</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGUIDisplayImagePanelView.cpp">
+      <Filter>Source Files\Images</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGUIImageFileHandler.cpp">
+      <Filter>Source Files\Images</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGUIImageNodeID.cpp">
+      <Filter>Source Files\Images</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGUIImagesTVHierarchyAdapter.cpp">
+      <Filter>Source Files\Images</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGUIImagesTVWidgetMgr.cpp">
+      <Filter>Source Files\Images</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGUIImagesViewObserver.cpp">
+      <Filter>Source Files\Images</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGUIXRailInCopyImageDragDropSource.cpp">
+      <Filter>Source Files\Images\XRail\InCopy</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGUIXRailInCopyImagesPanelObserver.cpp">
+      <Filter>Source Files\Images\XRail\InCopy</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGUIXRailImagesPanelObserver.cpp">
+      <Filter>Source Files\Images\XRail</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGUIXRailImageDropTarget.cpp">
+      <Filter>Source Files\Images\XRail</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGUIImageInLayoutDropTarget.cpp">
+      <Filter>Source Files\Images\XRail</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGUIChoosePhotoCartonDialogController.cpp">
+      <Filter>Source Files\Images\XRail</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGUIChoosePhotoCartonDialogObserver.cpp">
+      <Filter>Source Files\Images\XRail</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGUIChooseEtatImageDialogController.cpp">
+      <Filter>Source Files\Images\XRail</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGUIImageEtatSwatchEH.cpp">
+      <Filter>Source Files\Images\XRail</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGUITECImageDragDropSource.cpp">
+      <Filter>Source Files\inCopy</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGUITECImageDropTarget.cpp">
+      <Filter>Source Files\inCopy</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGUITECImagesPanelObserver.cpp">
+      <Filter>Source Files\inCopy</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ActionIDToStringDataImpl.cpp">
+      <Filter>Source Files\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGUIActionComponent.cpp">
+      <Filter>Source Files\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPageUIUtils.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGUITextesPanelView.cpp">
+      <Filter>Source Files\Textes\TreeView</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGUIXRailArticleWithFormeDropTarget.cpp">
+      <Filter>Source Files\Textes\XRail</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGUIXRailXmlDropTarget.cpp">
+      <Filter>Source Files\Textes\XRail</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGUIXmlWithFormeFileHandler.cpp">
+      <Filter>Source Files\Textes\XRail</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGUIAddToArtDialogController.cpp">
+      <Filter>Source Files\Textes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGUIAddToArtDialogObserver.cpp">
+      <Filter>Source Files\Textes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGUILinkArtDialogController.cpp">
+      <Filter>Source Files\Textes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGUILinkArtDialogObserver.cpp">
+      <Filter>Source Files\Textes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGUIOrderArtDialogController.cpp">
+      <Filter>Source Files\Textes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGUIOrderArtDialogObserver.cpp">
+      <Filter>Source Files\Textes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGUIXmlFileHandler.cpp">
+      <Filter>Source Files\Textes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGUIXRailTexteDragDropSource.cpp">
+      <Filter>Source Files\Textes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Core\source\XPGFormeDataNode.cpp">
+      <Filter>Source Files\From Core</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\SDKs\adobe_indesign_CC2026\source\public\libs\publiclib\statics\PlugInStatics.cpp">
+      <Filter>Source Files\Plugin</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\SDKs\adobe_indesign_CC2026\source\sdksamples\common\SDKPlugInEntrypoint.cpp">
+      <Filter>Source Files\Plugin</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\SDKs\adobe_indesign_CC2026\source\precomp\msvc\VCPlugInHeaders.cpp">
+      <Filter>Source Files\Plugin</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\SDKs\adobe_indesign_CC2026\source\sdksamples\common\SDKFileHelper.cpp">
+      <Filter>Source Files\Plugin</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGUIXRailPanelObserver.cpp">
+      <Filter>Source Files\Articles</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGUIArticleTVWidgetMgr.cpp">
+      <Filter>Source Files\Articles</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGUIArticleTVHierarchyAdapter.cpp">
+      <Filter>Source Files\Articles</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Core\source\XPGArticleDataNode.cpp">
+      <Filter>Source Files\From Core</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGUIArticleNodeID.cpp">
+      <Filter>Source Files\Articles</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGUIArticleViewObserver.cpp">
+      <Filter>Source Files\Articles</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGUIImageNodeButtonsObserver.cpp">
+      <Filter>Source Files\Images\XRail</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGUIXRailImageDragDropSource.cpp">
+      <Filter>Source Files\Images\XRail</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGUIXRailDisplayImageDragDropSource.cpp">
+      <Filter>Source Files\Images\XRail</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="source\XPGUIID.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\XPGUIFactoryList.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\XPGUIFormeNodeID.h">
+      <Filter>Source Files\Formes</Filter>
+    </ClInclude>
+    <ClInclude Include="source\IMatchingStylesList.h">
+      <Filter>Source Files\Formes\MatchingStyle</Filter>
+    </ClInclude>
+    <ClInclude Include="source\XPGUIStyleMatchingNodeID.h">
+      <Filter>Source Files\Formes\MatchingStyle</Filter>
+    </ClInclude>
+    <ClInclude Include="source\XPGUIImageNodeID.h">
+      <Filter>Source Files\Images</Filter>
+    </ClInclude>
+    <ClInclude Include="source\IActionIDToStringData.h">
+      <Filter>Source Files\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="source\XPageUIUtils.h">
+      <Filter>Source Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\SDKs\adobe_indesign_CC2026\source\sdksamples\common\SDKFileHelper.h">
+      <Filter>Source Files\Plugin</Filter>
+    </ClInclude>
+    <ClInclude Include="source\XPGUIArticleNodeID.h">
+      <Filter>Source Files\Articles</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="source\XPGUI.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="source\XPGUI.fr">
+      <Filter>Resource Files</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="source\XPGUI_InDesign.fr">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="source\XPGUI_enUS.fr">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="source\XPGUI_frFR.fr">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="source\XPGUI_InCopy.fr">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+</Project>

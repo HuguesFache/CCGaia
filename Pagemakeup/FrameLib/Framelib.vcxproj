@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build" ToolsVersion="14.0">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Client-2021|x64"><Configuration>Client-2021</Configuration><Platform>x64</Platform></ProjectConfiguration>
+    <ProjectConfiguration Include="Server-2021|x64"><Configuration>Server-2021</Configuration><Platform>x64</Platform></ProjectConfiguration>
+    <ProjectConfiguration Include="Client-2022|x64"><Configuration>Client-2022</Configuration><Platform>x64</Platform></ProjectConfiguration>
+    <ProjectConfiguration Include="Server-2022|x64"><Configuration>Server-2022</Configuration><Platform>x64</Platform></ProjectConfiguration>
+    <ProjectConfiguration Include="Client-2023|x64"><Configuration>Client-2023</Configuration><Platform>x64</Platform></ProjectConfiguration>
+    <ProjectConfiguration Include="Server-2023|x64"><Configuration>Server-2023</Configuration><Platform>x64</Platform></ProjectConfiguration>
+    <ProjectConfiguration Include="Client-2024|x64"><Configuration>Client-2024</Configuration><Platform>x64</Platform></ProjectConfiguration>
+    <ProjectConfiguration Include="Server-2024|x64"><Configuration>Server-2024</Configuration><Platform>x64</Platform></ProjectConfiguration>
+    <ProjectConfiguration Include="Client-2025|x64"><Configuration>Client-2025</Configuration><Platform>x64</Platform></ProjectConfiguration>
+    <ProjectConfiguration Include="Server-2025|x64"><Configuration>Server-2025</Configuration><Platform>x64</Platform></ProjectConfiguration>
+    <ProjectConfiguration Include="Client-2026|x64"><Configuration>Client-2026</Configuration><Platform>x64</Platform></ProjectConfiguration>
+    <ProjectConfiguration Include="Server-2026|x64"><Configuration>Server-2026</Configuration><Platform>x64</Platform></ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectName>Framelib</ProjectName>
+    <ProjectGuid>{5192E766-7665-E166-9B7C-B58E57710C73}</ProjectGuid>
+    <WindowsTargetPlatformVersion>10.0.19041.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings" />
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="FLBReleaseX64.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  
+  <ItemDefinitionGroup>
+    <Midl>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_DEPRECATE;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MkTypLibCompatible>true</MkTypLibCompatible>
+      <TargetEnvironment>X64</TargetEnvironment>
+      <TypeLibraryName>$(IntDir)Framelib.tlb</TypeLibraryName>
+      <HeaderFileName />
+    </Midl>
+    <ClCompile>
+      <AdditionalOptions>/vmg</AdditionalOptions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_DEPRECATE;STRICT;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>VCPlugInHeaders.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile>$(IntDir)Framelib.pch</PrecompiledHeaderOutputFile>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <AdditionalIncludeDirectories>..\Parser\source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <TreatWarningAsError>false</TreatWarningAsError>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_DEPRECATE;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+    <PreLinkEvent>
+      <Command>merge_res.cmd "$(IntDir)"  FLB &amp; echo Deleting old resources... &amp; del /f /s "$(TargetDir)($(TargetName) Resources)\"*.idrc &gt; $(IntDir)prevDeletedResources.txt &amp;  xcopy /Q /E "$(IntDir)"*.idrc "$(TargetDir)($(TargetName) Resources)\" /Y</Command>
+    </PreLinkEvent>
+    <Link>
+      <AdditionalOptions>/IGNORE:4089 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>$(UI_PLUGIN_LINKLIST);%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(OutDir)Framelib.pln</OutputFile>
+      <ProgramDatabaseFile>$(IntDir)Framelib.pdb</ProgramDatabaseFile>
+      <ImportLibrary>$(IntDir)Framelib.lib</ImportLibrary>
+    </Link>
+    <PostBuildEvent>
+      <Command>restore_res.cmd "$(IntDir)"  FLB</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="$(id_sdk_dir)\source\public\libs\publiclib\statics\PlugInStatics.cpp" />
+    <ClCompile Include="$(ID_SDK_DIR)\source\sdksamples\common\SDKPlugInEntrypoint.cpp" />
+    <ClCompile Include="$(ID_SDK_DIR)\source\sdksamples\common\SDKFileHelper.cpp" />
+    <ClCompile Include="source\FLBID.cpp" />
+    <ClCompile Include="source\FLBNoStrip.cpp" />
+    <ClCompile Include="source\TriggerResourceDeps.cpp" />
+    <ClCompile Include="$(id_sdk_dir)\source\precomp\msvc\VCPlugInHeaders.cpp">
+      <PrecompiledHeader>Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="source\FLBItemManager.cpp" />
+    <ClCompile Include="source\FLBItemTransform.cpp" />
+    <ClCompile Include="source\FLBTextFrameHelper.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(ID_SDK_DIR)\source\sdksamples\common\SDKFileHelper.h" />
+    <ClInclude Include="source\FLBID.h" />
+    <ClInclude Include="source\FLBFactoryList.h" />
+    <ClInclude Include="source\FLBItemManager.h" />
+    <ClInclude Include="source\FLBItemTransform.h" />
+    <ClInclude Include="source\FLBTextFrameHelper.h" />
+    <ClInclude Include="source\IItemManager.h" />
+    <ClInclude Include="source\IItemTransform.h" />
+    <ClInclude Include="source\ITextFrameHelper.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="source\FLB.fr">
+      <Command>
+        odfrc -d SERVER=$(SERVER_VALUE) $(ODFRC_ADDITIONAL_FLAGS) "%(FullPath)" -o "$(IntDir)%(Filename).fres" -i "source" $(ODFRC_INC)
+      </Command>
+      <AdditionalInputs>$(IntDir)TriggerResourceDeps.obj;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs>$(IntDir)%(Filename).fres;%(Outputs)</Outputs>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="source\FLB.rc">
+      <PreprocessorDefinitions>_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0809</Culture>
+      <AdditionalIncludeDirectories>source;source;$(ID_SDK_DIR)\source\precomp\msvc;$(ID_SDK_DIR)\source\public\includes;$(ID_SDK_DIR)\source\sdksamples\common;%(AdditionalIncludeDirectories)
+      </AdditionalIncludeDirectories>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="source\FLB.APS" />
+    <None Include="source\FLB_enUS.fr" />
+    <None Include="source\FLB_frFR.fr" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets" />
+</Project>

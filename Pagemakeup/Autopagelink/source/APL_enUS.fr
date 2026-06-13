@@ -1,0 +1,29 @@
+#ifdef __ODFRC__
+// English string table is defined here
+resource StringTable (kSDKDefStringsResourceID + index_enUS)
+{
+	k_enUS,									// Locale Id
+	kResourceUTF8Encoded,		// Character encoding converter (irp) I made this WinToMac as we have a bias to generate on Win...
+	{
+	 	// ----- Menu strings
+			kAPLCompanyKey,						kAPLCompanyValue,
+			kAPLAboutMenuKey,					kAPLPluginName "[US]...",
+			kAPLPluginsMenuKey,					kAPLPluginName "[US]",	
+			kSDKDefAboutThisPlugInMenuKey,		kSDKDefAboutThisPlugInMenuValue_enUS,
+
+		// ----- Command strings
+
+		// ----- Window strings
+
+		// ----- Panel/dialog strings
+
+		// ----- Misc strings
+			kAPLAboutBoxStringKey,				kAPLPluginName " [US], version " kAPLVersion " by " kAPLAuthor "\n\n" kSDKDefCopyrightStandardValue "\n\n" kSDKDefPartnersStandardValue_enUS,
+			kAPLIdleTaskKey,					"AutoPageLink Task",
+				
+		// ----- Error strings
+			kAPLErrorInFolderStringKey,			"One of the output folders is the same as the one of the input folders, AutoPageLink won't run",
+			kAPLErrorOpenTCLStringKey,			"Error occured while opening file ",
+	}
+};
+#endif // __ODFRC__

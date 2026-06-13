@@ -1,0 +1,4128 @@
+//========================================================================================
+//  
+//  $File: $
+//  
+//  Owner: Trias
+//  
+//  $Author: $
+//  
+//  $DateTime: $
+//  
+//  $Revision: $
+//  
+//  $Change: $
+//  
+//  Copyright Adobe Systems Incorporated. All rights reserved.
+//  
+//  NOTICE:  Adobe permits you to use, modify, and distribute this file in accordance 
+//  with the terms of the Adobe license agreement accompanying it.  If you have received
+//  this file from a source other than Adobe, then your use, modification, or 
+//  distribution of it requires the prior written permission of Adobe.
+//  
+//========================================================================================
+
+#include "XPGID.h"
+#include "XPGUIID.h"
+// kLinksUIPluginID — used by the Photos liées per-row icons that reuse
+// InDesign's own Links panel artwork (goto-link / edit-original).
+#include "LinksUIID.h"
+
+#ifdef __ODFRC__
+
+/*  Plugin version definition.
+*/
+resource PluginVersion (kSDKDefPluginVersionResourceID)
+{
+	kTargetVersion,
+	kXPGUIPluginID, 
+	kSDKDefPlugInMajorVersionNumber, kSDKDefPlugInMinorVersionNumber,
+	kSDKDefHostMajorVersionNumber, kSDKDefHostMinorVersionNumber,
+	kXPGUICurrentMajorFormatNumber, kXPGUICurrentMinorFormatNumber,
+	{ kInDesignProduct},
+	{ kWildFS },
+	kUIPlugIn,
+	kXPGUIVersion
+};
+
+/*
+// This is where we define we require the library plug-ins:
+*/
+resource PluginDependency(kSDKDefPluginDependencyResourceID)
+{
+	kWildFS
+	{
+		kXPGPluginID,kXPGPluginName,kSDKDefPlugInMajorVersionNumber,kSDKDefPlugInMinorVersionNumber,		
+	}
+}
+
+/*  The ExtraPluginInfo resource adds extra information to the Missing Plug-in dialog
+	that is popped when a document containing this plug-in's data is opened when
+	this plug-in is not present. These strings are not translatable strings
+	since they must be available when the plug-in isn't around. They get stored
+	in any document that this plug-in contributes data to.
+*/
+resource ExtraPluginInfo(1)
+{
+	kXPGUICompanyValue,			// Company name
+	kXPGUIMissingPluginURLValue,	// URL 
+	kXPGUIMissingPluginAlertValue,	// Missing plug-in alert text
+};
+
+// IgnoreTags: tells InDesign "if any of these XPageUI ids show up in a
+// document but the plugin isn't loaded (e.g. on InDesign Server, where
+// only XPage Core is installed), drop them silently instead of warning
+// about a missing plugin." Safe blanket coverage — every functional
+// persistence (carton/article/photo metadata) is owned by XPage Core,
+// so XPageUI tags that leak into a doc are inert UI residue.
+resource IgnoreTags(1)
+{
+	kImplementationIDSpace
+	{
+		kXPGUIActionComponentImpl,
+		kXPGUITextesPanelViewImpl,
+		kXPGUIImagesViewObserverImpl,
+		kActionIDToStringDataImpl,
+		kXPGUIXmlFileHandlerImpl,
+		kXPGUIFormeFileHandlerImpl,
+		kXPGUIImagesTVHierarchyAdapterImpl,
+		kXPGUIImagesTVWidgetMgrImpl,
+		kXPGUIImageFileHandlerImpl,
+		kXPGUIRubriqueIdDataImpl,
+		kXPGUIFormesTVWidgetMgrImpl,
+		kXPGUIFormesTVHierarchyAdapterImpl,
+		kXPGUIFormeDragDropSourceImpl,
+		kXPGUIFormeDropTargetImpl,
+		kXPGUIFormesPanelObserverImpl,
+		kXPGUIOrderArtDialogControllerImpl,
+		kXPGUIXRailArticleWithFormeDropTargetImpl,
+		kXPGUIXRailXmlDropTargetImpl,
+		kXPGUIXRailNewFormeDialogControllerImpl,
+		kXPGUIClasseurNameDataImpl,
+		kXPGUIXRailTexteDragDropSourceImpl,
+		kXPGUIXRailImageDragDropSourceImpl,
+		kXPGUIOrderArtDialogObserverImpl,
+		kXPGUIXRailImagesPanelObserverImpl,
+		kXPGUIXRailNewFormeDialogObserverImpl,
+		kXPGUITextFrameListImpl,
+		kXPGUIPhotoListImpl,
+		kXPGUICreditListImpl,
+		kXPGUILegendListImpl,
+		kXPGUIXRailImageDropTargetImpl,
+		kXPGUICreditPhotoImpl,
+		kXPGUILegendPhotoImpl,
+		kXPGUIPhotoArticleIdImpl,
+		kXPGUIPhotoCropDataImpl,
+		kXPGUIImageNodeButtonsObserverImpl,
+		kXPGUIImageInLayoutDropTargetImpl,
+		kXPGUIChoosePhotoCartonDialogControllerImpl,
+		kXPGUIChoosePhotoCartonDialogObserverImpl,
+		kXPGUIFormeAdornmentShapeImpl,
+		kXPGUIInCopyImageDragDropSourceImpl,
+		kXPGUIFormeItemListImpl,
+		kXPGUIDisplayImageFormePanelViewImpl,
+		kXPGUIDisplayImagePanelViewImpl,
+		kXPGUIImagesFormesViewObserverImpl,
+		kXPGUIChangeStatusDialogObserverImpl,
+		kXPGUIXRailInCopyImagesPanelObserverImpl,
+		kXPGUIArticleAttrReportImpl,
+		kXPGUIArticleAdornmentImpl,
+		kXPGUIAddToArtDialogControllerImpl,
+		kXPGUIFormeStylesListImpl,
+		kXPGUIMatchingStylesListImpl,
+		kXPGUIFormeMatchingStylesListImpl,
+		kXPGUIUpdateFormeDialogControllerImpl,
+		kXPGUIFormeNameDataImpl,
+		kXPGUIUpdateStyleMatchingWidgetMgrImpl,
+		kXPGUIUpdateStyleMatchingHierarchyAdapterImpl,
+		kXPGUIMatchingStylesWithTagListImpl,
+		kXPGUILinkArtDialogControllerImpl,
+		kXPGUILinkArtDialogObserverImpl,
+		kXPGUIArticleIdImpl,
+		kXPGUIArticleSnippetDataImpl,
+		kXPGUIArticleTopicDataImpl,
+		kXPGUIArticleIdStatusDataImpl,
+		kXPGUIArticleLibelleStatusDataImpl,
+		kXPGUIArticleCouleurStatusDataImpl,
+		kXPGUIArticleTypeDataImpl,
+		kXPGUIArticleXMLDataImpl,
+		kXPGUIArticleRubDataImpl,
+		kXPGUIArticleSubRubDataImpl,
+		kXPGUITECImagesPanelObserverImpl,
+		kXPGUITECImageDropTargetImpl,
+		kXPGUITECImageDragDropSourceImpl,
+		kXPGUIXRailDisplayImageDragDropSourceImpl,
+		kXPGUIPlacedFormeHeaderAdornmentImpl,
+		kXPGUIPlacedFormeContentAdornmentImpl,
+		kXPGUIPlacedFormeFooterAdornmentImpl,
+		kXPGUIXmlWithFormeFileHandlerImpl,
+		kXPGUIAddToArtDialogObserverImpl,
+		kXPGUIAssemblagesTVHierarchyAdapterImpl,
+		kXPGUIStartupShutdownImpl,
+		kXPGUIAssemblagesPanelObserverImpl,
+		kXPGUINewAssemblageDialogControllerImpl,
+		kXPGUIArticleTVWidgetMgrImpl,
+		kXPGUIArticleTVHierarchyAdapterImpl,
+		kXPGUIXArticlePanelObserverImpl,
+		kXPGUIArticleViewObserverImpl,
+		kXPGUIArticlePanelObserverImpl,
+		kXPGUIFixedContentFrameListImpl,
+		kXPGUINewClasseurDialogControllerImpl,
+		kXPGUIChooseEtatImageDialogControllerImpl,
+		kXPGUIImageEtatSwatchEHImpl,
+		kXPGUIEtatChoiceDataImpl,
+	}
+};
+
+resource IgnoreTags(2)
+{
+	kClassIDSpace
+	{
+		kXPGUIActionComponentBoss,
+		kXPGUIDropDownListWidgetBoss,
+		kXPGUIXmlFileHandlerBoss,
+		kXPGUIXmlDataInPageItemHelperBoss,
+		kXPGUIFormeInDocumentHelperBoss,
+		kXPGUIImagesPanelWidgetBoss,
+		kXPGUIImageNodeWidgetBoss,
+		kXPGUIImagesViewWidgetBoss,
+		kXPGUIImageInPageItemHelperBoss,
+		kXPGUIImageFileHandlerBoss,
+		kXPGUIDisplayImagePanelWidgetBoss,
+		kXPGUIChooseMatchingDialogBoss,
+		kXPGUIFormesPanelWidgetBoss,
+		kXPGUIFormesViewWidgetBoss,
+		kXPGUIFormeNodeWidgetBoss,
+		kXPGUIFormeFileHandlerBoss,
+		kXPGUIOrderArtDialogBoss,
+		kXPGUIArticleWithFormeInDocumentHelperBoss,
+		kXPGUINewFormeDialogBoss,
+		kXPGUIFormeAdornmentBoss,
+		kXPGUIDnDDisplayImagePanelWidgetBoss,
+		kXPGUIXRailDnDDisplayImagePanelWidgetBoss,
+		kXPGUIDisplayImageFormePanelWidgetBoss,
+		kXPGUIChangeStatusDialogBoss,
+		kXPGUIArticleAdornmentBoss,
+		kXPGUIArticleAttrReportBoss,
+		kXPGUIXRailImagesPanelWidgetBoss,
+		kXPGUIAddToArtDialogBoss,
+		kXPGUITexteExchangeHandlerBoss,
+		kXPGUIFilterLinksListBoxBoss,
+		kXPGUIUpdateFormeDialogBoss,
+		kXPGUIUpdateStyleMatchingWidgetBoss,
+		kXPGUIUpdateStyleMatchingNodeWidgetBoss,
+		kXPGUILinkArtDialogBoss,
+		kXPGUIPlacedFormeHeaderAdornmentBoss,
+		kXPGUIPlacedFormeContentAdornmentBoss,
+		kXPGUIPlacedFormeFooterAdornmentBoss,
+		kXPGUIXmlWithFormeFileHandlerBoss,
+		kXPGUIAssemblagesPanelWidgetBoss,
+		kXPGUINewAssemblageDialogBoss,
+		kXPGUIAssemblagesViewWidgetBoss,
+		kXPGUIArticlePanelWidgetBoss,
+		kXPGUIArticleViewWidgetBoss,
+		kXPGUIArticleNodeWidgetBoss,
+		kXPGUINewClasseurDialogBoss,
+		kXPGUIImageInLayoutHelperBoss,
+		kXPGUIChoosePhotoCartonDialogBoss,
+		kXPGUIImageEtatSwatchWidgetBoss,
+		kXPGUIChooseEtatImageDialogBoss,
+	}
+};
+
+resource ImplementationAlias(1) 
+{ 
+	{ 
+		kXPGUIRubriqueIdDataImpl,	         kStringDataImpl,
+		kXPGUIClasseurNameDataImpl,          kStringDataImpl,
+		kXPGUITextFrameListImpl,	         kUIDListDataImpl,
+		kXPGUIFormeStylesListImpl,	         kUIDListDataImpl,
+		kXPGUIPhotoListImpl,		         kUIDListDataImpl,
+		kXPGUICreditListImpl,		         kUIDListDataImpl,
+		kXPGUILegendListImpl,			     kUIDListDataImpl,
+		kXPGUICreditPhotoImpl,			     kStringDataImpl,
+		kXPGUILegendPhotoImpl,			     kStringDataImpl,
+		kXPGUIPhotoArticleIdImpl,		     kStringDataImpl,
+		kXPGUIPhotoCropDataImpl,		     kStringDataImpl,
+		kXPGUIFormeItemListImpl,		     kUIDListDataImpl,
+		kXPGUIFormeMatchingStylesListImpl,   kXPGKeyValueDataImpl,
+		kXPGUIFormeNameDataImpl,		     kStringDataImpl,		
+		kXPGUIArticleIdImpl,		 	     kStringDataImpl,	
+		kXPGUIArticleTopicDataImpl,          kStringDataImpl,	
+		kXPGUIArticleSnippetDataImpl,		 kStringDataImpl,		
+		kXPGUIArticleIdStatusDataImpl,		 kStringDataImpl,
+		kXPGUIArticleLibelleStatusDataImpl,	 kStringDataImpl,
+		kXPGUIArticleCouleurStatusDataImpl,	 kStringDataImpl,
+		kXPGUIArticleXMLDataImpl,			 kStringDataImpl,
+		kXPGUIArticleRubDataImpl,			 kStringDataImpl,
+		kXPGUIArticleSubRubDataImpl,		 kStringDataImpl,		
+		kXPGUIArticleTypeDataImpl,           kIntDataImpl,
+        kXPGUIFixedContentFrameListImpl,     kUIDListDataImpl,
+		kXPGUIEtatChoiceDataImpl,            kIntDataImpl,
+	}
+};
+
+
+/* Boss class definition.
+*/
+resource ClassDescriptionTable(kSDKDefClassDescriptionTableResourceID)
+{{{
+
+	/**
+	 This boss class supports two interfaces:
+	 IActionComponent and IPMPersist.
+	 
+	 @ingroup xpageui
+	*/
+	Class
+	{
+		kXPGUIActionComponentBoss,
+		kInvalidClass,
+		{
+			/** Handle the actions from the menu. */
+			IID_IACTIONCOMPONENT, kXPGUIActionComponentImpl,			
+			
+			/** Persist the state of the menu across application instantiation.
+			Implementation provided by the API.*/
+			IID_IPMPERSIST, kPMPersistImpl
+		}
+	},
+	
+
+	// Removed (dead code): legacy non-XRail Photos palette boss
+	// `kXPGUIImagesPanelWidgetBoss`. The XRail variant
+	// `kXPGUIXRailImagesPanelWidgetBoss` (below) drives the active palette.
+	// InCopy still uses this boss with its own impls in XPGUI_InCopy.fr.
+
+	Class
+	{
+		kXPGUIFormesPanelWidgetBoss,
+		kPalettePanelWidgetBoss,
+		{
+			/** The plug-in's implementation of ITextControlData with an exotic IID of IID_IPANELMENUDATA.
+			Implementation provided by the API.
+			*/
+			IID_IPANELMENUDATA, kCPanelMenuDataImpl,
+			
+			/**
+				Allows varying level of detail exposed by a widget.
+			*/
+			IID_IPANELDETAILCONTROLLER, kSizePanelDetailControllerImpl,
+			
+			IID_IOBSERVER, kXPGUIFormesPanelObserverImpl,
+			
+			IID_ICONTROLVIEW, kXPGUITextesPanelViewImpl,
+		}
+	},	
+	Class
+	{
+		kXPGUIXRailImagesPanelWidgetBoss,
+		kPalettePanelWidgetBoss,
+		{
+			/**
+				Allows varying level of detail exposed by a widget.
+			*/
+			IID_IPANELDETAILCONTROLLER, kSizePanelDetailControllerImpl,
+
+			IID_IOBSERVER, kXPGUIXRailImagesPanelObserverImpl,
+
+			IID_ICONTROLVIEW, kXPGUITextesPanelViewImpl, // Reuse of textes panel control view implementation
+		}
+	},
+
+
+	Class{
+
+		kXPGUIUpdateStyleMatchingWidgetBoss,
+		kTreeViewWidgetBoss,
+		{		
+			IID_ITREEVIEWWIDGETMGR,			kXPGUIUpdateStyleMatchingWidgetMgrImpl,			
+			IID_ITREEVIEWHIERARCHYADAPTER,  kXPGUIUpdateStyleMatchingHierarchyAdapterImpl,				
+			IID_IFORMEMATCHINGSTYLESLIST,	kXPGUIFormeMatchingStylesListImpl,						
+		}
+	},
+
+	Class
+	{
+		kXPGUIUpdateStyleMatchingNodeWidgetBoss,
+		kTreeNodeWidgetBoss,
+		{
+			
+		}
+	},
+	
+	/**
+		Our tree view widget subclassed as we must provide ITreeViewWidgetMgr and ITreeViewHierarchyAdapter implementations
+		to work with tree-view control. 
+		@ingroup paneltreeview
+	*/
+	
+	Class
+	{
+		kXPGUIImagesViewWidgetBoss,
+		kTreeViewWidgetBoss,
+		{
+			IID_ITREEVIEWWIDGETMGR, kXPGUIImagesTVWidgetMgrImpl,
+			IID_ITREEVIEWHIERARCHYADAPTER, kXPGUIImagesTVHierarchyAdapterImpl,		
+			IID_IOBSERVER, kXPGUIImagesViewObserverImpl,	
+			IID_IDATAMODEL, kPMUnknownDataImpl,
+		}
+	},
+
+	/**
+	Subclass to allow us to use a proxy event handler (to catch double clicks), 
+	to add drag-drop capability and to an observer for node expand/contract events.
+	*/
+	Class
+	{
+		kXPGUIImageNodeWidgetBoss,
+		kTreeNodeWidgetBoss,
+		{
+			// Drag source for the XRail Photos palette: the user grabs a
+			// thumbnail from the list and drops it onto a graphic frame in
+			// the document. The legacy kXPGUIImageDragDropSourceImpl was
+			// removed; this is its XRail replacement.
+			IID_IDRAGDROPSOURCE, kXPGUIXRailImageDragDropSourceImpl,
+			// Listens to clicks on the per-row icon buttons (goto-link /
+			// edit-original) and dispatches the corresponding action.
+			// Attaches via IID_ITRISTATECONTROLDATA — that's the protocol
+			// RollOverIconButtonWidget broadcasts on click (cf. Pagemakeup
+			// PMUPanelWidgetObserver). Earlier IID_IBOOLEANCONTROLDATA
+			// version was silently dropping every click.
+			IID_IOBSERVER, kXPGUIImageNodeButtonsObserverImpl,
+		}
+	},
+	
+	/**
+		Our tree view widget subclassed as we must provide ITreeViewWidgetMgr and ITreeViewHierarchyAdapter implementations
+		to work with tree-view control. 
+		@ingroup paneltreeview
+	*/
+	Class
+	{
+		kXPGUIFormesViewWidgetBoss,
+		kTreeViewWidgetBoss,
+		{
+			/** Furnishes application framework with widgets as needed and geometry info */
+			IID_ITREEVIEWWIDGETMGR,  kXPGUIFormesTVWidgetMgrImpl,
+			
+			/** Adapts our data model to the needs of the application framework */
+			IID_ITREEVIEWHIERARCHYADAPTER,  kXPGUIFormesTVHierarchyAdapterImpl,	
+			
+			/** Observes changes in the selection within the tree-view */
+			IID_IOBSERVER,  kXPGUIImagesFormesViewObserverImpl,		
+		}
+	},
+	
+	Class
+	{
+		kXPGUIDisplayImageFormePanelWidgetBoss,
+		kGenericPanelWidgetBoss,
+		{
+			/** A custom draw implementation */
+			IID_ICONTROLVIEW, kXPGUIDisplayImageFormePanelViewImpl,
+			
+			/** Path to forme to preview in this widget */
+			IID_ISYSFILEDATA, kSysFileDataImpl,			
+		}
+	},
+	/**
+	Subclass to allow us to use a proxy event handler (to catch double clicks), 
+	to add drag-drop capability and to an observer for node expand/contract events.
+	*/
+	Class
+	{
+		kXPGUIFormeNodeWidgetBoss,
+		kTreeNodeWidgetBoss,
+		{
+			/** Provides the node with drag source capability for the SysFile
+				associated with the widget.
+			 */
+			IID_IDRAGDROPSOURCE,  kXPGUIFormeDragDropSourceImpl,
+		}
+	},
+	
+	
+	/** Register to be a layout DD target helper. i.e. we help the page item
+		to import article associated to a forme from drag dropped file
+	*/
+	Class
+	{
+		kXPGUIArticleWithFormeInDocumentHelperBoss,
+		kInvalidClass,
+		{
+			IID_IK2SERVICEPROVIDER, kLayoutDDTargHelperProviderImpl,
+			IID_IDRAGDROPTARGETFLAVORHELPER, kXPGUIXRailArticleWithFormeDropTargetImpl,
+		}
+	},	
+	
+	/** Register to be a page item DD target helper. i.e. we help the page item
+		to import xml from drag dropped file
+	*/
+	Class
+	{
+		kXPGUIXmlDataInPageItemHelperBoss,
+		kInvalidClass,
+		{
+			IID_IK2SERVICEPROVIDER, kPageItemDDTargetHelperProviderImpl,
+			IID_IDRAGDROPTARGETFLAVORHELPER, kXPGUIXRailXmlDropTargetImpl,
+		}
+	},
+	
+	/** Register to be a page item DD target helper. i.e. we help the page item
+		to import image from drag dropped file
+	*/
+	Class
+	{
+		kXPGUIImageInPageItemHelperBoss,
+		kInvalidClass,
+		{
+			IID_IK2SERVICEPROVIDER, kPageItemDDTargetHelperProviderImpl,
+			IID_IDRAGDROPTARGETFLAVORHELPER, kXPGUIXRailImageDropTargetImpl,
+		}
+	},
+	
+	/** Register to be a layout DD target helper. i.e. we help the page item
+		to import forme from drag dropped file
+	*/
+	Class
+	{
+		kXPGUIFormeInDocumentHelperBoss,
+		kInvalidClass,
+		{
+			IID_IK2SERVICEPROVIDER, kLayoutDDTargHelperProviderImpl,
+			IID_IDRAGDROPTARGETFLAVORHELPER, kXPGUIFormeDropTargetImpl,
+		}
+	},	
+	
+	/**
+		 This boss class represents a dialog to choose a matching file
+	*/
+	Class
+	{
+		kXPGUINewFormeDialogBoss,
+		kDialogBoss,
+		{
+			IID_IDIALOGCONTROLLER, kXPGUIXRailNewFormeDialogControllerImpl,			
+			IID_INEWFORMEOBSERVER, kXPGUIXRailNewFormeDialogObserverImpl,
+			IID_ICLASSEURNAMEDATA, kXPGUIClasseurNameDataImpl,		
+			IID_ITEXTFRAMELIST, kXPGUITextFrameListImpl,		
+			IID_IFORMESTYLESLIST, kXPGUIFormeStylesListImpl,	
+			IID_IPHOTOLIST, kXPGUIPhotoListImpl,
+			IID_ISTORYDATA, kUIDDataImpl,
+			IID_ICREDITLIST,kXPGUICreditListImpl,
+			IID_ILEGENDLIST, kXPGUILegendListImpl,			
+			IID_IFORMEITEMLIST,	kXPGUIFormeItemListImpl,
+			IID_IFORMEMATCHINGSTYLESLIST, kXPGUIFormeMatchingStylesListImpl,
+            IID_IFIXEDCONTENTFRAMELIST,kXPGUIFixedContentFrameListImpl,
+		}
+	},
+	
+	Class
+	{
+		kXPGUIUpdateFormeDialogBoss,
+		kDialogBoss,
+		{
+			IID_IDIALOGCONTROLLER, kXPGUIUpdateFormeDialogControllerImpl,			
+			IID_ICLASSEURNAMEDATA, kXPGUIClasseurNameDataImpl,
+			IID_IFORMENAMEDATA, kXPGUIFormeNameDataImpl,	
+			IID_INODEDATA, kXPGPointerDataImpl,
+		}
+	},
+	
+	Class
+	{
+		kXPGUIArticlePanelWidgetBoss,
+		kPalettePanelWidgetBoss,
+		{
+			IID_IPANELMENUDATA, kCPanelMenuDataImpl,
+			IID_IPANELDETAILCONTROLLER, kSizePanelDetailControllerImpl,			
+			IID_IOBSERVER, kXPGUIArticlePanelObserverImpl,			
+			IID_ICONTROLVIEW, kXPGUITextesPanelViewImpl,
+		}
+	},
+
+	Class
+	{	
+		kXPGUIArticleViewWidgetBoss,
+		kTreeViewWidgetBoss,
+		{
+			IID_ITREEVIEWWIDGETMGR,			kXPGUIArticleTVWidgetMgrImpl,			
+			IID_ITREEVIEWHIERARCHYADAPTER,  kXPGUIArticleTVHierarchyAdapterImpl,			
+			IID_IOBSERVER,					kXPGUIArticleViewObserverImpl,					
+			IID_IDATAMODEL,					kPMUnknownDataImpl,
+		}
+	},	
+		
+	Class
+	{
+		kXPGUIArticleNodeWidgetBoss,
+		kTreeNodeWidgetBoss,
+		{			
+			IID_IDRAGDROPSOURCE,  kXPGUIXRailTexteDragDropSourceImpl,
+		}
+	},		
+	
+	
+	/** 
+		Provides our own scrap handler for xml files
+	*/
+	
+	Class
+	{
+		kXPGUIXmlWithFormeFileHandlerBoss,
+		kSysFileDEHandlerBoss,
+		{
+			/** Overrides the data exchange handler. 
+			*/
+			IID_IDATAEXCHANGEHANDLER, kXPGUIXmlWithFormeFileHandlerImpl,		
+			
+			IID_ISTRINGLISTDATA, kStringListDataImpl,		
+			IID_IRUBRIQUEIDDATA, kXPGUIRubriqueIdDataImpl,			
+			IID_ICREDITPHOTO,	 kXPGUICreditPhotoImpl,
+			IID_ILEGENDPHOTO,	 kXPGUILegendPhotoImpl,
+			IID_IPHOTOARTICLEID, kXPGUIPhotoArticleIdImpl,
+			IID_IPHOTOCROPDATA, kXPGUIPhotoCropDataImpl,
+		}
+	},
+
+	/**
+		Provides our own scrap handler for xml files
+	*/
+	Class
+	{
+		kXPGUIXmlFileHandlerBoss,
+		kSysFileDEHandlerBoss,
+		{
+			/** Overrides the data exchange handler.
+			*/
+			IID_IDATAEXCHANGEHANDLER, kXPGUIXmlFileHandlerImpl,
+			IID_ISTRINGLISTDATA, kStringListDataImpl,
+			IID_IRUBRIQUEIDDATA, kXPGUIRubriqueIdDataImpl,
+			IID_ICREDITPHOTO, kXPGUICreditPhotoImpl,
+			IID_ILEGENDPHOTO, kXPGUILegendPhotoImpl,
+			IID_IPHOTOARTICLEID, kXPGUIPhotoArticleIdImpl,
+			IID_IPHOTOCROPDATA, kXPGUIPhotoCropDataImpl,
+		}
+	},
+	/**
+		Provides our own scrap handler for image files
+	*/
+	Class
+	{
+		kXPGUIImageFileHandlerBoss,
+		kSysFileDEHandlerBoss,
+		{
+			/** Overrides the data exchange handler.
+			*/
+			IID_IDATAEXCHANGEHANDLER, kXPGUIImageFileHandlerImpl,
+			IID_ICREDITPHOTO, kXPGUICreditPhotoImpl,
+			IID_ILEGENDPHOTO, kXPGUILegendPhotoImpl,
+			IID_IPHOTOARTICLEID, kXPGUIPhotoArticleIdImpl,
+			IID_IPHOTOCROPDATA, kXPGUIPhotoCropDataImpl,
+		}
+	},
+	
+	/** 
+		Provides our own scrap handler for forme files
+	*/
+	Class
+	{
+		kXPGUIFormeFileHandlerBoss,
+		kSysFileDEHandlerBoss,
+		{
+			/** Overrides the data exchange handler. 
+			*/
+			IID_IDATAEXCHANGEHANDLER, kXPGUIFormeFileHandlerImpl,						
+		}
+	},
+	
+	Class
+	{
+		kXPGUIDropDownListWidgetBoss,
+		kDropDownListWidgetBoss,
+		{
+			IID_IIDLIST, kStringListDataImpl,
+		}
+	},
+	
+	Class
+	{
+		kXPGUIDisplayImagePanelWidgetBoss,
+		kGenericPanelWidgetBoss,
+		{
+			/** A custom draw implementation */
+			IID_ICONTROLVIEW, kXPGUIDisplayImagePanelViewImpl,
+
+			/** Path to image to preview in this widget */
+			IID_ISYSFILEDATA, kSysFileDataImpl,
+
+			/** Image index */
+			IID_IINTDATA, kIntDataImpl,
+		}
+	},
+
+	// Drag-enabled twin of kXPGUIDisplayImagePanelWidgetBoss used by the
+	// Photos liées palette preview. Same view + data interfaces (so the
+	// resource args are identical), plus a drag source that re-emits the
+	// selected list row, and the DnD-aware event handler that drives it.
+	Class
+	{
+		kXPGUIXRailDnDDisplayImagePanelWidgetBoss,
+		kGenericPanelWidgetBoss,
+		{
+			/** A custom draw implementation */
+			IID_ICONTROLVIEW, kXPGUIDisplayImagePanelViewImpl,
+
+			/** Path to image to preview in this widget */
+			IID_ISYSFILEDATA, kSysFileDataImpl,
+
+			/** Image index */
+			IID_IINTDATA, kIntDataImpl,
+
+			/** Drag source: re-emits the row selected in the Photos liées
+				list as a drag identical to the per-row drag. */
+			IID_IDRAGDROPSOURCE, kXPGUIXRailDisplayImageDragDropSourceImpl,
+
+			/** This widget's event handler needs to be DND aware */
+			IID_IEVENTHANDLER, kDragDropSourceEHImpl,
+		}
+	},
+	
+	/**
+		 This boss class represents a dialog to choose a matching file
+	*/
+		
+	
+	/** Dialog to order an article in TES
+	*/
+	Class
+	{
+		kXPGUIOrderArtDialogBoss,
+		kDialogBoss,
+		{
+			/** Provides management and control over the dialog.*/
+			IID_IDIALOGCONTROLLER, kXPGUIOrderArtDialogControllerImpl,			
+			IID_IOBSERVER,         kXPGUIOrderArtDialogObserverImpl,
+			
+		},
+	},
+	   
+	/** Dialog to link a story with TES
+	*/
+	Class
+	{
+		kXPGUILinkArtDialogBoss,
+		kDialogBoss,
+		{
+			/** Provides management and control over the dialog.
+			*/
+			IID_IDIALOGCONTROLLER,			kXPGUILinkArtDialogControllerImpl,			
+			IID_IOBSERVER,					kXPGUILinkArtDialogObserverImpl,
+			
+			IID_IARTICLEIDDATA,				kXPGUIArticleIdImpl,
+			IID_IARTICLESNIPPETFILEDATA,    kXPGUIArticleSnippetDataImpl,
+			IID_IARTICLEXMLFILEDATA,		kXPGUIArticleXMLDataImpl,
+			IID_IARTICLETOPICDATA,          kXPGUIArticleTopicDataImpl,					
+			IID_IARTICLEIDSTATUS,			kXPGUIArticleIdStatusDataImpl,		
+			IID_IARTICLELIBELLESTATUS,		kXPGUIArticleLibelleStatusDataImpl,		
+			IID_IARTICLECOULEURSTATUS,		kXPGUIArticleCouleurStatusDataImpl,		
+			IID_IARTICLETYPEDATA,           kXPGUIArticleTypeDataImpl, 	   		
+			IID_IARTICLERUBDATA, 			kXPGUIArticleRubDataImpl,	 
+			IID_IARTICLESUBRUBDATA,         kXPGUIArticleSubRubDataImpl,
+			IID_IPMPOINTDATA,				kPMPointDataImpl,
+			IID_IUIDDATA,					kUIDDataImpl,			
+			
+		},
+	},
+	   
+	Class
+	{
+		kXPGUIAddToArtDialogBoss,
+		kDialogBoss,
+		{
+			/** Provides management and control over the dialog.
+			*/
+			IID_IDIALOGCONTROLLER, kXPGUIAddToArtDialogControllerImpl,
+			IID_IOBSERVER, kXPGUIAddToArtDialogObserverImpl,
+			IID_IUIDDATA , kUIDDataImpl,
+		},
+	},
+
+	/** Modal "Choose photo carton" dialog. Receives the dragged image
+		payload (file + credit/legend/articleId) plus drop point + spread,
+		then on OK places the selected photo carton at the drop point and
+		fills its photo frames with the image (XPageUIUtils helper).
+	 */
+	Class
+	{
+		kXPGUIChoosePhotoCartonDialogBoss,
+		kDialogBoss,
+		{
+			IID_IDIALOGCONTROLLER,	kXPGUIChoosePhotoCartonDialogControllerImpl,
+			IID_IOBSERVER,			kXPGUIChoosePhotoCartonDialogObserverImpl,
+			// Drag payload — same impls reused from the Photos liées drag source.
+			IID_ISYSFILEDATA,		kSysFileDataImpl,
+			IID_ICREDITPHOTO,		kXPGUICreditPhotoImpl,
+			IID_ILEGENDPHOTO,		kXPGUILegendPhotoImpl,
+			IID_IPHOTOARTICLEID,	kXPGUIPhotoArticleIdImpl,
+			IID_IPHOTOCROPDATA,		kXPGUIPhotoCropDataImpl,
+			// Drop coordinates.
+			IID_IPMPOINTDATA,		kPMPointDataImpl,
+			IID_IUIDDATA,			kUIDDataImpl,
+		},
+	},
+
+	/**
+		Custom colour-swatch boss for the Photos liées rows. Inherits the SDK
+		UIColorSwatchWidget boss (display + IColorData) and overrides the event
+		handler so a click on the pastille opens the "change état" dialog.
+		NB: kUIColorSwatchWidgetBoss is an SDK constant — if it isn't found at
+		build time, replace it with the boss this SDK uses for UIColorSwatchWidget.
+	*/
+	Class
+	{
+		kXPGUIImageEtatSwatchWidgetBoss,
+		kUIColorSwatchWidgetBoss,
+		{
+			IID_IEVENTHANDLER,		kXPGUIImageEtatSwatchEHImpl,
+		}
+	},
+
+	/**
+		"Choose état image" modal dialog. Single dropdown listing the
+		etatsimages from IXPGPreferences. IID_IXPGETATCHOICE carries the
+		current etat id in / the chosen etat id out.
+	*/
+	Class
+	{
+		kXPGUIChooseEtatImageDialogBoss,
+		kDialogBoss,
+		{
+			IID_IDIALOGCONTROLLER,	kXPGUIChooseEtatImageDialogControllerImpl,
+			IID_IXPGETATCHOICE,		kXPGUIEtatChoiceDataImpl,
+		},
+	},
+
+	/** Layout-level drop helper for XPageImageFlavor. Triggers the
+		"Choose photo carton" dialog when the drop lands on empty pasteboard;
+		silent no-op when it lands on a non-graphic frame.
+	 */
+	Class
+	{
+		kXPGUIImageInLayoutHelperBoss,
+		kInvalidClass,
+		{
+			IID_IK2SERVICEPROVIDER,				kLayoutDDTargHelperProviderImpl,
+			IID_IDRAGDROPTARGETFLAVORHELPER,	kXPGUIImageInLayoutDropTargetImpl,
+		},
+	},
+
+	
+	/** Adornment added to frames during forme creation to show their type
+	 */
+	Class 
+	{
+		kXPGUIFormeAdornmentBoss,
+		kInvalidClass,
+		{
+			/** See IAdornmentShape
+			*/
+			IID_IADORNMENTSHAPE, kXPGUIFormeAdornmentShapeImpl,
+		}
+		
+	},
+  
+    Class
+	{
+		kXPGUIArticleAdornmentBoss,
+		kInvalidClass,
+		{
+			IID_IADORNMENTSHAPE, kXPGUIArticleAdornmentImpl,
+		}
+	},
+	
+	// Placed forme adornments
+	Class
+	{
+		kXPGUIPlacedFormeHeaderAdornmentBoss,
+		kInvalidClass,
+		{
+			IID_IADORNMENTSHAPE, kXPGUIPlacedFormeHeaderAdornmentImpl,
+		}		
+	},
+	  
+	Class
+	{
+		kXPGUIPlacedFormeContentAdornmentBoss,
+		kInvalidClass,
+		{
+			IID_IADORNMENTSHAPE, kXPGUIPlacedFormeContentAdornmentImpl,
+		}		
+	},
+	
+	Class
+	{
+		kXPGUIPlacedFormeFooterAdornmentBoss,
+		kInvalidClass,
+		{
+			IID_IADORNMENTSHAPE, kXPGUIPlacedFormeFooterAdornmentImpl,
+		}
+		
+	},
+	
+	Class
+	{
+		kXPGUIAssemblagesPanelWidgetBoss,
+		kPalettePanelWidgetBoss,
+		{
+			/** The plug-in's implementation of ITextControlData with an exotic IID of IID_IPANELMENUDATA.
+			Implementation provided by the API.
+			*/
+			IID_IPANELMENUDATA, kCPanelMenuDataImpl,
+			
+			/**
+				Allows varying level of detail exposed by a widget.
+			*/
+			IID_IPANELDETAILCONTROLLER, kSizePanelDetailControllerImpl,
+			
+			IID_IOBSERVER, kXPGUIAssemblagesPanelObserverImpl,
+			
+			IID_ICONTROLVIEW, kXPGUITextesPanelViewImpl,
+		}
+	},
+	
+	/**
+		Our tree view widget subclassed as we must provide ITreeViewWidgetMgr and ITreeViewHierarchyAdapter implementations
+		to work with tree-view control. 
+		@ingroup paneltreeview
+	*/
+	Class
+	{
+		kXPGUIAssemblagesViewWidgetBoss,
+		kTreeViewWidgetBoss,
+		{
+			IID_ITREEVIEWWIDGETMGR, kXPGUIFormesTVWidgetMgrImpl,
+			IID_ITREEVIEWHIERARCHYADAPTER, kXPGUIAssemblagesTVHierarchyAdapterImpl,	
+			IID_IOBSERVER, kXPGUIImagesFormesViewObserverImpl,		
+		}
+	},
+	
+	Class
+	{
+		kXPGUINewAssemblageDialogBoss,
+		kDialogBoss,
+		{
+			IID_IDIALOGCONTROLLER, kXPGUINewAssemblageDialogControllerImpl,
+			// Carries the palette's currently-selected classeur into the dialog
+			// so InitializeDialogFields can pre-select it instead of falling
+			// back to index 0. Set by XPageUIUtils::DisplayNewFormeDialog().
+			IID_ICLASSEURNAMEDATA, kXPGUIClasseurNameDataImpl,
+		}
+	},
+
+	Class
+	{
+		kXPGUINewClasseurDialogBoss,
+		kDialogBoss,
+		{
+			IID_IDIALOGCONTROLLER, kXPGUINewClasseurDialogControllerImpl,
+			IID_ICLASSEURNAMEDATA, kXPGUIClasseurNameDataImpl,
+			// kFalse = forme classeur, kTrue = assemblage classeur. Set by
+			// XPageUIUtils::DisplayNewClasseurDialog(); the controller branches
+			// on this to choose the right model and target palette.
+			IID_IBOOLDATA, kBoolDataImpl,
+		}
+	},
+
+}}};
+
+/*  Implementation definition.
+*/
+resource FactoryList (kSDKDefFactoryListResourceID)
+{
+	kImplementationIDSpace,
+	{
+		#include "XPGUIFactoryList.h"
+	}
+};
+
+/*  Menu definition.
+*/
+resource MenuDef (kSDKDefMenuResourceID)
+{
+	{
+		/** Formes palette menus **/		
+		kXPGUINewFormeActionID,
+		kXPGUIFormePopupMenuPath,
+		kXPGUINewFormeMenuItemPosition,
+		kSDKDefIsNotDynamicMenuFlag,		
+		
+		kXPGUINewClasseurActionID,
+		kXPGUIFormePopupMenuPath,
+		kXPGUINewClasseurMenuItemPosition,
+		kSDKDefIsNotDynamicMenuFlag,
+		
+		kXPGUIDeleteClasseurActionID,
+		kXPGUIFormePopupMenuPath,
+		kXPGUIDeleteClasseurMenuItemPosition,
+		kSDKDefIsNotDynamicMenuFlag,
+
+		kXPGUISeparator2ActionID,
+		kXPGUIFormePopupMenuPath kSDKDefDelimiterAndSeparatorPath,
+		kXPGUISeparator2MenuItemPosition,
+		kSDKDefIsNotDynamicMenuFlag,
+
+		kXPGUISeparator3ActionID,
+		kXPGUIFormePopupMenuPath kSDKDefDelimiterAndSeparatorPath,
+		kXPGUISeparator3MenuItemPosition,
+		kSDKDefIsNotDynamicMenuFlag,
+
+		/** Assemblages palette menus **/
+		kXPGUINewAssemblageActionID,
+		kXPGUIAssemblagePopupMenuPath,
+		kXPGUINewAssemblageMenuItemPosition,
+		kSDKDefIsNotDynamicMenuFlag,
+
+		// Delete-assemblage is intentionally a palette-only action (mirrors
+		// the XDA palette where "delete forme" is also palette-only) — no
+		// MenuDef entry. The action ID + handler stay registered in case
+		// other code triggers them programmatically.
+
+		kXPGUISeparator4ActionID,
+		kXPGUIAssemblagePopupMenuPath kSDKDefDelimiterAndSeparatorPath,
+		kXPGUISeparator4MenuItemPosition,
+		kSDKDefIsNotDynamicMenuFlag,
+		
+		kXPGUINewClasseurAssemblageActionID,
+		kXPGUIAssemblagePopupMenuPath,
+		kXPGUINewClasseurAssemblageMenuItemPosition,
+		kSDKDefIsNotDynamicMenuFlag,
+		
+		kXPGUIDeleteClasseurAssemblageActionID,
+		kXPGUIAssemblagePopupMenuPath,
+		kXPGUIDeleteClasseurAssemblageMenuItemPosition,
+		kSDKDefIsNotDynamicMenuFlag,
+				
+		kXPGUISeparator5ActionID,
+		kXPGUIAssemblagePopupMenuPath kSDKDefDelimiterAndSeparatorPath,
+		kXPGUISeparator5MenuItemPosition,
+		kSDKDefIsNotDynamicMenuFlag,
+
+		// Refresh action removed from the popup menu — the palette mirrors
+		// XDA which doesn't expose a manual refresh either. The action ID
+		// + handler stay registered in case anything else triggers it.
+
+	}
+};
+
+/* Action definition.
+*/
+resource ActionDef (kSDKDefActionResourceID)
+	{					
+		{
+		/** Formes palette actions **/
+		kXPGUIActionComponentBoss,						// ClassID of boss class that implements the ActionID.
+		kXPGUINewFormeActionID,							// ActionID.
+		kXPGUINewFormeTextKey,							// Sub-menu string - dynamic
+		kOtherActionArea,								// Area name (see ActionDefs.h).
+		kNormalAction,									// Type of action (see ActionDefs.h).
+		kDisableIfLowMem | kCustomEnabling,				// Enabling type (see ActionDefs.h).
+		kInvalidInterfaceID,							// Selection InterfaceID this action cares about or kInvalidInterfaceID.
+		kSDKDefInvisibleInKBSCEditorFlag,
+		
+		kXPGUIActionComponentBoss, 						// ClassID of boss class that implements the ActionID.
+		kXPGUIDeleteFormeActionID,						// ActionID.
+		kXPGUIDeleteFormeTextKey,						// Sub-menu string - dynamic
+		kOtherActionArea,								// Area name (see ActionDefs.h).
+		kNormalAction,									// Type of action (see ActionDefs.h).
+		kDisableIfLowMem | kCustomEnabling,				// Enabling type (see ActionDefs.h).
+		kInvalidInterfaceID,							// Selection InterfaceID this action cares about or kInvalidInterfaceID.
+		kSDKDefInvisibleInKBSCEditorFlag,		
+		
+		kXPGUIActionComponentBoss, 						// ClassID of boss class that implements the ActionID.
+		kXPGUINewClasseurActionID,						// ActionID.
+		kXPGUINewClasseurTextKey,						// Sub-menu string - dynamic
+		kOtherActionArea,								// Area name (see ActionDefs.h).
+		kNormalAction,									// Type of action (see ActionDefs.h).
+		kDisableIfLowMem | kCustomEnabling,				// Enabling type (see ActionDefs.h).
+		kInvalidInterfaceID,							// Selection InterfaceID this action cares about or kInvalidInterfaceID.
+		kSDKDefInvisibleInKBSCEditorFlag,
+		
+		kXPGUIActionComponentBoss, 						// ClassID of boss class that implements the ActionID.
+		kXPGUIDeleteClasseurActionID,					// ActionID.
+		kXPGUIDeleteClasseurTextKey,					// Sub-menu string - dynamic
+		kOtherActionArea,								// Area name (see ActionDefs.h).
+		kNormalAction,									// Type of action (see ActionDefs.h).
+		kDisableIfLowMem | kCustomEnabling,				// Enabling type (see ActionDefs.h).
+		kInvalidInterfaceID,							// Selection InterfaceID this action cares about or kInvalidInterfaceID.
+		kSDKDefInvisibleInKBSCEditorFlag,				// kSDKDefVisibleInKBSCEditorFlag or kSDKDefInvisibleInKBSCEditorFlag.	
+								
+		/** Assemblages palette actions **/
+		kXPGUIActionComponentBoss,						// ClassID of boss class that implements the ActionID.
+		kXPGUINewAssemblageActionID,							// ActionID.
+		kXPGUINewAssemblageTextKey,							// Sub-menu string - dynamic
+		kOtherActionArea,								// Area name (see ActionDefs.h).
+		kNormalAction,									// Type of action (see ActionDefs.h).
+		kDisableIfLowMem | kCustomEnabling,				// Enabling type (see ActionDefs.h).
+		kInvalidInterfaceID,							// Selection InterfaceID this action cares about or kInvalidInterfaceID.
+		kSDKDefInvisibleInKBSCEditorFlag,
+		
+		kXPGUIActionComponentBoss, 						// ClassID of boss class that implements the ActionID.
+		kXPGUIDeleteAssemblageActionID,						// ActionID.
+		kXPGUIDeleteAssemblageTextKey,						// Sub-menu string - dynamic
+		kOtherActionArea,								// Area name (see ActionDefs.h).
+		kNormalAction,									// Type of action (see ActionDefs.h).
+		kDisableIfLowMem | kCustomEnabling,				// Enabling type (see ActionDefs.h).
+		kInvalidInterfaceID,							// Selection InterfaceID this action cares about or kInvalidInterfaceID.
+		kSDKDefInvisibleInKBSCEditorFlag,		
+		
+		kXPGUIActionComponentBoss, 						// ClassID of boss class that implements the ActionID.
+		kXPGUINewClasseurAssemblageActionID,						// ActionID.
+		kXPGUINewClasseurTextKey,						// Sub-menu string - dynamic
+		kOtherActionArea,								// Area name (see ActionDefs.h).
+		kNormalAction,									// Type of action (see ActionDefs.h).
+		kDisableIfLowMem | kCustomEnabling,				// Enabling type (see ActionDefs.h).
+		kInvalidInterfaceID,							// Selection InterfaceID this action cares about or kInvalidInterfaceID.
+		kSDKDefInvisibleInKBSCEditorFlag,
+		
+		kXPGUIActionComponentBoss, 						// ClassID of boss class that implements the ActionID.
+		kXPGUIDeleteClasseurAssemblageActionID,					// ActionID.
+		kXPGUIDeleteClasseurTextKey,					// Sub-menu string - dynamic
+		kOtherActionArea,								// Area name (see ActionDefs.h).
+		kNormalAction,									// Type of action (see ActionDefs.h).
+		kDisableIfLowMem | kCustomEnabling,				// Enabling type (see ActionDefs.h).
+		kInvalidInterfaceID,							// Selection InterfaceID this action cares about or kInvalidInterfaceID.
+		kSDKDefInvisibleInKBSCEditorFlag,				// kSDKDefVisibleInKBSCEditorFlag or kSDKDefInvisibleInKBSCEditorFlag.	
+				
+		kXPGUIActionComponentBoss, 						// ClassID of boss class that implements the ActionID.
+		kXPGUIRefreshAssemblageActionID,				// ActionID.
+		kXPGUIRefreshTextKey,							// Sub-menu string - dynamic
+		kOtherActionArea,								// Area name (see ActionDefs.h).
+		kNormalAction,									// Type of action (see ActionDefs.h).
+		kDisableIfLowMem,								// Enabling type (see ActionDefs.h).
+		kInvalidInterfaceID,							// Selection InterfaceID this action cares about or kInvalidInterfaceID.
+		kSDKDefInvisibleInKBSCEditorFlag,				// kSDKDefVisibleInKBSCEditorFlag or kSDKDefInvisibleInKBSCEditorFlag.
+	}
+};
+
+
+/*  LocaleIndex
+	The LocaleIndex should have indicies that point at your
+	localizations for each language system that you are localized for.
+*/
+/*  String LocaleIndex.
+*/
+resource LocaleIndex ( kSDKDefStringsResourceID)
+{
+	kStringTableRsrcType,
+	{
+		kWildFS, k_enUS, kSDKDefStringsResourceID + index_frFR
+		kWildFS, k_enGB, kSDKDefStringsResourceID + index_frFR
+		kWildFS, k_deDE, kSDKDefStringsResourceID + index_enUS
+		kWildFS, k_frFR, kSDKDefStringsResourceID + index_frFR
+		kWildFS, k_esES, kSDKDefStringsResourceID + index_enUS
+		kWildFS, k_ptBR, kSDKDefStringsResourceID + index_enUS
+		kWildFS, k_svSE, kSDKDefStringsResourceID + index_enUS
+		kWildFS, k_daDK, kSDKDefStringsResourceID + index_enUS
+		kWildFS, k_nlNL, kSDKDefStringsResourceID + index_enUS
+		kWildFS, k_itIT, kSDKDefStringsResourceID + index_enUS
+		kWildFS, k_nbNO, kSDKDefStringsResourceID + index_enUS
+		kWildFS, k_fiFI, kSDKDefStringsResourceID + index_enUS
+		kInDesignJapaneseFS, k_jaJP, kSDKDefStringsResourceID + index_enUS
+	}
+};
+
+resource LocaleIndex (kSDKDefStringsNoTransResourceID)
+{
+	kStringTableRsrcType,
+	{
+		kWildFS, k_Wild, kSDKDefStringsNoTransResourceID + index_enUS
+	}
+};
+
+resource StringTable (kSDKDefStringsNoTransResourceID + index_enUS)
+{
+	k_enUS,									// Locale Id
+	kEuropeanMacToWinEncodingConverter,		// Character encoding converter
+	{
+		kXPGUIFormePopupMenuNameKey, kXPGUIFormePopupMenuNameKey,
+		kXPGUIAssemblagePopupMenuNameKey, kXPGUIAssemblagePopupMenuNameKey,
+	}
+};
+
+resource PanelList ((kSDKDefPanelResourceID))
+{
+	{
+
+		// 1st panel in the list
+		kXPGUIFormesPanelResourceID,	// Resource ID for this panel (use SDK default rsrc ID)
+		kXPGUIPluginID,			// ID of plug-in that owns this panel
+		kIsResizable,
+		kXPGUIFormesPanelWidgetActionID,	// Action ID to show/hide the panel
+		"",							// Empty panelName + non-empty altMenu below = entry only in the alt path (IPanelMgr.h::RegisterPanel docs).
+		"Main:&Window:&Gaia:&XDA " kXPGUIVersion,	// Window > Gaia > XDA … (full path required; the "Submenu:Name" comment in PanelList.fh is misleading).
+		0.0,
+		0,0,								// Rsrc ID, Plugin ID for a PNG icon resource to use for this palette
+		c_Panel,
+				
+		// 2nd panel in the list
+		kXPGUIArticlePanelResourceID,	// Resource ID for this panel (use SDK default rsrc ID)
+		kXPGUIPluginID,			// ID of plug-in that owns this panel
+		kIsResizable,			// Seule la liste articles grandit ; tout le reste est ancré top/bottom (cf. XPGUIArticlePanelWidget).
+		kXPGUIArticlePanelWidgetActionID,	// Action ID to show/hide the panel
+		"",							// See XDA panel above.
+		"Main:&Window:&Gaia:&XPage",	// Window > Gaia > XPage
+		0.0,
+		0,0,								// Rsrc ID, Plugin ID for a PNG icon resource to use for this palette
+		c_Panel,
+
+		// 3rd panel in the list — Photos liées
+		kXPGUIXRailImagesPanelResourceID,	// Resource ID for this panel (use SDK default rsrc ID)
+		kXPGUIPluginID,			// ID of plug-in that owns this panel
+		kIsResizable,			// User asked for resize parity with XDA / Assemblages.
+		kXPGUIImagesPanelWidgetActionID,	// Action ID to show/hide the panel
+		"",							// See XDA panel above.
+		"Main:&Window:&Gaia:&Photos liées " kXPGUIVersion,	// Window > Gaia > Photos liées …
+		0.0,
+		0,0,
+		c_Panel,
+		
+		
+		// 6th panel in the list — Assemblages mirrors the Formes/XDA palette
+		// in layout and behaviour, so it's also resizable.
+		kXPGUIAssemblagesPanelResourceID,	// Resource ID for this panel (use SDK default rsrc ID)
+		kXPGUIPluginID,			// ID of plug-in that owns this panel
+		kIsResizable,
+		kXPGUIAssemblagesPanelActionID,	// Action ID to show/hide the panel
+		"",							// See XDA panel above.
+		"Main:&Window:&Gaia:&Assemblages",	// Window > Gaia > Assemblages
+		0.0,
+		0,0,
+		c_Panel,
+
+
+	}
+};
+
+resource PNGA(kXPGUIPreviousIconResourceID)				"previous.png"
+resource PNGA(kXPGUIOKIconResourceID)					"ok_icon.png"
+resource PNGA(kXPGUIKOIconResourceID)					"ko_icon.png"
+resource PNGA(kXPGUITextNewIconResourceID)				"story_new.png"
+resource PNGA(kXPGUITextUpdateIconResourceID)			"story_update.png"
+resource PNGA(kXPGUITextDeleteIconResourceID)			"story_delete.png"
+resource PNGA(kXPGUITextAddToAssignmentIconResourceID)  "story_addTo.png"
+resource PNGA(kXPGUIPictureIconResourceID)				"picture.png"
+resource PNGA(kXPGUIAppliquerIconResourceID)			"appliquer.png"
+resource PNGA(kXPGUIGotoStoryIconResourceID)			"goto_story.png"
+resource PNGA(kXPGUIPlacedImageIconResourceID)			"placed.png"
+
+/*
+// ------------Images Panel resources.--------------
+// Legacy non-XRail Photos palette resources removed (dead code):
+//   resource LocaleIndex (kXPGUIImagesPanelResourceID)
+//   type XPGUIImagesPanelWidget(...)
+//   resource XPGUIImagesPanelWidget (kXPGUIImagesPanelResourceID + index_enUS)
+// The XRail Photos palette uses kXPGUIXRailImagesPanelResourceID instead.
+// InCopy still defines these in XPGUI_InCopy.fr for its own panel.
+*/
+
+type XPGUIImagesViewWidget(kViewRsrcType) : TreeViewWidget(ClassID = kXPGUIImagesViewWidgetBoss)
+{
+};
+
+type XPGUIImageNodeWidget(kViewRsrcType) : PrimaryResourcePanelWidget(ClassID = kXPGUIImageNodeWidgetBoss)
+{
+};
+
+// Clickable colour swatch for the Photos liées rows. Same look/fields as the
+// stock UIColorSwatchWidget but backed by our boss so the event handler can
+// open the "change état" dialog on click.
+type XPGUIImageEtatSwatchWidget(kViewRsrcType) : UIColorSwatchWidget(ClassID = kXPGUIImageEtatSwatchWidgetBoss)
+{
+};
+
+type XPGUIDisplayImagePanelWidget(kViewRsrcType) : GenericPanelWidget(ClassID = kXPGUIDisplayImagePanelWidgetBoss)
+{
+};
+
+// Same layout as XPGUIDisplayImagePanelWidget, but its boss carries a drag
+// source — used for the Photos liées preview so it can be dragged like the
+// list rows.
+type XPGUIXRailDnDDisplayImagePanelWidget(kViewRsrcType) : GenericPanelWidget(ClassID = kXPGUIXRailDnDDisplayImagePanelWidgetBoss)
+{
+};
+
+resource LocaleIndex (kXPGUIImageNodeWidgetRsrcID)
+{
+	kViewRsrcType,
+	{
+		kWildFS, k_Wild, 	kXPGUIImageNodeWidgetRsrcID + index_enUS
+	}
+};
+
+resource XPGUIImageNodeWidget (kXPGUIImageNodeWidgetRsrcID + index_enUS) 
+{ 
+	__FILE__, 
+	__LINE__, 
+	kXPGUIImageNodeWidgetId, 
+	kPMRsrcID_None, // WidgetId, RsrcId
+	kBindLeft | kBindRight, // Frame binding
+	Frame(0,0,387,20) // Frame (left, top, right, bottom)
+	kTrue, 
+	kTrue, // Visible, Enabled
+	"", // Panel name
+	{
+		// Drop down arrow
+		TreeExpanderWidget 
+		( 
+			kTreeNodeExpanderWidgetID, // WidgetId
+			kTreeBranchCollapsedRsrcID, // RsrcId for collapsed node icon
+			kApplicationRsrcPluginID, // RsrcPlugin for collapsed node icon
+			kBindLeft, // Frame binding
+			Frame(2,4,18,18) // Frame
+			kTrue, 
+			kTrue, // Visible, Enabled
+			kTreeBranchExpandedRsrcID, // RsrcId for expanded node icon
+			kApplicationRsrcPluginID, // RsrcPlugin for expanded node icon
+			kTrue, // Cmd-Click expands/collapses children
+			kFalse, // Scroll to show children when expanded
+			kIconNoCentering, 
+			kIconRaisedLook, // Sets the icon look -- (kIconRaisedLook | kIconFlushLook)
+			kFalse,  // Bool integer sets whether the icon draws a well.
+		),
+		// First column: small colour swatch (12×12) reflecting the photo's
+		// "etatimage" attribute from OBJRART.xml. Painted at runtime by the
+		// widget mgr from the etatsimages list cached on IXPGPreferences.
+		// Square, not round — the SDK has no built-in round swatch.
+		// Enabled (kTrue) so it receives mouse events: a click opens the
+		// "change état" dialog (handled by kXPGUIImageEtatSwatchEHImpl on
+		// kXPGUIImageEtatSwatchWidgetBoss).
+		XPGUIImageEtatSwatchWidget
+		(
+			kXPGUIImageEtatSwatchWidgetID,
+			kPMRsrcID_None,
+			kBindNone,
+			Frame(20,3,32,17)
+			kTrue,
+			kTrue,
+		),
+		InfoStaticTextWidget
+		(
+			kXPGUIImageNameWidgetID, // WidgetId
+			kPMRsrcID_None, // RsrcId
+			kBindLeft | kBindRight, // Frame binding
+			// Trimmed on the right to make room for the placed-status icon
+			// then the two action icons.
+			Frame(34,0,316,18) // Frame
+			kTrue,
+			kTrue, // Visible, Enabled
+			kAlignLeft, // Alignment
+			kEllipsizeEnd, // Ellipsize style — long photo names are truncated.
+			kTrue,
+			"", // Text Control Data
+			0, // WidgetId for associated control for shortcut focus
+			kPaletteWindowSystemScriptFontId,
+			kPaletteWindowSystemScriptFontId,
+		),
+		// Placed-status indicator: green check shown when the image is
+		// already placed in a frame of the front document. Hidden otherwise.
+		// Non-clickable IconSuiteWidget — the look matches the action
+		// icons but it doesn't trigger anything on click.
+		IconSuiteWidget
+		(
+			kXPGUIImagePlacedIconWidgetID,
+			kPMRsrcID_None,
+			kBindRight,
+			Frame(320,1,340,19) // Frame (20×18, just before the action icons)
+			kTrue,
+			kFalse, // Disabled — visual indicator only.
+			kIconCentering,
+			kIconFlushLook,
+			kFalse,
+			0,
+		),
+		// Goto link: clicking selects & scrolls to the linked photo frame
+		// in the document layout. Reuses the icon InDesign's own Links panel
+		// uses for its "Atteindre le lien" button.
+		RollOverIconButtonWidget
+		(
+			kXPGUIImageGotoLinkBtnWidgetID,         // WidgetId
+			kIDLinksUIGotoLinkButtonIconResID,      // Icon RsrcId (LinksUI)
+			kLinksUIPluginID,                       // Plug-in that owns it
+			kBindRight,                             // Frame binding
+			Frame(343,1,363,19)                     // Frame (width 20, height 18)
+			kTrue,                                  // Visible
+			kTrue,                                  // Enabled
+			kADBEIconSuiteButtonType,               // Button type
+		),
+		// Edit original: clicking opens the high-res image with the OS
+		// default app. Reuses the same icon as InDesign's Links panel
+		// "Modifier l'original" button.
+		RollOverIconButtonWidget
+		(
+			kXPGUIImageEditOriginalBtnWidgetID,
+			kIDLinksUIEditOriginalButtonIconResID,
+			kLinksUIPluginID,
+			kBindRight,
+			Frame(366,1,386,19)
+			kTrue,
+			kTrue,
+			kADBEIconSuiteButtonType,
+		),
+	}
+}
+
+/*
+// ------------Gabarit list dialog resources.--------------
+*/
+
+type XPGUIDropDownListWidget(kViewRsrcType) : DropDownListWidget(ClassID = kXPGUIDropDownListWidgetBoss){};
+
+
+/*
+// ------------New Forme dialog resources.--------------
+*/
+type XPGUINewFormeDialogWidget(kViewRsrcType) : DialogBoss(ClassID = kXPGUINewFormeDialogBoss) 
+{
+};
+
+resource LocaleIndex (kXPGUINewFormeDialogResourceID)
+{
+   kViewRsrcType,
+	{
+		kWildFS,	k_Wild, kXPGUINewFormeDialogResourceID + index_enUS
+	}
+};
+
+
+resource XPGUINewFormeDialogWidget (kXPGUINewFormeDialogResourceID + index_enUS)
+{
+	__FILE__,
+	__LINE__,
+	kXPGUINewFormeDialogWidgetID, // WidgetID
+	kPMRsrcID_None, // RsrcID
+	kBindNone, // Binding
+	// Resource ships at the EXPANDED height (with the validation report
+	// area shown). When ValidateSelectionForCarton passes, InitializeDialogFields
+	// hides the validation widget and shrinks the dialog back to 225px tall
+	// (compact targets are absolute — see XPGUIXRailNewFormeDialogController).
+	Frame(0,0,430,310) // Frame (l,t,r,b)
+	kTrue,
+	kTrue, // Visible, Enabled
+	kXPGUINewFormeDialogTitleKey, // Dialog name
+	{
+		StaticTextWidget 
+		( 
+			0, 
+			kSysStaticTextPMRsrcId, // WidgetId, RsrcId
+			kBindNone, 
+			Frame(10,10,120,27) // Frame left, top, right, bottom
+			kTrue, 
+			kTrue, 
+			kAlignLeft, // Visible, Enabled, Alignment
+			kEllipsizeEnd, 
+			kTrue,
+			kXPGUIFormeNameKey, 
+			0,  // WidgetID this shortcut is connected to, 0 if none.
+		),
+		TextEditBoxWidget 
+		( 
+			kXPGUIFormeNameWidgetID, 
+			kSysEditBoxPMRsrcId, // WidgetId, RsrcId
+			kBindNone, 
+			Frame(130, 10, 390, 30) // Frame
+			kTrue, 
+			kTrue, // Visible, Enabled
+			0, // widget id of nudge button
+			0, 
+			0, // small/large nudge amount
+			0, // max num chars( 0 = no limit)
+			kFalse, // is read only
+			kFalse, // should notify each key stroke
+			kFalse, // range checking enabled
+			kFalse, // blank entry allowed
+			0, 
+			0, // upper/lower bounds
+			"",  // initial text
+		),
+		StaticTextWidget 
+		( 
+			0, 
+			kSysStaticTextPMRsrcId, // WidgetId, RsrcId
+			kBindNone, 
+			Frame(10, 40, 110, 57) // Frame left, top, right, bottom
+			kTrue, 
+			kTrue, 
+			kAlignLeft, // Visible, Enabled, Alignment
+			kEllipsizeEnd, 
+			kTrue,
+			kXPGUIClasseurTextKey, 
+			0,  // WidgetID this shortcut is connected to, 0 if none.
+		),
+		XPGUIDropDownListWidget 
+		( 
+			kXPGUIRubriqueListWidgetID, 
+			kSysDropDownPMRsrcId, // WidgetId, RsrcId
+			kBindLeft | kBindRight, // Frame binding
+			Frame(120, 40, 390, 60) // Frame (l,t,r,b)
+			kTrue, 
+			kTrue, // Visible, Enabled
+			{
+				{				// List Items
+				}
+			},
+		),
+        // "Carton photo" — tags the carton being created as a photo-carton
+        // (used later to add images to other cartons). Persisted as the
+        // isPhotoCarton attribute on the FORME element of the descriptif XML.
+        // Sits on the left, where Fixed Content used to live.
+        CheckBoxWidget
+        (
+            kXPGUICartonPhotoWidgetID, // WidgetId
+            kSysCheckBoxPMRsrcId, // RsrcId
+            kBindTop | kBindLeft,
+            Frame(15, 75, 155, 92) // Frame
+            kTrue, // Visible
+            kTrue, // Enabled
+            kAlignLeft, // Alignment
+            kXPGUICartonPhotoKey, // Initial text
+        ),
+		GenericPanelWithBorderWidget 
+		( 
+			0, // widget ID
+			kPMRsrcID_None, // PMRsrc ID
+			kBindAll, // frame binding
+			Frame(10,105,420,157) //  left, top, right, bottom
+			kTrue, // visible
+			kTrue, // enabled
+			"", 
+			{				
+				DropDownListWidget
+				(
+					kXPGUIPhotoListWidgetID,
+					kSysDropDownPMRsrcId, // WidgetId, RsrcId
+					kBindLeft | kBindTop, // Frame binding
+					Frame(5, 18, 85, 35) // Frame (l,t,r,b)
+					kTrue,
+					kTrue, // Visible, Enabled
+					{
+						{				// List Items
+						}
+					},
+				),
+				// Position dropdown : shows the current slot of the photo
+				// selected in the photo dropdown. Changing it triggers a
+				// move-with-shift (insert semantic) — the selected photo
+				// goes to the new slot, the photos in between shift by 1.
+				// The observer rewrites IFormeData::photoIndex on every
+				// frame impacted so adornment numbering stays in sync.
+				DropDownListWidget
+				(
+					kXPGUIPhotoPositionListWidgetID,
+					kSysDropDownPMRsrcId,
+					kBindLeft | kBindTop,
+					Frame(90, 18, 175, 35)
+					kTrue,
+					kTrue,
+					{
+						{				// List Items
+						}
+					},
+				),
+				// Crédit / Légende : checking the box defines the link
+				// using the currently-selected text frame, unchecking
+				// clears the link. Validation lives in the observer's
+				// HandleUseCreditLegendStateChanged.
+				CheckBoxWidget
+				(
+					kXPGUICreditPhotoWidgetID, // WidgetId
+					kSysCheckBoxPMRsrcId, // RsrcId
+					kBindTop | kBindLeft,
+					Frame(180, 18, 240, 35) // Frame
+					kTrue, // Visible
+					kTrue, // Enabled
+					kAlignLeft, // Alignment
+					kXPGUICreditKey,  // Initial text
+				),
+				IconSuiteWidget
+				(
+					kXPGUIStatusCreditPhotoWidgetID, // widget ID
+					kXPGUIOKIconResourceID,
+					kXPGUIPluginID,					 // icon, plugin ID
+					kBindLeft | kBindBottom,		 // frame binding
+					Frame(245, 17, 257, 34)			 //  left, top, right, bottom
+					kTrue,							 // visible
+					kTrue,							 // enabled
+					kADBEIconSuiteButtonType,
+					0,
+				),
+				CheckBoxWidget
+				(
+					kXPGUILegendPhotoWidgetID,		// WidgetId
+					kSysCheckBoxPMRsrcId,			// RsrcId
+					kBindTop | kBindLeft,
+					Frame(265, 18, 340, 35)
+					kTrue,							// Visible
+					kTrue,							// Enabled
+					kAlignLeft,						// Alignment
+					kXPGUILegendKey,				// Initial text
+				),
+				IconSuiteWidget
+				(
+					kXPGUIStatusLegendPhotoWidgetID, // widget ID
+					kXPGUIKOIconResourceID,
+					kXPGUIPluginID, 				 // icon, plugin ID
+					kBindLeft | kBindBottom, 		 // frame binding
+					Frame(345, 17, 357, 34) 		 //  left, top, right, bottom
+					kTrue, 							 // visible
+					kTrue, 							 // enabled
+					kADBEIconSuiteButtonType,
+					0,
+				),
+			} 
+		),
+        // "Contenu Fixe" — flags the selected frames whose content stays in
+        // place when the carton is reused. Sits below the légende/crédit
+        // panel, on the left.
+        CheckBoxWidget
+        (
+            kXPGUIFixedContentWidgetID, // WidgetId
+            kSysCheckBoxPMRsrcId, // RsrcId
+            kBindTop | kBindLeft,
+            Frame(15, 165, 155, 182) // Frame
+            kTrue, // Visible
+            kTrue, // Enabled
+            kAlignLeft, // Alignment
+            kXPGUIkFixedContentKey,  // Initial text
+        ),
+		// Pre-flight style validation report. Filled in by
+		// InitializeDialogFields from XPageUIUtils::ValidateSelectionForCarton —
+		// hidden when validation passes, in which case the controller shifts
+		// the buttons up and shrinks the dialog frame back to compact height.
+		StaticMultiLineTextWidget
+		(
+			kXPGUIValidationMessageWidgetID,
+			kPMRsrcID_None,
+			kBindNone, // Frame binding
+			Frame(10, 190, 420, 270) // Frame
+			kTrue,
+			kTrue,
+			kAlignLeft,
+			kEllipsizeEnd,
+			kTrue,
+			0, // fScrollBarWidgetID
+			kPaletteWindowSystemScriptFontId,
+			2, // fNumPixelsBetweenLines
+			5,
+			2, // Insets
+			"",
+		),
+		DefaultButtonWidget
+		(
+			kOKButtonWidgetID, // WidgetID
+			kSysButtonPMRsrcId, // RsrcID
+			kBindNone, // Binding
+			Frame(105,280,185,300) // Frame (l,t,r,b)
+			kTrue,
+			kTrue, // Visible, Enabled
+			kSDKDefOKButtonApplicationKey,  // Button text
+		),
+		CancelButtonWidget
+		(
+			kCancelButton_WidgetID, // WidgetID
+			kSysButtonPMRsrcId, // RsrcID
+			kBindNone, // Binding
+			Frame(195,280,275,300) // Frame (l,t,r,b)
+			kTrue,
+			kTrue, // Visible, Enabled
+			kSDKDefCancelButtonApplicationKey, // Button name
+			kFalse,  // Change to Reset on option-click.
+		),
+	}
+};
+/*
+// ------------Edit Forme dialog resources.--------------
+*/
+
+type XPGUIUpdateStyleMatchingViewWidget(kViewRsrcType) : TreeViewWidget(ClassID = kXPGUIUpdateStyleMatchingWidgetBoss) 
+{
+};
+
+type XPGUIUpdateStyleMatchingNodeWidget(kViewRsrcType) : PrimaryResourcePanelWidget(ClassID = kXPGUIUpdateStyleMatchingNodeWidgetBoss) 
+{
+};
+
+type XPGUIUpdateFormeDialogWidget(kViewRsrcType) : DialogBoss(ClassID = kXPGUIUpdateFormeDialogBoss) 
+{
+};
+
+resource LocaleIndex (kXPGUIUpdateFormeDialogResourceID)
+{
+   kViewRsrcType,
+	{
+		kWildFS,	k_Wild, kXPGUIUpdateFormeDialogResourceID + index_enUS
+	}
+};
+
+resource XPGUIUpdateFormeDialogWidget (kXPGUIUpdateFormeDialogResourceID + index_enUS) 
+{ 
+	__FILE__, 
+	__LINE__, 
+	kXPGUIUpdateFormeDialogWidgetID, // WidgetID
+	kPMRsrcID_None, // RsrcID
+	kBindNone, // Binding
+	Frame(5,5,266,636) // Frame (l,t,r,b)
+	kTrue, 
+	kTrue, // Visible, Enabled
+	kXPGUIUpdateFormeDialogTitleKey, // Dialog name
+	{
+		StaticTextWidget 
+		( 
+			0, 
+			kSysStaticTextPMRsrcId, // WidgetId, RsrcId
+			kBindNone, 
+			Frame(4,9,104,29) // Frame left, top, right, bottom
+			kTrue, 
+			kTrue, 
+			kAlignLeft, // Visible, Enabled, Alignment
+			kEllipsizeEnd, 
+			kTrue,
+			kXPGUIFormeNameKey, 
+			0,  // WidgetID this shortcut is connected to, 0 if none.
+		),
+		TextEditBoxWidget 
+		( 
+			kXPGUIFormeNameWidgetID, 
+			kSysEditBoxPMRsrcId, // WidgetId, RsrcId
+			kBindNone, 
+			Frame(109,10,255,30) // Frame
+			kTrue, 
+			kTrue, // Visible, Enabled
+			0, // widget id of nudge button
+			0, 
+			0, // small/large nudge amount
+			0, // max num chars( 0 = no limit)
+			kFalse, // is read only
+			kFalse, // should notify each key stroke
+			kFalse, // range checking enabled
+			kFalse, // blank entry allowed
+			0, 
+			0, // upper/lower bounds
+			"",  // initial text
+		),
+		// Tree List
+		GenericPanelWithBorderWidget 
+		( 
+			0, // The Identifier for this Widget
+			kPMRsrcID_None, // The Plugin ID
+			kBindNone, // Frame binding
+			Frame(4,34,255,600)
+			kTrue, // Is this visible
+			kTrue, 
+			"", 
+			{
+				XPGUIUpdateStyleMatchingViewWidget 
+				( 
+					kXPGUIUpdateStyleMatchingViewWidgetID, 
+					kPMRsrcID_None, // WidgetId, RsrcId
+					kBindAll, 
+					Frame(4,4,245,560) // Frame
+					kTrue, 
+					kTrue, // Visible, Enabled
+					kTrue, // EraseBeforeDraw
+					kInterfacePaletteFill, // InterfaceColor
+					"", 
+					kFalse, // Display root node
+					kFalse, // Use H Scroll bar
+					kTrue, // Use V scroll bar
+					20, // fVScrollButtonIncrement
+					20, // fVThumbScrollIncrement
+					20, // fHScrollButtonIncrement
+					20, // fHThumbScrollIncrement
+					1, // Items selectable, 0 = No Selection, 1 = Single Selection, 2 = Multiple Selection
+					kFalse, // Allow children from multiple parents to be selected
+					kFalse, // Allow discontiguous selection
+					{
+					} 
+				),
+			} 
+		),
+		DefaultButtonWidget 
+		( 
+			kOKButtonWidgetID, // WidgetID
+			kSysButtonPMRsrcId, // RsrcID
+			kBindNone, // Binding
+			Frame(34,604,114,624) // Frame (l,t,r,b)
+			kTrue, 
+			kTrue, // Visible, Enabled
+			kSDKDefOKButtonApplicationKey,  // Button text
+		),
+		CancelButtonWidget 
+		( 
+			kCancelButton_WidgetID, // WidgetID
+			kSysButtonPMRsrcId, // RsrcID
+			kBindNone, // Binding
+			Frame(134,604,214,624) // Frame (l,t,r,b)
+			kTrue, 
+			kTrue, // Visible, Enabled
+			kSDKDefCancelButtonApplicationKey, // Button name
+			kFalse,  // Change to Reset on option-click.
+		),
+	} 
+};
+
+resource LocaleIndex (kXPGUIUpdateStyleMatchingRsrcID)
+{
+	kViewRsrcType,
+	{
+		kWildFS, k_Wild, 	kXPGUIUpdateStyleMatchingRsrcID + index_enUS
+	}
+};
+
+resource XPGUIUpdateStyleMatchingNodeWidget (kXPGUIUpdateStyleMatchingRsrcID + index_enUS) 
+{ 
+	__FILE__, 
+	__LINE__, 
+	kXPGUIUpdateStyleMatchingWidgetID, 
+	kPMRsrcID_None, // WidgetId, RsrcId
+	kBindLeft | kBindRight, // Frame binding
+	Frame(2,4,222,24) // Frame (left, top, right, bottom)
+	kTrue, 
+	kTrue, // Visible, Enabled
+	"", // Panel name
+	{
+		StaticTextWidget 
+		( 
+			kXPGUIUpdateStyleNameWidgetID, // WidgetId
+			kPMRsrcID_None, // RsrcId
+			kBindLeft | kBindRight, // Frame binding
+			Frame(0,0,376,18) // Frame
+			kTrue, 
+			kTrue, // Visible, Enabled
+			kAlignLeft, // Alignment
+			kDontEllipsize, // Ellipsize style
+			kTrue,
+			"", // Text Control Data
+			0,  // WidgetId for associated control for shortcut focus
+		),
+		// Drop down arrow
+		DropDownListWidget 
+		( 
+			kXPGUIUpdateStyleTagListWidgetID, 
+			kSysDropDownPMRsrcId, // WidgetId, RsrcId
+			kBindAll, // Frame binding
+			Frame(152,1,217,17) // Frame (l,t,r,b)
+			kTrue, 
+			kTrue, // Visible, Enabled
+			{
+				{
+				}
+			},
+		),
+	} 
+}
+
+
+/*
+// ------------Formes Panel resources.--------------
+*/
+
+resource LocaleIndex (kXPGUIFormesPanelResourceID)
+{
+	kViewRsrcType,
+	{
+		kWildFS, k_Wild, 	kXPGUIFormesPanelResourceID + index_enUS
+	}
+};
+
+/*  Type definition.
+*/
+type XPGUIFormesPanelWidget(kViewRsrcType) : GenericPalettePanelWidget (ClassID = kXPGUIFormesPanelWidgetBoss)
+{
+	CPanelMenuData;
+	SizePanelDetailController;
+}
+
+type XPGUIFormesViewWidget(kViewRsrcType) : TreeViewWidget(ClassID = kXPGUIFormesViewWidgetBoss) 
+{};
+
+type XPGUIFormeNodeWidget(kViewRsrcType) : PrimaryResourcePanelWidget(ClassID = kXPGUIFormeNodeWidgetBoss) 
+{};
+
+type XPGUIDisplayImageFomePanelWidget(kViewRsrcType) : GenericPanelWidget(ClassID = kXPGUIDisplayImageFormePanelWidgetBoss)
+{};
+
+
+resource XPGUIFormesPanelWidget (kXPGUIFormesPanelResourceID + index_enUS)
+{
+	__FILE__,
+	__LINE__,
+	kXPGUIFormesPanelWidgetID, // WidgetId
+	kPMRsrcID_None, // RsrcId
+	kBindNone, // Frame binding
+	// Hauteur naturelle 600 (ex 280) — le SDK l'utilise comme borne max de
+	// redim. Tous les widgets ancrés en bas (place button, +/- icons) ont
+	// été décalés de +320 et le bord bas du tree + preview pareil pour que
+	// le layout reste identique à l'ouverture.
+	Frame(0,0,551,600) // Frame
+	kTrue, // Visible
+	kTrue, // Enabled
+	kTrue, // Erase background
+	kInterfacePaletteFill, // Erase to color
+	kFalse, // Draw dropshadow
+	kXPGUIFormesPanelTitleKey, // Panel name
+	{
+		StaticTextWidget
+		(
+			0,
+			kPMRsrcID_None, // WidgetId, RsrcId
+			kBindLeft | kBindTop, // Frame binding
+			Frame(10,4,70,19) // Frame
+			kTrue,
+			kTrue,
+			kAlignLeft,
+			kEllipsizeEnd, // Visible, Enabled
+			kTrue,
+			kXPGUIClasseurTextKey, // Text
+			0,
+		),
+		TextComboBoxWidget
+		(
+			kXPGUIComboClasseurListWidgetID,
+			kSysDropDownPMRsrcId, // WidgetId, RsrcId
+			kBindLeft | kBindTop,
+			Frame(75,4,280,21) // Frame
+			kTrue,
+			kTrue, // Visible, Enabled
+			0, // widget id of nudge button
+			0,
+			0, // small/large nudge amount
+			30, // max num chars( 0 = no limit)
+			kTrue, // is read only (prevents free-typing, user must pick from list)
+			kFalse, // should notify each key stroke
+			kFalse, // range checking enabled
+			kFalse, // blank entry allowed
+			0,
+			0, // upper/lower bounds
+			"",
+			{
+				{										// initial text
+				}
+			},
+		),
+		RollOverIconButtonWidget
+		( // Create-classeur button, opens the New Classeur dialog.
+			kXPGUINewClasseurButtonWidgetID, // widget ID
+			kNewObjectButtonIcon,
+			kApplicationRsrcPluginID, // icon, plugin ID
+			kBindLeft | kBindTop, // frame binding
+			Frame(285,4,305,21) // left, top, right, bottom
+			kTrue, // visible
+			kTrue, // enabled
+			kADBEIconSuiteButtonType,
+		),
+		// Affichage des vignettes des formes XCarton "XPGUIDisplayImagePanelWidget"
+		XPGUIDisplayImagePanelWidget
+		(
+			kXPGUIDisplayImageFormePanelWidgetID, // WidgetId
+			kPMRsrcID_None, // RsrcId
+			kBindAll, // Grows with the palette so the vignette gets more pixels
+			Frame(344,24,545,565) // Frame(left, top, right, bottom)
+			kTrue, // Visible
+			kTrue, // Enabled
+			"",
+			{
+			}
+		),
+		PanelWithHiliteBorderWidget
+		(
+			0, // widget ID
+			kPMRsrcID_None, // PMRsrc ID
+			kBindLeft | kBindTop | kBindBottom, // Tree grows vertically, keeps fixed width
+			Frame(0,25,340,565) //  left, top, right, bottom
+			kTrue, // visible
+			kTrue, // enabled
+			"",
+			{
+				XPGUIFormesViewWidget
+				(
+					kXPGUIFormesViewWidgetID,
+					kPMRsrcID_None, // WidgetId, RsrcId
+					kBindAll,
+					Frame(0,1,339,539) // Frame
+					kTrue,
+					kTrue, // Visible, Enabled
+					kTrue, // EraseBeforeDraw
+					kInterfacePaletteFill, // InterfaceColor
+					"",
+					kFalse, // Display root node
+					kFalse, // Use H Scroll bar
+					kTrue, // Use V scroll bar
+					20, // fVScrollButtonIncrement
+					20, // fVThumbScrollIncrement
+					20, // fHScrollButtonIncrement
+					20, // fHThumbScrollIncrement
+					1, // Items selectable, 0 = No Selection, 1 = Single Selection, 2 = Multiple Selection
+					kFalse, // Allow children from multiple parents to be selected
+					kFalse, // Allow discontiguous selection
+					{
+					}
+				),
+			}
+		),
+		// Carton action row (grouped left-to-right: Placer / + / -), anchored bottom-left.
+		ButtonWidget
+		(
+			kXPGUIPlaceAutoFormeWidgetID, // WidgetId
+			kSysButtonPMRsrcId,			// RsrcId
+			kBindLeft | kBindBottom,	// Frame binding
+			Frame(10, 569, 90, 583)
+			kTrue,						// Visible
+			kTrue,						// Enabled
+			kXPGUIPlacementAutoKey,		// Button name
+		),
+
+		RollOverIconButtonWidget
+		( // ADBEIconSuiteButtonView properties
+			kXPGUINewFormeWidgetID, // widget ID
+			kNewObjectButtonIcon,
+			kApplicationRsrcPluginID, // icon, plugin ID
+			kBindLeft | kBindBottom, // frame binding
+			Frame(100,569,130,583) //  left, top, right, bottom
+			kTrue, // visible
+			kTrue, // enabled
+			kADBEIconSuiteButtonType,
+		),
+		RollOverIconButtonWidget
+		( // ADBEIconSuiteButtonView properties
+			kXPGUIDeleteFormeWidgetID, // widget ID
+			kDeleteObjectButtonIcon,
+			kApplicationRsrcPluginID, // icon, plugin ID
+			kBindLeft | kBindBottom, // frame binding
+			Frame(135,569,165,583) //  left, top, right, bottom
+			kTrue, // visible
+			kTrue, // enabled
+			kADBEIconSuiteButtonType,
+		),
+		// Phase 0 manual trigger : renumber the active carton/article
+		// from the document selection. See IXPageUtils::RenumberUnit.
+		ButtonWidget
+		(
+			kXPGUIRenumberUnitButtonWidgetID, // WidgetId
+			kSysButtonPMRsrcId,				// RsrcId
+			kBindLeft | kBindBottom,		// Frame binding
+			Frame(175, 569, 240, 583)
+			kTrue, kTrue,					// Visible, Enabled
+			kXPGUIRenumberUnitKey,			// Button name
+		),
+	//
+	}
+	kXPGUIFormePopupMenuNameKey
+};
+
+
+resource LocaleIndex (kXPGUIFormeNodeWidgetRsrcID)
+{
+	kViewRsrcType,
+	{
+		kWildFS, k_Wild, 	kXPGUIFormeNodeWidgetRsrcID + index_enUS
+	}
+};
+
+resource XPGUIFormeNodeWidget (kXPGUIFormeNodeWidgetRsrcID + index_enUS) 
+{ 
+	__FILE__, 
+	__LINE__, 
+	kXPGUIFormeNodeWidgetId, 
+	kPMRsrcID_None, // WidgetId, RsrcId
+	kBindLeft | kBindRight, // Frame binding
+	Frame(0,0,387,20) // Frame (left, top, right, bottom)
+	kTrue, 
+	kTrue, // Visible, Enabled
+	"", // Panel name
+	{
+		// Drop down arrow
+		TreeExpanderWidget 
+		( 
+			kTreeNodeExpanderWidgetID, // WidgetId
+			kTreeBranchCollapsedRsrcID, // RsrcId for collapsed node icon
+			kApplicationRsrcPluginID, // RsrcPlugin for collapsed node icon
+			kBindLeft, // Frame binding
+			Frame(2,4,18,18) // Frame
+			kTrue, 
+			kTrue, // Visible, Enabled
+			kTreeBranchExpandedRsrcID, // RsrcId for expanded node icon
+			kApplicationRsrcPluginID, // RsrcPlugin for expanded node icon
+			kTrue, // Cmd-Click expands/collapses children
+			kFalse, // Scroll to show children when expanded
+			kIconNoCentering, 
+			kIconRaisedLook, // Sets the icon look -- (kIconRaisedLook | kIconFlushLook)
+			kFalse,  // Bool integer sets whether the icon draws a well.
+		),
+		InfoStaticTextWidget 
+		( 
+			kXPGUIFormeNameWidgetID, // WidgetId
+			kPMRsrcID_None, // RsrcId
+			kBindLeft | kBindRight, // Frame binding
+			Frame(19,0,376,18) // Frame
+			kTrue, 
+			kTrue, // Visible, Enabled
+			kAlignLeft, // Alignment
+			kDontEllipsize, // Ellipsize style
+			kTrue,
+			"", // Text Control Data
+			0, // WidgetId for associated control for shortcut focus
+			kPaletteWindowSystemScriptFontId, 
+			kPaletteWindowSystemScriptFontId,
+		),
+	} 
+}
+
+// Tools Tips
+
+resource TipTable(33)
+{
+	{	
+	    kXPGUICreateIncopyWidgetID ,		 kXPGUICreateIncopyTipKey,
+	    kXPGUIDeleteAssignmentWidgetID ,	 kXPGUIDeleteAssignmentTipKey,
+	    kXPGUIMAJArtButtonWidgetID,			 kXPGUIMAJArtButtonTipKey,
+	   kXPGUIAddToAssignmentButtonWidgetID, kXPGUIAddToAssignmentButtonTipKey,
+ 	}
+}
+
+
+/*
+// ------------Order Article Dialog resources.--------------
+*/
+
+
+/*  Dialog LocaleIndex.
+*/
+resource LocaleIndex (kXPGUIOrderArtDialogResourceID)
+{
+   kViewRsrcType,
+	{
+		kWildFS,	k_Wild, kXPGUIOrderArtDialogResourceID + index_enUS
+	}
+};
+
+/*  Type definition.
+*/
+type XPGUIOrderArtDialogWidget(kViewRsrcType) : DialogBoss(ClassID = kXPGUIOrderArtDialogBoss)
+{
+};
+
+/*  Dialog definition.
+This view is not localised: therefore, it can reside here.
+However, if you wish to localise it, it is recommended to locate it in one of
+the localised framework resource files (i.e. SNR_enUS.fr etc.) and
+update your Dialog LocaleIndex accordingly.
+*/
+resource XPGUIOrderArtDialogWidget (kXPGUIOrderArtDialogResourceID + index_enUS) 
+{ 
+	__FILE__, 
+	__LINE__, 
+	kXPGUIOrderArtDialogWidgetID, // WidgetID
+	kPMRsrcID_None, // RsrcID
+	kBindNone, // Binding
+	Frame(5,10,266,301) // Frame (l,t,r,b)
+	kTrue, 
+	kTrue, // Visible, Enabled
+	kXPGUIOrderArtDialogTitleKey, // Dialog name
+	{
+		StaticTextWidget 
+		( 
+			0, 
+			kSysStaticTextPMRsrcId, // WidgetId, RsrcId
+			kBindNone, 
+			Frame(15,9,65,29) // Frame left, top, right, bottom
+			kTrue, 
+			kTrue, 
+			kAlignLeft, // Visible, Enabled, Alignment
+			kEllipsizeEnd, 
+			kTrue,
+			kXPGUITopicTextKey, 
+			0,
+		),
+		MultilineTextEditBoxWidget 
+		( 
+			kXPGUITopicWidgetID, 
+			kSysMultilineEditBoxRsrcId, 
+			kApplicationRsrcPluginID, // WidgetId, RsrcId
+			kBindLeft | kBindRight, 
+			Frame(74,9,245,49) // Frame
+			kTrue, 
+			kTrue, // Visible, Enabled
+			0, // widget id of nudge button
+			0, 
+			0, // small/large nudge amount
+			0, // max num chars( 0 = no limit)
+			kFalse, // is read only
+			kFalse, // should notify each key stroke
+			kFalse, // range checking enabled
+			kFalse, // blank entry allowed
+			0, 
+			0, // upper/lower bounds
+			"",  // initial text
+		),
+		StaticTextWidget 
+		( 
+			0, 
+			kSysStaticTextPMRsrcId, // WidgetId, RsrcId
+			kBindNone, 
+			Frame(15,59,96,79) // Frame left, top, right, bottom
+			kTrue, 
+			kTrue, 
+			kAlignLeft, // Visible, Enabled, Alignment
+			kEllipsizeEnd, 
+			kTrue,
+			kXPGUIRecipientTextKey, 
+			0,
+		),
+		XPGUIDropDownListWidget 
+		( 
+			kXPGUIRecipientListWidgetID, 
+			kSysDropDownPMRsrcId, // WidgetId, RsrcId
+			kBindLeft | kBindRight, // Frame binding
+			Frame(104,59,244,79) // Frame (l,t,r,b)
+			kTrue, 
+			kTrue, // Visible, Enabled
+			{
+				{							    // List Items
+				}
+			},
+		),
+		XPGUIDropDownListWidget 
+		( 
+			kXPGUIFirstFilterWidgetID, 
+			kSysDropDownPMRsrcId, // WidgetId, RsrcId
+			kBindLeft | kBindRight, // Frame binding
+			Frame(104,89,245,109) // Frame (l,t,r,b)
+			kTrue, 
+			kTrue, // Visible, Enabled
+			{
+				{				// List Items
+				}
+			},
+		),
+		XPGUIDropDownListWidget 
+		( 
+			kXPGUISecondFilterWidgetID, 
+			kSysDropDownPMRsrcId, // WidgetId, RsrcId
+			kBindLeft | kBindRight, // Frame binding
+			Frame(104,119,245,139) // Frame (l,t,r,b)
+			kTrue, 
+			kTrue, // Visible, Enabled
+			{
+				{				// List Items
+				}
+			},
+		),
+		StaticTextWidget 
+		( 
+			kXPGUINbImagesStaticTextWidgetID, 
+			kPMRsrcID_None, 
+			kBindNone, 
+			Frame(15,179,131,199) // Frame
+			kTrue, 
+			kTrue, // Visible, Enabled,
+			// StaticTextAttributes fields below
+			kAlignLeft, // Alignment
+			kDontEllipsize, // Ellipsize style
+			kTrue,
+			kXPGUINbImagesKey, 
+			kXPGUINbImagesTextWidgetId,
+		),
+		IntEditBoxWidget 
+		( 
+			kXPGUINbImagesTextWidgetId, // WidgetId,
+			kSysEditBoxRsrcId, 
+			kXPGUIPluginID, // RsrcId
+			kBindNone, // Frame binding
+			Frame(154,179,190,199) // Frame
+			kTrue, 
+			kTrue, // Visible, Enabled
+			kXPGUINbImagesNudgeWidgetId, // widget id of nudge button
+			1, 
+			10, // small/large nudge amount
+			3, // max num chars( 0 = no limit)
+			kFalse, // is read only
+			kFalse, // should notify each key stroke
+			kTrue, // range checking enabled
+			kFalse, // blank entry allowed
+			20, 
+			0, // upper/lower bounds
+			"0",  // initial value
+		),
+		NudgeControlWidget 
+		( 
+			kXPGUINbImagesNudgeWidgetId, 
+			kPMRsrcID_None, 
+			kBindNone, // Frame binding
+			Frame(139,179,156,199) // Frame
+			kTrue, 
+			kTrue,  // Visible, Enabled
+		),
+		
+		DefaultButtonWidget 
+		( 
+			kOKButtonWidgetID, // WidgetID
+			kSysButtonPMRsrcId, // RsrcID
+			kBindNone, // Binding
+			Frame(144,259,224,280) // Frame (l,t,r,b)
+			kTrue, 
+			kTrue, // Visible, Enabled
+			kSDKDefOKButtonApplicationKey,  // Button text
+		),
+		CancelButtonWidget 
+		( 
+			kCancelButton_WidgetID, // WidgetID
+			kSysButtonPMRsrcId, // RsrcID
+			kBindNone, // Binding
+			Frame(44,259,124,280) // Frame (l,t,r,b)
+			kTrue, 
+			kTrue, // Visible, Enabled
+			kSDKDefCancelButtonApplicationKey, // Button name
+			kTrue,  // Change to Reset on option-click.
+		),
+		StaticTextWidget 
+		( 
+			0, 
+			kSysStaticTextPMRsrcId, // WidgetId, RsrcId
+			kBindNone, 
+			Frame(15,89,96,109) // Frame left, top, right, bottom
+			kTrue, 
+			kTrue, 
+			kAlignLeft, // Visible, Enabled, Alignment
+			kEllipsizeEnd, 
+			kTrue,
+			kXPGUIRubriqueTextKey, 
+			0,
+		),
+		StaticTextWidget 
+		( 
+			0, 
+			kSysStaticTextPMRsrcId, // WidgetId, RsrcId
+			kBindNone, 
+			Frame(15,119,96,139) // Frame left, top, right, bottom
+			kTrue, 
+			kTrue, 
+			kAlignLeft, // Visible, Enabled, Alignment
+			kEllipsizeEnd, 
+			kTrue,
+			kXPGUISsRubriqueTextKey, 
+			0,
+		),
+		IntEditBoxWidget 
+		( 
+			kXPGUICalibrageTextWidgetId, // WidgetId,
+			kSysEditBoxRsrcId, 
+			kXPGUIPluginID, // RsrcId
+			kBindNone, // Frame binding
+			Frame(104,149,245,169) // Frame
+			kTrue, 
+			kTrue, // Visible, Enabled
+			0, // widget id of nudge button
+			1, 
+			10, // small/large nudge amount
+			6, // max num chars( 0 = no limit)
+			kFalse, // is read only
+			kFalse, // should notify each key stroke
+			kTrue, // range checking enabled
+			kFalse, // blank entry allowed
+			999999, 
+			0, // upper/lower bounds
+			"0",  // initial value
+		),
+		StaticTextWidget 
+		( 
+			kXPGUICalibrageStaticTextWidgetID, 
+			kPMRsrcID_None, 
+			kBindNone, 
+			Frame(15,149,96,169) // Frame
+			kTrue, 
+			kTrue, // Visible, Enabled,
+			// StaticTextAttributes fields below
+			kAlignLeft, // Alignment
+			kDontEllipsize, // Ellipsize style
+			kTrue,
+			kXPGUICalibrageKey, 
+			kXPGUICalibrageStaticTextWidgetID,
+		),
+	} 
+}
+
+
+
+/*
+// ------------Add items to Article Dialog resources.--------------
+*/
+
+
+/*  Dialog LocaleIndex.
+*/
+resource LocaleIndex (kXPGUIAddToStorySubjectDialogResourceID)
+{
+   kViewRsrcType,
+	{
+		kWildFS,	k_Wild, kXPGUIAddToStorySubjectDialogResourceID + index_enUS
+	}
+};
+
+/*  Type definition.
+*/
+type XPGUIAddToArtDialogWidget(kViewRsrcType) : DialogBoss(ClassID = kXPGUIAddToArtDialogBoss)
+{
+};
+
+/*  Dialog definition.
+This view is not localised: therefore, it can reside here.
+However, if you wish to localise it, it is recommended to locate it in one of
+the localised framework resource files (i.e. SNR_enUS.fr etc.) and
+update your Dialog LocaleIndex accordingly.
+*/
+resource XPGUIAddToArtDialogWidget (kXPGUIAddToStorySubjectDialogResourceID + index_enUS) 
+{ 
+	__FILE__, 
+	__LINE__, 
+	kXPGUIAddToArtDialogWidget, // WidgetID
+	kPMRsrcID_None, // RsrcID
+	kBindNone, // Binding
+	Frame(5, 5, 316, 110) // Frame (l,t,r,b)
+	kTrue, 
+	kTrue, // Visible, Enabled
+	kXPGUIAddToArtDialogTitleKey, // Dialog name
+	{
+	
+		StaticTextWidget 
+		( 
+			0, 
+			kSysStaticTextPMRsrcId, // WidgetId, RsrcId
+			kBindNone, 
+			Frame(15, 10, 98, 30) // Frame left, top, right, bottom
+			kTrue, 
+			kTrue, 
+			kAlignLeft, // Visible, Enabled, Alignment
+			kEllipsizeEnd, 
+			kTrue,
+			kXPGUIStoryTypeTextKey, 
+			0,
+		),
+		
+		ClusterPanelWidget 
+		( 
+			0, // The Identifier for this Widget
+			kPMRsrcID_None, // The Plugin ID
+			kBindNone, // Frame binding
+			Frame(100, 4, 300, 35) 
+			kTrue, // Is this visible
+			kTrue, // Is this enabled
+			"", 
+			{
+				RadioButtonWidget 
+				( 
+					kXPGUIRadioInCopyStoryWidgetID, // The Identifier for this Widget
+					kSysRadioButtonPMRsrcId,  // The Plugin ID
+					kBindNone,				  // Frame binding
+					Frame(10, 5, 65, 25) 
+					kTrue,					  // Is this visible
+					kTrue,					  // Is this enabled
+					kXPGUIInCopyStoryTypeKey, // The String value
+				),
+				
+				RadioButtonWidget 
+				( 
+					kXPGUIRadioPlacedStoryWidgetID,
+					// The Identifier for this Widget
+					kSysRadioButtonPMRsrcId,	// The Plugin ID
+					kBindNone,					// Frame binding
+					Frame(90, 5, 145, 25) 
+					kTrue,						// Is this visible
+					kTrue,						// Is this enabled
+					kXPGUIPlacedStoryTypeKey,	// The String value
+				),				
+			} 
+		),
+		
+		StaticTextWidget 
+		( 
+			0, 
+			kSysStaticTextPMRsrcId, // WidgetId, RsrcId
+			kBindNone, 
+			Frame(15, 45, 98, 65) // Frame left, top, right, bottom
+			kTrue, 
+			kTrue, 
+			kAlignLeft, // Visible, Enabled, Alignment
+			kEllipsizeEnd, 
+			kTrue,
+			kXPGUIListAssignmentsTextKey, 
+			0,
+		),
+		XPGUIDropDownListWidget 
+		( 
+			kXPGUIAssignmentListWidgetID, 
+			kSysDropDownPMRsrcId, // WidgetId, RsrcId
+			kBindLeft | kBindRight, // Frame binding
+			Frame(100, 45, 306, 65) // Frame (l,t,r,b)
+			kTrue, 
+			kTrue, // Visible, Enabled
+			{
+				{							    // List Items
+				}
+			},
+		),
+		
+		DefaultButtonWidget 
+		( 
+			kOKButtonWidgetID, // WidgetID
+			kSysButtonPMRsrcId, // RsrcID
+			kBindNone, // Binding
+			Frame(160, 80, 240, 101) // Frame (l,t,r,b)
+			kTrue, 
+			kTrue, // Visible, Enabled
+			kSDKDefOKButtonApplicationKey,  // Button text
+		),
+		CancelButtonWidget 
+		( 
+			kCancelButton_WidgetID, // WidgetID
+			kSysButtonPMRsrcId, // RsrcID
+			kBindNone, // Binding
+			Frame(60, 80, 140, 101) // Frame (l,t,r,b)
+			kTrue, 
+			kTrue, // Visible, Enabled
+			kSDKDefCancelButtonApplicationKey, // Button name
+			kTrue,  // Change to Reset on option-click.
+		),
+	} 
+}
+
+/*
+// ------------Articles Panel resources.--------------
+*/
+
+resource LocaleIndex (kXPGUIArticlePanelResourceID)
+{
+	kViewRsrcType,
+	{
+		kWildFS, k_Wild, 	kXPGUIArticlePanelResourceID + index_enUS
+	}
+};
+
+/*  Type definition.
+*/
+
+
+type XPGUIArticlePanelWidget(kViewRsrcType) : GenericPalettePanelWidget (ClassID = kXPGUIArticlePanelWidgetBoss)
+{
+	CPanelMenuData;
+	SizePanelDetailController;
+}
+type XPGUIArticleViewWidget(kViewRsrcType) : TreeViewWidget(ClassID = kXPGUIArticleViewWidgetBoss) 
+{};
+
+type XPGUIArticleNodeWidget(kViewRsrcType) : PrimaryResourcePanelWidget(ClassID = kXPGUIArticleNodeWidgetBoss) 
+{};
+resource PNGA(kXPGUIToggleIconResourceID) "icon_toggle.png"
+
+
+
+resource XPGUIArticlePanelWidget (kXPGUIArticlePanelResourceID + index_enUS)
+{
+	__FILE__,
+	__LINE__,
+	kXPGUIArticlePanelWidgetID, // WidgetId
+	kPMRsrcID_None, // RsrcId
+	kBindNone, // Frame binding
+	// Hauteur naturelle 600 (ex 360) — seule la liste articles grandit
+	// (kBindAll). Les deux panneaux du bas (preview gauche, options droite)
+	// ont été décalés de +240 et les dropdowns Parution/Section/SsSection
+	// passés en kBindLeft|kBindTop / kBindRight|kBindTop pour rester fixes.
+	Frame(5,5,401,600) // Frame
+	kTrue, // Visible
+	kTrue, // Enabled
+	kTrue, // Erase background
+	kInterfacePaletteFill, // Erase to color
+	kFalse, // Draw dropshadow
+	kXPGUIArticlePanelTitleKey, // Panel name
+	{
+		// "Not connected" placeholder widgets. Hidden at runtime once the user
+		// is logged in; in return all other children of the panel are hidden
+		// while the user is logged out. Visibility is toggled by the panel
+		// observer on login state changes.
+		StaticTextWidget
+		(
+			kXPGUILoginPromptTextWidgetID, // WidgetId
+			kSysStaticTextPMRsrcId, // RsrcId
+			kBindNone,
+			Frame(20, 40, 380, 100) // left, top, right, bottom
+			kFalse, // Visible (will be shown by observer if not logged in)
+			kTrue,  // Enabled
+			kAlignCenter,
+			kEllipsizeEnd,
+			kTrue,
+			kXPGUILoginPromptTextKey, // Text
+			0,
+		),
+		ButtonWidget
+		(
+			kXPGUILoginPromptButtonWidgetID, // WidgetId
+			kSysButtonPMRsrcId, // RsrcId
+			kBindNone,
+			Frame(140, 120, 260, 145) // left, top, right, bottom
+			kFalse, // Visible (will be shown by observer if not logged in)
+			kTrue,  // Enabled
+			kXPGUILoginPromptButtonKey, // Label
+		),
+		StaticTextWidget
+		(
+			// Shown when the user is logged in but no Gaia/XRail page is
+			// active in the front document. Toggled by UpdateLoginState.
+			kXPGUINoGaiaPageTextWidgetID, // WidgetId
+			kSysStaticTextPMRsrcId, // RsrcId
+			kBindNone,
+			Frame(20, 80, 380, 130) // left, top, right, bottom
+			kFalse, // Visible — observer flips it on when needed.
+			kTrue,
+			kAlignCenter,
+			kEllipsizeEnd,
+			kTrue,
+			kXPGUINoGaiaPageTextKey,
+			0,
+		),
+
+		RollOverIconButtonWidget						//Bouton Ajouter
+		(
+			kXPGUICreateIncopyWidgetID, // widget ID
+			kXPGUITextNewIconResourceID, // resource ID
+			kXPGUIPluginID, // plugin ID
+			kBindNone, // frame binding
+			Frame(9,4,45,40) // left, top, right, bottom
+			kTrue, 
+			kTrue, // visible, enabled
+			kADBEIconSuiteButtonType,
+		),
+		StaticTextWidget								//Libelle bouton ajouter
+		( 
+			0, // The Identifier for this Widget
+			kSysStaticTextPMRsrcId, // The Plugin ID
+			kBindLeft | kBindTop, // Frame binding
+			Frame(4,44,50,59) 
+			kTrue, // Is this visible
+			kTrue, // Is this enabled
+			kAlignCenter, // The alignment of this field
+			kEllipsizeEnd, // Where to ellipsize the string if the size is larger than its frame
+			kTrue,
+			kXPGUIAddLabelKey, // The String value
+			0,  // The Widget ID for associated control for shortcut focus
+		),
+		RollOverIconButtonWidget						//bouton Ajouter a
+		( 
+			kXPGUIAddToAssignmentButtonWidgetID, // widget ID
+			kXPGUITextAddToAssignmentIconResourceID, // resource ID
+			kXPGUIPluginID, // plugin ID
+			kBindNone, // frame binding
+			Frame(64,4,100,40) // left, top, right, bottom
+			kTrue, 
+			kTrue, // visible, enabled
+			kADBEIconSuiteButtonType,
+		),
+		StaticTextWidget								//Libelle bouton ajouter a
+		( 
+			0, // The Identifier for this Widget		
+			kSysStaticTextPMRsrcId, // The Plugin ID
+			kBindLeft | kBindTop, // Frame binding
+			Frame(59,44,105,60) 
+			kTrue, // Is this visible
+			kTrue, // Is this enabled
+			kAlignCenter, // The alignment of this field
+			kEllipsizeEnd, // Where to ellipsize the string if the size is larger than its frame
+			kTrue,
+			kXPGUIAddToAssignmentKey, // The String value
+			0,  // The Widget ID for associated control for shortcut focus
+		),
+		RollOverIconButtonWidget						//bouton Effacer
+		( 
+			kXPGUIDeleteAssignmentWidgetID, // WidgetId
+			kXPGUITextDeleteIconResourceID, // RsrcId
+			kXPGUIPluginID, 
+			kBindNone, // Frame binding
+			Frame(119,4,155,40) 
+			kTrue, // Visible
+			kTrue, // Enabled
+			kADBEIconSuiteButtonType,
+		),
+		StaticTextWidget								//libelle bouton effacer
+		( 
+			0, // The Identifier for this Widget
+			kSysStaticTextPMRsrcId, // The Plugin ID
+			kBindLeft | kBindTop, // Frame binding
+			Frame(114,44,160,59) 
+			kTrue, // Is this visible
+			kTrue, // Is this enabled
+			kAlignCenter, // The alignment of this field
+			kEllipsizeEnd, // Where to ellipsize the string if the size is larger than its frame
+			kTrue,
+			kXPGUIDeleteLabelTextKey, // The String value
+			0,  // The Widget ID for associated control for shortcut focus
+		),
+		RollOverIconButtonWidget						//bouton MAJ
+		( 
+			kXPGUIMAJArtButtonWidgetID, // WidgetId
+			kXPGUITextUpdateIconResourceID, // RsrcId
+			kXPGUIPluginID, 
+			kBindNone, // Frame binding
+			Frame(174,4,210,40) 
+			kTrue, // Visible
+			kTrue, // Enabled
+			kADBEIconSuiteButtonType,
+		),
+		StaticTextWidget								//Libelle bouton MAJ
+		( 
+			0, // The Identifier for this Widget
+			kSysStaticTextPMRsrcId, // The Plugin ID
+			kBindLeft | kBindTop, // Frame binding
+			Frame(169,44,215,59) 
+			kTrue, // Is this visible
+			kTrue, // Is this enabled
+			kAlignCenter, // The alignment of this field
+			kEllipsizeEnd, // Where to ellipsize the string if the size is larger than its frame
+			kTrue,
+			kXPGUIUpdateLabelKey, // The String value
+			0,  // The Widget ID for associated control for shortcut focus
+		),
+		
+		StaticTextWidget								//Libelle utilisateur courant
+		(
+			// Bumped up + given a proper height — was Frame(…, 44, …, 51),
+			// only 7 px tall, so the login text was clipped.
+			kXPGUICurrentUserWidgetID, // The Identifier for this Widget
+			kSysStaticTextPMRsrcId, // The Plugin ID
+			kBindLeft | kBindTop, // Frame binding
+			Frame(280, 38, 390, 54)
+			kTrue,			// Is this visible
+			kTrue,			// Is this enabled
+			kAlignLeft,		// The alignment of this field
+			kEllipsizeEnd,	// Where to ellipsize the string if the size is larger than its frame
+			kTrue,
+			"",				// The String value
+			0,				// The Widget ID for associated control for shortcut focus
+		),
+
+		StaticTextWidget								//libelle Titre + parution de la page
+		(
+			// Shifted up so the "user" widget below has room without
+			// running off the bottom of the header area.
+			kXPGUIInfoPageWidgetID, // The Identifier for this Widget
+			kSysStaticTextPMRsrcId, // The Plugin ID
+			kBindLeft | kBindTop,	// Frame binding
+			Frame(280, 2, 390, 36)
+			kTrue,			// Is this visible
+			kTrue,			// Is this enabled
+			kAlignLeft,		// The alignment of this field
+			kEllipsizeEnd,	// Where to ellipsize the string if the size is larger than its frame
+			kTrue,
+			"",				// The String value
+			0,				// The Widget ID for associated control for shortcut focus
+		),
+
+		GenericPanelWithBorderWidget					//Zone avec les cases a cocher
+		(
+			0, // widget ID
+			kPMRsrcID_None, // PMRsrc ID
+			kBindRight | kBindBottom, // Ancré bas-droite pour rester en bas, sous la liste.
+			Frame(179, 479, 390, 590) //  left, top, right, bottom
+			kTrue, // visible
+			kTrue, // enabled
+			"", 
+			{				
+				RollOverIconButtonWidget				
+				( 
+					kXPGUIRefreshFormesAdornmentWidgetID,	// widget ID
+					kXPGUIToggleIconResourceID,				// resource ID
+					kXPGUIPluginID,							// plugin ID
+					kBindNone,								// frame binding
+					Frame(5, 5, 25, 23)					// left, top, right, bottom
+					kTrue, 
+					kTrue,									// visible, enabled
+					kADBEIconSuiteButtonType,				// associated widget
+				),
+				
+				CheckBoxWidget 
+				( 
+					kXPGUIDisplayFormesWidgetID, // The Identifier for this Widget
+					kSysCheckBoxPMRsrcId, // The Plugin ID
+					kBindAll, // Frame binding
+					Frame(30, 5, 205, 23) 
+					kTrue, // Is this visible
+					kTrue, // Is this enabled
+					kAlignLeft, // The alignment of the parent widget
+					kXPGUIDisplayFormesKey,  // The String value
+				),
+				
+				RollOverIconButtonWidget 
+				( 
+					kXPGUIRefreshAdornmentWidgetID, // widget ID
+					kXPGUIToggleIconResourceID, // resource ID
+					kXPGUIPluginID, // plugin ID
+					kBindNone, // frame binding
+					Frame(5, 30, 25, 48) // left, top, right, bottom
+					kTrue, 
+					kTrue, // visible, enabled
+					kADBEIconSuiteButtonType,  // associated widget
+				),
+				
+				CheckBoxWidget 
+				( 
+					kXPGUIDisplayStoryStatesWidgetID, // The Identifier for this Widget
+					kSysCheckBoxPMRsrcId,			  // The Plugin ID
+					kBindAll,					      // Frame binding
+					Frame(30, 30, 205, 48) 
+					kTrue,							  // Is this visible
+					kTrue,							  // Is this enabled
+					kAlignLeft,						  // The alignment of the parent widget
+					kXPGUIDisplayStoryStatesKey,	  // The String value
+				),
+				ButtonWidget
+				(
+					// "Modifier les styles" — hidden but kept around in case
+					// the feature is reactivated. AttachWidget() in the
+					// observer is harmless for an invisible widget.
+					kXPGUIChangeStylesWidgetID, // WidgetID
+					kSysButtonPMRsrcId, // RsrcID
+					kBindNone, // Binding
+					Frame(10, 55, 195, 73) // Frame (l,t,r,b)
+					kFalse,
+					kTrue, // Visible, Enabled
+					kXPGUIChangeStylesResaKey,  // Button text
+				),
+			} 
+		),
+		
+		GenericPanelWithBorderWidget					//zone contenant la liste des articles
+		(
+			0, // The Identifier for this Widget
+			kPMRsrcID_None, // The Plugin ID
+			kBindAll, // Seule la liste grandit avec la palette.
+			Frame(4,104,390,470)
+			kTrue, // Is this visible
+			kTrue,
+			"",
+			{
+				XPGUIArticleViewWidget
+				(
+					kXPGUIArticleViewWidgetID,
+					kPMRsrcID_None, // WidgetId, RsrcId
+					kBindAll,
+					Frame(4,4,380,360) // Frame
+					kTrue, 
+					kTrue, // Visible, Enabled
+					kTrue, // EraseBeforeDraw
+					kInterfacePaletteFill, // InterfaceColor
+					"", 
+					kFalse, // Display root node
+					kFalse, // Use H Scroll bar
+					kTrue, // Use V scroll bar
+					20, // fVScrollButtonIncrement
+					20, // fVThumbScrollIncrement
+					20, // fHScrollButtonIncrement
+					20, // fHThumbScrollIncrement
+					1, // Items selectable, 0 = No Selection, 1 = Single Selection, 2 = Multiple Selection
+					kFalse, // Allow children from multiple parents to be selected
+					kFalse, // Allow discontiguous selection
+					{
+					} 
+				),
+			} 
+		),
+		XPGUIDropDownListWidget										//Liste des parutions
+		(
+			kXPGUIParutionListWidgetID, // The Identifier for this Widget
+			kSysDropDownPMRsrcId, // The Plugin ID
+			kBindLeft | kBindTop, // Fixed size, anchored top-left.
+			Frame(4,74,115,91)
+			kTrue, // Is this visible
+			kTrue, 
+			{
+				{
+					//array
+				}
+			},
+		),
+		XPGUIDropDownListWidget										//Liste des sections
+		(
+			kXPGUISectionListWidgetID, // The Identifier for this Widget
+			kSysDropDownPMRsrcId, // The Plugin ID
+			kBindLeft | kBindTop, // Fixed size, anchored top-left.
+			Frame(134,74,260,91)
+			kTrue, // Is this visible
+			kTrue, 
+			{
+				{
+					//array
+				}
+			},
+		),
+		XPGUIDropDownListWidget										//liste des sous sections
+		(
+			kXPGUISsSectionListWidgetID, // The Identifier for this Widget
+			kSysDropDownPMRsrcId, // The Plugin ID
+			kBindRight | kBindTop, // Fixed size, anchored top-right.
+			Frame(279,74,390,91)
+			kTrue, // Is this visible
+			kTrue, 
+			{
+				{
+					//array
+				}
+			},
+		),
+		GenericPanelWithBorderWidget
+		(
+			0, // widget ID
+			kPMRsrcID_None, // PMRsrc ID
+			kBindLeft | kBindBottom, // Ancré bas-gauche pour rester en bas, sous la liste.
+			Frame(4, 478, 165, 590) //  left, top, right, bottom
+			kTrue, // visible
+			kTrue, // enabled
+			"", 
+			{
+				StaticTextWidget 
+				( 
+					0, // The Identifier for this Widget
+					kSysStaticTextPMRsrcId, // The Plugin ID
+					kBindLeft | kBindTop, // Frame binding
+					Frame(2, 2, 42, 18) 
+					kTrue, // Is this visible
+					kTrue, // Is this enabled
+					kAlignCenter, // The alignment of this field
+					kEllipsizeEnd, // Where to ellipsize the string if the size is larger than its frame
+					kTrue,
+					kXPGUINbCharsTextKey, // The String value
+					0,  // The Widget ID for associated control for shortcut focus
+				),
+				
+				StaticTextWidget						//nb de signes
+				( 
+					kXPGUIArticleNbSignesWidgetID, // The Identifier for this Widget
+					kSysStaticTextPMRsrcId, // The Plugin ID
+					kBindLeft | kBindTop, // Frame binding
+					Frame(42, 2, 92, 18) 
+					kTrue, // Is this visible
+					kTrue, // Is this enabled
+					kAlignLeft, // The alignment of this field
+					kEllipsizeEnd, // Where to ellipsize the string if the size is larger than its frame
+					kTrue
+					"", // The String value
+					0,  // The Widget ID for associated control for shortcut focus
+				),
+				
+				StaticMultiLineTextWidget				//preview de l'article
+				( 
+					kXPGUIArticlePreviewWidgetID, 
+					kPMRsrcID_None, 
+					kBindAll, // Frame binding
+					Frame(0, 18, 160, 100) // Frame
+					kTrue, 
+					kTrue, 
+					kAlignLeft, 
+					kEllipsizeEnd, 
+					kTrue,
+					0, // fScrollBarWidgetID
+					kPaletteWindowSystemScriptFontId, 
+					2, // fNumPixelsBetweenLines
+					5, 
+					2, // Insets
+					"",
+				),
+				
+				SeparatorWidget 
+				( 
+					0, // The Identifier for this Widget
+					kPMRsrcID_None, // The Resource I
+					kBindNone, // Frame binding
+					Frame(1, 18, 161, 22) 
+					kTrue, // Is this visible
+					kTrue,  // Is this enabled
+				),
+			} 
+		),
+		SeparatorWidget									//Separateur entre les boutons et les menus deroulants
+		( 
+			0, // The Identifier for this Widget
+			kPMRsrcID_None, // The Plugin ID
+			kBindNone, // Frame binding
+			Frame(4,64,390,70) 
+			kTrue, // Is this visible
+			kTrue,  // Is this enabled
+		),
+		SeparatorWidget									//separateur entre les boutons et le titre/paru/login
+		( 
+			0, // The Identifier for this Widget
+			kPMRsrcID_None, // The Plugin ID
+			kBindNone, // Frame binding
+			Frame(250,4,255,60) 
+			kTrue, // Is this visible
+			kTrue,  // Is this enabled
+		),
+
+	}
+	kXPGUIInternalPopupMenuNameKey,  
+}
+
+resource LocaleIndex (kXPGUIArticleNodeWidgetRsrcID)
+{
+	kViewRsrcType,
+	{
+		kWildFS, k_Wild, 	kXPGUIArticleNodeWidgetRsrcID + index_enUS 
+	}
+};
+
+
+resource XPGUIArticleNodeWidget (kXPGUIArticleNodeWidgetRsrcID + index_enUS) 
+{ 
+	__FILE__, 
+	__LINE__, 
+	kXPGUIArticleNodeWidgetId, 
+	kPMRsrcID_None, // WidgetId, RsrcId
+	kBindLeft | kBindRight, // Frame binding
+	Frame(0,0,205,20) // Frame (left, top, right, bottom)
+	kTrue, 
+	kTrue, // Visible, Enabled
+	"", // Panel name
+	{
+		// Drop down arrow
+		TreeExpanderWidget 
+		( 
+			kTreeNodeExpanderWidgetID, // WidgetId
+			kTreeBranchCollapsedRsrcID, // RsrcId for collapsed node icon
+			kApplicationRsrcPluginID, // RsrcPlugin for collapsed node icon
+			kBindLeft, // Frame binding
+			Frame(2,4,18,18) // Frame
+			kTrue, 
+			kTrue, // Visible, Enabled
+			kTreeBranchExpandedRsrcID, // RsrcId for expanded node icon
+			kApplicationRsrcPluginID, // RsrcPlugin for expanded node icon
+			kTrue, // Cmd-Click expands/collapses children
+			kFalse, // Scroll to show children when expanded
+			kIconNoCentering, 
+			kIconRaisedLook, // Sets the icon look -- (kIconRaisedLook | kIconFlushLook)
+			kFalse,  // Bool integer sets whether the icon draws a well.
+		),
+		StaticTextWidget
+		(
+			kXPGUITextSubjectWidgetID, // widget ID
+			kSysStaticTextPMRsrcId, // PMRsrc ID
+			kBindNone, // frame binding
+			Frame(31,2,305,16) // left, top, right, bottom
+			kTrue,
+			kTrue, // visible,  enabled
+			kAlignLeft, // Alignment
+			kEllipsizeEnd, // Ellipsize style
+			kTrue,
+			"", // control label
+			0,  // associated widget ID
+		),
+		UIColorSwatchWidget /* portage CS7	UIColorPickerWidget */
+		(
+			kXPGUITextStatusWidgetID, // The Identifier for this Widget
+			kPMRsrcID_None, // The Resource ID
+			kBindNone, // Frame binding
+			Frame(1,2,16,16)
+			kTrue, // Is this visible
+			kFalse, // Is this enabled
+			// portageCS7 0,
+		),
+
+		IconSuiteWidget 
+		( 
+			kXPGUITextPictureIconWidgetID, // WidgetId,
+			kPMRsrcID_None, 
+			kBindRight, // Frame binding
+			Frame(184,0,202,18) // Frame
+			kTrue, 
+			kTrue, // Visible, Enabled
+			kIconCentering, // (kIconNoCentering, kIconHorizontalCentering, kIconVerticalCentering or kIconCentering)
+			// Centering value from IconStyleDefs.h
+			kIconFlushLook, // Sets the icon look -- (kIconRaisedLook | kIconFlushLook)
+			kFalse, //  bool, draw Well..
+			0,  // WidgetId for associated control for shortcut focus
+		),
+		
+		InfoStaticTextIntWidget 
+		( 
+			kXPGUITextPictureCountWidgetID, // The Identifier for this Widget
+			kPMRsrcID_None, // The Plugin ID
+			kBindRight, // Frame binding
+			Frame(164,0,182,18) 
+			kTrue, // Is this visible
+			kTrue, // Is this enabled
+			kAlignRight, // The alignment of this field
+			kEllipsizeEnd, // Where to ellipsize the string if the size is larger than its frame
+			kTrue,
+			"", // The String value
+			0, // The Widget ID for associated control for shortcut focus
+			kDialogWindowSystemScriptFontId, 
+			kDialogWindowSystemScriptHiliteFontId,
+		),	
+		
+	}
+}
+
+/*
+// ------------XRail Images Panel resources.--------------
+*/
+resource LocaleIndex (kXPGUIXRailImagesPanelResourceID)
+{
+	kViewRsrcType,
+	{
+		kWildFS, k_Wild, 	kXPGUIXRailImagesPanelResourceID + index_enUS
+	}
+};
+
+/*  Type definition.
+*/
+type XPGUIXRailImagesPanelWidget(kViewRsrcType) : GenericPalettePanelWidget (ClassID = kXPGUIXRailImagesPanelWidgetBoss)
+{
+	SizePanelDetailController;
+}
+
+/*
+// Panel definition.
+// This view is not localized: therefore, it can reside here.
+// However, if you wish to localize it, it is recommended to
+// locate it in one of the localized framework resource files
+// (i.e. BscSlDlg_enUS.fr etc.) and update your Panel
+// LocaleIndex accordingly.
+*/
+resource XPGUIXRailImagesPanelWidget (kXPGUIXRailImagesPanelResourceID + index_enUS)
+{
+	__FILE__,
+	__LINE__,
+	kXPGUIXRailImagesPanelWidgetID, // WidgetId
+	kPMRsrcID_None, // RsrcId
+	kBindNone, // Frame binding
+	// Layout : zone preview/list (haut), case à cocher "Voir toutes les
+	// photos" + refresh, 3 lignes labels+inputs (centre), numéro courant
+	// en bas. Hauteur naturelle 600 (ex 300) — borne max de redim. Tous
+	// les widgets ancrés en bas et le bord bas du tree + preview ont été
+	// décalés de +300 pour préserver le layout à l'ouverture.
+	Frame(0,0,529,600) // Frame
+	kTrue,
+	kTrue, // Enabled
+	kTrue, // Erase background
+	kInterfacePaletteFill, // Erase to color
+	kFalse, // Draw dropshadow
+	kXPGUIImagesPanelTitleKey, // Panel name
+	{
+		// "Not connected" placeholder widgets, toggled by the panel observer.
+		StaticTextWidget
+		(
+			kXPGUILoginPromptTextWidgetID, // WidgetId
+			kSysStaticTextPMRsrcId, // RsrcId
+			kBindNone,
+			Frame(20, 60, 500, 120) // left, top, right, bottom
+			kFalse, // Visible (shown by observer when not logged in)
+			kTrue,
+			kAlignCenter,
+			kEllipsizeEnd,
+			kTrue,
+			kXPGUILoginPromptTextKey,
+			0,
+		),
+		ButtonWidget
+		(
+			kXPGUILoginPromptButtonWidgetID, // WidgetId
+			kSysButtonPMRsrcId, // RsrcId
+			kBindNone,
+			Frame(200, 135, 320, 160) // left, top, right, bottom
+			kFalse, // Visible (shown by observer when not logged in)
+			kTrue,
+			kXPGUILoginPromptButtonKey,
+		),
+		StaticTextWidget
+		(
+			// Shown when the user is logged in but no Gaia/XRail page is
+			// active in the front document.
+			kXPGUINoGaiaPageTextWidgetID,
+			kSysStaticTextPMRsrcId,
+			kBindNone,
+			Frame(20, 90, 500, 150)
+			kFalse,
+			kTrue,
+			kAlignCenter,
+			kEllipsizeEnd,
+			kTrue,
+			kXPGUINoGaiaPageTextKey,
+			0,
+		),
+
+		XPGUIXRailDnDDisplayImagePanelWidget
+		(
+			kXPGUIDisplayImagePanelWidgetID, // WidgetId
+			kPMRsrcID_None, // RsrcId
+			// Image preview swallows the extra horizontal space when the
+			// palette is resized — the list on the left keeps its fixed
+			// width, the preview grows to the right.
+			kBindAll,
+			Frame(400,10,525,450) // Frame
+			kTrue, // Visible
+			kTrue, // Enabled
+			"",
+			{
+			}
+		),
+		// "Index / Type / Apply" row (kXPGUIImageIndexWidgetID,
+		// kXPGUIImageChangeTypeWidgetID, kXPGUIImageChangeIndexWidgetID,
+		// kXPGUIImageChangeIndexBtnWidgetID) was removed at user request —
+		// the surface area below Légende/Crédit is now blank. Widget IDs
+		// stay declared in case the feature is ever revived.
+		SeparatorWidget
+		(
+			0, // WidgetId
+			kPMRsrcID_None, // RsrcId
+			kBindLeft | kBindRight | kBindBottom,
+			Frame(-1,563,536,564) // Frame (just above the numéro line)
+			kFalse,
+			kFalse,  // Visible, Enabled
+		),
+		InfoStaticTextWidget
+		(
+			kXPGUICurrentNumeroWidgetID,
+			kPMRsrcID_None, // WidgetId, RsrcId
+			kBindRight | kBindBottom, // Frame binding
+			Frame(304,570,520,590) // Frame
+			kTrue,
+			kTrue,
+			kAlignRight,
+			kEllipsizeEnd, // Visible, Enabled
+			kTrue,
+			"", // Text
+			0,
+			kDialogWindowSystemScriptFontId,
+			kDialogWindowSystemScriptHiliteFontId,
+		),
+		// "Voir toutes les photos" — when ticked, the panel observer
+		// stops filtering on the selected frame's article and walks every
+		// OBJRART referenced by an assignment in the front document.
+		// Refresh icon next door forces a re-scan without changing the
+		// state (e.g. after Gaia pushed updates server-side).
+		CheckBoxWidget
+		(
+			kXPGUIShowAllImagesCheckboxWidgetID,
+			kSysCheckBoxPMRsrcId,
+			kBindBottom | kBindLeft,
+			Frame(4, 455, 250, 475)
+			kTrue,
+			kTrue,
+			kAlignLeft,
+			kXPGUIShowAllImagesKey,
+		),
+		RollOverIconButtonWidget
+		(
+			kXPGUIRefreshImagesBtnWidgetID,
+			kIDLinksUIUpdateLinkButtonIconRsrcID,
+			kLinksUIPluginID,
+			kBindBottom | kBindLeft,
+			Frame(255, 455, 275, 475)
+			kTrue,
+			kTrue,
+			kADBEIconSuiteButtonType,
+		),
+		// Crédit / Légende / Commentaire : labels élargis (4..95) et inputs
+		// élargis & rehaussés (100..290, 20px de haut). Tous bottom-anchored
+		// pour rester collés en bas si l'utilisateur redimensionne.
+		StaticTextWidget
+		(
+			kXPGUICreditLabelWidgetID, // The Identifier for this Widget
+			kSysStaticTextPMRsrcId, // The Plugin ID
+			kBindBottom | kBindLeft, // Frame binding
+			Frame(4,480,95,500)
+			kTrue, // Is this visible
+			kTrue, // Is this enabled
+			kAlignLeft, // The alignment of this field
+			kEllipsizeEnd, // Where to ellipsize the string if the size is larger than its frame
+			kTrue,
+			kXPGUICreditKey, // The String value
+			0,  // The Widget ID for associated control for shortcut focus
+		),
+		StaticTextWidget
+		(
+			kXPGUILegendeLabelWidgetID, // The Identifier for this Widget
+			kSysStaticTextPMRsrcId, // The Plugin ID
+			kBindBottom | kBindLeft, // Frame binding
+			Frame(4,505,95,525)
+			kTrue, // Is this visible
+			kTrue, // Is this enabled
+			kAlignLeft, // The alignment of this field
+			kEllipsizeEnd, // Where to ellipsize the string if the size is larger than its frame
+			kTrue,
+			kXPGUILegendKey, // The String value
+			0,  // The Widget ID for associated control for shortcut focus
+		),
+		// Crédit edit box — right edge pulled in 42px to leave room for
+		// the two action icons (copy + send) anchored to the right.
+		TextEditBoxWidget
+		(
+			kXPGUICreditTextWidgetID, // The Identifier for this Widget
+			kSysEditBoxPMRsrcId, // The Plugin ID
+			// kBindRight added so the input stretches with the palette.
+			kBindBottom | kBindLeft | kBindRight, // Frame binding
+			Frame(100,480,478,500)
+			kTrue, // Is this visible
+			kTrue, // Is this enabled
+			0, // The WidgetID for the nudge button
+			0, // A small nudge amount
+			0, // A large nudge amount
+			0, // The maximum number of characters
+			kTrue, // integer readOnly value (display only — sourced from OBJRART)
+			kFalse, // Notify on key stroke
+			kFalse, // Enable range checking
+			kFalse, // Allow blank entry
+			0, // The upper limit
+			0, // The lower limit
+			"",  // The String value
+		),
+		// Copy crédit → puts the field's text on the OS clipboard.
+		// Native InDesign icon (same source as the XDA palette + / trash).
+		RollOverIconButtonWidget
+		(
+			kXPGUICopyCreditBtnWidgetID,
+			kContextCopyIconResID,
+			kApplicationRsrcPluginID,
+			kBindRight | kBindBottom,
+			Frame(481, 480, 501, 500)
+			kTrue,
+			kTrue,
+			kADBEIconSuiteButtonType,
+		),
+		// Send crédit → writes the field into the selected image's
+		// kCredit frame on the page. The "paste" glyph reads naturally
+		// here: clipboard-paste and "apply text into target frame" are
+		// the same gesture from the user's POV.
+		RollOverIconButtonWidget
+		(
+			kXPGUISendCreditBtnWidgetID,
+			kContextPasteIconResID,
+			kApplicationRsrcPluginID,
+			kBindRight | kBindBottom,
+			Frame(503, 480, 523, 500)
+			kTrue,
+			kTrue,
+			kADBEIconSuiteButtonType,
+		),
+		// Légende edit box — same right-edge trim as Crédit.
+		TextEditBoxWidget
+		(
+			kXPGUILegendeTextWidgetID, // The Identifier for this Widget
+			kSysEditBoxPMRsrcId, // The Plugin ID
+			kBindBottom | kBindLeft | kBindRight, // Frame binding
+			Frame(100,505,478,525)
+			kTrue, // Is this visible
+			kTrue, // Is this enabled
+			0, // The WidgetID for the nudge button
+			0, // A small nudge amount
+			0, // A large nudge amount
+			0, // The maximum number of characters
+			kTrue, // integer readOnly value (display only — sourced from OBJRART)
+			kFalse, // Notify on key stroke
+			kFalse, // Enable range checking
+			kFalse, // Allow blank entry
+			0, // The upper limit
+			0, // The lower limit
+			"",  // The String value
+		),
+		// Copy légende → puts the field's text on the OS clipboard.
+		RollOverIconButtonWidget
+		(
+			kXPGUICopyLegendBtnWidgetID,
+			kContextCopyIconResID,
+			kApplicationRsrcPluginID,
+			kBindRight | kBindBottom,
+			Frame(481, 505, 501, 525)
+			kTrue,
+			kTrue,
+			kADBEIconSuiteButtonType,
+		),
+		// Send légende → writes the field into the selected image's
+		// kLegend frame on the page.
+		RollOverIconButtonWidget
+		(
+			kXPGUISendLegendBtnWidgetID,
+			kContextPasteIconResID,
+			kApplicationRsrcPluginID,
+			kBindRight | kBindBottom,
+			Frame(503, 505, 523, 525)
+			kTrue,
+			kTrue,
+			kADBEIconSuiteButtonType,
+		),
+		// Commentaire — read-only display sourced from <Commentaire> in
+		// the article's OBJRART.xml.
+		StaticTextWidget
+		(
+			kXPGUICommentLabelWidgetID, // The Identifier for this Widget
+			kSysStaticTextPMRsrcId, // The Plugin ID
+			kBindBottom | kBindLeft, // Frame binding
+			Frame(4,530,95,550)
+			kTrue, // Is this visible
+			kTrue, // Is this enabled
+			kAlignLeft, // The alignment of this field
+			kEllipsizeEnd, // Where to ellipsize the string if the size is larger than its frame
+			kTrue,
+			kXPGUICommentLabelKey, // The String value
+			0,  // The Widget ID for associated control for shortcut focus
+		),
+		TextEditBoxWidget
+		(
+			kXPGUICommentTextWidgetID, // The Identifier for this Widget
+			kSysEditBoxPMRsrcId, // The Plugin ID
+			kBindBottom | kBindLeft | kBindRight, // Frame binding
+			Frame(100,530,520,550)
+			kTrue, // Is this visible
+			kTrue, // Is this enabled
+			0, // The WidgetID for the nudge button
+			0, // A small nudge amount
+			0, // A large nudge amount
+			0, // The maximum number of characters
+			kTrue, // integer readOnly value (display only — sourced from OBJRART)
+			kFalse, // Notify on key stroke
+			kFalse, // Enable range checking
+			kFalse, // Allow blank entry
+			0, // The upper limit
+			0, // The lower limit
+			"",  // The String value
+		),
+		GenericPanelWithBorderWidget
+		(
+			0, // The Identifier for this Widget
+			kPMRsrcID_None, // The Plugin ID
+			// List container has a fixed width — only top/bottom bindings
+			// follow the palette resize. Combined with kBindAll on the
+			// image preview to its right, growing the palette horizontally
+			// gives all the extra space to the preview.
+			kBindLeft | kBindTop | kBindBottom, // Frame binding
+			Frame(4,9,390,450)
+			kTrue, // Is this visible
+			kTrue, // Is this enabled
+			"",
+			{
+				XPGUIImagesViewWidget
+				(
+					kXPGUIImagesViewWidgetID,
+					kPMRsrcID_None, // WidgetId, RsrcId
+					kBindAll,
+					Frame(4,4,380,440) // Frame
+					kTrue,
+					kTrue, // Visible, Enabled
+					kTrue, // EraseBeforeDraw
+					kInterfacePaletteFill, // InterfaceColor
+					"",
+					kFalse, // Display root node
+					kFalse, // Use H Scroll bar
+					kTrue, // Use V scroll bar
+					20, // fVScrollButtonIncrement
+					20, // fVThumbScrollIncrement
+					20, // fHScrollButtonIncrement
+					20, // fHThumbScrollIncrement
+					1, // Items selectable, 0 = No Selection, 1 = Single Selection, 2 = Multiple Selection
+					kFalse, // Allow children from multiple parents to be selected
+					kFalse, // Allow discontiguous selection
+					{
+					}
+				),
+			}
+		),
+	}
+};
+
+
+
+
+
+/*
+// ------------Link Article Dialog resources.--------------
+*/
+
+
+/*  Dialog LocaleIndex.
+*/
+resource LocaleIndex (kXPGUILinkArtDialogResourceID)
+{
+   kViewRsrcType,
+	{
+		kWildFS,	k_Wild, kXPGUILinkArtDialogResourceID + index_enUS
+	}
+};
+
+/*  Type definition.
+*/
+type XPGUILinkArtDialogWidget(kViewRsrcType) : DialogBoss(ClassID = kXPGUILinkArtDialogBoss)
+{
+};
+
+
+
+
+
+resource XPGUILinkArtDialogWidget (kXPGUILinkArtDialogResourceID + index_enUS) 
+{ 
+	__FILE__, 
+	__LINE__, 
+	kXPGUILinkArtDialogWidgetID, // WidgetID
+	kPMRsrcID_None, // RsrcID
+	kBindNone, // Binding
+	Frame(5,5,261,240) // Frame (l,t,r,b)
+	kTrue, 
+	kTrue, // Visible, Enabled
+	kXPGUIRelinkArtDialogTitleKey, // Dialog name
+	{
+		StaticTextWidget 
+		( 
+			0, // The Identifier for this Widget
+			kPMRsrcID_None, // The Plugin ID
+			kBindRight | kBindTop, // Frame binding
+			Frame(9,9,89,29) // Frame left, top, right, bottom
+			kTrue, // Is this visible
+			kTrue, // Is this enabled
+			kAlignLeft, // The alignment of this field
+			kDontEllipsize, // Where to ellipsize the string if the size is larger than its frame
+			kTrue,
+			kXPGUIClasseurTextKey, // The String value
+			0,  // The Widget ID for associated control for shortcut focus
+		),
+		DropDownListWidget 
+		( 
+			kXPGUIClasseurListWidgetID, // The Identifier for this Widget
+			kSysDropDownPMRsrcId, // The Plugin ID
+			kBindLeft | kBindRight, // Frame binding
+			Frame(104,9,244,29) // Frame (l,t,r,b)
+			kTrue, // Is this visible
+			kTrue, 
+			{
+				{
+					//array
+				}
+			},
+		),
+		StaticTextWidget 
+		( 
+			0, // The Identifier for this Widget
+			kPMRsrcID_None, // The Plugin ID
+			kBindRight | kBindTop, // Frame binding
+			Frame(9,39,89,59) // Frame left, top, right, bottom
+			kTrue, // Is this visible
+			kTrue, // Is this enabled
+			kAlignLeft, // The alignment of this field
+			kDontEllipsize, // Where to ellipsize the string if the size is larger than its frame
+			kTrue,
+			kXPGUICartonTextKey, // The String value
+			0,  // The Widget ID for associated control for shortcut focus
+		),
+		DropDownListWidget 
+		( 
+			kXPGUICartonListWidgetID, // The Identifier for this Widget
+			kSysDropDownPMRsrcId, // The Plugin ID
+			kBindLeft | kBindRight, // Frame binding
+			Frame(104,39,245,59) // Frame (l,t,r,b)
+			kTrue, // Is this visible
+			kTrue, 
+			{
+				{
+					//array
+				}
+			},
+		),
+		
+		XPGUIDisplayImagePanelWidget 
+		( 
+			kXPGUIDisplayImagePanelWidgetID, // The Identifier for this Widget
+			kPMRsrcID_None, // The Plugin ID
+			kBindTop | kBindBottom | kBindRight, // Frame binding
+			Frame(9,69,235,205) // Frame left, top, right, bottom
+			kTrue, // Is this visible
+			kTrue, // Is this enabled
+			"", 
+			{
+			} 
+		),				
+		
+		DefaultButtonWidget 
+		( 
+			kOKButtonWidgetID, // WidgetID
+			kSysButtonPMRsrcId, // RsrcID
+			kBindNone, // Binding
+			Frame(134,210,214,230) // Frame (l,t,r,b)
+			kTrue, 
+			kTrue, // Visible, Enabled
+			kSDKDefOKButtonApplicationKey,  // Button text
+		),
+		CancelButtonWidget 
+		( 
+			kCancelButton_WidgetID, // WidgetID
+			kSysButtonPMRsrcId, // RsrcID
+			kBindNone, // Binding
+			Frame(39,210,119,230) // Frame (l,t,r,b)
+			kTrue, 
+			kTrue, // Visible, Enabled
+			kSDKDefCancelButtonApplicationKey, // Button name
+			kTrue,  // Change to Reset on option-click.
+		),
+	} 
+};
+
+/*
+// ------------Assemblages Panel resources.--------------
+*/
+
+resource LocaleIndex (kXPGUIAssemblagesPanelResourceID)
+{
+	kViewRsrcType,
+	{
+		kWildFS, k_Wild, 	kXPGUIAssemblagesPanelResourceID + index_enUS
+	}
+};
+
+/*  Type definition.
+*/
+type XPGUIAssemblagesPanelWidget(kViewRsrcType) : GenericPalettePanelWidget (ClassID = kXPGUIAssemblagesPanelWidgetBoss)
+{
+	CPanelMenuData;
+	SizePanelDetailController;
+}
+
+type XPGUIAssemblagesViewWidget(kViewRsrcType) : TreeViewWidget(ClassID = kXPGUIAssemblagesViewWidgetBoss) 
+{};
+
+// Assemblages palette — geometric mirror of XPGUIFormesPanelWidget. Same
+// frame, same widget positions, same bindings; only the widget IDs change
+// (assemblage tree + assemblage buttons + assemblage classeur button).
+resource XPGUIAssemblagesPanelWidget (kXPGUIAssemblagesPanelResourceID + index_enUS)
+{
+	__FILE__,
+	__LINE__,
+	kXPGUIAssemblagesPanelWidgetID, // WidgetId
+	kPMRsrcID_None, // RsrcId
+	kBindNone, // Frame binding
+	// Hauteur naturelle 600 (ex 280) — alignée sur la palette XDA. Tous
+	// les widgets ancrés en bas et les bords bas du tree + preview ont
+	// été décalés de +320 pour préserver le layout à l'ouverture.
+	Frame(0,0,551,600) // Frame
+	kTrue, // Visible
+	kTrue, // Enabled
+	kTrue, // Erase background
+	kInterfacePaletteFill, // Erase to color
+	kFalse, // Draw dropshadow
+	kXPGUIAssemblagesPanelTitleKey, // Panel name
+	{
+		StaticTextWidget
+		(
+			0,
+			kPMRsrcID_None, // WidgetId, RsrcId
+			kBindLeft | kBindTop, // Frame binding
+			Frame(10,4,70,19) // Frame
+			kTrue,
+			kTrue,
+			kAlignLeft,
+			kEllipsizeEnd, // Visible, Enabled
+			kTrue,
+			kXPGUIClasseurTextKey, // Text
+			0,
+		),
+		TextComboBoxWidget
+		(
+			kXPGUIComboClasseurListWidgetID,
+			kSysDropDownPMRsrcId, // WidgetId, RsrcId
+			kBindLeft | kBindTop,
+			Frame(75,4,280,21) // Frame
+			kTrue,
+			kTrue, // Visible, Enabled
+			0, // widget id of nudge button
+			0,
+			0, // small/large nudge amount
+			30, // max num chars( 0 = no limit)
+			kTrue, // is read only (prevents free-typing, user must pick from list)
+			kFalse, // should notify each key stroke
+			kFalse, // range checking enabled
+			kFalse, // blank entry allowed
+			0,
+			0, // upper/lower bounds
+			"",
+			{
+				{										// initial text
+				}
+			},
+		),
+		RollOverIconButtonWidget
+		( // Create-classeur (assemblage) button — opens the New Classeur dialog
+		  // with the assemblage flag set. Mirrors the XDA palette button.
+			kXPGUINewClasseurAssemblageButtonWidgetID, // widget ID
+			kNewObjectButtonIcon,
+			kApplicationRsrcPluginID, // icon, plugin ID
+			kBindLeft | kBindTop, // frame binding
+			Frame(285,4,305,21) // left, top, right, bottom
+			kTrue, // visible
+			kTrue, // enabled
+			kADBEIconSuiteButtonType,
+		),
+		// Assemblage thumbnail panel — reuses the Formes-side widget ID on
+		// purpose so the same vignette code path serves both palettes.
+		XPGUIDisplayImagePanelWidget
+		(
+			kXPGUIDisplayImageFormePanelWidgetID, // WidgetId
+			kPMRsrcID_None, // RsrcId
+			kBindAll, // Grows with the palette so the vignette gets more pixels
+			Frame(344,24,545,565) // Frame(left, top, right, bottom)
+			kTrue, // Visible
+			kTrue, // Enabled
+			"",
+			{
+			}
+		),
+		PanelWithHiliteBorderWidget
+		(
+			0, // widget ID
+			kPMRsrcID_None, // PMRsrc ID
+			kBindLeft | kBindTop | kBindBottom, // Tree grows vertically, keeps fixed width
+			Frame(0,25,340,565) //  left, top, right, bottom
+			kTrue, // visible
+			kTrue, // enabled
+			"",
+			{
+				XPGUIAssemblagesViewWidget
+				(
+					kXPGUIAssemblagesViewWidgetID,
+					kPMRsrcID_None, // WidgetId, RsrcId
+					kBindAll,
+					Frame(0,1,339,539) // Frame
+					kTrue,
+					kTrue, // Visible, Enabled
+					kTrue, // EraseBeforeDraw
+					kInterfacePaletteFill, // InterfaceColor
+					"",
+					kFalse, // Display root node
+					kFalse, // Use H Scroll bar
+					kTrue, // Use V scroll bar
+					20, // fVScrollButtonIncrement
+					20, // fVThumbScrollIncrement
+					20, // fHScrollButtonIncrement
+					20, // fHThumbScrollIncrement
+					1, // Items selectable, 0 = No Selection, 1 = Single Selection, 2 = Multiple Selection
+					kFalse, // Allow children from multiple parents to be selected
+					kFalse, // Allow discontiguous selection
+					{
+					}
+				),
+			}
+		),
+		// Assemblage action row (grouped left-to-right: Placer / + / -),
+		// anchored bottom-left like the Formes palette.
+		ButtonWidget
+		(
+			kXPGUIPlaceAutoAssemblageWidgetID, // WidgetId
+			kSysButtonPMRsrcId,			// RsrcId
+			kBindLeft | kBindBottom,	// Frame binding
+			Frame(10, 569, 90, 583)
+			kTrue,						// Visible
+			kTrue,						// Enabled
+			kXPGUIPlacementAutoKey,		// Button name
+		),
+
+		RollOverIconButtonWidget
+		( // ADBEIconSuiteButtonView properties
+			kXPGUINewAssemblageWidgetID, // widget ID
+			kNewObjectButtonIcon,
+			kApplicationRsrcPluginID, // icon, plugin ID
+			kBindLeft | kBindBottom, // frame binding
+			Frame(100,569,130,583) //  left, top, right, bottom
+			kTrue, // visible
+			kTrue, // enabled
+			kADBEIconSuiteButtonType,
+		),
+		RollOverIconButtonWidget
+		( // ADBEIconSuiteButtonView properties
+			kXPGUIDeleteAssemblageWidgetID, // widget ID
+			kDeleteObjectButtonIcon,
+			kApplicationRsrcPluginID, // icon, plugin ID
+			kBindLeft | kBindBottom, // frame binding
+			Frame(135,569,165,583) //  left, top, right, bottom
+			kTrue, // visible
+			kTrue, // enabled
+			kADBEIconSuiteButtonType,
+		),
+	}
+	kXPGUIAssemblagePopupMenuNameKey,
+};
+
+
+/*
+// ------------New Assemblage dialog resources.--------------
+*/
+type XPGUINewAssemblageDialogWidget(kViewRsrcType) : DialogBoss(ClassID = kXPGUINewAssemblageDialogBoss) 
+{
+};
+
+resource LocaleIndex (kXPGUINewAssemblageDialogResourceID)
+{
+   kViewRsrcType,
+	{
+		kWildFS,	k_Wild, kXPGUINewAssemblageDialogResourceID + index_enUS
+	}
+};
+
+
+resource XPGUINewAssemblageDialogWidget (kXPGUINewAssemblageDialogResourceID + index_enUS) 
+{ 
+	__FILE__, 
+	__LINE__, 
+	kXPGUINewAssemblageDialogWidgetID, // WidgetID
+	kPMRsrcID_None, // RsrcID
+	kBindNone, // Binding
+	Frame(0,0,380,105) // Frame (l,t,r,b)
+	kTrue, 
+	kTrue, // Visible, Enabled
+	kXPGUINewAssemblageDialogTitleKey, // Dialog name
+	{
+		StaticTextWidget 
+		( 
+			0, 
+			kSysStaticTextPMRsrcId, // WidgetId, RsrcId
+			kBindNone, 
+			Frame(10,10,120,27) // Frame left, top, right, bottom
+			kTrue, 
+			kTrue, 
+			kAlignLeft, // Visible, Enabled, Alignment
+			kEllipsizeEnd, 
+			kTrue,
+			kXPGUIAssemblageNameKey, 
+			0,  // WidgetID this shortcut is connected to, 0 if none.
+		),
+		TextEditBoxWidget 
+		( 
+			kXPGUIAssemblageNameWidgetID, 
+			kSysEditBoxPMRsrcId, // WidgetId, RsrcId
+			kBindNone, 
+			Frame(120, 10, 370, 30) // Frame
+			kTrue, 
+			kTrue, // Visible, Enabled
+			0, // widget id of nudge button
+			0, 
+			0, // small/large nudge amount
+			0, // max num chars( 0 = no limit)
+			kFalse, // is read only
+			kFalse, // should notify each key stroke
+			kFalse, // range checking enabled
+			kFalse, // blank entry allowed
+			0, 
+			0, // upper/lower bounds
+			"",  // initial text
+		),
+		StaticTextWidget 
+		( 
+			0, 
+			kSysStaticTextPMRsrcId, // WidgetId, RsrcId
+			kBindNone, 
+			Frame(10, 40, 110, 57) // Frame left, top, right, bottom
+			kTrue, 
+			kTrue, 
+			kAlignLeft, // Visible, Enabled, Alignment
+			kEllipsizeEnd, 
+			kTrue,
+			kXPGUIClasseurTextKey, 
+			0,  // WidgetID this shortcut is connected to, 0 if none.
+		),
+		XPGUIDropDownListWidget 
+		( 
+			kXPGUIRubriqueListWidgetID, 
+			kSysDropDownPMRsrcId, // WidgetId, RsrcId
+			kBindLeft | kBindRight, // Frame binding
+			Frame(120, 40, 370, 60) // Frame (l,t,r,b)
+			kTrue, 
+			kTrue, // Visible, Enabled
+			{
+				{				// List Items
+				}
+			},
+		),
+		DefaultButtonWidget 
+		( 
+			kOKButtonWidgetID, // WidgetID
+			kSysButtonPMRsrcId, // RsrcID
+			kBindNone, // Binding
+			Frame(105,75,185,95) // Frame (l,t,r,b)
+			kTrue, 
+			kTrue, // Visible, Enabled
+			kSDKDefOKButtonApplicationKey,  // Button text
+		),
+		CancelButtonWidget
+		(
+			kCancelButton_WidgetID, // WidgetID
+			kSysButtonPMRsrcId, // RsrcID
+			kBindNone, // Binding
+			Frame(195,75,275,95) // Frame (l,t,r,b)
+			kTrue,
+			kTrue, // Visible, Enabled
+			kSDKDefCancelButtonApplicationKey, // Button name
+			kFalse,  // Change to Reset on option-click.
+		),
+	}
+};
+
+
+/*
+// ------------New Classeur dialog resources.--------------
+*/
+type XPGUINewClasseurDialogWidget(kViewRsrcType) : DialogBoss(ClassID = kXPGUINewClasseurDialogBoss)
+{
+};
+
+resource LocaleIndex (kXPGUINewClasseurDialogResourceID)
+{
+	kViewRsrcType,
+	{
+		kWildFS, k_Wild, kXPGUINewClasseurDialogResourceID + index_enUS
+	}
+};
+
+resource XPGUINewClasseurDialogWidget (kXPGUINewClasseurDialogResourceID + index_enUS)
+{
+	__FILE__,
+	__LINE__,
+	kXPGUINewClasseurDialogWidgetID, // WidgetID
+	kPMRsrcID_None, // RsrcID
+	kBindNone, // Binding
+	Frame(0,0,360,90) // Frame (l,t,r,b)
+	kTrue,
+	kTrue, // Visible, Enabled
+	kXPGUINewClasseurDialogTitleKey, // Dialog title
+	{
+		StaticTextWidget
+		(
+			0,
+			kSysStaticTextPMRsrcId, // WidgetId, RsrcId
+			kBindNone,
+			Frame(10,13,130,30) // Frame left, top, right, bottom
+			kTrue,
+			kTrue,
+			kAlignLeft, // Visible, Enabled, Alignment
+			kEllipsizeEnd,
+			kTrue,
+			kXPGUINewClasseurPromptKey,
+			0,
+		),
+		TextEditBoxWidget
+		(
+			kXPGUINewClasseurNameWidgetID,
+			kSysEditBoxPMRsrcId, // WidgetId, RsrcId
+			kBindNone,
+			Frame(140, 10, 350, 30) // Frame
+			kTrue,
+			kTrue, // Visible, Enabled
+			0, // widget id of nudge button
+			0,
+			0, // small/large nudge amount
+			0, // max num chars ( 0 = no limit )
+			kFalse, // is read only
+			kFalse, // should notify each key stroke
+			kFalse, // range checking enabled
+			kFalse, // blank entry allowed
+			0,
+			0, // upper/lower bounds
+			"",  // initial text
+		),
+		DefaultButtonWidget
+		(
+			kOKButtonWidgetID, // WidgetID
+			kSysButtonPMRsrcId, // RsrcID
+			kBindNone, // Binding
+			Frame(90,55,170,75) // Frame (l,t,r,b)
+			kTrue,
+			kTrue, // Visible, Enabled
+			kSDKDefOKButtonApplicationKey,
+		),
+		CancelButtonWidget
+		(
+			kCancelButton_WidgetID, // WidgetID
+			kSysButtonPMRsrcId, // RsrcID
+			kBindNone, // Binding
+			Frame(180,55,260,75) // Frame (l,t,r,b)
+			kTrue,
+			kTrue, // Visible, Enabled
+			kSDKDefCancelButtonApplicationKey,
+			kFalse,
+		),
+	}
+};
+
+
+/*
+// ------------Choose Photo Carton dialog resources.--------------
+*/
+type XPGUIChoosePhotoCartonDialogWidget(kViewRsrcType) : DialogBoss(ClassID = kXPGUIChoosePhotoCartonDialogBoss)
+{
+};
+
+resource LocaleIndex (kXPGUIChoosePhotoCartonDialogResourceID)
+{
+	kViewRsrcType,
+	{
+		kWildFS, k_Wild, kXPGUIChoosePhotoCartonDialogResourceID + index_enUS
+	}
+};
+
+resource XPGUIChoosePhotoCartonDialogWidget (kXPGUIChoosePhotoCartonDialogResourceID + index_enUS)
+{
+	__FILE__,
+	__LINE__,
+	kXPGUIChoosePhotoCartonDialogWidgetID, // WidgetID
+	kPMRsrcID_None, // RsrcID
+	kBindNone, // Binding
+	Frame(0,0,400,130) // Frame (l,t,r,b)
+	kTrue,
+	kTrue, // Visible, Enabled
+	kXPGUIChoosePhotoCartonDialogTitleKey, // Dialog title
+	{
+		StaticTextWidget
+		(
+			0,
+			kSysStaticTextPMRsrcId,
+			kBindNone,
+			Frame(15, 15, 110, 32)
+			kTrue, kTrue,
+			kAlignLeft, kEllipsizeEnd, kTrue,
+			kXPGUIPhotoCartonClasseurKey,
+			0,
+		),
+		XPGUIDropDownListWidget
+		(
+			kXPGUIPhotoCartonClasseurListWidgetID,
+			kSysDropDownPMRsrcId,
+			kBindLeft | kBindRight,
+			Frame(120, 15, 385, 35)
+			kTrue, kTrue,
+			{
+				{ }
+			},
+		),
+		StaticTextWidget
+		(
+			0,
+			kSysStaticTextPMRsrcId,
+			kBindNone,
+			Frame(15, 50, 110, 67)
+			kTrue, kTrue,
+			kAlignLeft, kEllipsizeEnd, kTrue,
+			kXPGUIPhotoCartonKey,
+			0,
+		),
+		XPGUIDropDownListWidget
+		(
+			kXPGUIPhotoCartonListWidgetID,
+			kSysDropDownPMRsrcId,
+			kBindLeft | kBindRight,
+			Frame(120, 50, 385, 70)
+			kTrue, kTrue,
+			{
+				{ }
+			},
+		),
+		DefaultButtonWidget
+		(
+			kOKButtonWidgetID,
+			kSysButtonPMRsrcId,
+			kBindNone,
+			Frame(110, 95, 195, 120)
+			kTrue, kTrue,
+			kSDKDefOKButtonApplicationKey,
+		),
+		CancelButtonWidget
+		(
+			kCancelButton_WidgetID,
+			kSysButtonPMRsrcId,
+			kBindNone,
+			Frame(205, 95, 290, 120)
+			kTrue, kTrue,
+			kSDKDefCancelButtonApplicationKey,
+			kFalse,
+		),
+	}
+};
+
+
+/*
+// ------------Choose Etat Image dialog resources.--------------
+*/
+type XPGUIChooseEtatImageDialogWidget(kViewRsrcType) : DialogBoss(ClassID = kXPGUIChooseEtatImageDialogBoss)
+{
+};
+
+resource LocaleIndex (kXPGUIChooseEtatImageDialogResourceID)
+{
+	kViewRsrcType,
+	{
+		kWildFS, k_Wild, kXPGUIChooseEtatImageDialogResourceID + index_enUS
+	}
+};
+
+resource XPGUIChooseEtatImageDialogWidget (kXPGUIChooseEtatImageDialogResourceID + index_enUS)
+{
+	__FILE__,
+	__LINE__,
+	kXPGUIChooseEtatImageDialogWidgetID, // WidgetID
+	kPMRsrcID_None, // RsrcID
+	kBindNone, // Binding
+	Frame(0,0,320,110) // Frame (l,t,r,b)
+	kTrue,
+	kTrue, // Visible, Enabled
+	kXPGUIChooseEtatImageDialogTitleKey, // Dialog title
+	{
+		StaticTextWidget
+		(
+			0,
+			kSysStaticTextPMRsrcId,
+			kBindNone,
+			Frame(15, 18, 80, 35)
+			kTrue, kTrue,
+			kAlignLeft, kEllipsizeEnd, kTrue,
+			kXPGUIEtatImageLabelKey,
+			0,
+		),
+		XPGUIDropDownListWidget
+		(
+			kXPGUIChooseEtatImageListWidgetID,
+			kSysDropDownPMRsrcId,
+			kBindLeft | kBindRight,
+			Frame(85, 18, 305, 38)
+			kTrue, kTrue,
+			{
+				{ }
+			},
+		),
+		DefaultButtonWidget
+		(
+			kOKButtonWidgetID,
+			kSysButtonPMRsrcId,
+			kBindNone,
+			Frame(130, 75, 215, 100)
+			kTrue, kTrue,
+			kSDKDefOKButtonApplicationKey,
+		),
+		CancelButtonWidget
+		(
+			kCancelButton_WidgetID,
+			kSysButtonPMRsrcId,
+			kBindNone,
+			Frame(225, 75, 310, 100)
+			kTrue, kTrue,
+			kSDKDefCancelButtonApplicationKey,
+			kFalse,
+		),
+	}
+};
+
+
+#endif // __ODFRC__
+
+#include "XPGUI_enUS.fr"
+#include "XPGUI_frFR.fr"
+
+//  Code generated by DollyXs code generator

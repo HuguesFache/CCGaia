@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup Label="GaiaAxes">
+    <!-- Axe version : les 4 derniers caracteres de la Configuration = l'annee -->
+    <ID_VER>$(Configuration.Substring($([MSBuild]::Subtract($(Configuration.Length), 4))))</ID_VER>
+    <ID_SDK_DIR>C:\SDKs\adobe_indesign_cc$(ID_VER)</ID_SDK_DIR>
+    <ID_INT_ROOT>C:\tmp\Gaia\$(Configuration)\</ID_INT_ROOT>
+    <!-- Axe Client/Server -->
+    <SERVER_VALUE Condition="$(Configuration.StartsWith('Client'))">0</SERVER_VALUE>
+    <SERVER_VALUE Condition="$(Configuration.StartsWith('Server'))">1</SERVER_VALUE>
+    <!-- Sortie : Trias (Client) ou TriasServeur (Server) -->
+    <ID_TRIAS_DIR Condition="$(Configuration.StartsWith('Client'))">Trias</ID_TRIAS_DIR>
+    <ID_TRIAS_DIR Condition="$(Configuration.StartsWith('Server'))">TriasServeur</ID_TRIAS_DIR>
+    <ID_OUTPUT_DIR>C:\Program Files\Adobe\Adobe InDesign $(ID_VER)\Plug-Ins\$(ID_TRIAS_DIR)\</ID_OUTPUT_DIR>
+    <!-- Includes SDK canoniques (cl et odfrc) -->
+    <ID_SDK_INC>$(ID_SDK_DIR)\external\dva\third_party\boost_libraries;$(ID_SDK_DIR)\external\dva\third_party\adobe_source_libraries;$(ID_SDK_DIR)\source\precomp\msvc;$(ID_SDK_DIR)\source\public\interfaces\xmedia;$(ID_SDK_DIR)\source\public\interfaces\preflight;$(ID_SDK_DIR)\source\public\interfaces\ui;$(ID_SDK_DIR)\source\public\interfaces\tables;$(ID_SDK_DIR)\source\public\interfaces\text;$(ID_SDK_DIR)\source\public\interfaces\graphics;$(ID_SDK_DIR)\source\public\libs\widgetbin\includes;$(ID_SDK_DIR)\source\public\interfaces\workgroup;$(ID_SDK_DIR)\source\public\interfaces\interactive;$(ID_SDK_DIR)\source\public\interfaces\interactive\ui;$(ID_SDK_DIR)\source\public\interfaces\colormgmt;$(ID_SDK_DIR)\source\public\interfaces\utils;$(ID_SDK_DIR)\source\public\interfaces\incopy;$(ID_SDK_DIR)\source\public\interfaces\layout;$(ID_SDK_DIR)\source\public\interfaces\architecture;$(ID_SDK_DIR)\source\public\interfaces\cjk;$(ID_SDK_DIR)\source\public\facades\graphics;$(ID_SDK_DIR)\source\public\facades\text;$(ID_SDK_DIR)\source\public\facades\layout;$(ID_SDK_DIR)\source\precomp\common;$(ID_SDK_DIR)\source\public\includes;$(ID_SDK_DIR)\source\public\libs\publiclib\plugins;$(ID_SDK_DIR)\source\public\libs\publiclib\files;$(ID_SDK_DIR)\source\public\libs\publiclib\objectmodel;$(ID_SDK_DIR)\source\sdksamples\common;$(ID_SDK_DIR)\external\afl\includes;$(ID_SDK_DIR)\external\asl\boost_libraries;$(ID_SDK_DIR)\external\asl\adobe_source_libraries;$(ID_SDK_DIR)\external\asl\intel_tbb_libraries\include;$(ID_SDK_DIR)\external\icu\include;$(ID_SDK_DIR)\source\open\includes\architecture</ID_SDK_INC>
+    <ID_ODFRC_SDK>-i "$(ID_SDK_DIR)\source\precomp\msvc" -i "$(ID_SDK_DIR)\source\public\interfaces\xmedia" -i "$(ID_SDK_DIR)\source\public\interfaces\preflight" -i "$(ID_SDK_DIR)\source\public\interfaces\ui" -i "$(ID_SDK_DIR)\source\public\interfaces\tables" -i "$(ID_SDK_DIR)\source\public\interfaces\text" -i "$(ID_SDK_DIR)\source\public\interfaces\graphics" -i "$(ID_SDK_DIR)\source\public\libs\2026\includes" -i "$(ID_SDK_DIR)\source\public\interfaces\workgroup" -i "$(ID_SDK_DIR)\source\public\interfaces\interactive" -i "$(ID_SDK_DIR)\source\public\interfaces\interactive\ui" -i "$(ID_SDK_DIR)\source\public\interfaces\colormgmt" -i "$(ID_SDK_DIR)\source\public\interfaces\utils" -i "$(ID_SDK_DIR)\source\public\interfaces\incopy" -i "$(ID_SDK_DIR)\source\public\interfaces\layout" -i "$(ID_SDK_DIR)\source\public\interfaces\architecture" -i "$(ID_SDK_DIR)\source\public\interfaces\cjk" -i "$(ID_SDK_DIR)\source\public\facades\text" -i "$(ID_SDK_DIR)\source\public\facades\graphics" -i "$(ID_SDK_DIR)\source\public\facades\layout" -i "$(ID_SDK_DIR)\source\precomp\common" -i "$(ID_SDK_DIR)\source\public\includes" -i "$(ID_SDK_DIR)\source\public\widget\includes" -i "$(ID_SDK_DIR)\source\public\libs\publiclib\plugins" -i "$(ID_SDK_DIR)\source\public\libs\publiclib\files" -i "$(ID_SDK_DIR)\source\public\libs\publiclib\objectmodel" -i "$(ID_SDK_DIR)\source\sdksamples\common" -i "$(ID_SDK_DIR)\source\public\libs\widgetbin\includes"</ID_ODFRC_SDK>
+  </PropertyGroup>
+  <ImportGroup Label="SDK">
+    <Import Project="$(ID_SDK_DIR)\build\win\prj\ReleaseX64.props" />
+  </ImportGroup>
+  <PropertyGroup Label="GaiaOutput">
+    <OutDir>$(ID_OUTPUT_DIR)</OutDir>
+    <IntDir>$(ID_INT_ROOT)$(ProjectName)\</IntDir>
+    <TargetName>$(ProjectName)</TargetName>
+    <TargetExt>.pln</TargetExt>
+    <ExecutablePath>$(ID_SDK_DIR)\devtools\bin;$(ExecutablePath)</ExecutablePath>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <!-- Le SDK 2024 impose C++14 ; le code (ecrit pour le SDK 2026) exige C++17 -->
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <!-- ...mais les libs ASL du SDK 2024 utilisent std::unary/binary_function (gardes par _HAS_AUTO_PTR_ETC dans la STL MSVC), supprimes en C++17 : on les restaure -->
+      <!-- _WINSOCKAPI_ VIDE : empeche windows.h de tirer winsock.h v1 (conflit winsock2.h / XRailClient). Vide = identique au #define du SDK/winsock2.h -> pas de C4005. Rend la rustine SDK manuelle inutile. -->
+      <PreprocessorDefinitions>SERVER=$(SERVER_VALUE);_HAS_AUTO_PTR_ETC=1;_SILENCE_ALL_CXX17_DEPRECATION_WARNINGS;_WINSOCKAPI_=;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(ID_SDK_INC);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+</Project>

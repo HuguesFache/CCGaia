@@ -1,0 +1,42 @@
+#ifdef __ODFRC__
+// English string table is defined here
+resource StringTable (kSDKDefStringsResourceID + index_enUS)
+{
+	k_enUS,									// Locale Id
+	kResourceUTF8Encoded,		// Character encoding converter (irp) I made this WinToMac as we have a bias to generate on Win...
+	{
+		kFlbNilInterface,				"Abnormal problem",
+		kTextLinkCmdFailed,				"Failed to link frames",
+		kTextUnlinkCmdFailed,			"Failed to unlink frames",
+		kFlbNilParameter,				"Null parameter passed to the function",
+		kErrNotTextFrame,				"Item must be a text frame",
+		kInsertCmdFailed,				"Failed to insert text",
+		kMoveItemCmdFailed,				"Failed to move item",
+		kErrNotSpline,					"Item must be a spline, not a rule",
+		kMakeInlineCmdFailed,			"Failed to make inline",
+		kSetStandoffCmdFailed,			"Failed to set standoffs",
+		kCreateTextFrameCmdFailed,		"Failed to create text frame",
+		kSelectCmdFailed,				"Failed to select item",
+		kErrCannotOpenFile,				"Error while opening a file. It's probably already open by another application",
+		kNewPageItemCmdFailed,			"Failed to create a new page item",
+		kErrNotImageFile,				"Specified file is not an image file",
+		kImportImageCommandFailed,		"Failed to import image", 
+		kPlaceItemCommandFailed,		"Failed to place image in its owner frame",
+		kGroupCommandFailed,			"Failed to group items",
+		kErrNoSuchPage,					"The specified page doesn't exist in the document",
+		kLockCmdFailed,					"Failed to lock/unlock items",
+		kErrUnableToGroup,				"Failed to group items (they might not belong to the same layer)",
+		kBringToFrontCmdFailed,			"Failed to bring item to front",
+		kSendToBackCmdFailed,			"Failed to send item to back",
+		kResizeCmdFailed,				"Failed to resize item",
+		kApplyCmdFailed,				"Failed to apply style or attribute",
+		kCenterContentCmdFailed,		"Failed to center content",
+		kFitContentPropCmdFailed, 		"Failed to fit content",
+		kFitContentToFrameCmdFailed,	"Failed to fit content to frame",
+		kErrJVImpossible,				"Requested box is too small",
+		kJVCmdFailed,					"Failed to justify frame vertically",
+		kFlbErrTextBoxRequired,			"You should have a selected text box before using this command",
+		kFlbErrImageBoxRequired,		"You should have a selected image box before using this command",
+	}
+};
+#endif // __ODFRC__

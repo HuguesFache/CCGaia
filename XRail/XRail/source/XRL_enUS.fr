@@ -1,0 +1,35 @@
+#ifdef __ODFRC__
+// English string table is defined here
+resource StringTable (kSDKDefStringsResourceID + index_enUS)
+{
+	k_enUS,									// Locale Id
+	kResourceUTF8Encoded,		// Character encoding converter (irp) I made this WinToMac as we have a bias to generate on Win...
+	{
+	 	// ----- Menu strings
+			kXRLCompanyKey,					kXRLCompanyValue,
+			kSDKDefAboutThisPlugInMenuKey,	kSDKDefAboutThisPlugInMenuValue_enUS,
+
+		// ----- Panel/dialog strings												
+			kXRLErrorWSLockPageKey,			"Connection error, failed to lock pages",
+			kXRLErrorWSGenerateVignetteKey, "Connection error occured while generating pages vignettes, operation cancelled",
+			kXRLErrorUnknownUserKey,		"Unknown user",
+			kXRLErrorBadPasswordKey,		"Bad Password",
+			kXRLErrorPrivilegeKey,			"You're allowed to connect to XRail", 					 				
+			kXRLErrorSOAPKey,				"Error occured while exchanging data",
+			kXRLErrorWebServiceKey,			"Connection error, server is not accessible",
+			kXRLErrorMissingConfigFileKey,	"Configuration file Gaia.ini cannot be read, it may be missing",
+			kXRLErrorCreateResaPubKey,		"An error occured while creating the reserve",
+			kXRLErrorInvalidResaPageKey,	"The resa pub is associated with a page which does not exist anymore in the document",
+			kXRLErrorPDFNotCreatedStringKey,"PDF export has failed, please check that the targeted PDF folder has write access rights set",
+			kXRLErrorPDFStyleNotFoundKey,	"PDF style not found",
+			kXRLErrorGetPDFFileNameKey,		"Connection error, failed to get PDF filename to generate",
+			kXRLErrorMovePDFFileKey,		"Connection error, failed to move generated PDF file",
+			kXRLVersionTextKey, 			"This version is not up to date, please contact the support ",
+			kXRLDocumentReadOnly, 			"This document is read-only ",
+					
+		// ----- Misc strings
+			kCommandXRailSetPrefsCmdKey, 	"Save preferences", 
+			kCommandXRailSetPageSlugCmdKey,	"Assign XRail ID to pages",				
+	}
+};
+#endif // __ODFRC__

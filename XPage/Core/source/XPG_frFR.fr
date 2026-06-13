@@ -1,0 +1,65 @@
+#ifdef __ODFRC__
+// French string table is defined here
+resource StringTable (kSDKDefStringsResourceID + index_frFR)
+{
+	k_frFR,									// Locale Id
+	kResourceUTF8Encoded,		// Character encoding converter (irp) I made this WinToMac as we have a bias to generate on Win...
+	{
+		// ----- Menu strings
+			kXPGCompanyKey,							kXPGCompanyValue,
+			kXPGAboutMenuKey,						kXPGPluginName "[FR]...",
+			kXPGPluginsMenuKey,						kXPGPluginName "[FR]",
+
+		// ----- Panel/dialog strings
+			kXPGNoNumeroTextKey,					"Aucune parution d'une édition sélectionnée",
+			kXPGNumeroTextKey,						"",
+ 
+		// ----- Misc strings
+			kXPGAboutBoxStringKey,					kXPGPluginName " [FR], version " kXPGVersion " by " kXPGAuthor "\n\n" kSDKDefCopyrightStandardValue "\n\n" kSDKDefPartnersStandardValue_jaJP,
+			kSetTagToStyleMapCmdKey,				"Définir correspondance tag->style",
+			kXPGEraseCurrentVersionKey,				"Vous allez ouvrir une version de la page qui n'est pas la version courante. Celle-ci sera alors écrasée, voulez-vous vraiment ouvrir cette version ?",
+			kXPGCannotMoveFileKey,					"Le fichier n'a pas pu être déplacé, la version courante est verrouillée ! (déjà ouverte dans InDesign ?)",
+			kXPGFileAlreadyExistsKey,				"Le fichier existe déjà, voulez-vous le remplacer ?",
+			kXPGFileInNewStatusAlreadyExistsKey,	"Un fichier du même nom existe déjà pour le statut sélectionné, voulez-vous le remplacer ?",
+			kXPGErrDescFileNotUpdatedKey,			"Le fichier de description n'a pas été mis à jour !",
+			kXPGErrParseMatchingFailed,				"Impossible de parser le fichier de matching ! L'import est annulé",
+			kXPGErrImportFailed,					"L'import de l'article a échoué : ",
+			kXPGErrParseArticleFailed,				"Impossible de parser le fichier article !",
+			kXPGErrParseImageFailed,				"Impossible de parser le fichier image !",
+			kXPGErrParseExportXMLFailed,			"Impossible de parser le fichier export !",
+			kXPGErrParseFormeFailed,				"Impossible de parser le fichier descriptif de carton !",				
+			kXPGErrCannotOpenTemplate,				"Impossible d'ouvrir le gabarit, il est déjà ouvert par un autre utilisateur, veuillez attendre quelques secondes puis réessayez",
+			kXPGErrFolderDontExistKey,				"Au moins un des dossiers du spooler n'est pas valide, le spooler est désactivé",
+			kXPGErrIdenticalFolderKey,				"Au moins 2 dossiers du spooler sont identiques, le spooler est désactivé",
+			kXPGSpoolerTaskKey,						"Spooler task",
+			kXPGErrMatchingFileNotFound,			"Classeurs introuvables ! (vérifier votre fichier de configuration)",
+			kXPGSetArticleIDCmdKey,					"Enregistrer l'id d'article",
+			kXPGErrFormeImportFailed,				"L'import du fichier de carton a échoué",
+			kXPGErrArticleLocked,					"Le fichier articleest actuellement en cours d'édition, veuillez patienter quelques secondes",
+			KXPGErrCopyDoc,							"Impossible de copier le fichierdans l'assemblage",
+			kXPGErrArtStatusNotUpdatedKey,			"La mise à jour de l'état de l'article dans la base XRAIL a échoué",
+			kXPGErrImportImageFailed,				"L'import de l'image a échoué",
+			kXPGErrFailedToCreateInCopyWS,			"Un problème est survenu lors de la création des fichiers InCopy, erreurdu web service.",
+			kXPGErrFailedToCreateInCopyFiles,		"Un problème est survenu lors de la création des fichiers InCopy, veuillez vérifier que vous avez bien monté le volume vers XRAIL et que vous avez les droits en écriture",
+			kXPGErrInvalidInCopyID,					"XRAIL a retourné un identifiant incorrect pour l'article InCopy",
+			kXPGUpdateArticleXMLFileCmdKey,			"Mise à jour de l'état de l'article",
+			kXPGErrInCopyFileNotExistKey,			"Le fichier de l'article InCopy n'existe pas",	
+			kXPGErrCannotOpenInCopyFileKey,			"L'article InCopy ne peut être ouvert, il peut être déjà ouvert par un autre utilisateur",
+			kXPGFailedToLoadFormeDataKey,			"Les données du carton n'ont pas pu être chargées",
+			kXPGAskForStoriesUpdateKey,				"Des articles InCopy ont été modifiés, voulez-vous les mettre à jour ?",
+			kXPGFailedToUpdateStoriesKey,			"La mise à jour des articles InCopy a échoué",
+			kXPGNoInCopyStoryInSelectionKey,		"La sélection ne contient aucun article InCopy",
+			kXPGMissingInCopyStoriesKey,			"Des liens vers des articles InCopy sont manquants, impossible de les mettre à jour",
+			kXPGErrExportXmlFailed,					"L'export XML du fichiera échoué, vérifiez que le chemin du fichier est valide",
+			kXPGErrDoSnapShotFailed,				"La génération de la vignette d'articlea échoué, vérifiez que le chemin du fichier est valide",
+			kXPGAlertFormatImageKey,				"Le format de l'image n'est pas pris en charge par le système.\n\r Veuillez contacter le responsable technique. " ,
+			kXPGVersionTextKey,						"La version de XPage actuelle n'est pas à jour, Veuillez contacter le support technique",
+			kXPGErrImportXmlFailed,					"L'import XML du fichiera échoué, vérifiez que le chemin du fichier est valide",
+			kXPGUnTaggedTextKey,					"Texte mal balisé (): ",
+			kXPGExtensionInCopyKey, 				".icma",			
+			kXPGExtensionWithoutDotInCopyKey, 		"icma",			
+			kXPGExtensionAffectationKey,			".icml",			
+			kXPGExtensionAffectationWithoutDotKey,	"icml",			
+	}
+};
+#endif // __ODFRC__

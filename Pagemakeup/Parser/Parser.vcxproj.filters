@@ -1,0 +1,423 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{78120e3d-d0ab-4f9e-8a3a-c5e6c5ed0b2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Plugin">
+      <UniqueIdentifier>{29e08cac-b659-428b-bf02-c70f84b41ddf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{7b823eb7-8f35-4529-a4c1-555b53468c58}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{4da94837-4922-4930-b2ec-472d16090ed6}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(id_sdk_dir)\source\public\libs\publiclib\statics\PlugInStatics.cpp">
+      <Filter>Source Files\Plugin</Filter>
+    </ClCompile>
+    <ClCompile Include="$(ID_SDK_DIR)\source\sdksamples\common\SDKPlugInEntrypoint.cpp">
+      <Filter>Source Files\Plugin</Filter>
+    </ClCompile>
+    <ClCompile Include="source\prsID.cpp">
+      <Filter>Source Files\Plugin</Filter>
+    </ClCompile>
+    <ClCompile Include="source\prsNoStrip.cpp">
+      <Filter>Source Files\Plugin</Filter>
+    </ClCompile>
+    <ClCompile Include="source\TriggerResourceDeps.cpp">
+      <Filter>Source Files\Plugin</Filter>
+    </ClCompile>
+    <ClCompile Include="$(id_sdk_dir)\source\precomp\msvc\VCPlugInHeaders.cpp">
+      <Filter>Source Files\Plugin</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Blocs.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Calques.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Composer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Divers.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Divers2.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Docs.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ExportUtils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Hyperlinks.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Livres.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Log.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Pages.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Paragraphes.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ParserPlugIn.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ParserSuiteASB.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ParserSuiteLayoutCSB.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\PermRefs.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\PermRefsSuiteASB.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\PermRefsSuiteTextCSB.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\PermRefsTag.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\PermRefsTagReport.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\PermRefsTagTextAdornment.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\PermRefsTextEditPostProcess.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\PermRefsTextEditPreProcess.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\PermRefsUtils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\PMUTypes.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\PrsCustomServiceProvider.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\PrsDeleteCleanup.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\PrsEnterSerialNumberCmd.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\PrsEpsDocumentName.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\PrsEpsDocumentNamePersist.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\PrsEpsExportPrefs.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\PrsEpsExportPrefsPersist.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\PrsErrorStringService.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\PrsInsertTextCmd.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\PrsParserThread.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\PrsPasteImportItemObserver.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\PrsPreferences.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\PrsPreferencesPersist.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\PrsRegistration.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\PrsRegistrationPersist.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\PrsRespService.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\PrsReverseTCL.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\PrsScriptProvider.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\PrsSerialNumberDialogController.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\PrsSetDocEpsExportPrefsCmd.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\PrsSetDocPdfExportPrefsCmd.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\PrsSetDocTCLReferencesList.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\PrsSetImageInfosCmd.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\PrsSetPreferencesCmd.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\PrsSetRegistrationInfoCmd.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\PrsSetTCLRefDataCmd.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\PrsSetTOPPositionCmd.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\PrsStartupShutdown.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\PrsTCLAdornmentShape.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\PrsTCLParser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\PrsTCLReader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\PrsTCLReferencesList.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\PrsTCLReferencesListPersist.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\PrsTCLRefScriptProvider.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\PrsTCLWriter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\PrsWideStringData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Reglages.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ReverseChecker.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Styles.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Systeme.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Tableaux.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\TCLError.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Textes.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Textes2.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Transcoder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XRail.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XRefs.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\SDKs\adobe_indesign_CC2026\source\sdksamples\common\SDKFileHelper.cpp">
+      <Filter>Source Files\Plugin</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\SDKs\adobe_indesign_CC2026\source\sdksamples\common\SDKLayoutHelper.cpp">
+      <Filter>Source Files\Plugin</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="source\prsID.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\prsFactoryList.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Blocs.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Calques.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Composer.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Divers.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Docs.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\ExportUtils.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Hyperlinks.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\IEpsDocumentName.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\ILastPremRef.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\IPageMakeUpPrefs.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\IParserSuite.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\IPermRefsSuite.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\IPermRefsTag.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\IRegistration.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\IReverseTCL.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\ITCLParser.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\ITCLReader.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\ITCLReferencesList.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\ITCLWriter.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\IWideStringData.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Livres.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Log.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Pages.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Paragraphes.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\ParserPlugIn.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\PermRefs.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\PermRefsUtils.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\PMUTypes.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\PrsScriptingDefs.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\PrsTCLParser.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\PrsTCLReader.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Reglages.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\ReverseChecker.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Styles.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Systeme.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Tableaux.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\TCLError.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Textes.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Transcoder.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\XPage.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\XRail.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\XRefs.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\GlobalDefs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\SDKs\adobe_indesign_CC2026\source\sdksamples\common\SDKFileHelper.h">
+      <Filter>Source Files\Plugin</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\SDKs\adobe_indesign_CC2026\source\sdksamples\common\SDKLayoutHelper.h">
+      <Filter>Source Files\Plugin</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="source\prs.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="source\prs.fr">
+      <Filter>Resource Files</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="source\Prs_frFR.fr">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="source\prs_enUS.fr">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+</Project>

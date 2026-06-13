@@ -1,0 +1,123 @@
+#ifdef __ODFRC__
+// English string table is defined here
+resource StringTable (kSDKDefStringsResourceID + index_enUS)
+{
+	k_enUS,									// Locale Id
+	kResourceUTF8Encoded,		// Character encoding converter (irp) I made this WinToMac as we have a bias to generate on Win...
+	{
+		// ----- Menu strings
+			kPMUCompanyKey,						kPMUCompanyValue,					
+			kPMUAboutMenuKey,					kPMUPluginName,
+			kPMUPluginsMenuKey,					kPMUPluginName,
+			kPMUExecTCLMenuItemKey,				"Process TCL file",
+			kPMUAboutThisPlugInMenuKey,			"About this plug-in...",
+			kPMUReverseTCLMenuItemKey,			"Create TCL file",
+			kPMUTCLPrefsMenuItemKey,			"Preferences...",
+			kPMUExportPermRefsTCLMenuItemKey,   "Export",
+			kPMUExportRefsListDebugMenuItemKey,  "Debug: export references index",
+			kPMURepairRefsListMenuItemKey,       "Debug: repair references index",
+			kPMURepairRefsListAlertKey,          "Rebuild the hidden references index from the document's real tags? Remember to save afterwards.",
+			kPMURepairRefsListDoneKey,           "References index repair done:\n",
+			kPMUExportRefsListDebugDoneKey,      "Debug export done", 		
+			kPMUAddRefMenuPath,					"&Window:PageMakeUp:Reference TCL",
+			kPMUCreateILCRefsMenuItemKey,		"Create references",
+			kPMUExportILCRefsMenuItemKey,		"Export references",
+
+		// ----- Command strings
+
+		// ----- Window strings
+		
+		// ----- Panel/dialog strings
+			kPMUPanelTitleKey,					kPMUPluginName ,
+			kComposerToolPanelTitleKey,			"Composer Tool",
+			kPMUPrefsDialogTitleKey,			kPMUPluginName " Preferences",
+			kPMUStaticTextKey,					kPMUPluginName " Preferences",
+			kPMUDisplayTCLRefTextKey,			"Show Box Num",
+			kPMUStopOnErrorTextKey,				"Stop on error",
+			kPMUDocButtonTextKey,				"InDesign Documents...",
+			kPMUImportImageButtonTextKey,		"Import pictures...",
+			kPMUExportTCLButtonTextKey,			"Export TCL...",
+			kPMUEnglishRadioTextKey,			"English",
+			kPMUFrenchRadioTextKey,				"French",
+			kPMUDocPathDialogTitleKey,			" InDesign Documents",
+			kPMUUsePathTextKey,					"Use a local path",
+			kPMUStaticTextKey2,					"Save documents in :",
+			kPMUStaticTextKey3,					"Open documents from :",
+			kPMUImageSettingDialogTitleKey,		" Import pictures",
+			kPMUStaticTextKey4,					"Picture path:",
+			kPMUAllowImportImageTextKey,		"Import pictures",
+			kPMUPrintFrameTextKey,				"Non printing",
+ 			kPMUCreateTxtFrameTextKey,			"Create a text frame",
+			kPMUStaticTextKey5,					"If a picture is missing : ",
+			kPMUWhiteKey,						"White",
+			kPMUBlueKey,						"Blue",
+			kPMUCyanKey,						"Cyan",
+			kPMUYellowKey, 						"Yellow",
+			kPMUMagentaKey,						"Magenta",
+			kPMUBlackKey,						"Black",
+			kPMURegistrationKey,				"Registration",
+			kPMURedKey,							"Red",
+			kPMUGreenKey,						"Green",
+			kPMUNoneKey,						"None",
+			kPMUPanelHeaderKey,					"Headers",
+			kPMUPanelGeometryKey,				"Geometry",
+			kPMUPanelTextKey,					"Text",
+			kPMUExportStyleKey,					"Export stylesheets",
+			kPMUExportCJKey,					"Export hyphen rules",
+			kPMUExportColorsKey,				"Export colors",
+			kPMUExportMastersKey,				"Export masters",
+ 			kPMUExportLayersKey,				"Export layers",
+			kPMUExportTextFrameKey,				"Text frames commands [BN]",
+			kPMUExportImageFrameKey,			"Image frames commands [BI]",
+			kPMUExportRuleKey,					"Rules commands [FD]",
+			kPMUExportTextKey,					"Export text",
+			kPMUExportParaCmdKey,				"Paragraphs commands [Px]",
+			kPMUExportTextCmdKey,				"Texts commands [Tx]",
+			kPMUExportStyleCmdKey,				"Stylesheets [SN]-[SB]",
+			kPMUExportPrefsDialogTitleKey,		" Export TCL preferences",
+			kPMUSavePrefsPb,					"Problem occured while saving preferences",
+			kPMUTypeRefDialogTitleKey,			"Enter a reference",
+			kPMUSearchRefDialogTitleKey, 		"Enter a reference to search for",
+			kPMUStaticTextKey6,					"Reference :",
+			kPMUTooManySelectedItemsKey,		"Only one frame or rule must be selected",
+			kPMUDisplayPermRefTextKey,			"Display PermRefs references",
+			kPMUTypeExportTextKey,				"Export Type :",
+			kPMUPDFTextKey,						"PDF",
+			kPMUEPSTextKey,						"EPS",
+			kPMUStaticTextParam1,				"Parameter 1 :",
+			kPMUStaticTextParam2,				"Parameter 2 :",
+			kPMUStaticTextParam3,				"Parameter 3 :",
+			kPMUStaticTextParam4,				"Parameter 4 :",
+			kPMUPrintTCLRefTextKey,				"Imprimer les références TCL",	
+
+			kPMUAboutBoxStringKey,				kPMUPluginName " version " kPMUVersion "\n\nCopyright 1993-2017 Trias Developpement. All Rights Reserved.\n\nhttp://www.trias.fr",
+			kPMUExportPermRefsDoneKey,			"PermRefs export done",
+								
+			kPMUExportPermRefsDoneKey,			"Permrefs export finished",			
+			kPMUAutoTagDocument1TCLMenuItemKey,	"Tag document prices",
+			kPMUAutoTagDocument2TCLMenuItemKey,	"Tag document codes",
+	
+			kPMUDeleteAllPermRefsTCLMenuItemKey,"Delete all hidden references",
+			kPMUDeleteAlltPermRefsDoneKey,      "All hidden references are deleted",   
+			kPMUAddReferenceMenuKey,			"Insert hidden reference",
+			kPMUAddTCLRefMenuItemKey,			"Identify a block",
+			kPMUDisplayTCLRefMenuItemKey,		"Show block identifiers",
+			kPMUDisplayPermRefMenuItemKey,		"Show hidden references",
+
+			// Tooltips on the main palette buttons.
+			kPMUExecTCLTipKey,					"Run a TCL file",
+			kPMUAddPermRefTipKey,				"Insert a hidden reference",
+			kPMUAddTCLRefTipKey,				"Identify a block",
+			kPMUDeletePermRefskAlertKey,        "Do you really want to delete hidden references?",
+			kPMUAutoTagDocumentPermRefsDoneKey, "Auto taggind finished", 
+		
+			kPMUVersionKey,						"Version " kPMUVersion, 
+			
+			// ----- Error strings
+			kErrTextSelection,					"Select a range of text (one character minimum)",
+			kErrLayoutSelection,				"Select a frame or a rule",
+			kErrNoOversetBox,					"No overset box",
+			kErrAllPictureInPlace,				"Every picture is up to date ",	
+	}
+};
+#endif // __ODFRC__

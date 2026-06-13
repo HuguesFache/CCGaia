@@ -1,0 +1,1421 @@
+/*
+//	File:	Prs.fr
+//
+//	Author: Trias
+//
+//	Date:	11-Jun-2003
+//
+//	Umbrella include file for all the .fr files in the plug-in.
+//
+//	ADOBE SYSTEMS INCORPORATED
+//	Copyright 2003 Trias Developpement. All rights reserved.
+//	
+//	NOTICE: Adobe permits you to use, modify, and distribute this file in
+//	accordance with the terms of the Adobe license agreement accompanying it.
+//	If you have received this file from a source other than Adobe, then your
+//	use, modification, or distribution of it requires the prior written
+//	permission of Adobe.
+//
+//
+*/
+
+// General includes:
+#include "MenuDef.fh"
+#include "ActionDef.fh"
+#include "ActionDefs.h"
+#include "AdobeMenuPositions.h"
+#include "LocaleIndex.h"
+#include "PMLocaleIds.h"
+#include "StringTable.fh"
+//#include "OMTypes.h"
+#include "ObjectModelTypes.fh"
+#include "ShuksanID.h"
+#include "ActionID.h"
+#include "CommandID.h"
+#include "WorkspaceID.h"
+#include "WidgetID.h"
+#include "BuildNumber.h"
+#include "PanelList.fh"
+#include "Widgets.fh"	// for PalettePanelWidget
+#include "InterfaceColorDefines.h"
+#include "IControlViewDefs.h"
+#include "SysControlIDs.h"
+#include "TextEditorID.h"
+#include "PDFID.h"
+#include "PageItemScrapID.h"
+
+// Scripting
+#include "ScriptInfoTypes.fh"
+#include "AppFrameworkID.h" // for kApplicationObjectScriptElement
+#include "ErrorTableTypes.h" // For UserErrorTable
+#include "PrsScriptingDefs.h"
+#include "TextScriptID.h"
+#include "INXCoreID.h" 
+#include "AppleScriptID.h"
+
+// General includes:
+#include "GenericID.h"
+#include "PrintID.h"
+#include "GraphicsID.h"
+#include "SplineID.h"
+
+// PermRefs include
+#include "TextAttrID.h"
+#include "TextID.h"
+#include "TTImportExportAttrId.h"
+
+// Project includes:
+#include "PrsID.h"
+#include "FLBID.h"
+#include "TLBID.h"
+#include "DLBID.h"
+#include "PLBID.h"
+#include "GlobalDefs.h"
+#include "PlugInModel_UIAttributes.h"
+
+#if XRAIL
+#include "XRLID.h"
+#endif
+
+#if XPAGE
+#include "XPGID.h"
+#endif
+
+#ifdef __ODFRC__
+
+/*
+// Plugin version definition.
+*/
+resource PluginVersion (kSDKDefPluginVersionResourceID)
+{
+	kTargetVersion,
+	kPrsPluginID,
+	kPrsCurrentMajorVersionNumber, kPrsCurrentMinorVersionNumber, 	
+	kSDKDefHostMajorVersionNumber, kSDKDefHostMinorVersionNumber,
+	kPrsFirstMajorFormatNumber, kPrsFourthMinorFormatNumber,
+	{ 
+
+#if SERVER	
+		kInDesignServerProduct
+#else
+		kInDesignProduct
+#endif		
+	 },
+	
+	{ kWildFS },
+#if SERVER	
+		kModelPlugIn,
+#else
+		kUIPlugIn,
+#endif	
+	
+	kPrsVersion
+};
+
+/*
+// This is where we define we require the library plug-ins:
+*/
+resource PluginDependency(kSDKDefPluginDependencyResourceID)
+{
+	kWildFS
+	{
+		kFLBPluginID,kFLBPluginName,kSDKDefPlugInMajorVersionNumber,kSDKDefPlugInMinorVersionNumber,
+		kTLBPluginID,kTLBPluginName,kSDKDefPlugInMajorVersionNumber,kSDKDefPlugInMinorVersionNumber,
+		kDLBPluginID,kDLBPluginName,kSDKDefPlugInMajorVersionNumber,kSDKDefPlugInMinorVersionNumber,
+		kPLBPluginID,kPLBPluginName,kSDKDefPlugInMajorVersionNumber,kSDKDefPlugInMinorVersionNumber,
+#if XRAIL
+		kXRLPluginID,kXRLPluginName,kSDKDefPlugInMajorVersionNumber,kSDKDefPlugInMinorVersionNumber,
+#endif
+
+#if XPAGE
+		kXPGPluginID,kXPGPluginName,kSDKDefPlugInMajorVersionNumber,kSDKDefPlugInMinorVersionNumber,
+#endif
+	}
+}
+
+resource SchemaFormatNumber(1)
+{
+	{
+		{ kPrsFirstMajorFormatNumber, kPrsFirstMinorFormatNumber, }
+		{ kPrsFirstMajorFormatNumber, kPrsSecondMinorFormatNumber, }
+	}
+};
+
+/* 
+// Schema definition for the persistent implementation of IPageMakeUpPrefs.
+*/
+resource Schema(1)
+{
+	kPrsPreferencesPersistImpl,
+	{kPrsFirstMajorFormatNumber, kPrsSecondMinorFormatNumber},
+	{
+		{Int16		{0x0001, 1}},  // version	
+		{Bool16		{0x0002, 1}},  // stopOnError
+		{Bool16		{0x0003, 0}},  // stopDisplay 	
+		{Bool16		{0x0004, 0}},  // displayTCLRef	
+		{Bool16		{0x0005, 0}},  // displayPermRef	
+		{Int16		{0x0006, PDF_EXPORT}},  // exportType
+		{Bool16		{0x0007, 0}},  // useImportPath	
+		{Bool16		{0x0008, 1}},  // import
+		{PMString	{0x0009, ""}}, // picPath
+		{Bool16		{0x000a, 1}},  // textbox		
+		{Bool16		{0x000b, 1}},  // nonPrinting
+		{Int32		{0x000c, 9}},  // colorIndex
+		{Int32		{0x000d, 100}},  // colorTint
+		{Bool16		{0x000e, 0}},  // useSavePath		
+		{PMString	{0x0010, ""}}, // savePath
+		{Bool16		{0x0011, 0}},  // useOpenPath		
+		{PMString	{0x0012, ""}}, // openPath
+		{Bool16		{0x0013, 1}},  // exportStyles
+		{Bool16		{0x0014, 1}},  // exportCJ
+		{Bool16		{0x0015, 1}},  // exportColors		
+		{Bool16		{0x0016, 1}},  // exportLayers
+		{Bool16		{0x0017, 1}},  // exportMasters)		
+		{Bool16		{0x0018, 1}},  // exportTextFrame	
+		{Bool16		{0x0019, 1}},  // exportImageFrame	
+		{Bool16		{0x001a, 1}},  // exportRule		
+		{Bool16		{0x001b, 1}},  // exportText		
+		{Bool16		{0x001c, 1}},  // exportParaCmd			
+		{Bool16		{0x001d, 1}},  // exportTextCmd
+		{Bool16		{0x001e, 1}},  // exportStyleCmd	
+	}							 
+};		
+
+#if REF_AS_STRING
+resource SchemaFormatNumber(2)
+{
+	{
+		{ kPrsFirstMajorFormatNumber, kPrsSecondMinorFormatNumber, }
+		{ kPrsFirstMajorFormatNumber, kPrsThirdMinorFormatNumber, }
+	}
+};
+#else
+resource DirectiveList(1)
+{
+	{
+		{ ReplaceImplementation { kSplineItemBoss, kIntDataImpl, kZeroInitPersistIntDataImpl, {kPrsFirstMajorFormatNumber, kPrsThirdMinorFormatNumber}} },
+	}
+};
+
+resource Schema(3)
+{
+	kPrsTCLReferencesListPersistImpl,
+	{kPrsFirstMajorFormatNumber, kPrsThirdMinorFormatNumber},
+	{
+		{Int16		{0x0001, 4}},  // version	
+		{FieldArray	{0x0002, // Array of TCL references
+					{Int32{0}}, // count
+					{ 
+						{Int32{0x0003,-1}}, // if REF_AS_STRING = 1, this is replaced by {PMString{0x0003,""}}, 			
+						{Object{0x0004,0}} 
+					}   
+		}},  
+		
+		{FieldArray	{0x0005, // Array of permrefs references
+					{Int32{0}}, // count
+					{ {Int32{0x0006,0}}, {Int32{0x0007,0}},{Int32{0x0008,0}},{Int32{0x0009,0}},{Int32{0x0000a,0}}, {FieldArray	{0x000b, {Int32{0}}, { {Object{0x000c,0}} } }} }   
+		}},  
+		
+		{FieldArray	{0x000d, // Array of table references
+					{Int32{0}}, // count
+					{ {PMString{0x000e,""}}, {Object{0x000f,0}} }   
+		}},  
+	}							 
+};		
+
+#endif					 
+
+/* 
+// Schema definition for the persistent implementation of IPageMakeUpPrefs.
+*/
+resource Schema(4)
+{
+	kPrsPreferencesPersistImpl,
+	{kPrsFirstMajorFormatNumber, kPrsFourthMinorFormatNumber},
+	{
+		{Int16		{0x0001, 1}},  // version	
+		{Bool16		{0x0002, 1}},  // stopOnError
+		{Bool16		{0x0003, 0}},  // stopDisplay 	
+		{Bool16		{0x0004, 0}},  // displayTCLRef	
+		{Bool16		{0x0005, 0}},  // displayPermRef	
+		{Int16		{0x0006, PDF_EXPORT}},  // exportType
+		{Bool16		{0x0007, 0}},  // useImportPath	
+		{Bool16		{0x0008, 1}},  // import
+		{PMString	{0x0009, ""}}, // picPath
+		{Bool16		{0x000a, 1}},  // textbox		
+		{Bool16		{0x000b, 1}},  // nonPrinting
+		{Int32		{0x000c, 9}},  // colorIndex
+		{Int32		{0x000d, 100}},  // colorTint
+		{Bool16		{0x000e, 0}},  // useSavePath		
+		{PMString	{0x0010, ""}}, // savePath
+		{Bool16		{0x0011, 0}},  // useOpenPath		
+		{PMString	{0x0012, ""}}, // openPath
+		{Bool16		{0x0013, 1}},  // exportStyles
+		{Bool16		{0x0014, 1}},  // exportCJ
+		{Bool16		{0x0015, 1}},  // exportColors		
+		{Bool16		{0x0016, 1}},  // exportLayers
+		{Bool16		{0x0017, 1}},  // exportMasters)		
+		{Bool16		{0x0018, 1}},  // exportTextFrame	
+		{Bool16		{0x0019, 1}},  // exportImageFrame	
+		{Bool16		{0x001a, 1}},  // exportRule		
+		{Bool16		{0x001b, 1}},  // exportText		
+		{Bool16		{0x001c, 1}},  // exportParaCmd			
+		{Bool16		{0x001d, 1}},  // exportTextCmd
+		{Bool16		{0x001e, 1}},  // exportStyleCmd
+		{Bool16		{0x001f, 0}},  // printTCLRef	
+	}							 
+};	
+
+#if COMPOSER || !CRITICALDATA
+	resource IgnoreTags(1)
+#else
+	resource CriticalTags(1)
+#endif
+{
+	kImplementationIDSpace,
+	{
+		/* Document's persistent interfaces */
+		kPrsTCLReferencesListPersistImpl,
+		kPrsEpsDocumentNamePersistImpl,
+		kPrsEpsExportPrefsPersistImpl,			
+		
+		/* Tag's persistent interfaces */
+		kPermRefsTagImpl,
+		
+		/* Spline's persistent interfaces */
+		kPrsPersistImageScaleImpl,
+		kPrsPersistImageShiftImpl,
+		kPrsPersistStringDataImpl,
+		kPrsTCLRefDataImpl, 
+		
+		/* Workspace's persistent interfaces */
+		kPrsPreferencesPersistImpl,
+		kPrsRegistrationPersistImpl,
+#if AUTO_TAGGING
+		kPrsLastPremRefPersistImpl,
+#endif
+		
+	}
+};
+
+
+#if COMPOSER || !CRITICALDATA
+	resource IgnoreTags(2)
+#else
+	resource CriticalTags(2)
+#endif
+{
+	kClassIDSpace,
+	{
+		kPermRefsAttrBoss,
+		kPrsTCLAdornmentBoss,
+		kPermRefsTagTextAdornmentBoss,
+#if AUTO_TAGGING
+		kPermRefsTag1TextAdornmentBoss,
+		kPermRefsTag2TextAdornmentBoss,
+#endif
+	}
+};
+
+
+resource	ImplementationAlias(1)
+{ 
+	{ 
+		kPrsPersistStringDataImpl, kPersistStringDataImpl, 
+		kPrsPersistImageScaleImpl, kPersistPMPointDataImpl,
+		kPrsPersistImageShiftImpl, kPersistPMPointDataImpl,
+		
+#if REF_AS_STRING
+		kPrsTCLRefDataImpl,	kPersistStringDataImpl,
+#else
+		kPrsTCLRefDataImpl, kZeroInitPersistIntDataImpl, 
+#endif
+	} 
+};
+
+/*
+//	Boss class definition.
+*/
+resource ClassDescriptionTable(kSDKDefClassDescriptionTableResourceID)
+{{{
+
+	/** Provides schema based converter to handle static changes in the the format of 
+		persistent data in this plug-in's implementations.
+		@see SchemaList resource in PstLst.fr
+		@ingroup persistentlist
+	*/
+	Class 
+	{
+		kPrsConversionProviderBoss,
+		kInvalidClass,
+		{
+			/** IConversionProvider implementation for schema based conversion.
+				Implementation provided by the API.
+			*/
+			IID_ICONVERSIONPROVIDER, kSchemaBasedConversionImpl,
+			/** IK2ServiceProvider implementation that identifies this boss as a conversion service.
+				Implementation provided by the API.
+			*/
+			IID_IK2SERVICEPROVIDER, kConversionServiceImpl,
+		}
+	}
+
+	/**
+	 This AddIn add one persistent interface IItemPersistList to kDocBoss
+	 as well as one non-persistent interface
+	*/
+	AddIn
+	{
+		kDocBoss,
+		kInvalidClass,
+		{
+			/** Provides get and set methods to handle a list of page items
+			(frames and rules) as well as a list of stories (used by PermRefs) created by PageMakeUp PlugIn
+			*/
+			IID_TCLREFERENCESLIST, kPrsTCLReferencesListPersistImpl,
+			
+			/** Provides get and set to methods to store document name 
+			when it is exported in EPS format
+			*/
+			IID_IEPSDOCUMENTNAME, kPrsEpsDocumentNamePersistImpl,
+			
+			IID_IEPSEXPORTPREFERENCES, kPrsEpsExportPrefsPersistImpl,
+			
+			/** Provides method to store pdf export style to use when exported
+			*/
+			IID_IPDFEXPORTPREFS, kPrsPersistStringDataImpl,
+			
+			/** Observes paste and import snippet actions
+			*/
+			IID_PASTEIMPORTITEMOBSERVER, kPrsPasteImportItemObserverImpl,
+			IID_IPRSLASTIMPORTEDSNIPPET, kUIDListDataImpl,
+		}
+	},
+	
+	Class
+	{
+		kPrsSetDocPdfExportPrefsCmdBoss,
+		kInvalidClass,
+		{			
+			IID_ICOMMAND, kPrsSetDocPdfExportPrefsCmdImpl,
+			
+			IID_IPDFEXPORTPREFS, kStringDataImpl,
+		}
+	}
+	
+	Class
+	{
+		kPrsSetDocEpsExportPrefsCmdBoss,
+		kInvalidClass,
+		{
+			/** See ICommand
+			*/
+			IID_ICOMMAND,	kPrsSetDocEpsExportPrefsCmdImpl,
+			
+			IID_IEPSDOCUMENTNAME, kPrsEpsDocumentNameImpl,
+			
+			IID_IEPSEXPORTPREFERENCES, kPrsEpsExportPrefsImpl,
+			
+		}
+	}
+	
+	/** Implements the command used to store registration info
+	*/
+	Class 
+	{
+		kPrsSetRegistrationInfoCmdBoss,
+		kInvalidClass,
+		{
+			/** See ICommand
+			*/
+			IID_ICOMMAND,	kPrsSetRegistrationInfoCmdImpl,
+
+			/** this is the non-persistent version of IRegistration, 
+				since we are just passing a parameter value into the command.
+			*/
+			IID_IREGISTRATION, kPrsRegistrationImpl,
+		}
+	},
+	
+	/**
+	 This AddIn add one persistent interface IPageMakeUpPrefs to kDocBoss
+	*/
+	AddIn
+	{
+		kWorkspaceBoss,
+		kInvalidClass,
+		{
+			/**
+			     This is a persistent interface intented to store PageMakeUp preferences
+			*/
+			IID_IPAGEMAKEUPPREFS, kPrsPreferencesPersistImpl,
+			
+			/**
+			     This is a persistent interface intented to store registration information
+			*/
+			IID_IREGISTRATION, kPrsRegistrationPersistImpl,
+#if AUTO_TAGGING			
+			/**
+				Save last PermRef
+			*/
+			IID_ILASTPERMREFSTAG, kPrsLastPremRefPersistImpl,
+#endif
+		}
+	},
+	
+	/** Implements the command used to change the value of IPageMakeUpPrefs
+		in kPrsPanelWidgetBoss.
+	*/
+	Class 
+	{
+		kPrsSetPreferencesCmdBoss,
+		kInvalidClass,
+		{
+			/** See ICommand
+			*/
+			IID_ICOMMAND,	kPrsSetPreferencesCmdImpl,
+
+			/** this is the non-persistent version of IPageMakeUpPrefs, 
+				since we are just passing a parameter value into the command.
+			*/
+			IID_IPAGEMAKEUPPREFS, kPrsPreferencesImpl,
+		}
+	},
+	
+#if AUTO_TAGGING	
+	Class
+	{
+		kPrsLastPremRefCmdBoss
+		kInvalidClass,
+		{
+			IID_ICOMMAND,	kPrsLastPremRefCmdImpl,
+			IID_ILASTPERMREFSTAG, kPrsLastPremRefImpl,
+		}
+	},
+#endif
+	
+	/**
+		This AddIn adds IParserSuite to the abstract selection boss.
+		IParserSuite is a new interface added by this plug-in, it allows
+		client code to gain access to UIDs of selected items.
+	*/
+	AddIn
+	{
+		kIntegratorSuiteBoss,
+		kInvalidClass,
+		{
+			/** 
+				Integrator implementation of IParserSuite that integrates IParserSuite 
+				calls across implementations on concrete selection boss classes. 
+				In this case the only other implementation of IParserSuite is on the 
+				layout selection boss.
+			*/
+			IID_IPARSERSUITE, kPrsSuiteASBImpl,
+
+#if PERMREFS		
+			IID_IPERMREFSSUITE, kPermRefsSuiteASBImpl,
+#endif
+		}
+	},
+
+	/**
+		This AddIn adds IParserSuite to the layout selection boss.
+		IParserSuite is a new interface added by this plug-in, it allows
+		client code to gain access to UIDs of selected items.
+	*/
+	AddIn
+	{
+		kLayoutSuiteBoss,
+		kInvalidClass,
+		{
+			/** 
+				The concrete implementation of IParserSuite that deals with model
+				specific work.
+			*/
+			IID_IPARSERSUITE, kPrsSuiteLayoutCSBImpl,
+		}
+	},
+			
+	
+	/**
+		This AddIn adds an interface to store a TCL reference
+	*/
+	AddIn
+	{
+		kSplineItemBoss,
+		kInvalidClass,
+		{	
+			IID_ITCLREFDATA, kPrsTCLRefDataImpl, 
+			
+			/**
+				Theses interface store infos (scale and shift) for missing images
+			*/
+			IID_IIMAGESCALE, kPrsPersistImageScaleImpl,															
+			IID_IIMAGESHIFT, kPrsPersistImageShiftImpl,			
+			IID_IIMAGEPATH, kPrsPersistStringDataImpl,
+		}
+	},
+	
+	/**
+		Command to set TCL reference data of kSplineItemBoss
+	*/
+	Class
+	{
+		kPrsSetTCLRefDataCmdBoss,
+		kInvalidClass,
+		{
+			IID_ICOMMAND, kPrsSetTCLRefDataCmdImpl,
+			
+#if REF_AS_STRING
+			IID_ITCLREFDATA, kStringDataImpl,
+#else
+			IID_ITCLREFDATA, kIntDataImpl,
+#endif
+			
+		}
+	},
+	
+	/**
+		Command to set image infos of kSplineItemBoss
+	*/
+	Class
+	{
+		kPrsSetImageInfosCmdBoss,
+		kInvalidClass,
+		{
+			IID_ICOMMAND, kPrsSetImageInfosCmdImpl,
+			
+			IID_IIMAGESCALE, kPMPointDataImpl,
+			IID_IIMAGESHIFT, kPMPointDataImpl,			
+			IID_IIMAGEPATH, kStringDataImpl,
+		}
+	},
+
+#if PERMREFS
+
+	/**
+		This AddIn adds IPermRefsSuite to the text selection boss.
+		IPermRefsSuite is a new interface added by this plug-in, it allows
+		client code to gain access to selected text.
+	*/
+	AddIn
+	{
+		kTextSuiteBoss,
+		kInvalidClass,
+		{
+			/** The concrete implementation of IParserSuite that deals with model specific work */
+			IID_IPERMREFSSUITE, kPermRefsSuiteTextCSBImpl,
+		}
+	},
+	
+	/**
+		Text Attribute for PermRefs tags
+	*/
+	Class
+	{
+		kPermRefsAttrBoss,
+		kAttrBossReferencingBoss,
+		{
+			// PermRefs tag stored in text chunk		
+			IID_IPERMREFSTAG, kPermRefsTagImpl,			
+			IID_IATTRREPORT, kPermRefsTagReportImpl,			
+		}
+	},
+	
+	/** Text adornment draws a hilite behind the text to which the
+		PermRefs data tag text attribute applies.
+		@ingroup chdatamerger
+	*/
+	Class
+	{
+		kPermRefsTagTextAdornmentBoss,
+		kInvalidClass,
+		{
+			// PermRefs tag stored in text chunk and RGB color	 	
+			IID_IPERMREFSTAG, kPermRefsTagImpl,		
+			IID_ITEXTADORNMENT, kPermRefsTagTextAdornmentImpl,
+		}
+	},
+	
+#if AUTO_TAGGING	
+	Class
+	{
+		kPermRefsTag1TextAdornmentBoss,
+		kInvalidClass,
+		{
+			IID_ITEXTADORNMENT, kPermRefsTag1TextAdornmentImpl,
+		}
+	},
+	
+	Class
+	{
+		kPermRefsTag2TextAdornmentBoss,
+		kInvalidClass,
+		{
+			IID_ITEXTADORNMENT, kPermRefsTag2TextAdornmentImpl,
+		}
+	},	
+#endif
+	
+	Class 
+	{ 
+		kPermRefsPreProcessServiceBoss, 
+		kInvalidClass, 
+		{ 
+			IID_IK2SERVICEPROVIDER, kTextPreProcessService, 
+			IID_ITEXTEDITPREPROCESS, kPermRefsTextEditPreProcessImpl, 			
+		} 
+	}, 
+	
+	Class 
+	{ 
+		kPermRefsPostProcessServiceBoss, 
+		kInvalidClass, 
+		{ 
+			IID_IK2SERVICEPROVIDER, kTextPostProcessService, 
+			IID_ITEXTEDITPOSTPROCESS, kPermRefsTextEditPostProcessImpl, 			
+		} 
+	},
+	
+#endif
+	
+	/** Adornment added to frames showing their TCL reference
+	 */
+	Class 
+	{
+		kPrsTCLAdornmentBoss,
+		kInvalidClass,
+		{
+			/** See IAdornmentShape and CusDtLnkAdornmentShape.
+			 */
+			IID_IADORNMENTSHAPE, kPrsTCLAdornmentShapeImpl,
+		}
+		
+	},
+	
+	
+//	/**	Provides processing for draw events.
+//	*/
+//	Class
+//	{
+//		kPrsDrawServicesBoss,
+//		kInvalidClass,
+//		{
+//			/** Implements code necessary to process draw events. 
+//				@see PrnSelDrawHandler
+//			*/
+//			IID_IDRWEVTHANDLER, kPrsDrawHandlerImpl,
+//		}
+//	},
+
+//	/** Implements the IPrintSetupProvider 
+//		interface, which provides a mechanism to participate in the 
+//		printing process at opportune stages.
+//	*/
+//	Class
+//	{
+//		kPrsPrintSetupProviderBoss,
+//		kInvalidClass,
+//		{
+//			/** Registers this plug-in with the application as 
+//				providing a print setup service. 
+//			*/
+//			IID_IK2SERVICEPROVIDER, kThumbnailServiceImpl,
+//			/** Provides a mechanism to selectively enter into the print process.
+//			*/
+//			IID_IPRINTSETUPPROVIDER, kPrsPrintSetupProviderImpl,
+//		}
+//	},
+
+	
+	/**
+	 This boss class provides a command to set an item list on documents.
+	*/
+	Class
+	{
+		kPrsSetDocTCLReferencesListCmdBoss,
+		kInvalidClass,
+		{
+			/** Set datas on documents in ItemList of the command from parameters 
+			given in the interface below 
+			*/
+			IID_ICOMMAND, kPrsSetDocTCLReferencesListImpl,
+
+			/** Non-persistent implementation of ITCLReferencesList interface which
+			represents parameters passed to the command			 
+			*/
+			IID_TCLREFERENCESLIST, kPrsTCLReferencesListImpl,
+		}
+	},
+	
+	
+	/**
+	 This boss class provides methods to read and write TCL files.
+	*/
+	Class
+	{
+		kTCLReadWriteBoss,
+		kInvalidClass,
+		{
+			/** Provides method to read TCL files, to extract 
+			command's parameters and to get the state of the reading : 
+			current unit, current char, end of command reached...
+			*/
+			IID_ITCLREADER, kPrsTCLReaderImpl,
+			
+			/**
+			*/
+			IID_ITCLWRITER, kPrsTCLWriterImpl,
+
+			/** Allow to broadcast to observers the state of the reader.
+			Implementation provided by the API
+			*/
+			//IID_ISUBJECT, kCSubjectImpl,
+		}
+	},
+
+
+	/**
+	 This boss class uses the previous boss to parse a TCL file
+	 and execute commands
+	*/
+	Class
+	{
+		kTCLParserBoss,
+		kInvalidClass,
+		{
+			/** Uses kTCLReaderBoss to read TCL files and
+			executes commands
+			*/ 
+			IID_ITCLPARSER, kPrsTCLParserImpl,
+			
+			IID_IIDLETASK, kPrsParserThreadImpl,
+			
+			IID_ISUBJECT, kCSubjectImpl, // Allows observers to be notified when parser execution ends up
+			IID_IINTDATA, kIntDataImpl, // Stores result of last parser execution
+		}
+	},
+	
+	/** TEMPORARY VERSION 4.2.1
+		ADDED TO ALLOW SIMULTANEOUS EXECUTION OF AUTOPAGELINK / AUTOPAGELINKWS
+		TO BE REMOVED SOON...
+	*/
+	AddIn
+	{
+		kSessionBoss,
+		kInvalidClass,
+		{
+			IID_ITCLPARSER, kBoolDataImpl,							
+		}
+	},
+	
+	/**
+	 
+	*/
+	Class
+	{
+		kReverseTCLBoss,
+		kInvalidClass,
+		{
+			/** 
+			*/ 
+			IID_IREVERSETCL, kPrsReverseTCLImpl,
+		}
+	},
+
+
+	/**
+	*/
+	Class 
+	{
+		kPrsItemDelRespBoss,
+		kInvalidClass,
+		{
+			/** 
+			*/
+			IID_IK2SERVICEPROVIDER, kDeleteCleanupProviderImpl,
+
+			/**
+			*/
+			IID_IDELETECLEANUP, kPrsDeleteCleanupImpl,
+		}
+	},
+	
+	/** Responder boss class notified of :
+		- story deletion so that we can remove affected PermRefs references  
+		- document opening, so that we can update spline's IIntData interface
+	*/
+	Class
+	{
+		kPrsCustomServiceProviderBoss,
+		kInvalidClass,
+		{
+			/**
+			*/
+			IID_IK2SERVICEPROVIDER, kPrsCustomServiceProviderImpl,
+			
+			/**
+			*/
+			IID_IRESPONDER, kPrsRespServiceImpl,
+		},
+	},
+
+	
+	/** Error String provider for Script-related errors
+	 */
+	Class
+	{
+		kPrsErrorStringServiceBoss,
+		kInvalidClass,
+		{
+			/**	Identifies this boss as an error string provider.
+			  	Implementation from API (ShuksanID.h)
+			 */
+			IID_IK2SERVICEPROVIDER, kErrorStringProviderImpl,
+			/** Provides support for mapping error codes to the
+			  	strings in the UserErrorTable resource.
+			 */
+			IID_IERRORSTRINGSERVICE, kPrsErrorStringServiceImpl,
+		}
+	},
+	
+	/** Script provider for apple script event handling (designed for COMPOSER initially)
+	 */
+	Class
+	{
+		kPrsScriptProviderBoss,
+		kBaseScriptProviderBoss,
+		{
+			/** 
+			 */
+			IID_ISCRIPTPROVIDER, kPrsScriptProviderImpl, 
+		}
+	},
+	
+	
+
+	/** Service provider boss class to launch a serial number on startup */
+	Class
+	{
+		kPrsStartupShutdownBoss,
+		kInvalidClass,
+		 {
+				/** Implementation of IStartupShutdownService that installs idle task on startup */
+				IID_ISTARTUPSHUTDOWN, kPrsStartupShutdownImpl,
+				/** identify the service type */
+				IID_IK2SERVICEPROVIDER, kCStartupShutdownProviderImpl,								
+		 }
+	},
+	
+	/** Command boss class to fill table cells in a fastest way than when it's done using ITextModelCmds::InsertCmd */
+	Class
+	{
+		kPrsInsertTextCmdBoss,
+		kInvalidClass,
+		 {
+				IID_ICOMMAND, kPrsInsertTextCmdImpl,
+		 
+				/* Interface which stores text to insert in the cell */
+				IID_IWIDESTRINGDATA, kPrsWideStringDataImpl,
+				
+				/* Interface stores TextIndex which represents the insertion position of the text */
+				IID_IINTDATA, kIntDataImpl,
+		 }
+	},
+	
+	/** Handles scripting of TCLReference property
+		added into page items in interface ITCLRefData.
+	
+		Added at InDesign CS2 to support scripting.
+	 */
+	Class
+	{
+		kPrsTCLRefScriptProviderBoss,
+		kBaseScriptProviderBoss,
+		{			
+			IID_ISCRIPTPROVIDER, kPrsTCLRefScriptProviderImpl,	
+		}
+	},
+	
+#if !SERVER
+	/**
+		 This boss class represents a dialog to enter a serial number
+	*/
+	Class
+	{
+		kPrsSerialNumberDialogBoss,
+		kDialogBoss,
+		{
+			/** Provides management and control over the dialog. Implementation of IDialogController.
+			*/
+			IID_IDIALOGCONTROLLER, kPrsSerialNumberDialogControllerImpl,
+		}
+	},
+	
+	/** Service provider boss class to install the idle task on startup */
+	Class
+	{
+		kPrsEnterSerialNumberCmdBoss,
+		kInvalidClass,
+		 {
+				/** Implementation of IStartupShutdownService that installs idle task on startup */
+				IID_ICOMMAND, kPrsEnterSerialNumberCmdImpl,
+		 }
+	},
+#endif
+
+	/** Command boss class to set Text On Path start and end positions */
+	Class
+	{
+		kPrsSetTOPPositionCmdBoss,
+		kInvalidClass,
+		{
+			IID_ICOMMAND, kPrsSetTOPPositionCmdImpl,		
+			
+			/** Text start position */
+			IID_ISTARTPOSDATA, kRealNumberDataImpl,
+			
+			/** Text end position */
+			IID_IENDPOSDATA, kRealNumberDataImpl,
+		}
+	},
+
+}}};
+
+/*
+// Implementation definition.
+*/
+resource FactoryList (kSDKDefFactoryListResourceID) 
+{
+	kImplementationIDSpace,
+	{
+#include "PrsFactoryList.h"
+	}
+};
+
+
+/*
+// LocaleIndex
+// The LocaleIndex should have indicies that point at your
+// localizations for each language system that you are 
+// localized for.
+*/
+/*
+// String LocaleIndex.
+*/
+resource LocaleIndex (kSDKDefStringsResourceID)
+{
+	kStringTableRsrcType,
+	{
+		kWildFS, k_enUS, kSDKDefStringsResourceID + index_enUS
+		kWildFS, k_enGB, kSDKDefStringsResourceID + index_enUS
+		kWildFS, k_deDE, kSDKDefStringsResourceID + index_enUS
+		kWildFS, k_frFR, kSDKDefStringsResourceID + index_frFR
+		kWildFS, k_esES, kSDKDefStringsResourceID + index_enUS
+		kWildFS, k_ptBR, kSDKDefStringsResourceID + index_enUS
+		kWildFS, k_svSE, kSDKDefStringsResourceID + index_enUS
+		kWildFS, k_daDK, kSDKDefStringsResourceID + index_enUS
+		kWildFS, k_nlNL, kSDKDefStringsResourceID + index_enUS
+		kWildFS, k_itIT, kSDKDefStringsResourceID + index_enUS
+		kWildFS, k_nbNO, kSDKDefStringsResourceID + index_enUS
+		kWildFS, k_fiFI, kSDKDefStringsResourceID + index_enUS
+		kInDesignJapaneseFS, k_jaJP, kSDKDefStringsResourceID + index_enUS
+	}
+};
+
+resource LocaleIndex (kSDKDefStringsNoTransResourceID)
+{
+	kStringTableRsrcType,
+	{
+		kWildFS, k_Wild, kSDKDefStringsNoTransResourceID + index_enUS
+	}
+};
+
+resource StringTable (kSDKDefStringsNoTransResourceID + index_enUS)
+{
+	k_enUS,									// Locale Id
+	kEuropeanMacToWinEncodingConverter,		// Character encoding converter
+	{
+		// No-Translate strings go here:		
+	}
+};
+
+resource LocaleIndex (kPrsSerialNumberDialogResourceID)
+{
+   kViewRsrcType,
+	{
+		kWildFS,	k_Wild, kPrsSerialNumberDialogResourceID + index_enUS
+	}
+};
+
+type PrsSerialNumberDialogBoss(kViewRsrcType) : DialogBoss(ClassID = kPrsSerialNumberDialogBoss)
+{
+};
+
+resource PrsSerialNumberDialogBoss (kPrsSerialNumberDialogResourceID + index_enUS)
+{
+	__FILE__, __LINE__,
+	kPrsSerialNumberDialogWidgetID,	// WidgetID
+	kPMRsrcID_None,				// RsrcID
+	kBindNone,					// Binding
+	0, 0, 355, 120,				// Frame (l,t,r,b)
+	kTrue, kTrue,				// Visible, Enabled
+	kPrsSerialNumberDialogTitleKey,	// Dialog name
+	{
+		DefaultButtonWidget
+		(
+			kOKButtonWidgetID,		// WidgetID 
+			kSysButtonPMRsrcId,		// RsrcID
+			kBindNone,				// Binding
+			265, 90, 265+80, 90+20,	// Frame (l,t,r,b)
+			kTrue, kTrue,			// Visible, Enabled
+			kSDKDefOKButtonApplicationKey,	// Button text
+		),
+		CancelButtonWidget				
+		(
+			kCancelButton_WidgetID,	// WidgetID
+			kSysButtonPMRsrcId,		// RsrcID
+			kBindNone,				// Binding
+			175, 90, 175+80, 90+20,	// Frame (l,t,r,b)
+			kTrue, kTrue,			// Visible, Enabled
+			kSDKDefCancelButtonApplicationKey,	// Button name
+			kTrue,					// Change to Reset on option-click.
+		),
+		
+		PanelWithHiliteBorderWidget
+		(
+			0, // widget ID
+			kPMRsrcID_None, // PMRsrc ID
+			kBindNone, // frame binding
+			Frame(10,10,10+335,10+70) //  left, top, right, bottom
+			kTrue, // visible
+			kTrue, // enabled
+			"",
+			{
+				
+				StaticMultiLineTextWidget
+				(
+					0,
+					kPMRsrcID_None, 		// WidgetId, RsrcId
+					kBindNone,
+					5, 10, 5+325, 5+25,				// Frame left, top, right, bottom
+					kTrue, kTrue, kAlignLeft,		// Visible, Enabled, Alignment
+					kEllipsizeEnd,
+					kTrue,
+					kInvalidWidgetID,kDialogWindowFontId,4, 0,0,				// fScrollBarWidgetID,  fFontID, fNumPixelsBetweenLines, fInset
+					kPrsEnterSerialKey,	
+				),
+				
+				
+				TextEditBoxWidget
+				(
+					kNumberPart1WidgetID, 
+					kSysEditBoxPMRsrcId,					// WidgetId, RsrcId
+					kBindNone,
+					10, 40 , 10+55, 40 + 20,		// Frame
+					kTrue, kTrue,							// Visible, Enabled
+					0,										// widget id of nudge button			
+					0,	0,									// small/large nudge amount
+					4,										// max num chars( 0 = no limit)
+					kFalse,									// is read only
+					kFalse,									// should notify each key stroke
+					kFalse,									// range checking enabled
+					kFalse,									// blank entry allowed
+					0, 0,									// upper/lower bounds
+					"",										// initial text
+				),
+				
+				StaticTextWidget
+				(
+					0,
+					kSysStaticTextPMRsrcId, 		// WidgetId, RsrcId
+					kBindNone,
+					66, 40, 66+8, 40+20,				// Frame left, top, right, bottom
+					kTrue, kTrue, kAlignCenter,		// Visible, Enabled, Alignment
+					kEllipsizeEnd,
+					kTrue,
+					"-",	
+					0,			// WidgetID this shortcut is connected to, 0 if none.
+				),
+				
+				TextEditBoxWidget
+				(
+					kNumberPart2WidgetID, 
+					kSysEditBoxPMRsrcId,					// WidgetId, RsrcId
+					kBindNone,
+					75, 40 , 75+55, 40+20,		// Frame
+					kTrue, kTrue,							// Visible, Enabled
+					0,										// widget id of nudge button			
+					0,	0,									// small/large nudge amount
+					4,										// max num chars( 0 = no limit)
+					kFalse,									// is read only
+					kFalse,									// should notify each key stroke
+					kFalse,									// range checking enabled
+					kFalse,									// blank entry allowed
+					0, 0,									// upper/lower bounds
+					"",										// initial text
+				),
+				
+				StaticTextWidget
+				(
+					0,
+					kSysStaticTextPMRsrcId, 		// WidgetId, RsrcId
+					kBindNone,
+					131, 40, 131+8, 40+20,				// Frame left, top, right, bottom
+					kTrue, kTrue, kAlignCenter,		// Visible, Enabled, Alignment
+					kEllipsizeEnd,
+					kTrue,
+					"-",	
+					0,			// WidgetID this shortcut is connected to, 0 if none.
+				),
+				
+				TextEditBoxWidget
+				(
+					kNumberPart3WidgetID, 
+					kSysEditBoxPMRsrcId,					// WidgetId, RsrcId
+					kBindNone,
+					140, 40 , 140+55, 40+20,		// Frame
+					kTrue, kTrue,							// Visible, Enabled
+					0,										// widget id of nudge button			
+					0,	0,									// small/large nudge amount
+					4,										// max num chars( 0 = no limit)
+					kFalse,									// is read only
+					kFalse,									// should notify each key stroke
+					kFalse,									// range checking enabled
+					kFalse,									// blank entry allowed
+					0, 0,									// upper/lower bounds
+					"",										// initial text
+				),
+				
+				StaticTextWidget
+				(
+					0,
+					kSysStaticTextPMRsrcId, 		// WidgetId, RsrcId
+					kBindNone,
+					196, 40, 196+8, 40+20,				// Frame left, top, right, bottom
+					kTrue, kTrue, kAlignCenter,		// Visible, Enabled, Alignment
+					kEllipsizeEnd,
+					kTrue,
+					"-",	
+					0,			// WidgetID this shortcut is connected to, 0 if none.
+				),
+				
+				TextEditBoxWidget
+				(
+					kNumberPart4WidgetID, 
+					kSysEditBoxPMRsrcId,					// WidgetId, RsrcId
+					kBindNone,
+					205, 40 , 205+55, 40+20,		// Frame
+					kTrue, kTrue,							// Visible, Enabled
+					0,										// widget id of nudge button			
+					0,	0,									// small/large nudge amount
+					4,										// max num chars( 0 = no limit)
+					kFalse,									// is read only
+					kFalse,									// should notify each key stroke
+					kFalse,									// range checking enabled
+					kFalse,									// blank entry allowed
+					0, 0,									// upper/lower bounds
+					"",										// initial text
+				),
+				
+				StaticTextWidget
+				(
+					0,
+					kSysStaticTextPMRsrcId, 		// WidgetId, RsrcId
+					kBindNone,
+					261, 40, 261+8, 40+20,				// Frame left, top, right, bottom
+					kTrue, kTrue, kAlignCenter,		// Visible, Enabled, Alignment
+					kEllipsizeEnd,
+					kTrue,
+					"-",	
+					0,			// WidgetID this shortcut is connected to, 0 if none.
+				),
+				
+				TextEditBoxWidget
+				(
+					kNumberPart5WidgetID, 
+					kSysEditBoxPMRsrcId,					// WidgetId, RsrcId
+					kBindNone,
+					270, 40 , 270+55, 40+20,		// Frame
+					kTrue, kTrue,							// Visible, Enabled
+					0,										// widget id of nudge button			
+					0,	0,									// small/large nudge amount
+					4,										// max num chars( 0 = no limit)
+					kFalse,									// is read only
+					kFalse,									// should notify each key stroke
+					kFalse,									// range checking enabled
+					kFalse,									// blank entry allowed
+					0, 0,									// upper/lower bounds
+					"",										// initial text
+				),
+		
+			},
+		),
+
+	},
+};
+
+/*
+// Scripting definition.
+*/
+resource VersionedScriptElementInfo(1)
+{
+	//Contexts
+	{
+		// Scripting support added at InDesign CS 2.0.
+		kFiredrakeScriptVersion, kCoreScriptManagerBoss, kWildFS, k_Wild,
+	}
+	
+	//Elements
+	{
+		// TCLRef data
+		Property
+		{
+			kPrsTCLRelPropScriptElement,			// this property's script element ID
+			p_TCLRef,								// ScriptID
+			"TCLRef data",								// name
+			"TCL reference for a spline item ",	// description
+#if REF_AS_STRING
+			StringType,								// type
+#else
+			Int32Type,								// type
+#endif
+			{}										// alternate types
+			kNoAttributeClass,						// attribute class ID
+		}
+		
+		// PermRefs  Tag text attribute
+		Property
+		{
+			kPrsPermRefsTagPropScriptElement,		// this property's script element ID
+			p_PermRefTag,							// ScriptID
+			"PermRefs Tag",							// name
+			"Hold some meaningful reference",		// description
+			Int32ArrayType ( 5 ),								// type
+			{}										// alternate types
+			kPermRefsAttrBoss,						// attribute class ID
+		}
+		
+		// Connects this plug-in's ITCLRefData add-in data interface on page items to scripting
+		Provider
+		{
+			kPrsTCLRefScriptProviderBoss,
+			{
+				// Put the ITCLRefData property on the page item scripting object.
+				// Scripting objects that inherit from kPageItemObjectScriptElement
+				// will inherit the property. These scripting objects include
+				// rectangle, polygon, oval, etc.
+				Object{ kPageItemObjectScriptElement },
+				
+				// The TCLRef property
+				Property{ kPrsTCLRelPropScriptElement, kReadWrite },				
+			}
+		}
+		
+		// Connects this plug-in's ITCLRefData add-in data interface on page items to scripting
+		Provider
+		{
+			kPrsTCLRefScriptProviderBoss,
+			{
+				// Expose this plug-in's text attribute property on the textStyleRange and text scripting objects.	
+				Object{ kTextStyleRangeObjectScriptElement }, 				
+				Object{ kTextObjectScriptElement },
+				// Note: this also allows the property to be set for text, character, word, line, 
+				// paragraph and insertionPoint scripting objects.					
+
+				// The property that allows this plug-in's text attribute to be applied to a range of text.	
+				Property{ kPrsPermRefsTagPropScriptElement, kReadWrite },					
+			}
+		}
+	}	
+};
+
+#if COMPOSER
+
+/*
+// User Error Table resource 
+// To be coupled with an IErrorStringService implementation and
+// string translations (see localized .fr files)
+*/
+resource UserErrorTable(kSDKDefErrorStringResourceID) 
+{
+	{
+		// global err code, error string
+		kPrsExecTCLFailedErrorCode, kErrExecTCLFailedStringkey,
+		
+	}
+	
+};
+
+
+/*  Scripting definition
+	In InDesign/InCopy, scripting resources are defined via ODFRez statements for cross-platform compatibility.
+*/
+resource VersionedScriptElementInfo(4)
+{
+	// Contexts
+	{
+		// Scripting support added at InDesign CS 2.0
+        kFiredrakeScriptVersion, kAppleScriptMgrBoss, kWildFS, k_Wild,
+	}
+	
+	// Elements
+	{
+		// Specifies an event
+		Event
+		{
+			kPrsExecTCLEventScriptElement,
+			e_ExecuteTCLFile,
+			"ExecuteTCLFile",
+			"Execute the given TCL file",
+			Int32Type,
+			"Error code",
+			{
+				p_FileName, "FileName", "TCL file absolute path", StringType, kRequired, 
+			}
+		}	
+		
+		Event
+		{
+			kPrsGetPermRefsTagEventScriptElement,
+			e_GetPermRefs,
+			"GetTextTag",
+			"Return the PermRefs found in the selected text box",
+			Int32ArrayType(kVariableLength),
+			"Return the PermRefs found in the selected text box"
+			{
+				p_Ref, "TCLRef", "TextBox Reference number from which we want to obtain the Permrefs",
+#if REF_AS_STRING
+				StringDefaultType(""), kOptional,
+#else
+				Int32DefaultType(0), kOptional,
+#endif				
+			}
+		}
+		
+		// Connects this plug-in's events and properties to scripting.
+		Provider
+		{
+			kPrsScriptProviderBoss,	// provider boss ID
+			{
+				Object{ kApplicationObjectScriptElement },
+				Event{ kPrsExecTCLEventScriptElement },
+				Event{ kPrsGetPermRefsTagEventScriptElement },
+			}
+		}
+	}
+};
+
+#endif
+
+#endif // __ODFRC__
+
+#include "Prs_enUS.fr"
+#include "Prs_frFR.fr"
+//  Generated by Dolly build 17: template "IfPanelMenu".
+// End, Prs.fr.
+
+
+
+
+

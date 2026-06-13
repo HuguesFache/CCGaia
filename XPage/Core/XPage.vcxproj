@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build" ToolsVersion="14.0">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Client-2021|x64"><Configuration>Client-2021</Configuration><Platform>x64</Platform></ProjectConfiguration>
+    <ProjectConfiguration Include="Server-2021|x64"><Configuration>Server-2021</Configuration><Platform>x64</Platform></ProjectConfiguration>
+    <ProjectConfiguration Include="Client-2022|x64"><Configuration>Client-2022</Configuration><Platform>x64</Platform></ProjectConfiguration>
+    <ProjectConfiguration Include="Server-2022|x64"><Configuration>Server-2022</Configuration><Platform>x64</Platform></ProjectConfiguration>
+    <ProjectConfiguration Include="Client-2023|x64"><Configuration>Client-2023</Configuration><Platform>x64</Platform></ProjectConfiguration>
+    <ProjectConfiguration Include="Server-2023|x64"><Configuration>Server-2023</Configuration><Platform>x64</Platform></ProjectConfiguration>
+    <ProjectConfiguration Include="Client-2024|x64"><Configuration>Client-2024</Configuration><Platform>x64</Platform></ProjectConfiguration>
+    <ProjectConfiguration Include="Server-2024|x64"><Configuration>Server-2024</Configuration><Platform>x64</Platform></ProjectConfiguration>
+    <ProjectConfiguration Include="Client-2025|x64"><Configuration>Client-2025</Configuration><Platform>x64</Platform></ProjectConfiguration>
+    <ProjectConfiguration Include="Server-2025|x64"><Configuration>Server-2025</Configuration><Platform>x64</Platform></ProjectConfiguration>
+    <ProjectConfiguration Include="Client-2026|x64"><Configuration>Client-2026</Configuration><Platform>x64</Platform></ProjectConfiguration>
+    <ProjectConfiguration Include="Server-2026|x64"><Configuration>Server-2026</Configuration><Platform>x64</Platform></ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectName>XPage</ProjectName>
+    <ProjectGuid>{117C4761-24C3-3F45-DBDB-00231B020C55}</ProjectGuid>
+    <WindowsTargetPlatformVersion>10.0.19041.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings" />
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="XPGReleaseX64.props" />
+  </ImportGroup>
+  
+  <PropertyGroup Label="UserMacros" />
+  
+  <ItemDefinitionGroup>
+    <Midl>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_DEPRECATE;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MkTypLibCompatible>true</MkTypLibCompatible>
+      <TargetEnvironment>X64</TargetEnvironment>
+      <TypeLibraryName>$(IntDir)XPage.tlb</TypeLibraryName>
+      <HeaderFileName />
+    </Midl>
+    <ClCompile>
+      <AdditionalOptions>/vmg</AdditionalOptions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_DEPRECATE;BOOST_SYSTEM_NO_DEPRECATED;STRICT;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>VCPlugInHeaders.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile>$(IntDir)XPage.pch</PrecompiledHeaderOutputFile>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <AdditionalIncludeDirectories>.\source;..\..\XRailClient\XRailClient\source;..\UI\source;..\..\XRail\XRail\source;C:\SDKs\vcpkg\installed\x64-windows-static\include;C:\SDKs\vcpkg\installed\x64-windows\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <TreatWarningAsError>false</TreatWarningAsError>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_DEPRECATE;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+    <PreLinkEvent>
+      <Command>merge_res.cmd "$(IntDir)"  XPG &amp; echo Deleting old resources... &amp; del /f /s "$(TargetDir)($(TargetName) Resources)\"*.idrc &gt; $(IntDir)prevDeletedResources.txt &amp;  xcopy /Q /E "$(IntDir)"*.idrc "$(TargetDir)($(TargetName) Resources)\" /Y</Command>
+    </PreLinkEvent>
+    <Link>
+      <AdditionalOptions>/IGNORE:4089 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>$(ID_SDK_DIR)\build\win\objrx64\PMRuntime.lib;$(ID_SDK_DIR)\build\win\objrx64\Public.lib;$(ID_SDK_DIR)\build\win\objrx64\ASLSupport.lib;$(ID_SDK_DIR)\build\win\objrx64\WidgetBin.lib;$(ID_SDK_DIR)\build\win\objrx64\DV_WidgetBin.lib;$(ID_SDK_DIR)\build\win\objrx64\Database.lib;$(ID_SDK_DIR)\external\afl\libs\win\releasex64\AFL.lib</AdditionalDependencies>
+      <OutputFile>$(OutDir)Xpage.pln</OutputFile>
+      <ProgramDatabaseFile>$(IntDir)XPage.pdb</ProgramDatabaseFile>
+      <ImportLibrary>$(IntDir)XPage.lib</ImportLibrary>
+    </Link>
+    <PostBuildEvent>
+      <Command>restore_res.cmd "$(IntDir)"  XPG</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  
+  <ItemGroup>
+    <ClCompile Include="$(ID_SDK_DIR)\source\precomp\msvc\VCPlugInHeaders.cpp">
+      <PrecompiledHeader>Create</PrecompiledHeader>
+      
+    </ClCompile>
+    <ClCompile Include="$(ID_SDK_DIR)\source\public\libs\publiclib\statics\PlugInStatics.cpp" />
+    <ClCompile Include="$(ID_SDK_DIR)\source\sdksamples\common\SDKFileHelper.cpp" />
+    <ClCompile Include="$(ID_SDK_DIR)\source\sdksamples\common\SDKPlugInEntrypoint.cpp" />
+    <ClCompile Include="source\XPGID.cpp" />
+    <ClCompile Include="source\XPGNoStrip.cpp" />
+    <ClCompile Include="source\TriggerResourceDeps.cpp" />
+    <ClCompile Include="source\PersistStringListData.cpp" />
+    <ClCompile Include="source\XPageIndexSuiteASB.cpp" />
+    <ClCompile Include="source\XPageIndexSuiteTextCSB.cpp" />
+    <ClCompile Include="source\XPageMgrAccessor.cpp" />
+    <ClCompile Include="source\XPageSuiteASB.cpp" />
+    <ClCompile Include="source\XPageSuiteLayoutCSB.cpp" />
+    <ClCompile Include="source\XPageSuiteTextCSB.cpp" />
+    <ClCompile Include="source\XPageUtils.cpp" />
+    <ClCompile Include="source\XPGArticleData.cpp" />
+    <ClCompile Include="source\XPGArticleSizerCmd.cpp" />
+    <ClCompile Include="source\XPGCheckTextImportHandler.cpp" />
+    <ClCompile Include="source\XPGDocObserver.cpp" />
+    <ClCompile Include="source\XPGErrorStringService.cpp" />
+    <ClCompile Include="source\XPGExportArtResp.cpp" />
+    <ClCompile Include="source\XPGFileSystemAssemblageModel.cpp" />
+    <ClCompile Include="source\XPGFileSystemFormeModel.cpp" />
+    <ClCompile Include="source\XPGFilterStyleCmd.cpp" />
+    <ClCompile Include="source\XPGFormeData.cpp" />
+    <ClCompile Include="source\XPGFormeDataNode.cpp" />
+    <ClCompile Include="source\XPGIAMServiceProvider.cpp" />
+    <ClCompile Include="source\XPGImageDataNode.cpp" />
+    <ClCompile Include="source\XPGImageModelBase.cpp" />
+    <ClCompile Include="source\XPGImportSnippetObserver.cpp" />
+    <ClCompile Include="source\XPGKeyValueData.cpp" />
+    <ClCompile Include="source\XPGLSIDData.cpp" />
+    <ClCompile Include="source\XPGPlacedArticleData.cpp" />
+    <ClCompile Include="source\XPGPointerData.cpp" />
+    <ClCompile Include="source\XPGPreferences.cpp" />
+    <ClCompile Include="source\XPGResponder.cpp" />
+    <ClCompile Include="source\XPGSaveAssignmentCmd.cpp" />
+    <ClCompile Include="source\XPGScriptProvider.cpp" />
+    <ClCompile Include="source\XPGServiceProvider.cpp" />
+    <ClCompile Include="source\XPGSetArticleDataCmd.cpp" />
+    <ClCompile Include="source\XPGSetArticleIDCmd.cpp" />
+    <ClCompile Include="source\XPGSetFormeDataCmd.cpp" />
+    <ClCompile Include="source\XPGSetPlacedArticleDataCmd.cpp" />
+    <ClCompile Include="source\XPGSetStringCmd.cpp" />
+    <ClCompile Include="source\XPGSetTagToStyleMapCmd.cpp" />
+    <ClCompile Include="source\XPGStartupShutdown.cpp" />
+    <ClCompile Include="source\XPGTagToStyleMap.cpp" />
+    <ClCompile Include="source\XPGTECImageModel.cpp" />
+    <ClCompile Include="source\XPGTextData.cpp" />
+    <ClCompile Include="source\XPGArticleDataNode.cpp" />
+    <ClCompile Include="source\XPGTextImportHandler.cpp" />
+    <ClCompile Include="source\XPGArticleDataModel.cpp" />
+    <ClCompile Include="source\XPGUnlockStoriesCmd.cpp" />
+    <ClCompile Include="source\XPGUpdateArticleXMLFileCmd.cpp" />
+    <ClCompile Include="source\XPGXmlArticleDescription.cpp" />
+    <ClCompile Include="source\XPGXMLParserArticle.cpp" />
+    <ClCompile Include="source\XPGXMLExportFileHandler.cpp" />
+    <ClCompile Include="source\XPGXMLFormeDescriptionHandler.cpp" />
+    <ClCompile Include="source\XPGXMLImageDescriptionHandler.cpp" />
+    <ClCompile Include="source\XPGXMLLoadTagHandler.cpp" />
+    <ClCompile Include="source\XPGXMLMatchingFileHandler.cpp" />
+    <ClCompile Include="source\XPGXMLMatchingFileHandler2.cpp" />
+    <ClCompile Include="source\XPGXMLMatchingStylesListHandler.cpp" />
+    <ClCompile Include="source\XPGXMLPostImportIterationBase.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(ID_SDK_DIR)\source\sdksamples\common\SDKFileHelper.h" />
+    <ClInclude Include="source\XPGID.h" />
+    <ClInclude Include="source\XPGFactoryList.h" />
+    <ClInclude Include="source\IArticleData.h" />
+    <ClInclude Include="source\IAssemblageDataModel.h" />
+    <ClInclude Include="source\IFormeData.h" />
+    <ClInclude Include="source\IFormeDataModel.h" />
+    <ClInclude Include="source\IImageDataModel.h" />
+    <ClInclude Include="source\IKeyValueData.h" />
+    <ClInclude Include="source\ILSIDData.h" />
+    <ClInclude Include="source\IMatchingStylesList.h" />
+    <ClInclude Include="source\IPlacedArticleData.h" />
+    <ClInclude Include="source\IPointerData.h" />
+    <ClInclude Include="source\IArticleDataModel.h" />
+    <ClInclude Include="source\IXPageIndexSuite.h" />
+    <ClInclude Include="source\IXPageMgrAccessor.h" />
+    <ClInclude Include="source\IXPageSuite.h" />
+    <ClInclude Include="source\IXPageUtils.h" />
+    <ClInclude Include="source\IXPGPreferences.h" />
+    <ClInclude Include="source\IXPGTagToStyleMap.h" />
+    <ClInclude Include="source\PlatformFileSystemIterator.h" />
+    <ClInclude Include="source\XMLDefs.h" />
+    <ClInclude Include="source\XPGFormeDataNode.h" />
+    <ClInclude Include="source\XPGImageDataNode.h" />
+    <ClInclude Include="source\XPGImageModelBase.h" />
+    <ClInclude Include="source\XPGMatchingStyleDataNode.h" />
+    <ClInclude Include="source\XPGScriptingDefs.h" />
+    <ClInclude Include="source\XPGArticleDataNode.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="source\XPG.fr">
+      <Command>
+        odfrc -d SERVER=$(SERVER_VALUE) $(ODFRC_ADDITIONAL_FLAGS) "%(FullPath)" -o "$(IntDir)%(Filename).fres" -i "source" $(ODFRC_INC)
+      </Command>
+      
+      <AdditionalInputs>$(IntDir)TriggerResourceDeps.obj;%(AdditionalInputs)</AdditionalInputs>
+      
+      <Outputs>$(IntDir)%(Filename).fres;%(Outputs)</Outputs>
+      
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="source\XPG.rc">
+      <PreprocessorDefinitions>_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      
+      <Culture>0x0809</Culture>
+      
+      <AdditionalIncludeDirectories>source;source;$(ID_SDK_DIR)\source\precomp\msvc;$(ID_SDK_DIR)\source\public\includes;$(ID_SDK_DIR)\source\sdksamples\common;%(AdditionalIncludeDirectories)
+      </AdditionalIncludeDirectories>
+      
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="source\XPG_enUS.fr" />
+    <None Include="source\XPG_frFR.fr" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets" />
+</Project>

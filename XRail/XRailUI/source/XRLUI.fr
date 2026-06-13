@@ -1,0 +1,1306 @@
+//========================================================================================
+//  
+//  $File: $
+//  
+//  Owner: Trias
+//  
+//  $Author: $
+//  
+//  $DateTime: $
+//  
+//  $Revision: $
+//  
+//  $Change: $
+//  
+//  Copyright Adobe Systems Incorporated. All rights reserved.
+//  
+//  NOTICE:  Adobe permits you to use, modify, and distribute this file in accordance 
+//  with the terms of the Adobe license agreement accompanying it.  If you have received
+//  this file from a source other than Adobe, then your use, modification, or 
+//  distribution of it requires the prior written permission of Adobe.
+//  
+//========================================================================================
+
+#include "VCPlugInHeaders.h"
+
+// General includes:
+#include "MenuDef.fh"
+#include "ActionDef.fh"
+#include "ActionDefs.h"
+#include "AdobeMenuPositions.h"
+#include "LocaleIndex.h"
+#include "PMLocaleIds.h"
+#include "StringTable.fh"
+#include "ObjectModelTypes.fh"
+#include "ShuksanID.h"
+#include "ActionID.h"
+#include "CommandID.h"
+#include "WorkspaceID.h"
+#include "WidgetID.h"
+#include "BuildNumber.h"
+#include "PlugInModel_UIAttributes.h"
+#include "Widgets.fh"	// for DialogBoss
+#include "SysControlIDs.h"
+#include "IControlViewDefs.h"
+#include "PanelList.fh"
+#include "InterfaceColorDefines.h"
+#include "DragDropID.h"
+#include "PageItemScrapID.h"
+#include "GenericID.h"
+#include "LayoutUIID.h"
+#include "TreeViewDefs.h"
+
+// Project includes:
+#include "XRLUIID.h"
+#include "XRLID.h"
+
+#include "GenericID.h"
+#include "ShuksanID.h"
+#include "TextID.h"
+
+
+#ifdef __ODFRC__
+
+/*  Plugin version definition.
+*/
+resource PluginVersion (kSDKDefPluginVersionResourceID)
+{
+	kTargetVersion,
+	kXRLUIPluginID,
+	kSDKDefPlugInMajorVersionNumber, kSDKDefPlugInMinorVersionNumber,
+	kSDKDefHostMajorVersionNumber, kSDKDefHostMinorVersionNumber,
+	kXRLUICurrentMajorFormatNumber, kXRLUICurrentMinorFormatNumber,
+	{ kInDesignProduct, kInCopyProduct, kInDesignServerProduct},
+	{ kWildFS },
+	kUIPlugIn,
+	kXRLUIVersion
+};
+
+/*  The ExtraPluginInfo resource adds extra information to the Missing Plug-in dialog
+	that is popped when a document containing this plug-in's data is opened when
+	this plug-in is not present. These strings are not translatable strings
+	since they must be available when the plug-in isn't around. They get stored
+	in any document that this plug-in contributes data to.
+*/
+resource ExtraPluginInfo(1)
+{
+	kXRLUICompanyValue,			// Company name
+	kXRLUIMissingPluginURLValue,	// URL 
+	kXRLUIMissingPluginAlertValue,	// Missing plug-in alert text
+};
+
+/* Boss class definition.
+*/
+resource ClassDescriptionTable(kSDKDefClassDescriptionTableResourceID)
+{{{
+
+	/**
+	Provides the actions invoked by this plug-in's
+	 sub-menu items. It supports two interfaces: 
+	 IActionComponent and IPMPersist. We provide the implementation 
+	 for IActionComponent (see XRailActionComponent). The other
+	 default implementation is provided by the API.
+	 
+	 @ingroup basicdialog
+	*/
+	Class
+	{
+		kXRLUIActionComponentBoss,
+		kInvalidClass,
+		{
+			/** Handle the actions from the menu. 
+				@see XRailActionComponent
+			*/
+			IID_IACTIONCOMPONENT, kXRLUIActionComponentImpl,
+			/** Persist the state of the menu across application instantiation.
+				Implementation provided by the API.
+			*/
+			IID_IPMPERSIST, kPMPersistImpl,
+		}
+	}, 
+	
+	/** Service provider boss class to install the idle task on startup */
+	Class
+	{
+		kXRLUIStartupShutdownBoss,
+		kInvalidClass,
+		 {
+				/** Implementation of IStartupShutdownService that installs idle task on startup */
+				IID_ISTARTUPSHUTDOWN, kXRLUIUIStartupShutdownImpl,
+				/** identify the service type */
+				IID_IK2SERVICEPROVIDER, kCStartupShutdownProviderImpl,
+		 }
+	},	
+	
+	/**
+		Preferences dialog : allows to define XRail server address
+	*/
+	Class
+	{
+		kXRLUIPrefsDialogBoss,
+		kDialogBoss,
+		{
+			/** Provides management and control over the dialog. Implementation of IDialogController.
+				@see XRailDialogController 
+			*/
+			IID_IDIALOGCONTROLLER, kXRLUIDialogControllerImpl,
+			
+			IID_IBOOLDATA, kFalseInitBoolDataImpl,
+		}
+	},
+
+	Class
+	{
+		kXRLUIChangeStateDialogBoss,
+		kDialogBoss,
+		{
+			/** Provides management and control over the dialog. Implementation of IDialogController.
+				@see XRailDialogController 
+			*/
+			IID_IDIALOGCONTROLLER, kXRLUIChangeStateDialogControllerImpl,
+			
+			/** Parameter for the dialog : UIDRef of the document that will change status
+			*/
+			IID_IUIDDATA, kUIDDataImpl,
+			
+			/** Parameter for the dialog : Current status of the document (actually it's last page's status...)
+			*/
+			IID_ISTRINGDATA, kStringDataImpl,
+			IID_IBOOLDATA, kFalseInitBoolDataImpl,
+		}
+	},
+
+	Class
+	{
+		kXRLUILinkerDialogBoss,
+		kDialogBoss,
+		{
+			/** Provides management and control over the dialog. Implementation of IDialogController.
+				@see XRailDialogController 
+			*/
+			IID_IDIALOGCONTROLLER, kXRLUILinkerDialogControllerImpl,
+			
+			/** Observes changes in widgets
+			*/
+			IID_IOBSERVER, kXRLUILinkerDialogObserverImpl,
+						
+			
+			/** Parameter for the dialog : UIDRef of the document that will change status
+			*/
+			IID_IUIDDATA, kUIDDataImpl,
+			
+		}
+	},
+
+	Class
+	{
+		kXRLUILoginDialogBoss,
+		kDialogBoss,
+		{
+			/** Provides management and control over the dialog. Implementation of IDialogController.
+				@see XRailLoginDialogController 
+			*/
+			IID_IDIALOGCONTROLLER, kXRLUILoginDialogControllerImpl,
+		}
+	},
+
+	/**
+		This command is intended for being scheduled on startup so that the user has to log in immediatly
+	*/
+	Class
+	{
+		kXRLUIOpenLoginDialogCmdBoss,
+		kInvalidClass,
+		{
+			IID_ICOMMAND, kXRLUIOpenLoginDialogCmdImpl,
+		}
+	},
+	
+	/**
+		Redefines dropdownlist widget to manage a list of ids (int32)
+	*/
+	Class
+	{
+		kXRLUIIDDropDownListWidgetBoss,
+		kDropDownListWidgetBoss,
+		{
+			IID_IINTLIST, kXRLUIIntListImpl,
+		}
+	},
+
+	/**
+		Commentaires palette boss class. Aggregates the panel observer and the
+		comment data model — the tree view's IID_IDATAMODEL points at this
+		boss so the adapter + widget mgr can read the rows.
+	*/
+	Class
+	{
+		kXRLUICommentsPanelWidgetBoss,
+		kPalettePanelWidgetBoss,
+		{
+			IID_IPANELDETAILCONTROLLER,	kSizePanelDetailControllerImpl,
+			IID_IOBSERVER,				kXRLUICommentsPanelObserverImpl,
+			IID_IXRLUICOMMENTLIST,		kXRLUICommentListImpl,
+		}
+	},
+
+	/**
+		Tree view widget hosting the comment rows. Adapter + widget mgr +
+		IID_IDATAMODEL slot for the panel observer to point at the data.
+	*/
+	Class
+	{
+		kXRLUICommentsViewWidgetBoss,
+		kTreeViewWidgetBoss,
+		{
+			IID_ITREEVIEWWIDGETMGR,			kXRLUICommentsTVWidgetMgrImpl,
+			IID_ITREEVIEWHIERARCHYADAPTER,	kXRLUICommentsTVHierarchyAdapterImpl,
+			IID_IXRLUIDATAMODEL,			kPMUnknownDataImpl,
+		}
+	},
+
+	/**
+		Per-row node widget — 4 cells (check, date, comment, user). Custom
+		IEventHandler catches double-click and centres the layout view on
+		the comment's (X%, Y%) page-relative position; all other events are
+		delegated through IID_IXRLUICOMMENTSSHADOWEH to the SDK's tree-node
+		handler so selection/highlight keep working.
+	*/
+	Class
+	{
+		kXRLUICommentsNodeWidgetBoss,
+		kTreeNodeWidgetBoss,
+		{
+			IID_IEVENTHANDLER,				kXRLUICommentsNodeEHImpl,
+			IID_IXRLUICOMMENTSSHADOWEH,		kTreeNodeEventHandlerImpl,
+		}
+	},
+
+}}};
+
+/*  Implementation definition.
+*/
+resource FactoryList (kSDKDefFactoryListResourceID)
+{
+	kImplementationIDSpace,
+	{
+		#include "XRLUIFactoryList.h"
+	}
+};
+
+
+/*
+// Menu definition.
+*/
+resource MenuDef (kSDKDefMenuResourceID)
+{
+	{
+		// The About Plug-ins sub-menu item for this plug-in.
+		kXRLUIAboutActionID,			// ActionID (kInvalidActionID for positional entries)
+		kXRLUIPluginsMenuPath,					// Menu Path.
+		kXRLUIAboutMenuItemPosition,			// Menu Position.
+		kSDKDefIsNotDynamicMenuFlag,		// kSDKDefIsNotDynamicMenuFlag or kSDKDefIsDynamicMenuFlag.
+
+		// The Plug-ins menu sub-menu items for this plug-in.
+		kXRLUIPreferencesActionID,
+		kXRLUIPluginsMenuPath,
+		kXRLUIPreferencesMenuItemPosition,
+		kSDKDefIsNotDynamicMenuFlag,
+		
+		// The Plug-ins menu sub-menu items for this plug-in.
+		kXRLUIConnectionActionID,
+		kXRLUIPluginsMenuPath,
+		kXRLUIConnectionMenuItemPosition,
+		kSDKDefIsNotDynamicMenuFlag,
+		
+		kXRLUIEnablePreviewActionID,
+		kXRLUIPluginsMenuPath,
+		kXRLUIEnablePreviewMenuItemPosition,
+		kSDKDefIsNotDynamicMenuFlag,
+
+		kXRLUIExternalPDFActionID,
+		kXRLUIPluginsMenuPath,
+		kXRLUIExternalPDFMenuItemPosition,
+		kSDKDefIsNotDynamicMenuFlag,
+
+		kXRLUIXRailLinkActionID,
+		kXRLUIPluginsMenuPath,
+		kXRLUIXRailLinkMenuItemPosition,
+		kSDKDefIsNotDynamicMenuFlag,
+		
+		kXRLUIXRailUnLinkActionID,
+		kXRLUIPluginsMenuPath,
+		kXRLUIXRailUnLinkMenuItemPosition,
+		kSDKDefIsNotDynamicMenuFlag,
+		
+		kXRLUISep1ActionID,
+		kXRLUIPluginsMenuPath kSDKDefDelimiterAndSeparatorPath,
+		kXRLUISep1MenuItemPosition,
+		kSDKDefIsNotDynamicMenuFlag,
+		
+		kXRLUISep2ActionID,
+		kXRLUIPluginsMenuPath kSDKDefDelimiterAndSeparatorPath,
+		kXRLUISep2MenuItemPosition,
+		kSDKDefIsNotDynamicMenuFlag,
+	}
+};
+
+/*
+// Action definition.
+*/
+resource ActionDef (kSDKDefActionResourceID)
+{
+	{ 
+		kXRLUIActionComponentBoss, 		// ClassID of boss class that implements the ActionID.
+		kXRLUIAboutActionID,	// ActionID.
+		kXRLUIAboutMenuKey,	// Sub-menu string.
+		kOtherActionArea,				// Area name (see ActionDefs.h).
+		kNormalAction,					// Type of action (see ActionDefs.h).
+		kDisableIfLowMem,				// Enabling type (see ActionDefs.h).
+		kInvalidInterfaceID,			// Selection InterfaceID this action cares about or kInvalidInterfaceID.
+		kSDKDefVisibleInKBSCEditorFlag, // kSDKDefVisibleInKBSCEditorFlag or kSDKDefInvisibleInKBSCEditorFlag.
+
+		kXRLUIActionComponentBoss,
+		kXRLUIPreferencesActionID,		
+		kXRLUISousMenuPreferences,		
+		kOtherActionArea,			
+		kNormalAction,				
+		kDisableIfLowMem,	
+		kInvalidInterfaceID,		
+		kSDKDefVisibleInKBSCEditorFlag,
+
+		kXRLUIActionComponentBoss,
+		kXRLUIConnectionActionID,		
+		kXRLUISousMenuConnection,		
+		kOtherActionArea,			
+		kNormalAction,				
+		kDisableIfLowMem,	
+		kInvalidInterfaceID,		
+		kSDKDefVisibleInKBSCEditorFlag,
+
+		kXRLUIActionComponentBoss,
+		kXRLUIEnablePreviewActionID,		
+		kXRLUIEnablePreviewMenuKey,		
+		kOtherActionArea,			
+		kNormalAction,				
+		kDisableIfNoFrontLayoutView | kDisableIfLowMem | kCustomEnabling,	
+		kInvalidInterfaceID,		
+		kSDKDefVisibleInKBSCEditorFlag,
+
+		kXRLUIActionComponentBoss,
+		kXRLUIExternalPDFActionID,		
+		kXRLUIExternalPDFMenuKey,		
+		kOtherActionArea,			
+		kNormalAction,				
+		kDisableIfNoFrontLayoutView | kDisableIfLowMem | kCustomEnabling,	
+		kInvalidInterfaceID,		
+		kSDKDefVisibleInKBSCEditorFlag,
+
+		kXRLUIActionComponentBoss,
+		kXRLUIXRailLinkActionID,		
+		kXRLUIXRailLinkMenuKey,		
+		kOtherActionArea,			
+		kNormalAction,				
+		kDisableIfNoFrontLayoutView | kDisableIfLowMem | kCustomEnabling,	
+		kInvalidInterfaceID,		
+		kSDKDefVisibleInKBSCEditorFlag,
+
+		kXRLUIActionComponentBoss,
+		kXRLUIXRailUnLinkActionID,		
+		kXRLUIXRailUnLinkMenuKey,		
+		kOtherActionArea,			
+		kNormalAction,				
+		kDisableIfNoFrontLayoutView | kDisableIfLowMem | kCustomEnabling,	
+		kInvalidInterfaceID,		
+		kSDKDefVisibleInKBSCEditorFlag,
+
+	}
+};
+
+
+/*  LocaleIndex
+	The LocaleIndex should have indicies that point at your
+	localizations for each language system that you are localized for.
+*/
+/*  String LocaleIndex.
+*/
+resource LocaleIndex ( kSDKDefStringsResourceID)
+{
+	kStringTableRsrcType,
+	{
+		kWildFS, k_enUS, kSDKDefStringsResourceID + index_frFR
+		kWildFS, k_enGB, kSDKDefStringsResourceID + index_frFR
+		kWildFS, k_deDE, kSDKDefStringsResourceID + index_enUS
+		kWildFS, k_frFR, kSDKDefStringsResourceID + index_frFR
+		kWildFS, k_esES, kSDKDefStringsResourceID + index_enUS
+		kWildFS, k_ptBR, kSDKDefStringsResourceID + index_enUS
+		kWildFS, k_svSE, kSDKDefStringsResourceID + index_enUS
+		kWildFS, k_daDK, kSDKDefStringsResourceID + index_enUS
+		kWildFS, k_nlNL, kSDKDefStringsResourceID + index_enUS
+		kWildFS, k_itIT, kSDKDefStringsResourceID + index_enUS
+		kWildFS, k_nbNO, kSDKDefStringsResourceID + index_enUS
+		kWildFS, k_fiFI, kSDKDefStringsResourceID + index_enUS
+		kInDesignJapaneseFS, k_jaJP, kSDKDefStringsResourceID + index_enUS
+	}
+};
+
+resource LocaleIndex (kSDKDefStringsNoTransResourceID)
+{
+	kStringTableRsrcType,
+	{
+		kWildFS, k_Wild, kSDKDefStringsNoTransResourceID + index_enUS
+	}
+};
+
+resource StringTable (kSDKDefStringsNoTransResourceID + index_enUS)
+{
+	k_enUS,									// Locale Id
+	kEuropeanMacToWinEncodingConverter,		// Character encoding converter
+	{	
+		// No-Translate strings go here:
+		kXRLUIInternalPopupMenuNameKey,		kXRLUIInternalPopupMenuNameKey,	
+	}
+};
+
+/*
+// Dialog LocaleIndex.
+*/
+resource LocaleIndex (kSDKDefDialogResourceID)
+{
+   kViewRsrcType,
+	{
+		kWildFS,	k_Wild, kSDKDefDialogResourceID + index_enUS
+	}
+};
+
+/*
+// Type definition. Note the exotic naming 'DialogBoss' for what is really a widget.
+*/
+type XRailPrefsDialog(kViewRsrcType) : DialogBoss(ClassID = kXRLUIPrefsDialogBoss)
+{
+};
+
+/*
+// Dialog definition.
+// This view is not localised: therefore, it can reside here.
+// However, if you wish to localise it, it is recommended to locate it in one of 
+// the localised framework resource files (i.e. XRail_enUS.fr etc.) and 
+// update your Dialog LocaleIndex accordingly.
+*/
+#define kPrefsDialogWidth       330
+#define kPrefsDialogHeight      100
+
+
+resource XRailPrefsDialog (kSDKDefDialogResourceID + index_enUS) 
+{ 
+	__FILE__, 
+	__LINE__, 
+	kXRLUIPrefsDialogWidgetID, // WidgetID
+	kPMRsrcID_None, // RsrcID
+	kBindNone, // Binding
+	Frame(0,0,330,100) // Frame (l,t,r,b)
+	kTrue, 
+	kTrue, // Visible, Enabled
+	kXRLUIPrefsDialogTitleKey, // Dialog name
+	{
+		DefaultButtonWidget 
+		( 
+			kOKButtonWidgetID, // WidgetID
+			kSysButtonPMRsrcId, // RsrcID
+			kBindNone, // Binding
+			Frame(234,16,314,36) // Frame (l,t,r,b)
+			kTrue, 
+			kTrue, // Visible, Enabled
+			kSDKDefOKButtonApplicationKey,  // Button text
+		),
+		CancelButtonWidget 
+		( 
+			kCancelButton_WidgetID, // WidgetID
+			kSysButtonPMRsrcId, // RsrcID
+			kBindNone, // Binding
+			Frame(234,46,314,66) // Frame (l,t,r,b)
+			kTrue, 
+			kTrue, // Visible, Enabled
+			kSDKDefCancelButtonApplicationKey, // Button name
+			kTrue,  // Change to Reset on option-click.
+		),
+		StaticTextWidget 
+		( 
+			kInvalidWidgetID, // widget ID
+			kSysStaticTextPMRsrcId, // PMRsrc ID
+			kBindNone, // frame binding
+			Frame(10,10,75,30) //  left, top, right, bottom
+			kTrue, // visible
+			kTrue, // enabled
+			// StaticTextAttributes properties
+			kAlignLeft, // Alignment
+			kDontEllipsize, // Ellipsize style
+			// CTextControlData properties
+			kTrue,
+			kXRLUIPrefsIPLabel, // control label
+			// AssociatedWidgetAttributes properties
+			kInvalidWidgetID,  // associated widget ID
+		),
+		IntEditBoxWidget 
+		( 
+			kIPField1WidgetID, // WidgetId
+			kSysEditBoxPMRsrcId, // RsrcId
+			kBindRight | kBindLeft, // Frame binding
+			Frame(85,10,115,30) // Frame
+			kTrue, 
+			kTrue, // Visible, Enabled
+			0, // Widget id of nudge button (0 so we dont get one)
+			0, 
+			0, // small,large nudge amount
+			3, // max num chars( 0 = no limit)
+			kFalse, // is read only
+			kFalse, // should notify each key stroke
+			kTrue, // range checking enabled
+			kFalse, // blank entry allowed
+			255, // Upper bounds
+			0, // Lower bounds
+			"",  // Initial text
+		),
+		IntEditBoxWidget 
+		( 
+			kIPField2WidgetID, // WidgetId
+			kSysEditBoxPMRsrcId, // RsrcId
+			kBindRight | kBindLeft, // Frame binding
+			Frame(120,10,150,30) // Frame
+			kTrue, 
+			kTrue, // Visible, Enabled
+			0, // Widget id of nudge button (0 so we dont get one)
+			0, 
+			0, // small,large nudge amount
+			3, // max num chars( 0 = no limit)
+			kFalse, // is read only
+			kFalse, // should notify each key stroke
+			kTrue, // range checking enabled
+			kFalse, // blank entry allowed
+			255, // Upper bounds
+			0, // Lower bounds
+			"",  // Initial text
+		),
+		IntEditBoxWidget 
+		( 
+			kIPField3WidgetID, // WidgetId
+			kSysEditBoxPMRsrcId, // RsrcId
+			kBindRight | kBindLeft, // Frame binding
+			Frame(155,10,185,30) // Frame
+			kTrue, 
+			kTrue, // Visible, Enabled
+			0, // Widget id of nudge button (0 so we dont get one)
+			0, 
+			0, // small,large nudge amount
+			3, // max num chars( 0 = no limit)
+			kFalse, // is read only
+			kFalse, // should notify each key stroke
+			kTrue, // range checking enabled
+			kFalse, // blank entry allowed
+			255, // Upper bounds
+			0, // Lower bounds
+			"",  // Initial text
+		),
+		IntEditBoxWidget 
+		( 
+			kIPField4WidgetID, // WidgetId
+			kSysEditBoxPMRsrcId, // RsrcId
+			kBindRight | kBindLeft, // Frame binding
+			Frame(190,10,220,30) // Frame
+			kTrue, 
+			kTrue, // Visible, Enabled
+			0, // Widget id of nudge button (0 so we dont get one)
+			0, 
+			0, // small,large nudge amount
+			3, // max num chars( 0 = no limit)
+			kFalse, // is read only
+			kFalse, // should notify each key stroke
+			kTrue, // range checking enabled
+			kFalse, // blank entry allowed
+			255, // Upper bounds
+			0, // Lower bounds
+			"",  // Initial text
+		),
+		StaticTextWidget 
+		( 
+			kInvalidWidgetID, // widget ID
+			kSysStaticTextPMRsrcId, // PMRsrc ID
+			kBindNone, // frame binding
+			Frame(10,40,70,60) //  left, top, right, bottom
+			kTrue, // visible
+			kTrue, // enabled
+			// StaticTextAttributes properties
+			kAlignLeft, // Alignment
+			kDontEllipsize, // Ellipsize style
+			// CTextControlData properties
+			kTrue,
+			kXRLUIPrefsPortLabel, // control label
+			// AssociatedWidgetAttributes properties
+			kInvalidWidgetID,  // associated widget ID
+		),
+		IntEditBoxWidget 
+		( 
+			kPortEditBoxWidgetID, // WidgetId
+			kSysEditBoxPMRsrcId, // RsrcId
+			kBindRight | kBindLeft, // Frame binding
+			Frame(80,40,130,60) // Frame
+			kTrue, 
+			kTrue, // Visible, Enabled
+			0, // Widget id of nudge button (0 so we dont get one)
+			0, 
+			0, // small,large nudge amount
+			5, // max num chars( 0 = no limit)
+			kFalse, // is read only
+			kFalse, // should notify each key stroke
+			kTrue, // range checking enabled
+			kFalse, // blank entry allowed
+			65536, // Upper bounds
+			0, // Lower bounds
+			"",  // Initial text
+		),
+		CheckBoxWidget 
+		( 
+			kPrefsTypeWidgetID, // WidgetId
+			kSysCheckBoxPMRsrcId, // RsrcId
+			kBindNone, 
+			Frame(10,70,130,90) // Frame
+			kTrue, // Visible
+			kTrue, // Enabled
+			kAlignLeft, // Alignment
+			kXRLUIModeRobotTextKey,  // Initial text
+		),
+	} 
+};
+
+/*
+// Type definition.
+*/
+type XRailLoginDialog(kViewRsrcType) : DialogBoss(ClassID = kXRLUILoginDialogBoss)
+{
+};
+
+type XRLPasswordEditBoxWidget(kViewRsrcType) : TextEditBoxWidget(ClassID = kPasswordEditBoxWidgetBoss)
+{
+};
+
+/*
+// Dialog LocaleIndex.
+*/
+resource LocaleIndex (kXRLUILoginDialogResourceID)
+{
+   kViewRsrcType,
+	{
+		kWildFS,	k_Wild, kXRLUILoginDialogResourceID + index_enUS
+	}
+};
+
+
+
+resource XRailLoginDialog (kXRLUILoginDialogResourceID + index_enUS)
+{
+	__FILE__,
+	__LINE__,
+	kXRLUILoginDialogWidgetID, // WidgetID
+	kPMRsrcID_None, // RsrcID
+	kBindNone, // Binding
+	Frame(0,0,270,135) // Frame (l,t,r,b) - extra height for "Remember me" checkbox
+	kTrue,
+	kTrue, // Visible, Enabled
+	kXRLUILoginDialogTitleKey, // Dialog name
+	{
+		StaticTextWidget 
+		( 
+			0, 
+			kSysStaticTextPMRsrcId, // WidgetId, RsrcId
+			kBindNone, 
+			Frame(10,10,105,30) // Frame left, top, right, bottom
+			kTrue, 
+			kTrue, 
+			kAlignRight, // Visible, Enabled, Alignment
+			kEllipsizeEnd, 
+			kTrue,
+			kXRLUILoginTextKey, 
+			0,  // WidgetID this shortcut is connected to, 0 if none.
+		),
+		TextEditBoxWidget 
+		( 
+			kXRLUILoginUserWidgetID, 
+			kSysEditBoxPMRsrcId, // WidgetId, RsrcId
+			kBindNone, 
+			Frame(110,10,260,30) // Frame
+			kTrue, 
+			kTrue, // Visible, Enabled
+			0, // widget id of nudge button
+			0, 
+			0, // small/large nudge amount
+			30, // max num chars( 0 = no limit)
+			kFalse, // is read only
+			kFalse, // should notify each key stroke
+			kFalse, // range checking enabled
+			kFalse, // blank entry allowed
+			0, 
+			0, // upper/lower bounds
+			"",  // initial text
+		),
+		StaticTextWidget 
+		( 
+			0, 
+			kSysStaticTextPMRsrcId, // WidgetId, RsrcId
+			kBindNone, 
+			Frame(10,40,105,60) // Frame left, top, right, bottom
+			kTrue, 
+			kTrue, 
+			kAlignRight, // Visible, Enabled, Alignment
+			kEllipsizeEnd, 
+			kTrue,
+			kXRLUIPasswordTextKey, 
+			0,  // WidgetID this shortcut is connected to, 0 if none.
+		),
+		XRLPasswordEditBoxWidget
+		(
+			kXRLUIPasswordUserWidgetID,
+			kSysEditBoxPMRsrcId, // WidgetId, RsrcId
+			kBindNone,
+			Frame(110,40,260,60) // Frame
+			kTrue,
+			kTrue, // Visible, Enabled
+			0, // widget id of nudge button
+			0,
+			0, // small/large nudge amount
+			30, // max num chars( 0 = no limit)
+			kFalse, // is read only
+			kFalse, // should notify each key stroke
+			kFalse, // range checking enabled
+			kFalse, // blank entry allowed
+			0,
+			0, // upper/lower bounds
+			"",  // initial text
+		),
+		CheckBoxWidget
+		(
+			kXRLUIRememberMeWidgetID, // WidgetId
+			kSysCheckBoxPMRsrcId, // RsrcId
+			kBindNone,
+			Frame(110, 70, 260, 90) // Frame (l,t,r,b)
+			kTrue, // Visible
+			kTrue, // Enabled
+			kAlignLeft, // Alignment
+			kXRLUIRememberMeTextKey, // Label text
+		),
+		DefaultButtonWidget
+		(
+			kOKButtonWidgetID, // WidgetID
+			kSysButtonPMRsrcId, // RsrcID
+			kBindNone, // Binding
+			Frame(145,105,225,125) // Frame (l,t,r,b)
+			kTrue,
+			kTrue, // Visible, Enabled
+			kSDKDefOKButtonApplicationKey,  // Button text
+		),
+		CancelButtonWidget
+		(
+			kCancelButton_WidgetID, // WidgetID
+			kSysButtonPMRsrcId, // RsrcID
+			kBindNone, // Binding
+			Frame(55,105,135,125) // Frame (l,t,r,b)
+			kTrue,
+			kTrue, // Visible, Enabled
+			kSDKDefCancelButtonApplicationKey, // Button name
+			kTrue,  // Change to Reset on option-click.
+		),
+	}
+};
+
+/*
+// Type definition.
+*/
+type XRailChangeStateDialog(kViewRsrcType) : DialogBoss(ClassID = kXRLUIChangeStateDialogBoss)
+{
+};
+
+/*
+// Dialog LocaleIndex.
+*/
+resource LocaleIndex (kXRLUIChangeStateDialogResourceID)
+{
+   kViewRsrcType,
+	{
+		kWildFS,	k_Wild, kXRLUIChangeStateDialogResourceID + index_enUS
+	}
+};
+
+/*
+// Dialog definition.
+// This view is not localised: therefore, it can reside here.
+// However, if you wish to localise it, it is recommended to locate it in one of 
+// the localised framework resource files (i.e. BscDlg_enUS.fr etc.) and 
+// update your Dialog LocaleIndex accordingly.
+*/
+#define kChangeStateDialogWidth       350
+#define kChangeStateDialogHeight      82
+
+
+resource XRailChangeStateDialog (kXRLUIChangeStateDialogResourceID + index_enUS) 
+{ 
+	__FILE__, 
+	__LINE__, 
+	kXRLUIChangeStateDialogWidgetID, // WidgetID
+	kPMRsrcID_None, // RsrcID
+	kBindNone, // Binding
+	Frame(0,0,386,82) // Frame (l,t,r,b)
+	kTrue, 
+	kTrue, // Visible, Enabled
+	kXRLUIChangeStateDialogTitleKey, // Dialog name
+	{
+		DefaultButtonWidget 
+		( 
+			kOKButtonWidgetID, // WidgetID
+			kSysButtonPMRsrcId, // RsrcID
+			kBindNone, // Binding
+			Frame(289,14,369,34) // Frame (l,t,r,b)
+			kTrue, 
+			kTrue, // Visible, Enabled
+			kSDKDefOKButtonApplicationKey,  // Button text
+		),
+		CancelButtonWidget 
+		( 
+			kCancelButton_WidgetID, // WidgetID
+			kSysButtonPMRsrcId, // RsrcID
+			kBindNone, // Binding
+			Frame(289,44,369,64) // Frame (l,t,r,b)
+			kTrue, 
+			kTrue, // Visible, Enabled
+			kSDKDefCancelButtonApplicationKey, // Button name
+			kTrue,  // Change to Reset on option-click.
+		),
+		DropDownListWidget 
+		( 
+			kXRLUIStateListBoxWidgetID, // WidgetId
+			kSysDropDownPMRsrcId, // RsrcId
+			kBindNone, // Frame binding
+			Frame(39,14,229,39) // Frame
+			kTrue, // Visible
+			kTrue, // Enabled
+			{
+				{
+				}
+			},
+		),
+	} 
+};
+
+
+
+/*
+// Type definition.
+*/
+type XRailLinkerDialog(kViewRsrcType) : DialogBoss(ClassID = kXRLUILinkerDialogBoss)
+{
+};
+
+type IDDropDownListWidget(kViewRsrcType) : DropDownListWidget(ClassID = kXRLUIIDDropDownListWidgetBoss)
+{
+};
+
+/*
+// Dialog LocaleIndex.
+*/
+resource LocaleIndex (kXRLUILinkerDialogResourceID)
+{
+   kViewRsrcType,
+	{
+		kWildFS,	k_Wild, kXRLUILinkerDialogResourceID + index_enUS
+	}
+};
+
+/*
+// Dialog definition.
+// This view is not localised: therefore, it can reside here.
+// However, if you wish to localise it, it is recommended to locate it in one of 
+// the localised framework resource files (i.e. BscDlg_enUS.fr etc.) and 
+// update your Dialog LocaleIndex accordingly.
+*/
+#define kLinkerDialogWidth       350
+#define kLinkerDialogHeight      130
+
+
+resource XRailLinkerDialog (kXRLUILinkerDialogResourceID + index_enUS) 
+{ 
+	__FILE__, 
+	__LINE__, 
+	kXRLUILinkerDialogWidgetID, // WidgetID
+	kPMRsrcID_None, // RsrcID
+	kBindNone, // Binding
+	Frame(0,0,350,130) // Frame (l,t,r,b)
+	kTrue, 
+	kTrue, // Visible, Enabled
+	kXRLUILinkerDialogTitleKey, // Dialog name
+	{
+		DefaultButtonWidget 
+		( 
+			kOKButtonWidgetID, // WidgetID
+			kSysButtonPMRsrcId, // RsrcID
+			kBindNone, // Binding
+			Frame(254,16,334,36) // Frame (l,t,r,b)
+			kTrue, 
+			kTrue, // Visible, Enabled
+			kSDKDefOKButtonApplicationKey,  // Button text
+		),
+		CancelButtonWidget 
+		( 
+			kCancelButton_WidgetID, // WidgetID
+			kSysButtonPMRsrcId, // RsrcID
+			kBindNone, // Binding
+			Frame(254,46,334,66) // Frame (l,t,r,b)
+			kTrue, 
+			kTrue, // Visible, Enabled
+			kSDKDefCancelButtonApplicationKey, // Button name
+			kTrue,  // Change to Reset on option-click.
+		),
+		IDDropDownListWidget 
+		( 
+			kXRLUILevel1ListBoxWidgetID, // WidgetId
+			kSysDropDownPMRsrcId, // RsrcId
+			kBindNone, // Frame binding
+			Frame(10,10,200,30) // Frame
+			kTrue, // Visible
+			kTrue, // Enabled
+			{
+				{
+				}
+			},
+		),
+		IDDropDownListWidget 
+		( 
+			kXRLUILevel2ListBoxWidgetID, // WidgetId
+			kSysDropDownPMRsrcId, // RsrcId
+			kBindNone, // Frame binding
+			Frame(10,35,200,55) // Frame
+			kTrue, // Visible
+			kTrue, // Enabled
+			{
+				{
+				}
+			},
+		),
+		IDDropDownListWidget 
+		( 
+			kXRLUILevel3ListBoxWidgetID, // WidgetId
+			kSysDropDownPMRsrcId, // RsrcId
+			kBindNone, // Frame binding
+			Frame(10,60,200,80) // Frame
+			kTrue, // Visible
+			kTrue, // Enabled
+			{
+				{
+				}
+			},
+		),
+		IDDropDownListWidget
+		(
+			kXRLUILevel4ListBoxWidgetID, // WidgetId
+			kSysDropDownPMRsrcId, // RsrcId
+			kBindNone, // Frame binding
+			Frame(10,85,200,105) // Frame
+			kTrue, // Visible
+			kTrue, // Enabled
+			{
+				{
+				}
+			},
+		),
+	}
+};
+
+//============================================================================
+// Commentaires palette resources.
+// Window > Gaia > Commentaires. Skeleton mirrors the Photos liées palette
+// pattern from XPage UI: panel widget hosts a TreeView + a refresh button;
+// each row is a TreeNodeWidget with 4 cells (check / date / comment / user).
+//============================================================================
+
+resource PNGA(kXRLUICommentsRefreshIconResID) "story_update.png"
+
+/* PanelList — registers the palette with the panel manager. The empty
+   panelName + non-empty altMenu pattern places the menu entry only under
+   Window > Gaia (no duplicate at the root of Window). Same convention used
+   by the XPage palettes for Window > Gaia > XDA / XPage / Photos liées /
+   Assemblages.
+*/
+resource PanelList (kSDKDefPanelResourceID)
+{
+	{
+		kXRLUICommentsPanelResourceID,			// Panel resource id
+		kXRLUIPluginID,							// Owning plug-in
+		kIsResizable,
+		kXRLUICommentsPanelWidgetActionID,		// Show/hide action id
+		"",										// Empty panelName — see altMenu.
+		"Main:&Window:&Gaia:&Commentaires",		// Window > Gaia > Commentaires
+		0.0,
+		0, 0,
+		c_Panel,
+	}
+};
+
+/* Panel widget. */
+
+resource LocaleIndex (kXRLUICommentsPanelResourceID)
+{
+	kViewRsrcType,
+	{
+		kWildFS, k_Wild,	kXRLUICommentsPanelResourceID + index_enUS
+	}
+};
+
+type XRLUICommentsPanelWidget(kViewRsrcType) : GenericPalettePanelWidget (ClassID = kXRLUICommentsPanelWidgetBoss)
+{
+	SizePanelDetailController;
+}
+
+type XRLUICommentsViewWidget(kViewRsrcType) : TreeViewWidget(ClassID = kXRLUICommentsViewWidgetBoss)
+{
+};
+
+resource XRLUICommentsPanelWidget (kXRLUICommentsPanelResourceID + index_enUS)
+{
+	__FILE__,
+	__LINE__,
+	kXRLUICommentsPanelWidgetID,	// WidgetId
+	kPMRsrcID_None,
+	kBindNone,
+	Frame(0,0,420,260)				// Frame: l, t, r, b
+	kTrue, kTrue,					// Visible, Enabled
+	kTrue,							// Erase background
+	kInterfacePaletteFill,
+	kFalse,							// Draw dropshadow
+	kXRLUICommentsPanelTitleKey,	// Panel name (used internally; the Window
+									// menu entry comes from PanelList altMenu).
+	{
+		// "Not connected" / "no Gaia page" overlays — invisible by default,
+		// toggled by XRLUICommentsPanelObserver::UpdateLoginState() based on
+		// the XRail login string and the front document's page-slug ID.
+		// Mirrors the pattern used by the Photos liées palette in XPage UI.
+		StaticTextWidget
+		(
+			kXRLUICommentsLoginPromptTextWidgetID,
+			kSysStaticTextPMRsrcId,
+			kBindNone,
+			Frame(20, 60, 400, 120)
+			kFalse, kTrue,					// Visible (off — observer decides)
+			kAlignCenter, kEllipsizeEnd, kTrue,
+			kXRLUICommentsLoginPromptTextKey,
+			0,
+		),
+		ButtonWidget
+		(
+			kXRLUICommentsLoginPromptButtonWidgetID,
+			kSysButtonPMRsrcId,
+			kBindNone,
+			Frame(150, 135, 270, 160)
+			kFalse, kTrue,
+			kXRLUICommentsLoginPromptButtonKey,
+		),
+		StaticTextWidget
+		(
+			kXRLUICommentsNoGaiaPageTextWidgetID,
+			kSysStaticTextPMRsrcId,
+			kBindNone,
+			Frame(20, 90, 400, 150)
+			kFalse, kTrue,
+			kAlignCenter, kEllipsizeEnd, kTrue,
+			kXRLUICommentsNoGaiaPageTextKey,
+			0,
+		),
+		// Header row — fixed-position labels above the tree view. Column
+		// widths must match the cells declared in XRLUICommentsNodeWidget
+		// below; if you change one, change the other.
+		StaticTextWidget
+		(
+			kXRLUICommentsHeaderCheckWidgetID,
+			kSysStaticTextPMRsrcId,
+			kBindLeft | kBindTop,
+			Frame(8, 4, 38, 20)
+			kTrue, kTrue,
+			kAlignCenter, kEllipsizeEnd, kTrue,
+			kXRLUICommentsColCheckKey,
+			0,
+		),
+		StaticTextWidget
+		(
+			kXRLUICommentsHeaderDateWidgetID,
+			kSysStaticTextPMRsrcId,
+			kBindLeft | kBindTop,
+			Frame(40, 4, 130, 20)
+			kTrue, kTrue,
+			kAlignCenter, kEllipsizeEnd, kTrue,
+			kXRLUICommentsColDateKey,
+			0,
+		),
+		StaticTextWidget
+		(
+			kXRLUICommentsHeaderTextWidgetID,
+			kSysStaticTextPMRsrcId,
+			kBindLeft | kBindRight | kBindTop,
+			Frame(132, 4, 290, 20)
+			kTrue, kTrue,
+			kAlignCenter, kEllipsizeEnd, kTrue,
+			kXRLUICommentsColTextKey,
+			0,
+		),
+		StaticTextWidget
+		(
+			kXRLUICommentsHeaderUserWidgetID,
+			kSysStaticTextPMRsrcId,
+			kBindRight | kBindTop,
+			Frame(292, 4, 410, 20)
+			kTrue, kTrue,
+			kAlignCenter, kEllipsizeEnd, kTrue,
+			kXRLUICommentsColUserKey,
+			0,
+		),
+		// Container with border holds the tree view — gives a flat 1px line
+		// matching the screenshot. Bottom margin reserved for the refresh
+		// button.
+		GenericPanelWithBorderWidget
+		(
+			0,
+			kPMRsrcID_None,
+			kBindAll,
+			Frame(4, 22, 416, 222)
+			kTrue, kTrue,
+			"",
+			{
+				XRLUICommentsViewWidget
+				(
+					kXRLUICommentsViewWidgetID,
+					kPMRsrcID_None,
+					kBindAll,
+					Frame(2, 2, 410, 218)
+					kTrue, kTrue,
+					kTrue,					// Erase before draw
+					kInterfacePaletteFill,
+					"",
+					kFalse,					// Display root node
+					kFalse,					// Use H scroll bar
+					kTrue,					// Use V scroll bar
+					20, 20, 20, 20,
+					1,						// Single selection
+					kFalse,
+					kFalse,
+					{
+					}
+				),
+			}
+		),
+		// Refresh button — anchored bottom-left. The bottom-right corner is
+		// reserved for the OS resize grip that would otherwise mask the icon.
+		// Triggers the panel observer's RefreshList() on click via
+		// kTrueStateMessage.
+		RollOverIconButtonWidget
+		(
+			kXRLUICommentsRefreshButtonWidgetID,
+			kXRLUICommentsRefreshIconResID,
+			kXRLUIPluginID,
+			kBindLeft | kBindBottom,
+			Frame(8, 226, 32, 250)
+			kTrue, kTrue,
+			kADBEIconSuiteButtonType,
+		),
+		// "Show all comments on the page" checkbox — sits next to the refresh
+		// icon. When ticked, the panel observer registers a spread adornment
+		// that paints a marker at each comment's (X%, Y%) position.
+		CheckBoxWidget
+		(
+			kXRLUICommentsShowAllCheckWidgetID,
+			kSysCheckBoxPMRsrcId,
+			kBindLeft | kBindBottom,
+			Frame(46, 232, 246, 252)
+			kTrue, kTrue,
+			kAlignLeft,
+			kXRLUICommentsShowAllKey,
+		),
+	}
+};
+
+/* Per-row node widget. */
+
+resource LocaleIndex (kXRLUICommentsNodeWidgetResID)
+{
+	kViewRsrcType,
+	{
+		kWildFS, k_Wild,	kXRLUICommentsNodeWidgetResID + index_enUS
+	}
+};
+
+type XRLUICommentsNodeWidget(kViewRsrcType) : PrimaryResourcePanelWidget(ClassID = kXRLUICommentsNodeWidgetBoss)
+{
+};
+
+resource XRLUICommentsNodeWidget (kXRLUICommentsNodeWidgetResID + index_enUS)
+{
+	__FILE__,
+	__LINE__,
+	kXRLUICommentsNodeWidgetTemplateID,	// MUST match the WidgetID returned by
+									// XRLUICommentsTVWidgetMgr::GetWidgetTypeForNode
+									// — the framework looks the resource up by this ID.
+	kPMRsrcID_None,
+	kBindLeft | kBindRight,
+	Frame(0, 0, 410, 24)			// Row geometry — width grows with the tree view.
+	kTrue, kTrue,
+	"",
+	{
+		// Validation checkbox (cell 1). CheckBoxWidget interfaces:
+		// CControlView + TriStateControlAttributes (alignment) +
+		// CTextControlData (label).
+		CheckBoxWidget
+		(
+			kXRLUICommentsCellCheckWidgetID,
+			kSysCheckBoxPMRsrcId,
+			kBindLeft,
+			Frame(12, 4, 30, 20)
+			kTrue, kTrue,
+			kAlignLeft,
+			"",
+		),
+		// Date column (cell 2). Fixed width.
+		StaticTextWidget
+		(
+			kXRLUICommentsCellDateWidgetID,
+			kSysStaticTextPMRsrcId,
+			kBindLeft,
+			Frame(40, 4, 130, 20)
+			kTrue, kTrue,
+			kAlignLeft, kEllipsizeEnd, kTrue,
+			"", 0,
+		),
+		// Comment text column (cell 3). Stretchy.
+		StaticTextWidget
+		(
+			kXRLUICommentsCellTextWidgetID,
+			kSysStaticTextPMRsrcId,
+			kBindLeft | kBindRight,
+			Frame(132, 4, 290, 20)
+			kTrue, kTrue,
+			kAlignLeft, kEllipsizeEnd, kTrue,
+			"", 0,
+		),
+		// User column (cell 4). Right-anchored, fixed width.
+		StaticTextWidget
+		(
+			kXRLUICommentsCellUserWidgetID,
+			kSysStaticTextPMRsrcId,
+			kBindRight,
+			Frame(292, 4, 408, 20)
+			kTrue, kTrue,
+			kAlignLeft, kEllipsizeEnd, kTrue,
+			"", 0,
+		),
+	}
+};
+
+#endif // __ODFRC__
+
+#include "XRLUI_enUS.fr"
+#include "XRLUI_frFR.fr"
+
+//  Code generated by DollyXs code generator

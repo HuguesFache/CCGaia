@@ -1,0 +1,981 @@
+//========================================================================================
+//  
+//  $File: $
+//  
+//  Owner: Trias Developpement
+//   
+//  $Author: $
+//    
+//  $DateTime: $
+//   
+//  $Revision: $
+//    
+//  $Change: $
+//  
+//  Copyright Adobe Systems Incorporated. All rights reserved.
+//  
+//  NOTICE:  Adobe permits you to use, modify, and distribute this file in accordance 
+//  with the terms of the Adobe license agreement accompanying it.  If you have received
+//  this file from a source other than Adobe, then your use, modification, or 
+//  distribution of it requires the prior written permission of Adobe.
+//  
+//========================================================================================
+
+#include "VCPlugInHeaders.h"
+
+// General includes:
+#include "MenuDef.fh"
+#include "ActionDef.fh"
+#include "ActionDefs.h"
+#include "AdobeMenuPositions.h"
+#include "LocaleIndex.h"
+#include "PMLocaleIds.h"
+#include "StringTable.fh"
+#include "ObjectModelTypes.fh"
+#include "ShuksanID.h"
+#include "ActionID.h"
+#include "CommandID.h"
+#include "WorkspaceID.h"
+#include "WidgetID.h"
+#include "BuildNumber.h"
+#include "XMLParserID.h"
+#include "XMLID.h"
+#include "DocumentID.h"
+#include "SplineID.h"
+#include "TextID.h"
+#include "GenericID.h"
+#include "Schema.fh"
+#include "AppUIID.h"
+#include "workgroupid.h"
+#include "OpenPlaceID.h"
+#include "LinksID.h" // kDataLinkBoss
+#include "PlugInModel_UIAttributes.h"
+
+// Project includes:
+#include "XPGID.h"
+#include "XPGUIID.h"
+
+// Scripting
+#include "ScriptInfoTypes.fh"
+#include "AppFrameworkID.h" // for kApplicationObjectScriptElement
+#include "ErrorTableTypes.h" // For UserErrorTable
+#include "XPGScriptingDefs.h"
+#include "TextScriptID.h"
+#include "INXCoreID.h" 
+#include "InCopyBridgeID.h"
+
+#ifdef __ODFRC__
+
+/*  Plugin version definition.
+*/
+resource PluginVersion (kSDKDefPluginVersionResourceID)
+{
+	kTargetVersion,
+	kXPGPluginID,
+	kSDKDefPlugInMajorVersionNumber, kSDKDefPlugInMinorVersionNumber,
+	kSDKDefHostMajorVersionNumber, kSDKDefHostMinorVersionNumber,
+	kXPGCurrentMajorFormatNumber, kXPGCurrentMinorFormatNumber,
+	{ kInDesignServerProduct, kInDesignProduct, kInCopyProduct},
+	{ kWildFS },
+	kModelPlugIn,
+	kXPGVersion
+};
+
+/*  The ExtraPluginInfo resource adds extra information to the Missing Plug-in dialog
+	that is popped when a document containing this plug-in's data is opened when
+	this plug-in is not present. These strings are not translatable strings
+	since they must be available when the plug-in isn't around. They get stored
+	in any document that this plug-in contributes data to.
+*/
+resource ExtraPluginInfo(1)
+{
+	kXPGCompanyValue,			// Company name
+	kXPGMissingPluginURLValue,	// URL 
+	kXPGMissingPluginAlertValue,	// Missing plug-in alert text
+};
+
+resource ImplementationAlias(1) 
+{ 
+	{ 
+		kXPGCurrentNumeroImpl, kStringDataImpl,
+		kXPGCurrentLevel1Impl, kStringDataImpl,
+		kXPGCurrentLevel2Impl, kStringDataImpl,
+		kXPGDocNumeroImpl, kStringDataImpl,
+		kXPGTypoInfoImpl, kPersistStringDataImpl,
+		kXPGDeleteArticleBoolImpl, kStringDataImpl,
+		kXPGCurrentStatusImpl, kStringDataImpl,
+		kXPGDisplayShapeBoolImpl, kBoolDataImpl,
+        kXPGDisplayAdornmentTextBoolImpl, kBoolDataImpl,         
+        kXPGCurrentStoryImpl, kStringDataImpl,
+		kXPGCurrentGroupImpl, kStringDataImpl,
+		kXPGCurrentRecepientImpl, kStringDataImpl,
+		kXPGCurrentStatusXrailImpl, kStringDataImpl,
+        kXPGCurrentUserXrailImpl, kStringDataImpl,
+	}
+};
+
+resource IgnoreTags(1)
+{
+	kImplementationIDSpace
+	{
+		kXPGArticleDataImpl,
+		kXPGPlacedArticleDataImpl,
+		kXPGFormeDataImpl,
+		kXPGTextDataImpl,
+		kXPGTagToStyleMapImpl,
+		kPersistStringListDataImpl,
+		kXPGLSIDDataPersistImpl,
+	}
+};
+
+
+resource IgnoreTags(2)
+{
+ kClassIDSpace,
+ {
+	kXPageManagerBoss,					
+	kXPGXMLParserArticleBoss,		
+	kXPGXMLMatchingFileHandlerBoss,		
+	kXPGTextImportHandlerBoss,			
+	kXPGSetTagToStyleMapCmd,			
+	kXGPPostTextImportIterationBoss,	
+	kXPGSetArticleIDCmdBoss,			
+	kXPGXMLImageDescriptionHandlerBoss, 
+	kXPGTagToStyleMapBoss,				
+	kXPGXMLDescriptionUpdaterBoss,		
+	kXPGXMLLoadTagHandlerBoss,			
+	kXPGStartupShutdownBoss,			
+	kXPGConversionProvider,				
+	kXPGSaveConvertedDocRespBoss,		
+	kXPGExportArtRespBoss,				
+	kXPGXMLFormeDescriptionHandlerBoss, 
+	kXPGSetStringCmdBoss,				
+	kXPGScriptProviderBoss,				
+	kXPGSetFormeDataCmdBoss,			
+	kXPGErrorStringServiceBoss,			
+	kXPGFilterStyleCmdBoss,				
+	kXPGSaveAssignmentCmdBoss,			
+	kXPGXMLExportFileHandlerBoss,		
+	kXPGUnlockStoriesCmdBoss,			
+	kXPGResponderServiceBoss,			
+	kXPGXMLArticleDescriptionBoss,
+	kXPGIAMServiceProviderBoss,
+	kXPGSetArticleDataCmdBoss,
+	kXPGIAMUIServiceProviderBoss,
+	kXPGSetIndexPreferencesCmdBoss,
+	kXPGXMLMatchingStylesListHandlerBoss,
+	kXPGXMLMatchingFileHandler2Boss,
+ }
+};
+
+resource DirectiveList(1)
+{
+	{
+		{ RemoveImplementation { kTextStoryBoss, kXPGLSIDDataPersistImpl, { kXPGFirstMajorFormatNumber, kXPGSecondMinorFormatNumber }} },
+	}
+};
+
+resource Schema(1)
+{
+	kXPGLSIDDataPersistImpl,
+	{ 
+	kXPGFirstMajorFormatNumber, kXPGFirstMinorFormatNumber },
+	{
+		{ Int32 { 0x0001, 0 }};		   
+	}
+};
+
+resource Schema(2)
+{
+	kPersistStringListDataImpl,
+	{ kXPGFirstMajorFormatNumber, kXPGSecondMinorFormatNumber },
+	{
+		{FieldArray { 0x0001, // Array of string
+				   { Int32{0} }, // count
+				   {
+				   { PMString{0x0002, ""}} }
+		}};		   
+	}
+};
+
+resource Schema(3)
+{
+	kXPGTagToStyleMapImpl,
+	{ kXPGFirstMajorFormatNumber, kXPGFirstMinorFormatNumber },
+	{
+		{FieldArray { 0x0001, // Array
+		   { Int32{0} }, // count
+		   {
+	   			{ PMString {0x0002, "" } },
+				{ Reference {0x0003, 0}},
+		   		
+   				{ FieldArray { 0x0004,
+		   		
+					  { Int32{0} }, // count
+					  {
+	      				{ PMString {0x0005, "" } },
+						{ Reference {0x0006, 0}},
+					  }
+   				}}
+		   }
+		}
+		};		   
+	}
+};
+
+resource Schema(4)
+{
+	kXPGFormeDataImpl,
+	{ kXPGFirstMajorFormatNumber, kXPGThirdMinorFormatNumber },
+	{
+		{PMString	{0x0001, ""}},  // forme name
+		{Int16		{0x0002, 0}},  // type
+		{Int16		{0x0003, -1}},  // photo index
+		
+		{ FieldArray { 0x0005,      // Style matching
+				   		{ Int32{0} }, // count
+						{
+		      				{ PMString {0x0005, "" } },
+							{ PMString {0x0006, "" } },
+						}
+					 }
+		},		
+
+	}
+};
+
+resource Schema(5)
+{
+	kXPGArticleDataImpl,
+	{ kXPGFirstMajorFormatNumber, kXPGThirdMinorFormatNumber },
+	{
+		{PMString	{0x0001, ""}},  // forme name
+		{PMString   {0x0002, ""}},  // type		
+	}
+};
+
+/* Boss class definition.
+*/
+resource ClassDescriptionTable(kSDKDefClassDescriptionTableResourceID)
+{{{
+	
+	
+	/** Provides schema based converter to handle static changes in the format
+        persistent data in this plug-in's implementations
+    */
+    Class
+    {
+        kXPGConversionProvider,
+        kInvalidClass,
+        {
+            /** IConversionProvider implementation for schema based conversion
+                Implemenation provided by the API
+            */
+            IID_ICONVERSIONPROVIDER, kSchemaBasedConversionImpl,
+            
+            /** IK2ServiceProvider implementation that identifies this boss as a conversion service
+                Implemenation provided by the API
+            */
+            IID_IK2SERVICEPROVIDER, kConversionServiceImpl,
+        }
+    },
+    
+    AddIn
+    {
+        kWorkspaceBoss,
+        kInvalidClass,
+        {
+            IID_IXPGINDEXREFERENCE, kXPGIndexPreferenceImpl,
+        }
+    },
+    
+    AddIn
+    {
+        kSessionBoss,
+        kInvalidClass,
+        {
+            // Page Manager accessor
+            IID_IXPAGEMGRACCESSOR, kXPageMgrAccessorImpl,
+            
+            // Store preferences (loaded on startup)
+            IID_IXPGPREFERENCES, kXPGPreferencesImpl,
+            IID_IXPGINDEXREFERENCE, kXPGSetIndexPreferencesCmdImpl,
+                         
+            IID_IDISPLAYSHAPE, kXPGDisplayShapeBoolImpl,
+            IID_IDISPLAYADORNMRNTTEXT, kXPGDisplayAdornmentTextBoolImpl,
+                                   
+            IID_IUNLINKASSIGNMENT, kXPGDeleteArticleBoolImpl,
+        }
+    },
+    
+    
+    AddIn
+    {
+        kTextStoryBoss,
+        kInvalidClass,
+        {
+            IID_IXPGTAGTOSTYLEMAP, kXPGTagToStyleMapImpl,
+            IID_IARTICLEINFO, kPersistStringListDataImpl,
+            IID_ITYPOINFO, kXPGTypoInfoImpl,
+            IID_IUIDLISTDATA, kUIDListDataImpl,
+        }
+    },
+    
+    /** Add forme data into spline items
+    */
+    AddIn
+    {
+        kSplineItemBoss,
+        kInvalidClass,
+        {
+            IID_IFORMEDATA, kXPGFormeDataImpl,
+            // Store data
+            IID_IPLACEDARTICLEDATA, kXPGPlacedArticleDataImpl,
+        }
+    },
+    
+    AddIn
+    {
+        kPageItemBoss,
+        kInvalidClass,
+        {
+            // Store data to be displayed in frame adornment
+            IID_IARTICLEDATA, kXPGArticleDataImpl,
+        }
+    },
+    
+    /**
+
+    
+    /** Command for setting persistent forme data on spline items
+    */
+    Class
+    {
+        kXPGSetFormeDataCmdBoss,
+        kInvalidClass,
+        {
+            IID_ICOMMAND, kXPGSetFormeDataCmdImpl,
+            IID_IFORMEDATA, kXPGFormeDataImpl,
+        }
+    },
+    
+        
+    // Set Article Data: Status & Color
+    Class
+    {
+        kXPGSetArticleDataCmdBoss,
+        kInvalidClass,
+        {
+            IID_ICOMMAND, kXPGSetArticleDataCmdImpl,
+            IID_IARTICLEDATA, kXPGArticleDataImpl,
+        }
+    },
+    
+    // Set Placed Article Data: id & path
+
+    Class
+    {
+        kXPGSetPlacedArticleDataCmdBoss,
+        kInvalidClass,
+        {
+            IID_ICOMMAND, kXPGSetPlacedArticleDataCmdImpl,
+            IID_IPLACEDARTICLEDATA, kXPGPlacedArticleDataImpl,
+        }
+    },
+    
+    /** Command for setting persistent string data on any boss
+    */
+    Class
+    {
+        kXPGSetStringCmdBoss,
+        kInvalidClass,
+        {
+            IID_ICOMMAND, kXPGSetStringCmdImpl,
+            IID_ISTRINGDATA, kStringDataImpl, // Data string to set
+            IID_IINTDATA, kIntDataImpl, // ID of targeted string data interface
+        }
+    },
+    
+    /** Command for setting resa redac list on document
+    */
+    AddIn
+    {
+        kDocBoss,
+        kInvalidClass,
+        {
+            IID_INUMEROID, kXPGDocNumeroImpl,
+            IID_ILASTIMPORTEDSNIPPET, kUIDListDataImpl,
+            IID_IIMPORTSNIPPETOBSERVER, kXPGImportSnippetObserverImpl,
+            IID_IDOCOBSERVER, kXPGDocObserverImpl,
+        }
+    },
+    
+    
+    
+    /**
+        This AddIn adds IParserSuite to the abstract selection boss.
+        IParserSuite is a new interface added by this plug-in, it allows
+        client code to gain access to UIDs of selected items.
+    */
+    AddIn
+    {
+        kIntegratorSuiteBoss,
+        kInvalidClass,
+        {
+            IID_IXPAGESUITE,      kXPGSuiteASBImpl,
+            IID_IXPAGEINDEXSUITE, kXPGIndexSuiteASBImpl,
+        }
+    },
+
+    /**
+        This AddIn adds suite to the text selection boss.
+        IPermRefsSuite is a new interface added by this plug-in, it allows
+        client code to gain access to selected text.
+    */
+    AddIn
+    {
+        kTextSuiteBoss,
+        kInvalidClass,
+        {
+            /**
+                The concrete implementation of IParserSuite that deals with model
+                specific work.
+            */
+            IID_IXPAGESUITE,      kXPGTextCSBImpl,
+            IID_IXPAGEINDEXSUITE, kXPGIndexSuiteTextCSBImpl,
+        }
+    },
+    
+    /**
+        This AddIn adds IPermRefsSuite to the text selection boss.
+        IPermRefsSuite is a new interface added by this plug-in, it allows
+        client code to gain access to selected text.
+    */
+    AddIn
+    {
+        kNewLayoutSelectionBoss,
+        kInvalidClass,
+        {
+            /**
+                The concrete implementation of IParserSuite that deals with model
+                specific work.
+            */
+            IID_IXPAGESUITE, kXPGLayoutCSBImpl,
+        }
+    },
+        
+    /** Service provider boss class to read a config file on startup */
+    Class
+    {
+        kXPGStartupShutdownBoss,
+        kInvalidClass,
+         {
+                /** Implementation of IStartupShutdownService that installs idle task on startup */
+                IID_ISTARTUPSHUTDOWN, kXPGStartupShutdownImpl,
+                IID_IK2SERVICEPROVIDER, kCStartupShutdownProviderImpl,
+         }
+    },
+    
+    /**
+        Command intended for setting persistent article id data in kTextStoryBoss
+    */
+    Class
+    {
+        kXPGSetArticleIDCmdBoss,
+        kInvalidClass,
+        {
+            IID_ICOMMAND,     kXPGSetArticleIDCmdImpl,
+            IID_IARTICLEINFO, kStringListDataImpl,
+        }
+    },
+    
+    /**
+     This is the boss which proposes a set of methods to access the pages
+    */
+    Class
+    {
+        kXPageManagerBoss,
+        kInvalidClass,
+        {
+            IID_IARTICLEDATAMODEL,               kXPGArticleDataModelImpl,
+            IID_IIMAGEDATAMODEL,               kXPGXRailImageModelImpl,
+            IID_IFORMEDATAMODEL,               kXPGFileSystemFormeModelImpl,
+            IID_IASSEMBLAGEDATAMODEL,           kXPGFileSystemAssemblageModelImpl,
+        }
+    },
+    
+    /** A SAX Content Handler service to read an Article XML Description.
+    */
+    Class
+    {
+        kXPGXMLParserArticleBoss,
+        kInvalidClass,
+        {
+            IID_ISAXCONTENTHANDLER, kXPGXMLParserArticleImpl,
+            IID_INODEDATA,            kXPGPointerDataImpl,
+        }
+    },
+    
+    /** A SAX Content Handler service to read an image XML Description.
+    */
+    Class
+    {
+        kXPGXMLImageDescriptionHandlerBoss,
+        kInvalidClass,
+        {
+            IID_ISAXCONTENTHANDLER, kXPGXMLImageDescriptionHandlerImpl,
+            IID_INODEDATA, kXPGPointerDataImpl,
+            IID_ISTRINGLISTDATA, kStringListDataImpl,
+        }
+    },
+ 
+    /** A SAX Content Handler service to read a forme XML Description.
+    */
+    Class
+    {
+        kXPGXMLFormeDescriptionHandlerBoss,
+        kInvalidClass,
+        {
+            IID_ISAXCONTENTHANDLER, kXPGXMLFormeDescriptionHandlerImpl,
+            // Contains forme data in the following order : forme name, forme file name, typo file name
+            IID_ISTRINGLISTDATA, kStringListDataImpl,
+        }
+    },
+    
+    Class
+    {
+        kXPGXMLMatchingStylesListHandlerBoss,
+        kInvalidClass,
+        {
+            IID_ISAXCONTENTHANDLER, kXPGXMLMatchingStylesListHandlerImpl,
+        }
+    },
+
+    Class
+    {
+        kXPGXMLArticleDescriptionBoss,
+        kInvalidClass,
+        {
+            IID_ISAXCONTENTHANDLER, kXPGXMLArticleDescriptionImpl,
+            IID_ISTRINGLISTDATA, kStringListDataImpl,
+        }
+    },
+    
+    /** A SAX Content Handler service to read an image XML Description.
+    */
+    Class
+    {
+        kXPGXMLExportFileHandlerBoss,
+        kInvalidClass,
+        {
+            IID_ISAXCONTENTHANDLER, kXPGXMLExportFileHandlerImpl,
+        }
+    },
+        
+
+    /** A SAX Content Handler service to load all tag in a document from an article xml file
+    */
+    Class
+    {
+        kXPGXMLLoadTagHandlerBoss,
+        kInvalidClass,
+        {
+            IID_ISAXCONTENTHANDLER, kXPGXMLLoadTagHandlerImpl,
+            
+            // Store document to log tag into
+            IID_IUIDDATA, kUIDDataImpl,
+        }
+    },
+        
+    /** SAX handler building block for reading mapping tables from XML
+    */
+    Class
+    {
+        kXPGXMLMatchingFileHandlerBoss,
+        kInvalidClass,
+        {
+            IID_ISAXCONTENTHANDLER, kXPGXMLMatchingFileHandlerImpl,
+            IID_IXPGTAGTOSTYLEMAP, kXPGTagToStyleMapImpl,
+            
+            // Store document to read tag from
+            IID_IUIDDATA, kUIDDataImpl,
+        }
+    },
+    
+    
+    Class
+    {
+        kXPGXMLMatchingFileHandler2Boss,
+        kInvalidClass,
+        {
+            IID_ISAXCONTENTHANDLER, kXPGXMLMatchingFileHandler2Impl,
+            IID_IFORMEMATCHINGSTYLESLIST, kXPGKeyValueDataImpl,
+        }
+    },
+    
+    /** A SAX Content Handler service to read an XML article.
+    */
+    Class
+    {
+        kXPGTextImportHandlerBoss,
+        kInvalidClass,
+        {
+            // Implementation of IK2ServiceProvider marking this as a SAX handler
+             IID_IK2SERVICEPROVIDER, kXMLContentServiceProviderImpl,
+                         
+             //Process the text import
+            IID_ISAXDOMSERIALIZERHANDLER, kXPGTextImportHandlerImpl,
+            
+            //Target Stories
+            IID_IUIDLISTDATA, kUIDListDataImpl,
+        }
+    },
+    
+
+    /** Command to set text frame the kXPGTextImportHandlerBoss will import xml data into
+    */
+    Class
+    {
+        kXPGSetTagToStyleMapCmd,
+        kInvalidClass,
+        {
+            IID_ICOMMAND, kXPGSetTagToStyleMapCmdImpl,
+            IID_IXPGTAGTOSTYLEMAP, kXPGTagToStyleMapImpl,
+        }
+    },
+    
+    /** Non persistent boss which can hold ITagToStyleMap data (used by command above for undo)
+    */
+    Class
+    {
+        kXPGTagToStyleMapBoss,
+        kInvalidClass,
+        {
+            IID_IXPGTAGTOSTYLEMAP, kXPGTagToStyleMapImpl,
+        }
+    },
+
+    /** @Après l'import xml, on gère le texte non ou mal balisé
+    */
+    Class
+    {
+        kXPGXMLPostImportIterationBaseBoss,
+        kInvalidClass,
+        {
+            // Implementation of IK2ServiceProvider marking this as a post-import iteration
+             IID_IK2SERVICEPROVIDER,    kXMLPostImportIterationServiceProviderImpl,
+            
+            // Implementation of IXMLPostImportIteration
+            IID_IXMLPOSTIMPORTITERATION, kXPGXMLPostImportIterationBaseImpl,
+       }
+    },
+    
+    Class
+    {
+        kXPGCheckTextImportHandlerBoss,
+        kInvalidClass,
+        {
+            IID_ISAXCONTENTHANDLER, kXPGCheckTextImportHandlerImpl,
+            IID_ITEXTEMATCHINGSTYLESLIST, kXPGKeyValueDataImpl,
+        }
+    },
+     
+    
+    /**  Command to save assignment passed in itemlist
+    */
+    Class
+    {
+        kXPGSaveAssignmentCmdBoss,
+        kInvalidClass,
+        {
+            IID_ICOMMAND, kXPGSaveAssignmentCmdImpl,
+        }
+    },
+    
+    Class
+    {
+        kXPGArticleSizerCmdBoss,
+        kInvalidClass,
+        {
+            IID_ICOMMAND, kXPGArticleSizerCmdImpl,
+        }
+    },
+        
+#if INCOPY
+    /**  Filter paragraph style according to those are used in InCopy stories
+         in the document (incopy file) passed in the command's itemlist
+    */
+    Class
+    {
+        kXPGFilterStyleCmdBoss,
+        kInvalidClass,
+        {
+            IID_ICOMMAND, kXPGFilterStyleCmdImpl,
+        }
+    },
+
+
+    /**  Unlock all InCopy stories so that they are available for editing
+    */
+    Class
+    {
+        kXPGUnlockStoriesCmdBoss,
+        kInvalidClass,
+        {
+            IID_ICOMMAND, kXPGUnlockStoriesCmdImpl,
+        }
+    },
+    
+#endif
+     //******************************************JUSQU'ICI OK
+
+#if XPAGESERVER
+    /** Responder service in charge of exporting articles when document is save
+    */
+    Class
+    {
+        kXPGExportArtRespBoss,
+        kInvalidClass,
+        {
+            IID_IK2SERVICEPROVIDER, kAfterSaveAsDocSignalRespServiceImpl,
+            IID_IRESPONDER, kXPGExportArtRespImpl,
+        }
+    },
+#else
+    /** Responder service in charge of exporting articles when document is save
+    */
+    Class
+    {
+        kXPGExportArtRespBoss,
+        kInvalidClass,
+        {
+            IID_IK2SERVICEPROVIDER, kBeforeSaveDocSignalRespServiceImpl,
+            IID_IRESPONDER, kXPGExportArtRespImpl,
+        }
+    },
+#endif
+
+    /** Script provider for inx forme data round trip
+     */
+    
+    Class
+    {
+        kXPGScriptProviderBoss,
+        kBaseScriptProviderBoss,
+        {
+            IID_ISCRIPTPROVIDER, kXPGScriptProviderImpl,
+        }
+    },
+    
+    
+    /** Error String provider for Script-related errors
+     */
+    Class
+    {
+        kXPGErrorStringServiceBoss,
+        kInvalidClass,
+        {
+            /**    Identifies this boss as an error string provider.
+                  Implementation from API (ShuksanID.h)
+             */
+            IID_IK2SERVICEPROVIDER, kErrorStringProviderImpl,
+            /** Provides support for mapping error codes to the
+                  strings in the UserErrorTable resource.
+             */
+            IID_IERRORSTRINGSERVICE, kXPGErrorStringServiceImpl,
+        }
+    },
+    
+    Class
+    {
+        kXPGResponderServiceBoss,
+        kInvalidClass,
+        {
+            IID_IK2SERVICEPROVIDER , kXPGServiceProviderImpl,
+            IID_IRESPONDER         , kXPGResponderImpl,
+        }
+    },
+    
+// Verrouillage des article en dehors des statuts passes en parametre
+#if ! INCOPY
+   /* Class
+    {
+        kXPGIAMServiceProviderBoss,
+        kAMSPBoss,
+        {
+            IID_IAMSYSTEMPROVIDER, kInCopyAMSPImpl , // represents my asset management system provider
+            IID_IAMSERVICEPROVIDER, kXPGIAMServiceProviderImpl , // provides IAMService implementations for my system
+        }
+    },*/
+#endif
+
+    Class
+    {
+        kXPGSetIndexPreferencesCmdBoss,
+        kInvalidClass,
+        {
+            IID_ICOMMAND,    kXPGSetIndexPreferencesCmdImpl,
+
+            IID_IXPGINDEXREFERENCE, kXPGIndexPreferenceImpl,
+        }
+    },
+    
+    /** Group utility methods for this plug-in
+    */
+    AddIn
+    {
+        kUtilsBoss,
+        kInvalidClass,
+        {
+            IID_IXPAGEUTILS, kXPGUtilsImpl,
+        }
+    },
+}}};
+
+/**  Implementation definition.
+*/
+resource FactoryList (kSDKDefFactoryListResourceID)
+{
+	kImplementationIDSpace,
+	{
+		#include "XPGFactoryList.h"
+	}
+};
+
+/** LocaleIndex
+ *	The LocaleIndex should have indicies that point at your
+ *	localizations for each language system that you are localized for.
+ *
+ *  String LocaleIndex.
+ */
+ 
+resource LocaleIndex ( kSDKDefStringsResourceID)
+{
+	kStringTableRsrcType,
+	{
+		kWildFS, k_enUS, kSDKDefStringsResourceID + index_enUS
+		kWildFS, k_enGB, kSDKDefStringsResourceID + index_enUS
+		kWildFS, k_deDE, kSDKDefStringsResourceID + index_enUS
+		kWildFS, k_frFR, kSDKDefStringsResourceID + index_frFR
+		kWildFS, k_esES, kSDKDefStringsResourceID + index_enUS
+		kWildFS, k_ptBR, kSDKDefStringsResourceID + index_enUS
+		kWildFS, k_svSE, kSDKDefStringsResourceID + index_enUS
+		kWildFS, k_daDK, kSDKDefStringsResourceID + index_enUS
+		kWildFS, k_nlNL, kSDKDefStringsResourceID + index_enUS
+		kWildFS, k_itIT, kSDKDefStringsResourceID + index_enUS
+		kWildFS, k_nbNO, kSDKDefStringsResourceID + index_enUS
+		kWildFS, k_fiFI, kSDKDefStringsResourceID + index_enUS
+		kInDesignJapaneseFS, k_jaJP, kSDKDefStringsResourceID + index_enUS
+	}
+};
+
+resource LocaleIndex (kSDKDefStringsNoTransResourceID)
+{
+	kStringTableRsrcType,
+	{
+		kWildFS, k_Wild, kSDKDefStringsNoTransResourceID + index_enUS
+	}
+};
+
+resource StringTable (kSDKDefStringsNoTransResourceID + index_enUS)
+{
+	k_enUS,									// Locale Id
+	kEuropeanMacToWinEncodingConverter,		// Character encoding converter
+	{
+		// No-Translate strings go here:
+		kXPGXMLImportTargetKey,	kXPGXMLImportTargetKey,
+		kXPGXMLDescFileKey,	kXPGXMLDescFileKey,
+		kXPGXMLArticleIdKey, kXPGXMLArticleIdKey,
+	}
+};
+
+/**
+ * User Error Table resource 
+ * To be coupled with an IErrorStringService implementation and
+ * string translations (see localized .fr files)
+ */
+resource UserErrorTable(kSDKDefErrorStringResourceID) 
+{
+	{
+		// Global err code, error string
+		kXPGFailedToLoadFormeDataErrorCode, kXPGFailedToLoadFormeDataKey,
+	}
+};
+
+/*
+// Scripting definition.
+*/
+resource VersionedScriptElementInfo(1)
+{
+	//Contexts
+	{
+		// Scripting support added at InDesign CS 2.0.
+		kFiredrakeScriptVersion, kCoreScriptManagerBoss, kWildFS, k_Wild,
+	}
+	
+	//Elements
+	{
+		// TCLRef data
+		Property
+		{
+			kXPGFormeDataPropScriptElement,			// this property's script element ID
+			p_FormeData,								// ScriptID
+			"Forme Data",								// name
+			"Describe frame type in its forme ",	// description
+			VariableArrayType(3){StringType, Int16Type}, // type		
+			{}										// alternate types
+			kNoAttributeClass,						// attribute class ID
+		}
+		 
+		// TriasStoryData
+		Property
+		{
+			kXPGPlacedArticleDataPropScriptElement,	// this property's script element ID
+			p_PlacedArticleData,					// ScriptID
+			"TriasStoryData",						// name
+			"Story Data for Trias use",				// description
+			VariableArrayType(3){StringType, Int16Type},								// type		
+			{}										// alternate types
+			kNoAttributeClass,						// attribute class ID
+		}
+		
+		// TriasArticleData
+		Property
+		{
+			kXPGPArticleDataPropScriptElement,		// this property's script element ID
+			p_ArticleData,							// ScriptID
+			"TriasArticleData",						// name
+			"Article Data for Trias use",			// description
+			StringType,								// type		
+			{}										// alternate types
+			kNoAttributeClass,						// attribute class ID
+		}
+		
+		// Connects this plug-in's IFormeData add-in data interface on page items to scripting
+		Provider
+		{
+			kXPGScriptProviderBoss,
+			{
+				// Put the IFormeData property on the page item scripting object.
+				// Scripting objects that inherit from kPageItemObjectScriptElement
+				// will inherit the property. These scripting objects include
+				// rectangle, polygon, oval, etc.
+				Object{ kPageItemObjectScriptElement },
+				
+				// The FormeData property
+				Property{ kXPGFormeDataPropScriptElement, kReadWrite },				
+				
+				Property{ kXPGPlacedArticleDataPropScriptElement, kReadWrite },	
+				
+				Property{ kXPGPArticleDataPropScriptElement, kReadWrite },	
+			}
+		}	
+	}			
+};
+
+#endif // __ODFRC__
+
+#include "XPG_enUS.fr"
+#include "XPG_frFR.fr"
+
+//  Code generated by DollyXs code generator

@@ -1,0 +1,559 @@
+//========================================================================================
+//  
+//  $File: $
+//  
+//  Owner: Trias
+//  
+//  $Author: $
+//  
+//  $DateTime: $
+//  
+//  $Revision: $
+//        
+//  $Change: $ 
+//  
+//  Copyright Adobe Systems Incorporated. All rights reserved.
+//  
+//  NOTICE:  Adobe permits you to use, modify, and distribute this file in accordance 
+//  with the terms of the Adobe license agreement accompanying it.  If you have received
+//  this file from a source other than Adobe, then your use, modification, or 
+//  distribution of it requires the prior written permission of Adobe.
+//  
+//========================================================================================
+
+#include "XPGID.h"
+#include "XPGUIID.h"
+
+#ifdef __ODFRC__
+
+/*  Plugin version definition.
+*/
+resource PluginVersion (kSDKDefPluginVersionResourceID)
+{
+	kTargetVersion,
+	kXPGUIPluginID,
+	kSDKDefPlugInMajorVersionNumber, kSDKDefPlugInMinorVersionNumber,
+	kSDKDefHostMajorVersionNumber, kSDKDefHostMinorVersionNumber,
+	kXPGUICurrentMajorFormatNumber, kXPGUICurrentMinorFormatNumber,
+	{ kInCopyProduct},
+	{ kWildFS },
+	kUIPlugIn,
+	kXPGUIVersion
+};
+
+/*
+// This is where we define we require the library plug-ins:
+*/
+resource PluginDependency(kSDKDefPluginDependencyResourceID)
+{
+	kWildFS
+	{
+		kXPGPluginID,kXPGPluginName,kSDKDefPlugInMajorVersionNumber,kSDKDefPlugInMinorVersionNumber,		
+	}
+}
+
+/*  The ExtraPluginInfo resource adds extra information to the Missing Plug-in dialog
+	that is popped when a document containing this plug-in's data is opened when
+	this plug-in is not present. These strings are not translatable strings
+	since they must be available when the plug-in isn't around. They get stored
+	in any document that this plug-in contributes data to.
+*/
+resource ExtraPluginInfo(1)
+{
+	kXPGUICompanyValue,			// Company name
+	kXPGUIMissingPluginURLValue,	// URL 
+	kXPGUIMissingPluginAlertValue,	// Missing plug-in alert text
+};
+
+resource ImplementationAlias(1) 
+{ 
+	{ 
+		kXPGUICreditPhotoImpl,			     kStringDataImpl,
+		kXPGUILegendPhotoImpl,			     kStringDataImpl,
+	} 
+}; 
+
+/* Boss class definition.
+*/
+resource ClassDescriptionTable(kSDKDefClassDescriptionTableResourceID)
+{{{
+
+	/**
+	 This boss class supports two interfaces:
+	 IActionComponent and IPMPersist.
+	 
+	 @ingroup xpageui
+	*/
+	Class
+	{
+		kXPGUIActionComponentBoss,
+		kInvalidClass,
+		{
+			/** Handle the actions from the menu. */
+			IID_IACTIONCOMPONENT, kXPGUIActionComponentImpl,
+			
+			/** Persist the state of the menu across application instantiation.
+			Implementation provided by the API.*/
+			IID_IPMPERSIST, kPMPersistImpl			
+			
+
+		}
+	},
+	
+	Class
+	{
+		kXPGUIImagesPanelWidgetBoss,
+		kPalettePanelWidgetBoss,
+		{				
+			/**
+				Allows varying level of detail exposed by a widget.
+			*/
+			IID_IPANELDETAILCONTROLLER, kSizePanelDetailControllerImpl,
+			IID_IOBSERVER, kXPGUITECImagesPanelObserverImpl,
+			IID_ICONTROLVIEW, kXPGUITextesPanelViewImpl, // Reuse of textes panel control view implementation
+		}
+	},
+
+	
+	/**
+		Our tree view widget subclassed as we must provide ITreeViewWidgetMgr and ITreeViewHierarchyAdapter implementations
+		to work with tree-view control. 
+		@ingroup paneltreeview
+	*/
+	Class
+	{
+		kXPGUIImagesViewWidgetBoss,
+		kTreeViewWidgetBoss,
+		{
+			/** Furnishes application framework with widgets as needed and geometry info */
+			IID_ITREEVIEWWIDGETMGR,  kXPGUIImagesTVWidgetMgrImpl,
+			
+			/** Adapts our data model to the needs of the application framework */
+			IID_ITREEVIEWHIERARCHYADAPTER,  kXPGUIImagesTVHierarchyAdapterImpl,		
+			
+			IID_IDATAMODEL, kPMUnknownDataImpl,
+		}
+	},
+
+	/**
+	Subclass to allow us to use a proxy event handler (to catch double clicks), 
+	to add drag-drop capability and to an observer for node expand/contract events.
+	*/
+	Class
+	{
+		kXPGUIImageNodeWidgetBoss,
+		kTreeNodeWidgetBoss,
+		{
+			/** Provides the node with drag source capability for the SysFile
+				associated with the widget.
+			 */
+			IID_IDRAGDROPSOURCE,  kXPGUIInCopyImageDragDropSourceImpl,
+		}
+	},
+	
+	
+	/** Register to be a page item DD target helper. i.e. we help the page item
+		to import image from drag dropped file
+	*/
+	Class
+	{
+		kXPGUIImageInPageItemHelperBoss,
+		kInvalidClass,
+		{
+			IID_IK2SERVICEPROVIDER,			 kPageItemDDTargetHelperProviderImpl,
+			IID_IDRAGDROPTARGETFLAVORHELPER, kXPGUITECImageDropTargetImpl,
+		}
+	},
+	
+	/** 
+		Provides our own scrap handler for image files
+	*/
+	Class
+	{
+		kXPGUIImageFileHandlerBoss,
+		kSysFileDEHandlerBoss,
+		{
+			/** Overrides the data exchange handler. 
+			*/
+			IID_IDATAEXCHANGEHANDLER, kXPGUIImageFileHandlerImpl,
+			IID_ICREDITPHOTO, kXPGUICreditPhotoImpl,
+			IID_ILEGENDPHOTO, kXPGUILegendPhotoImpl,
+		}
+	},					
+
+	Class
+	{
+		kXPGUIDisplayImagePanelWidgetBoss,
+		kGenericPanelWidgetBoss,
+		{
+			/** A custom draw implementation
+			*/
+			IID_ICONTROLVIEW, kXPGUIDisplayImagePanelViewImpl,
+			
+			/** Path to image to preview in this widget */
+			IID_ISYSFILEDATA, kSysFileDataImpl,
+			
+			/** Image index */
+			IID_IINTDATA, kIntDataImpl,
+		}
+	},
+	
+	Class
+	{
+		kXPGUIDnDDisplayImagePanelWidgetBoss,
+		kGenericPanelWidgetBoss,
+		{
+			/** A custom draw implementation
+			*/
+			IID_ICONTROLVIEW, kXPGUIDisplayImagePanelViewImpl,
+			
+			/** Path to image to preview in this widget */
+			IID_ISYSFILEDATA, kSysFileDataImpl,
+			
+			/** Image index */
+			IID_IINTDATA, kIntDataImpl,
+			
+			/** Add drag source capabilities to image panel */
+			IID_IDRAGDROPSOURCE,  kXPGUITECImageDragDropSourceImpl,
+			
+			/** This widget's event handler needs to be DND aware */
+			IID_IEVENTHANDLER, kDragDropSourceEHImpl,
+		}
+	},
+	
+	Class
+	{
+		kXPGUIDropDownListWidgetBoss,
+		kDropDownListWidgetBoss,
+		{
+			IID_IIDLIST, kStringListDataImpl,
+		}
+	},
+	
+	
+	/**
+		Our tree view widget subclassed as we must provide ITreeViewWidgetMgr and ITreeViewHierarchyAdapter implementations
+		to work with tree-view control. 
+		@ingroup paneltreeview
+	*/
+	Class
+	{	
+		kXPGUIArticleViewWidgetBoss,
+		kTreeViewWidgetBoss,
+		{
+			IID_ITREEVIEWWIDGETMGR,			kXPGUIArticleTVWidgetMgrImpl,			
+			IID_ITREEVIEWHIERARCHYADAPTER,  kXPGUIArticleTVHierarchyAdapterImpl,			
+			IID_IOBSERVER,					kXPGUIArticleViewObserverImpl,					
+		}
+	},	
+	
+	/**
+	Subclass to allow us to use a proxy event handler (to catch double clicks), 
+	to add drag-drop capability and to an observer for node expand/contract events.
+	*/
+	Class
+	{
+		kXPGUIArticleNodeWidgetBoss,
+		kTreeNodeWidgetBoss,
+		{			
+			IID_IDRAGDROPSOURCE,  kXPGUIXRailTexteDragDropSourceImpl,
+		}
+	},
+	
+	/** 
+		Provides our own scrap handler for xml files
+	*/
+	Class
+	{
+		kXPGUIXmlFileHandlerBoss,
+		kSysFileDEHandlerBoss,
+		{
+			/** Overrides the data exchange handler. 
+			*/
+			IID_IDATAEXCHANGEHANDLER, kXPGUIXmlFileHandlerImpl,			
+			IID_ISTRINGLISTDATA, kStringListDataImpl,		
+			IID_IRUBRIQUEIDDATA, kXPGUIRubriqueIdDataImpl,			
+			IID_ICREDITPHOTO, kXPGUICreditPhotoImpl,
+			IID_ILEGENDPHOTO, kXPGUILegendPhotoImpl,
+		}
+	},
+	
+	
+}}};
+
+/*  Implementation definition.
+*/
+resource FactoryList (kSDKDefFactoryListResourceID)
+{
+	kImplementationIDSpace,
+	{
+		#include "XPGUIFactoryList.h"
+	}
+};
+
+/*  Menu definition.
+*/
+resource MenuDef (kSDKDefMenuResourceID)
+{
+	{
+	 
+	}
+};
+
+/* Action definition.
+*/
+resource ActionDef (kSDKDefActionResourceID)
+{
+	{				
+	}
+};
+
+
+/*  LocaleIndex
+	The LocaleIndex should have indicies that point at your
+	localizations for each language system that you are localized for.
+*/
+/*  String LocaleIndex.
+*/
+resource LocaleIndex ( kSDKDefStringsResourceID)
+{
+	kStringTableRsrcType,
+	{
+		kWildFS, k_enUS, kSDKDefStringsResourceID + index_enUS
+		kWildFS, k_enGB, kSDKDefStringsResourceID + index_enUS
+		kWildFS, k_deDE, kSDKDefStringsResourceID + index_enUS
+		kWildFS, k_frFR, kSDKDefStringsResourceID + index_frFR
+		kWildFS, k_esES, kSDKDefStringsResourceID + index_enUS
+		kWildFS, k_ptBR, kSDKDefStringsResourceID + index_enUS
+		kWildFS, k_svSE, kSDKDefStringsResourceID + index_enUS
+		kWildFS, k_daDK, kSDKDefStringsResourceID + index_enUS
+		kWildFS, k_nlNL, kSDKDefStringsResourceID + index_enUS
+		kWildFS, k_itIT, kSDKDefStringsResourceID + index_enUS
+		kWildFS, k_nbNO, kSDKDefStringsResourceID + index_enUS
+		kWildFS, k_fiFI, kSDKDefStringsResourceID + index_enUS
+		kInDesignJapaneseFS, k_jaJP, kSDKDefStringsResourceID + index_enUS
+	}
+};
+
+resource LocaleIndex (kSDKDefStringsNoTransResourceID)
+{
+	kStringTableRsrcType,
+	{
+		kWildFS, k_Wild, kSDKDefStringsNoTransResourceID + index_enUS
+	}
+};
+
+resource StringTable (kSDKDefStringsNoTransResourceID + index_enUS)
+{
+	k_enUS,									// Locale Id
+	kEuropeanMacToWinEncodingConverter,		// Character encoding converter
+	{
+		// No-Translate strings go here:
+		kXPGUIInternalPopupMenuNameKey,	kXPGUIInternalPopupMenuNameKey,		// No need to translate, internal menu name.
+	}
+};
+
+resource PanelList ((kSDKDefPanelResourceID))
+{
+	{		
+		// 1st panel in the list
+		kXPGUIImagesPanelResourceID,		// Resource ID for this panel (use SDK default rsrc ID)
+		kXPGUIPluginID,						// ID of plug-in that owns this panel
+		kNotResizable,						// Z-order in palette
+		kXPGUIImagesPanelWidgetActionID,	// Action ID to show/hide the panel
+		kXPGUIImagesPanelMenuKey,			// Shows up in the Window list.
+		"",									// Alternate menu path of the form "Main:Foo" if you want your palette menu item in a second place
+		0.0,
+		0,0,								// Rsrc ID, Plugin ID for a PNG icon resource to use for this palette
+		c_Panel,
+		
+		// 2nd panel in the list
+		kXPGUIArticlesPanelResourceID,		// Resource ID for this panel (use SDK default rsrc ID)
+		kXPGUIPluginID,						// ID of plug-in that owns this panel
+		kNotResizable,						// Z-order in palette
+		kXPGUIArticlesPanelWidgetActionID,	// Action ID to show/hide the panel
+		kXPGUIArticlesPanelMenuKey,			// Shows up in the Window list.
+		"",									// Alternate menu path of the form "Main:Foo" if you want your palette menu item in a second place
+		0.0,
+		0,0,								// Rsrc ID, Plugin ID for a PNG icon resource to use for this palette
+		c_Panel,
+	}	
+};
+
+/*
+// ------------Images Panel resources.--------------
+*/
+
+resource LocaleIndex (kXPGUIImagesPanelResourceID)
+{
+	kViewRsrcType,
+	{
+		kWildFS, k_Wild, 	kXPGUIImagesPanelResourceID + index_enUS
+	}
+};
+
+/*  Type definition.
+*/
+type XPGUIImagesPanelWidget(kViewRsrcType) : GenericPalettePanelWidget (ClassID = kXPGUIImagesPanelWidgetBoss)
+{
+	SizePanelDetailController;
+}
+
+type XPGUIImagesViewWidget(kViewRsrcType) : TreeViewWidget(ClassID = kXPGUIImagesViewWidgetBoss) 
+{
+};
+
+type XPGUIImageNodeWidget(kViewRsrcType) : PrimaryResourcePanelWidget(ClassID = kXPGUIImageNodeWidgetBoss) 
+{
+};
+
+type XPGUIDisplayImagePanelWidget(kViewRsrcType) : GenericPanelWidget(ClassID = kXPGUIDisplayImagePanelWidgetBoss)
+{
+};
+
+/*
+// Panel definition.
+// This view is not localized: therefore, it can reside here.
+// However, if you wish to localize it, it is recommended to 
+// locate it in one of the localized framework resource files 
+// (i.e. BscSlDlg_enUS.fr etc.) and update your Panel 
+// LocaleIndex accordingly.
+*/
+resource XPGUIImagesPanelWidget (kXPGUIImagesPanelResourceID + index_enUS)
+{
+	__FILE__, __LINE__,
+	kXPGUIImagesPanelWidgetID,      // WidgetId
+	kPMRsrcID_None,         // RsrcId
+	kBindNone,              // Frame binding
+	Frame(0,0,537,200)      // Frame
+	kTrue,                  // Visible
+	kTrue,                  // Enabled
+	kTrue,								// Erase background
+	kInterfacePaletteFill,				// Erase to color
+	kFalse,								// Draw dropshadow
+	kXPGUIImagesPanelTitleKey,		// Panel name
+	{
+		
+		XPGUIImagesViewWidget
+		(
+			kXPGUIImagesViewWidgetID, 
+			kPMRsrcID_None, // WidgetId, RsrcId
+			kBindAll,
+			Frame(0,10,397,183)		// Frame
+			kTrue, kTrue,			// Visible, Enabled
+			kTrue, 						// EraseBeforeDraw
+			kInterfacePaletteFill,	 	// InterfaceColor
+			"",
+			kFalse,		// Display root node
+			kFalse,		// Use H Scroll bar
+			kTrue,		// Use V scroll bar
+			20,			// fVScrollButtonIncrement
+			20,			// fVThumbScrollIncrement
+			20,			// fHScrollButtonIncrement
+			20,			// fHThumbScrollIncrement
+			1,			// Items selectable, 0 = No Selection, 1 = Single Selection, 2 = Multiple Selection
+			kFalse,		// Allow children from multiple parents to be selected
+			kFalse,		// Allow discontiguous selection
+			{
+						
+			},
+		),
+		
+		XPGUIDisplayImagePanelWidget
+		(
+			kXPGUIDisplayImagePanelWidgetID,	// WidgetId
+			kPMRsrcID_None,					// RsrcId
+			kBindTop | kBindBottom | kBindRight,
+			Frame(400,10,400+135,164)			// Frame
+			kTrue,							// Visible
+			kTrue,							// Enabled
+			"",
+			{
+			}
+		),
+		SeparatorWidget
+		(
+			0,                   // WidgetId 
+			kPMRsrcID_None,		// RsrcId
+			kBindLeft | kBindRight | kBindBottom,
+			Frame(0,184,537,186)	// Frame
+			kTrue, kTrue,			// Visible, Enabled
+		),
+			
+		InfoStaticTextWidget
+		(
+			kXPGUICurrentNumeroWidgetID, 
+			kPMRsrcID_None, // WidgetId, RsrcId
+			kBindRight | kBindBottom,						// Frame binding
+			Frame(301,187,520,199)							// Frame
+			kTrue, 
+			kTrue,
+		    kAlignRight, 
+			kEllipsizeEnd,					// Visible, Enabled
+			kTrue,
+			"",			// Text
+			0,
+			kDialogWindowSystemScriptFontId, 
+			kDialogWindowSystemScriptHiliteFontId,
+		),
+	}			
+};
+
+resource LocaleIndex (kXPGUIImageNodeWidgetRsrcID)
+{
+	kViewRsrcType,
+	{
+		kWildFS, k_Wild, 	kXPGUIImageNodeWidgetRsrcID + index_enUS
+	}
+};
+
+resource XPGUIImageNodeWidget (kXPGUIImageNodeWidgetRsrcID + index_enUS)
+{
+	__FILE__, __LINE__,
+	kXPGUIImageNodeWidgetId, kPMRsrcID_None,	// WidgetId, RsrcId
+	kBindLeft| kBindRight,					// Frame binding
+	Frame(0,0,387,20),						// Frame (left, top, right, bottom)
+	kTrue, kTrue,							// Visible, Enabled
+	"",										// Panel name
+	{
+		// Drop down arrow
+		TreeExpanderWidget
+		(
+			kTreeNodeExpanderWidgetID,		// WidgetId
+			kTreeBranchCollapsedRsrcID,		// RsrcId for collapsed node icon
+			kApplicationRsrcPluginID,		// RsrcPlugin for collapsed node icon
+			kBindLeft,						// Frame binding
+			Frame(2,4,18,18),				// Frame
+			kTrue, kTrue,					// Visible, Enabled
+			kTreeBranchExpandedRsrcID, 		// RsrcId for expanded node icon
+			kApplicationRsrcPluginID,		// RsrcPlugin for expanded node icon
+			kTrue,							// Cmd-Click expands/collapses children
+			kFalse,							// Scroll to show children when expanded
+			kIconNoCentering,			
+			kIconRaisedLook,		// Sets the icon look -- (kIconRaisedLook | kIconFlushLook)
+			kFalse					// Bool integer sets whether the icon draws a well.
+		),		
+				
+		InfoStaticTextWidget
+		(
+			kXPGUIImageNameWidgetID,		// WidgetId
+			kPMRsrcID_None,					// RsrcId
+			kBindLeft|kBindRight, // Frame binding
+			Frame(19,0,376,18),				// Frame
+			kTrue, kTrue,					// Visible, Enabled
+			kAlignLeft,						// Alignment
+			kDontEllipsize,					// Ellipsize style
+			kTrue,
+			"",								// Text Control Data	
+			0,								// WidgetId for associated control for shortcut focus
+			kPaletteWindowSystemScriptFontId, kPaletteWindowSystemScriptFontId, 
+		),
+	}
+}
+
+#endif // __ODFRC__
+
+#include "XPGUI_enUS.fr"
+#include "XPGUI_frFR.fr"
+
+//  Code generated by DollyXs code generator

@@ -1,0 +1,122 @@
+#ifdef __ODFRC__
+// French string table is defined here
+resource StringTable (kSDKDefStringsResourceID + index_frFR)
+{
+	k_frFR,									// Locale Id
+	kResourceUTF8Encoded,		// Character encoding converter (irp) I made this WinToMac as we have a bias to generate on Win...
+	{
+		// ----- Menu strings
+			kPMUCompanyKey,						kPMUCompanyValue,					
+			kPMUAboutMenuKey,					kPMUPluginName "...",
+			kPMUPluginsMenuKey,					kPMUPluginName,
+			kPMUExecTCLMenuItemKey,				"Executer un fichier TCL",
+			kPMUAboutThisPlugInMenuKey,			"A propos de ce plug-in...",
+			kPMUReverseTCLMenuItemKey,			"Générer un fichier TCL",
+			kPMUTCLPrefsMenuItemKey,			"Préférences...",
+			kPMUExportPermRefsTCLMenuItemKey,   "Exporter le contenu",
+			kPMUExportRefsListDebugMenuItemKey, "Debug : exporter l'index des references",
+			kPMURepairRefsListMenuItemKey,      "Debug : reparer l'index des references",
+			kPMURepairRefsListAlertKey,         "Reconstruire l'index des references cachees a partir des vrais tags du document ? Pensez a enregistrer ensuite.",
+			kPMURepairRefsListDoneKey,          "Reparation de l'index terminee :\n",
+			kPMUExportRefsListDebugDoneKey,     "Export de debug termine", 		
+			kPMUAddRefMenuPath,					"&Window:PageMakeUp:Reference TCL",
+			kPMUCreateILCRefsMenuItemKey,		"Créer les références",
+			kPMUExportILCRefsMenuItemKey,		"Exporter les références",
+
+		// ----- Command strings
+		
+		// ----- Window strings
+		
+		// ----- Panel/dialog strings
+			kPMUPanelTitleKey,					kPMUPluginName ,
+			kComposerToolPanelTitleKey,			"Composer Tool",
+			kPMUPrefsDialogTitleKey,			"Préférences " kPMUPluginName,
+			kPMUStaticTextKey,					"Préférences " kPMUPluginName,
+			kPMUDisplayTCLRefTextKey,			"Afficher les références des blocs",
+			kPMUStopOnErrorTextKey,				"Arrêt sur erreur",
+			kPMUDocButtonTextKey,				"Documents InDesign...",
+			kPMUImportImageButtonTextKey,		"Importation images...",
+			kPMUExportTCLButtonTextKey,			"Exportation TCL...",
+			kPMUEnglishRadioTextKey,			"Anglais",
+			kPMUFrenchRadioTextKey,				"Français",
+			kPMUDocPathDialogTitleKey,			" Documents InDesign",
+			kPMUUsePathTextKey,					"Utiliser un chemin local",
+			kPMUStaticTextKey2,					"Enregistrer les documents dans :",
+			kPMUStaticTextKey3,					"Ouvrir les documents dans :",
+			kPMUImageSettingDialogTitleKey,		" Importation Images",
+			kPMUStaticTextKey4,					"Chemin image :",
+			kPMUAllowImportImageTextKey,		"Importer les images",
+			kPMUPrintFrameTextKey,				"Non imprimable",
+ 			kPMUCreateTxtFrameTextKey,			"Créer un cadre texte sur l'image",
+			kPMUStaticTextKey5,					"Si une image est manquante : ",
+			kPMUWhiteKey,						"Blanc",
+			kPMUBlueKey,						"Bleu",
+			kPMUCyanKey,						"Cyan",
+			kPMUYellowKey, 						"Jaune",
+			kPMUMagentaKey,						"Magenta",
+			kPMUBlackKey,						"Noir",
+			kPMURegistrationKey,				"Repérage",
+			kPMURedKey,							"Rouge",
+			kPMUGreenKey,						"Vert",
+			kPMUNoneKey,						"Aucune",
+			kPMUPanelHeaderKey,					"En-Tête",
+			kPMUPanelGeometryKey,				"Géométrie",
+			kPMUPanelTextKey,					"Texte",
+			kPMUExportStyleKey,					"Description des feuilles de style",
+			kPMUExportCJKey,					"Description des règles de coupure",
+			kPMUExportColorsKey,				"Description des couleurs",
+			kPMUExportMastersKey,				"Description des maquettes",
+ 			kPMUExportLayersKey,				"Description des calques",
+			kPMUExportTextFrameKey,				"Commandes blocs texte [BN]",
+			kPMUExportImageFrameKey,			"Commandes blocs image [BI]",
+			kPMUExportRuleKey,					"Commandes filets [FD]",
+			kPMUExportTextKey,					"Exporter le texte",
+			kPMUExportParaCmdKey,				"Commandes Paragraphes [Px]",
+			kPMUExportTextCmdKey,				"Commandes Textes [Tx]",
+			kPMUExportStyleCmdKey,				"Feuilles de styles [SN]-[SB]",
+			kPMUExportPrefsDialogTitleKey,		" Préférences d'exportation TCL",
+			kPMUSavePrefsPb,					"Un problème est survenu pendant la sauvegardes des préférences",
+			kPMUTypeRefDialogTitleKey,			"Saisissez une référence",
+			kPMUSearchRefDialogTitleKey, 		"Saisissez une référence à rechercher",
+			kPMUStaticTextKey6,					"Référence :",
+			kPMUTooManySelectedItemsKey,		"Un seul bloc ou filet doit être sélectionné",
+			kPMUDisplayPermRefTextKey,			"Afficher les références PermRefs",
+			kPMUTypeExportTextKey,				"Type d'export :",
+			kPMUPDFTextKey,						"PDF",
+			kPMUEPSTextKey,						"EPS",
+			kPMUStaticTextParam1,				"Paramètre 1 :",
+			kPMUStaticTextParam2,				"Paramètre 2 :",
+			kPMUStaticTextParam3,				"Paramètre 3 :",
+			kPMUStaticTextParam4,				"Paramètre 4 :",
+			kPMUPrintTCLRefTextKey,				"Imprimer les références TCL",	
+
+			kPMUAboutBoxStringKey,				kPMUPluginName " version " kPMUVersion "\n\nCopyright 1993-2017 Trias Developpement. All Rights Reserved.\n\nhttp://www.trias.fr",
+											
+			kPMUExportPermRefsDoneKey,			"Export des PermRefs terminé",			
+			kPMUAutoTagDocument1TCLMenuItemKey,	"Tagger les prix du document",
+			kPMUAutoTagDocument2TCLMenuItemKey,	"Tagger les codes du document",
+	
+			kPMUDeleteAllPermRefsTCLMenuItemKey,"Supprimer toutes les références cachées",
+			kPMUDeleteAlltPermRefsDoneKey,      "Suppression des références terminée",   
+			kPMUAddReferenceMenuKey,			"Insérer une référence cachée",
+			kPMUAddTCLRefMenuItemKey,			"Identifier un bloc",
+			kPMUDisplayTCLRefMenuItemKey,		"Afficher les identifiants des blocs",
+			kPMUDisplayPermRefMenuItemKey,		"Afficher les références cachées",
+
+			// Tooltips on the main palette buttons.
+			kPMUExecTCLTipKey,					"Exécuter un fichier TCL",
+			kPMUAddPermRefTipKey,				"Insérer une référence cachée",
+			kPMUAddTCLRefTipKey,				"Identifier un bloc",
+			kPMUDeletePermRefskAlertKey,        "Etes-vous sûr de supprimer les références cachées?",
+			kPMUAutoTagDocumentPermRefsDoneKey, "Tagging automatique du document terminé", 
+		
+			kPMUVersionKey,						"Version " kPMUVersion, 
+		
+		// ----- Error strings
+			kErrTextSelection,					"Sélectionnez une partie de texte (au moins 1 caractère)",
+			kErrLayoutSelection,				"Sélectionnez un bloc ou un filet",
+			kErrNoOversetBox,					"Aucun bloc en débordement",
+			kErrAllPictureInPlace,				"Toutes les images sont à jour",
+	}
+};
+#endif // __ODFRC__

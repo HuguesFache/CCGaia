@@ -1,0 +1,826 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 54;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		8F0979D12C03B89C00700708 /* InDesignModelAndUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7EE67251BBAED0A000F7FE2 /* InDesignModelAndUI.framework */; };
+		A7515DE91A2CDA9A00B580B8 /* SDKFileHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7515DE51A2CDA9A00B580B8 /* SDKFileHelper.cpp */; };
+		A7515DEB1A2CDA9A00B580B8 /* SDKLayoutHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7515DE61A2CDA9A00B580B8 /* SDKLayoutHelper.cpp */; };
+		A7515DED1A2CDA9A00B580B8 /* SDKPlugInEntrypoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7515DE71A2CDA9A00B580B8 /* SDKPlugInEntrypoint.cpp */; };
+		A7515E1D1A2CE2FE00B580B8 /* libPublicPlugIn.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A7515E1B1A2CE2FE00B580B8 /* libPublicPlugIn.a */; };
+		A788C27B19B9D1C100924879 /* Blocs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A788C1F919B9D1C100924879 /* Blocs.cpp */; };
+		A788C27D19B9D1C100924879 /* Calques.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A788C1FB19B9D1C100924879 /* Calques.cpp */; };
+		A788C27F19B9D1C100924879 /* Composer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A788C1FD19B9D1C100924879 /* Composer.cpp */; };
+		A788C28119B9D1C100924879 /* Divers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A788C1FF19B9D1C100924879 /* Divers.cpp */; };
+		A788C28319B9D1C100924879 /* Divers2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A788C20119B9D1C100924879 /* Divers2.cpp */; };
+		A788C28519B9D1C100924879 /* Docs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A788C20219B9D1C100924879 /* Docs.cpp */; };
+		A788C28719B9D1C100924879 /* ExportUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A788C20419B9D1C100924879 /* ExportUtils.cpp */; };
+		A788C28919B9D1C100924879 /* Hyperlinks.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A788C20719B9D1C100924879 /* Hyperlinks.cpp */; };
+		A788C28B19B9D1C100924879 /* Livres.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A788C21619B9D1C100924879 /* Livres.cpp */; };
+		A788C28D19B9D1C100924879 /* Log.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A788C21819B9D1C100924879 /* Log.cpp */; };
+		A788C28F19B9D1C100924879 /* Pages.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A788C21A19B9D1C100924879 /* Pages.cpp */; };
+		A788C29119B9D1C100924879 /* Paragraphes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A788C21C19B9D1C100924879 /* Paragraphes.cpp */; };
+		A788C29319B9D1C100924879 /* ParserPlugIn.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A788C21E19B9D1C100924879 /* ParserPlugIn.cpp */; };
+		A788C29519B9D1C100924879 /* ParserSuiteASB.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A788C22021B9D1C100924879 /* ParserSuiteASB.cpp */; };
+		A788C29719B9D1C100924879 /* ParserSuiteLayoutCSB.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A788C22119B9D1C100924879 /* ParserSuiteLayoutCSB.cpp */; };
+		A788C29919B9D1C100924879 /* PermRefs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A788C22219B9D1C100924879 /* PermRefs.cpp */; };
+		A788C29B19B9D1C100924879 /* PermRefsSuiteASB.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A788C22419B9D1C100924879 /* PermRefsSuiteASB.cpp */; };
+		A788C29D19B9D1C100924879 /* PermRefsSuiteTextCSB.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A788C22519B9D1C100924879 /* PermRefsSuiteTextCSB.cpp */; };
+		A788C29F19B9D1C100924879 /* PermRefsTag.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A788C22619B9D1C100924879 /* PermRefsTag.cpp */; };
+		A788C2A519B9D1C100924879 /* PermRefsTagReport.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A788C22919B9D1C100924879 /* PermRefsTagReport.cpp */; };
+		A788C2A719B9D1C100924879 /* PermRefsTagTextAdornment.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A788C22A19B9D1C100924879 /* PermRefsTagTextAdornment.cpp */; };
+		A788C2A919B9D1C100924879 /* PermRefsTextEditPostProcess.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A788C22B19B9D1C100924879 /* PermRefsTextEditPostProcess.cpp */; };
+		A788C2AB19B9D1C100924879 /* PermRefsTextEditPreProcess.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A788C22C19B9D1C100924879 /* PermRefsTextEditPreProcess.cpp */; };
+		A788C2AD19B9D1C100924879 /* PermRefsUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A788C22D19B9D1C100924879 /* PermRefsUtils.cpp */; };
+		A788C2AF19B9D1C100924879 /* PMUTypes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A788C22F19B9D1C100924879 /* PMUTypes.cpp */; };
+		A788C2B519B9D1C100924879 /* PrsCustomServiceProvider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A788C23319B9D1C100924879 /* PrsCustomServiceProvider.cpp */; };
+		A788C2B719B9D1C100924879 /* PrsDeleteCleanup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A788C23419B9D1C100924879 /* PrsDeleteCleanup.cpp */; };
+		A788C2BB19B9D1C100924879 /* PrsEnterSerialNumberCmd.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A788C23619B9D1C100924879 /* PrsEnterSerialNumberCmd.cpp */; };
+		A788C2BD19B9D1C100924879 /* PrsEpsDocumentName.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A788C23719B9D1C100924879 /* PrsEpsDocumentName.cpp */; };
+		A788C2BF19B9D1C100924879 /* PrsEpsDocumentNamePersist.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A788C23819B9D1C100924879 /* PrsEpsDocumentNamePersist.cpp */; };
+		A788C2C119B9D1C100924879 /* PrsEpsExportPrefs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A788C23919B9D1C100924879 /* PrsEpsExportPrefs.cpp */; };
+		A788C2C319B9D1C100924879 /* PrsEpsExportPrefsPersist.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A788C23A19B9D1C100924879 /* PrsEpsExportPrefsPersist.cpp */; };
+		A788C2C519B9D1C100924879 /* PrsErrorStringService.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A788C23B19B9D1C100924879 /* PrsErrorStringService.cpp */; };
+		A788C2C719B9D1C100924879 /* PrsInsertTextCmd.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A788C23D19B9D1C100924879 /* PrsInsertTextCmd.cpp */; };
+		A788C2CF19B9D1C100924879 /* PrsParserThread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A788C24119B9D1C100924879 /* PrsParserThread.cpp */; };
+		A788C2D119B9D1C100924879 /* PrsPasteImportItemObserver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A788C24219B9D1C100924879 /* PrsPasteImportItemObserver.cpp */; };
+		A788C2D319B9D1C100924879 /* PrsPreferences.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A788C24319B9D1C100924879 /* PrsPreferences.cpp */; };
+		A788C2D519B9D1C100924879 /* PrsPreferencesPersist.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A788C24419B9D1C100924879 /* PrsPreferencesPersist.cpp */; };
+		A788C2D919B9D1C100924879 /* PrsRegistration.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A788C24619B9D1C100924879 /* PrsRegistration.cpp */; };
+		A788C2DB19B9D1C100924879 /* PrsRegistrationPersist.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A788C24719B9D1C100924879 /* PrsRegistrationPersist.cpp */; };
+		A788C2DD19B9D1C100924879 /* PrsRespService.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A788C24819B9D1C100924879 /* PrsRespService.cpp */; };
+		A788C2DF19B9D1C100924879 /* PrsReverseTCL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A788C24919B9D1C100924879 /* PrsReverseTCL.cpp */; };
+		A788C2E119B9D1C100924879 /* PrsScriptProvider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A788C24B19B9D1C100924879 /* PrsScriptProvider.cpp */; };
+		A788C2E319B9D1C100924879 /* PrsSerialNumberDialogController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A788C24C19B9D1C100924879 /* PrsSerialNumberDialogController.cpp */; };
+		A788C2E519B9D1C100924879 /* PrsSetDocEpsExportPrefsCmd.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A788C24D19B9D1C100924879 /* PrsSetDocEpsExportPrefsCmd.cpp */; };
+		A788C2E719B9D1C100924879 /* PrsSetDocPdfExportPrefsCmd.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A788C24E19B9D1C100924879 /* PrsSetDocPdfExportPrefsCmd.cpp */; };
+		A788C2E919B9D1C100924879 /* PrsSetDocTCLReferencesList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A788C24F19B9D1C100924879 /* PrsSetDocTCLReferencesList.cpp */; };
+		A788C2EB19B9D1C100924879 /* PrsSetImageInfosCmd.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A788C25019B9D1C100924879 /* PrsSetImageInfosCmd.cpp */; };
+		A788C2ED19B9D1C100924879 /* PrsSetPreferencesCmd.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A788C25119B9D1C100924879 /* PrsSetPreferencesCmd.cpp */; };
+		A788C2EF19B9D1C100924879 /* PrsSetRegistrationInfoCmd.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A788C25219B9D1C100924879 /* PrsSetRegistrationInfoCmd.cpp */; };
+		A788C2F119B9D1C100924879 /* PrsSetTCLRefDataCmd.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A788C25319B9D1C100924879 /* PrsSetTCLRefDataCmd.cpp */; };
+		A788C2F319B9D1C100924879 /* PrsSetTOPPositionCmd.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A788C25419B9D1C100924879 /* PrsSetTOPPositionCmd.cpp */; };
+		A788C2F519B9D1C100924879 /* PrsStartupShutdown.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A788C25519B9D1C100924879 /* PrsStartupShutdown.cpp */; };
+		A788C2F719B9D1C100924879 /* PrsTCLAdornmentShape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A788C25619B9D1C100924879 /* PrsTCLAdornmentShape.cpp */; };
+		A788C2F919B9D1C100924879 /* PrsTCLParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A788C25719B9D1C100924879 /* PrsTCLParser.cpp */; };
+		A788C2FB19B9D1C100924879 /* PrsTCLReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A788C25919B9D1C100924879 /* PrsTCLReader.cpp */; };
+		A788C2FD19B9D1C100924879 /* PrsTCLReferencesList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A788C25B19B9D1C100924879 /* PrsTCLReferencesList.cpp */; };
+		A788C2FF19B9D1C100924879 /* PrsTCLReferencesListPersist.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A788C25C19B9D1C100924879 /* PrsTCLReferencesListPersist.cpp */; };
+		A788C30119B9D1C100924879 /* PrsTCLRefScriptProvider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A788C25D19B9D1C100924879 /* PrsTCLRefScriptProvider.cpp */; };
+		A788C30319B9D1C100924879 /* PrsTCLWriter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A788C25E19B9D1C100924879 /* PrsTCLWriter.cpp */; };
+		A788C30519B9D1C100924879 /* PrsWideStringData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A788C25F19B9D1C100924879 /* PrsWideStringData.cpp */; };
+		A788C30B19B9D1C100924879 /* Reglages.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A788C26219B9D1C100924879 /* Reglages.cpp */; };
+		A788C30D19B9D1C100924879 /* ReverseChecker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A788C26419B9D1C100924879 /* ReverseChecker.cpp */; };
+		A788C30F19B9D1C100924879 /* Styles.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A788C26619B9D1C100924879 /* Styles.cpp */; };
+		A788C31119B9D1C100924879 /* Systeme.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A788C26819B9D1C100924879 /* Systeme.cpp */; };
+		A788C31319B9D1C100924879 /* Tableaux.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A788C26A19B9D1C100924879 /* Tableaux.cpp */; };
+		A788C31519B9D1C100924879 /* TCLError.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A788C26C19B9D1C100924879 /* TCLError.cpp */; };
+		A788C31719B9D1C100924879 /* Textes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A788C26E19B9D1C100924879 /* Textes.cpp */; };
+		A788C31919B9D1C100924879 /* Textes2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A788C27019B9D1C100924879 /* Textes2.cpp */; };
+		A788C31B19B9D1C100924879 /* Transcoder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A788C27119B9D1C100924879 /* Transcoder.cpp */; };
+		A788C31D19B9D1C100924879 /* TriggerResourceDeps.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A788C27319B9D1C100924879 /* TriggerResourceDeps.cpp */; };
+		A788C31F19B9D1C100924879 /* XPage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A788C27419B9D1C100924879 /* XPage.cpp */; };
+		A788C32119B9D1C100924879 /* XRail.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A788C27619B9D1C100924879 /* XRail.cpp */; };
+		A788C32319B9D1C100924879 /* XRefs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A788C27819B9D1C100924879 /* XRefs.cpp */; };
+		F957086415C90B3E00C95573 /* PRS.fr in Sources */ = {isa = PBXBuildFile; fileRef = 4B05EED108840E9500D809E1 /* PRS.fr */; };
+		F957086615C90B3E00C95573 /* PRSNoStrip.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4B05EECD08840E9300D809E1 /* PRSNoStrip.cpp */; };
+		F957086715C90B3E00C95573 /* PRSID.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4B05EECE08840E9400D809E1 /* PRSID.cpp */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXBuildRule section */
+		F957086F15C90B3E00C95573 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.apple.compilers.proxy.script;
+			filePatterns = "*.fr";
+			fileType = pattern.proxy;
+			inputFiles = (
+			);
+			isEditable = 1;
+			outputFiles = (
+				"$(REZ_COLLECTOR_DIR)/$(INPUT_FILE_NAME).rsrc",
+			);
+			runOncePerArchitecture = 0;
+			script = "$ID_SDK_ROOT/devtools/bin/odfrc-cmd -d RELEASE $ODFRC_ADDITIONAL_FLAGS -o \"$REZ_COLLECTOR_DIR/$INPUT_FILE_NAME.rsrc\" \"$INPUT_FILE_PATH\"\n";
+		};
+/* End PBXBuildRule section */
+
+/* Begin PBXFileReference section */
+		4B05EECD08840E9300D809E1 /* PRSNoStrip.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = PRSNoStrip.cpp; path = source/PRSNoStrip.cpp; sourceTree = SOURCE_ROOT; };
+		4B05EECE08840E9400D809E1 /* PRSID.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = PRSID.cpp; path = source/PRSID.cpp; sourceTree = SOURCE_ROOT; };
+		4B05EECF08840E9400D809E1 /* PRSID.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PRSID.h; path = source/PRSID.h; sourceTree = SOURCE_ROOT; };
+		4B05EED108840E9500D809E1 /* PRS.fr */ = {isa = PBXFileReference; lastKnownFileType = text; name = PRS.fr; path = source/PRS.fr; sourceTree = SOURCE_ROOT; };
+		77355572120250EF00E6FC19 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = ../../../source/sdksamples/common/Info.plist; sourceTree = SOURCE_ROOT; };
+		77D687F4113861B500D56A9C /* ParserPlugin_release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ParserPlugin_release.xcconfig; sourceTree = "<group>"; };
+		7FE5845A08AD6DB8007DB654 /* ParserPlugin.xcconfig */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xcconfig; path = ParserPlugin.xcconfig; sourceTree = SOURCE_ROOT; };
+		8F4C45E627B6617A007DF64F /* PRS_frFR.fr */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = PRS_frFR.fr; path = source/PRS_frFR.fr; sourceTree = "<group>"; };
+		8F4C45E727B6617A007DF64F /* PRS_enUS.fr */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = PRS_enUS.fr; path = source/PRS_enUS.fr; sourceTree = "<group>"; };
+		A7515DE51A2CDA9A00B580B8 /* SDKFileHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SDKFileHelper.cpp; path = /Users/macmini2024/AdobeSDKs/adobe_indesign_CC2026_Products_SDK/source/sdksamples/common/SDKFileHelper.cpp; sourceTree = "<absolute>"; };
+		A7515DE61A2CDA9A00B580B8 /* SDKLayoutHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SDKLayoutHelper.cpp; path = /Users/macmini2024/AdobeSDKs/adobe_indesign_CC2026_Products_SDK/source/sdksamples/common/SDKLayoutHelper.cpp; sourceTree = "<absolute>"; };
+		A7515DE71A2CDA9A00B580B8 /* SDKPlugInEntrypoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SDKPlugInEntrypoint.cpp; path = /Users/macmini2024/AdobeSDKs/adobe_indesign_CC2026_Products_SDK/source/sdksamples/common/SDKPlugInEntrypoint.cpp; sourceTree = "<absolute>"; };
+		A7515E1B1A2CE2FE00B580B8 /* libPublicPlugIn.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPublicPlugIn.a; path = /Users/macmini2024/AdobeSDKs/adobe_indesign_CC2026_Products_SDK/build/mac/release_cocoa64/packagefolder/contents/macos/libs/libPublicPlugIn.a; sourceTree = "<absolute>"; };
+		A788C1F919B9D1C100924879 /* Blocs.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Blocs.cpp; path = source/Blocs.cpp; sourceTree = "<group>"; };
+		A788C1FA19B9D1C100924879 /* Blocs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Blocs.h; path = source/Blocs.h; sourceTree = "<group>"; };
+		A788C1FB19B9D1C100924879 /* Calques.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Calques.cpp; path = source/Calques.cpp; sourceTree = "<group>"; };
+		A788C1FC19B9D1C100924879 /* Calques.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Calques.h; path = source/Calques.h; sourceTree = "<group>"; };
+		A788C1FD19B9D1C100924879 /* Composer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Composer.cpp; path = source/Composer.cpp; sourceTree = "<group>"; };
+		A788C1FE19B9D1C100924879 /* Composer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Composer.h; path = source/Composer.h; sourceTree = "<group>"; };
+		A788C1FF19B9D1C100924879 /* Divers.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Divers.cpp; path = source/Divers.cpp; sourceTree = "<group>"; };
+		A788C20019B9D1C100924879 /* Divers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Divers.h; path = source/Divers.h; sourceTree = "<group>"; };
+		A788C20119B9D1C100924879 /* Divers2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Divers2.cpp; path = source/Divers2.cpp; sourceTree = "<group>"; };
+		A788C20219B9D1C100924879 /* Docs.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Docs.cpp; path = source/Docs.cpp; sourceTree = "<group>"; };
+		A788C20319B9D1C100924879 /* Docs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Docs.h; path = source/Docs.h; sourceTree = "<group>"; };
+		A788C20419B9D1C100924879 /* ExportUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ExportUtils.cpp; path = source/ExportUtils.cpp; sourceTree = "<group>"; };
+		A788C20519B9D1C100924879 /* ExportUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ExportUtils.h; path = source/ExportUtils.h; sourceTree = "<group>"; };
+		A788C20619B9D1C100924879 /* GlobalDefs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GlobalDefs.h; path = source/GlobalDefs.h; sourceTree = "<group>"; };
+		A788C20719B9D1C100924879 /* Hyperlinks.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Hyperlinks.cpp; path = source/Hyperlinks.cpp; sourceTree = "<group>"; };
+		A788C20819B9D1C100924879 /* Hyperlinks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Hyperlinks.h; path = source/Hyperlinks.h; sourceTree = "<group>"; };
+		A788C20919B9D1C100924879 /* IEpsDocumentName.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IEpsDocumentName.h; path = source/IEpsDocumentName.h; sourceTree = "<group>"; };
+		A788C20B19B9D1C100924879 /* IPageMakeUpPrefs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IPageMakeUpPrefs.h; path = source/IPageMakeUpPrefs.h; sourceTree = "<group>"; };
+		A788C20C19B9D1C100924879 /* IParserSuite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IParserSuite.h; path = source/IParserSuite.h; sourceTree = "<group>"; };
+		A788C20D19B9D1C100924879 /* IPermRefsSuite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IPermRefsSuite.h; path = source/IPermRefsSuite.h; sourceTree = "<group>"; };
+		A788C20E19B9D1C100924879 /* IPermRefsTag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IPermRefsTag.h; path = source/IPermRefsTag.h; sourceTree = "<group>"; };
+		A788C20F19B9D1C100924879 /* IRegistration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IRegistration.h; path = source/IRegistration.h; sourceTree = "<group>"; };
+		A788C21019B9D1C100924879 /* IReverseTCL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IReverseTCL.h; path = source/IReverseTCL.h; sourceTree = "<group>"; };
+		A788C21119B9D1C100924879 /* ITCLParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ITCLParser.h; path = source/ITCLParser.h; sourceTree = "<group>"; };
+		A788C21219B9D1C100924879 /* ITCLReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ITCLReader.h; path = source/ITCLReader.h; sourceTree = "<group>"; };
+		A788C21319B9D1C100924879 /* ITCLReferencesList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ITCLReferencesList.h; path = source/ITCLReferencesList.h; sourceTree = "<group>"; };
+		A788C21419B9D1C100924879 /* ITCLWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ITCLWriter.h; path = source/ITCLWriter.h; sourceTree = "<group>"; };
+		A788C21519B9D1C100924879 /* IWideStringData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IWideStringData.h; path = source/IWideStringData.h; sourceTree = "<group>"; };
+		A788C21619B9D1C100924879 /* Livres.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Livres.cpp; path = source/Livres.cpp; sourceTree = "<group>"; };
+		A788C21719B9D1C100924879 /* Livres.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Livres.h; path = source/Livres.h; sourceTree = "<group>"; };
+		A788C21819B9D1C100924879 /* Log.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Log.cpp; path = source/Log.cpp; sourceTree = "<group>"; };
+		A788C21919B9D1C100924879 /* Log.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Log.h; path = source/Log.h; sourceTree = "<group>"; };
+		A788C21A19B9D1C100924879 /* Pages.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Pages.cpp; path = source/Pages.cpp; sourceTree = "<group>"; };
+		A788C21B19B9D1C100924879 /* Pages.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Pages.h; path = source/Pages.h; sourceTree = "<group>"; };
+		A788C21C19B9D1C100924879 /* Paragraphes.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Paragraphes.cpp; path = source/Paragraphes.cpp; sourceTree = "<group>"; };
+		A788C21D19B9D1C100924879 /* Paragraphes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Paragraphes.h; path = source/Paragraphes.h; sourceTree = "<group>"; };
+		A788C21E19B9D1C100924879 /* ParserPlugIn.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ParserPlugIn.cpp; path = source/ParserPlugIn.cpp; sourceTree = "<group>"; };
+		A788C21F19B9D1C100924879 /* ParserPlugIn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ParserPlugIn.h; path = source/ParserPlugIn.h; sourceTree = "<group>"; };
+		A788C22021B9D1C100924879 /* ParserSuiteASB.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ParserSuiteASB.cpp; path = source/ParserSuiteASB.cpp; sourceTree = "<group>"; };
+		A788C22119B9D1C100924879 /* ParserSuiteLayoutCSB.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ParserSuiteLayoutCSB.cpp; path = source/ParserSuiteLayoutCSB.cpp; sourceTree = "<group>"; };
+		A788C22219B9D1C100924879 /* PermRefs.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PermRefs.cpp; path = source/PermRefs.cpp; sourceTree = "<group>"; };
+		A788C22319B9D1C100924879 /* PermRefs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PermRefs.h; path = source/PermRefs.h; sourceTree = "<group>"; };
+		A788C22419B9D1C100924879 /* PermRefsSuiteASB.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PermRefsSuiteASB.cpp; path = source/PermRefsSuiteASB.cpp; sourceTree = "<group>"; };
+		A788C22519B9D1C100924879 /* PermRefsSuiteTextCSB.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PermRefsSuiteTextCSB.cpp; path = source/PermRefsSuiteTextCSB.cpp; sourceTree = "<group>"; };
+		A788C22619B9D1C100924879 /* PermRefsTag.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PermRefsTag.cpp; path = source/PermRefsTag.cpp; sourceTree = "<group>"; };
+		A788C22919B9D1C100924879 /* PermRefsTagReport.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PermRefsTagReport.cpp; path = source/PermRefsTagReport.cpp; sourceTree = "<group>"; };
+		A788C22A19B9D1C100924879 /* PermRefsTagTextAdornment.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PermRefsTagTextAdornment.cpp; path = source/PermRefsTagTextAdornment.cpp; sourceTree = "<group>"; };
+		A788C22B19B9D1C100924879 /* PermRefsTextEditPostProcess.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PermRefsTextEditPostProcess.cpp; path = source/PermRefsTextEditPostProcess.cpp; sourceTree = "<group>"; };
+		A788C22C19B9D1C100924879 /* PermRefsTextEditPreProcess.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PermRefsTextEditPreProcess.cpp; path = source/PermRefsTextEditPreProcess.cpp; sourceTree = "<group>"; };
+		A788C22D19B9D1C100924879 /* PermRefsUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PermRefsUtils.cpp; path = source/PermRefsUtils.cpp; sourceTree = "<group>"; };
+		A788C22E19B9D1C100924879 /* PermRefsUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PermRefsUtils.h; path = source/PermRefsUtils.h; sourceTree = "<group>"; };
+		A788C22F19B9D1C100924879 /* PMUTypes.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PMUTypes.cpp; path = source/PMUTypes.cpp; sourceTree = "<group>"; };
+		A788C23019B9D1C100924879 /* PMUTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PMUTypes.h; path = source/PMUTypes.h; sourceTree = "<group>"; };
+		A788C23319B9D1C100924879 /* PrsCustomServiceProvider.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PrsCustomServiceProvider.cpp; path = source/PrsCustomServiceProvider.cpp; sourceTree = "<group>"; };
+		A788C23419B9D1C100924879 /* PrsDeleteCleanup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PrsDeleteCleanup.cpp; path = source/PrsDeleteCleanup.cpp; sourceTree = "<group>"; };
+		A788C23619B9D1C100924879 /* PrsEnterSerialNumberCmd.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PrsEnterSerialNumberCmd.cpp; path = source/PrsEnterSerialNumberCmd.cpp; sourceTree = "<group>"; };
+		A788C23719B9D1C100924879 /* PrsEpsDocumentName.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PrsEpsDocumentName.cpp; path = source/PrsEpsDocumentName.cpp; sourceTree = "<group>"; };
+		A788C23819B9D1C100924879 /* PrsEpsDocumentNamePersist.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PrsEpsDocumentNamePersist.cpp; path = source/PrsEpsDocumentNamePersist.cpp; sourceTree = "<group>"; };
+		A788C23919B9D1C100924879 /* PrsEpsExportPrefs.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PrsEpsExportPrefs.cpp; path = source/PrsEpsExportPrefs.cpp; sourceTree = "<group>"; };
+		A788C23A19B9D1C100924879 /* PrsEpsExportPrefsPersist.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PrsEpsExportPrefsPersist.cpp; path = source/PrsEpsExportPrefsPersist.cpp; sourceTree = "<group>"; };
+		A788C23B19B9D1C100924879 /* PrsErrorStringService.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PrsErrorStringService.cpp; path = source/PrsErrorStringService.cpp; sourceTree = "<group>"; };
+		A788C23C19B9D1C100924879 /* prsFactoryList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = prsFactoryList.h; path = source/prsFactoryList.h; sourceTree = "<group>"; };
+		A788C23D19B9D1C100924879 /* PrsInsertTextCmd.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PrsInsertTextCmd.cpp; path = source/PrsInsertTextCmd.cpp; sourceTree = "<group>"; };
+		A788C24119B9D1C100924879 /* PrsParserThread.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PrsParserThread.cpp; path = source/PrsParserThread.cpp; sourceTree = "<group>"; };
+		A788C24219B9D1C100924879 /* PrsPasteImportItemObserver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PrsPasteImportItemObserver.cpp; path = source/PrsPasteImportItemObserver.cpp; sourceTree = "<group>"; };
+		A788C24319B9D1C100924879 /* PrsPreferences.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PrsPreferences.cpp; path = source/PrsPreferences.cpp; sourceTree = "<group>"; };
+		A788C24419B9D1C100924879 /* PrsPreferencesPersist.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PrsPreferencesPersist.cpp; path = source/PrsPreferencesPersist.cpp; sourceTree = "<group>"; };
+		A788C24619B9D1C100924879 /* PrsRegistration.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PrsRegistration.cpp; path = source/PrsRegistration.cpp; sourceTree = "<group>"; };
+		A788C24719B9D1C100924879 /* PrsRegistrationPersist.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PrsRegistrationPersist.cpp; path = source/PrsRegistrationPersist.cpp; sourceTree = "<group>"; };
+		A788C24819B9D1C100924879 /* PrsRespService.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PrsRespService.cpp; path = source/PrsRespService.cpp; sourceTree = "<group>"; };
+		A788C24919B9D1C100924879 /* PrsReverseTCL.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PrsReverseTCL.cpp; path = source/PrsReverseTCL.cpp; sourceTree = "<group>"; };
+		A788C24A19B9D1C100924879 /* PrsScriptingDefs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PrsScriptingDefs.h; path = source/PrsScriptingDefs.h; sourceTree = "<group>"; };
+		A788C24B19B9D1C100924879 /* PrsScriptProvider.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PrsScriptProvider.cpp; path = source/PrsScriptProvider.cpp; sourceTree = "<group>"; };
+		A788C24C19B9D1C100924879 /* PrsSerialNumberDialogController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PrsSerialNumberDialogController.cpp; path = source/PrsSerialNumberDialogController.cpp; sourceTree = "<group>"; };
+		A788C24D19B9D1C100924879 /* PrsSetDocEpsExportPrefsCmd.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PrsSetDocEpsExportPrefsCmd.cpp; path = source/PrsSetDocEpsExportPrefsCmd.cpp; sourceTree = "<group>"; };
+		A788C24E19B9D1C100924879 /* PrsSetDocPdfExportPrefsCmd.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PrsSetDocPdfExportPrefsCmd.cpp; path = source/PrsSetDocPdfExportPrefsCmd.cpp; sourceTree = "<group>"; };
+		A788C24F19B9D1C100924879 /* PrsSetDocTCLReferencesList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PrsSetDocTCLReferencesList.cpp; path = source/PrsSetDocTCLReferencesList.cpp; sourceTree = "<group>"; };
+		A788C25019B9D1C100924879 /* PrsSetImageInfosCmd.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PrsSetImageInfosCmd.cpp; path = source/PrsSetImageInfosCmd.cpp; sourceTree = "<group>"; };
+		A788C25119B9D1C100924879 /* PrsSetPreferencesCmd.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PrsSetPreferencesCmd.cpp; path = source/PrsSetPreferencesCmd.cpp; sourceTree = "<group>"; };
+		A788C25219B9D1C100924879 /* PrsSetRegistrationInfoCmd.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PrsSetRegistrationInfoCmd.cpp; path = source/PrsSetRegistrationInfoCmd.cpp; sourceTree = "<group>"; };
+		A788C25319B9D1C100924879 /* PrsSetTCLRefDataCmd.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PrsSetTCLRefDataCmd.cpp; path = source/PrsSetTCLRefDataCmd.cpp; sourceTree = "<group>"; };
+		A788C25419B9D1C100924879 /* PrsSetTOPPositionCmd.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PrsSetTOPPositionCmd.cpp; path = source/PrsSetTOPPositionCmd.cpp; sourceTree = "<group>"; };
+		A788C25519B9D1C100924879 /* PrsStartupShutdown.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PrsStartupShutdown.cpp; path = source/PrsStartupShutdown.cpp; sourceTree = "<group>"; };
+		A788C25619B9D1C100924879 /* PrsTCLAdornmentShape.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PrsTCLAdornmentShape.cpp; path = source/PrsTCLAdornmentShape.cpp; sourceTree = "<group>"; };
+		A788C25719B9D1C100924879 /* PrsTCLParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PrsTCLParser.cpp; path = source/PrsTCLParser.cpp; sourceTree = "<group>"; };
+		A788C25819B9D1C100924879 /* PrsTCLParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PrsTCLParser.h; path = source/PrsTCLParser.h; sourceTree = "<group>"; };
+		A788C25919B9D1C100924879 /* PrsTCLReader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PrsTCLReader.cpp; path = source/PrsTCLReader.cpp; sourceTree = "<group>"; };
+		A788C25A19B9D1C100924879 /* PrsTCLReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PrsTCLReader.h; path = source/PrsTCLReader.h; sourceTree = "<group>"; };
+		A788C25B19B9D1C100924879 /* PrsTCLReferencesList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PrsTCLReferencesList.cpp; path = source/PrsTCLReferencesList.cpp; sourceTree = "<group>"; };
+		A788C25C19B9D1C100924879 /* PrsTCLReferencesListPersist.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PrsTCLReferencesListPersist.cpp; path = source/PrsTCLReferencesListPersist.cpp; sourceTree = "<group>"; };
+		A788C25D19B9D1C100924879 /* PrsTCLRefScriptProvider.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PrsTCLRefScriptProvider.cpp; path = source/PrsTCLRefScriptProvider.cpp; sourceTree = "<group>"; };
+		A788C25E19B9D1C100924879 /* PrsTCLWriter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PrsTCLWriter.cpp; path = source/PrsTCLWriter.cpp; sourceTree = "<group>"; };
+		A788C25F19B9D1C100924879 /* PrsWideStringData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PrsWideStringData.cpp; path = source/PrsWideStringData.cpp; sourceTree = "<group>"; };
+		A788C26219B9D1C100924879 /* Reglages.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Reglages.cpp; path = source/Reglages.cpp; sourceTree = "<group>"; };
+		A788C26319B9D1C100924879 /* Reglages.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Reglages.h; path = source/Reglages.h; sourceTree = "<group>"; };
+		A788C26419B9D1C100924879 /* ReverseChecker.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ReverseChecker.cpp; path = source/ReverseChecker.cpp; sourceTree = "<group>"; };
+		A788C26519B9D1C100924879 /* ReverseChecker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ReverseChecker.h; path = source/ReverseChecker.h; sourceTree = "<group>"; };
+		A788C26619B9D1C100924879 /* Styles.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Styles.cpp; path = source/Styles.cpp; sourceTree = "<group>"; };
+		A788C26719B9D1C100924879 /* Styles.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Styles.h; path = source/Styles.h; sourceTree = "<group>"; };
+		A788C26819B9D1C100924879 /* Systeme.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Systeme.cpp; path = source/Systeme.cpp; sourceTree = "<group>"; };
+		A788C26919B9D1C100924879 /* Systeme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Systeme.h; path = source/Systeme.h; sourceTree = "<group>"; };
+		A788C26A19B9D1C100924879 /* Tableaux.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Tableaux.cpp; path = source/Tableaux.cpp; sourceTree = "<group>"; };
+		A788C26B19B9D1C100924879 /* Tableaux.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Tableaux.h; path = source/Tableaux.h; sourceTree = "<group>"; };
+		A788C26C19B9D1C100924879 /* TCLError.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TCLError.cpp; path = source/TCLError.cpp; sourceTree = "<group>"; };
+		A788C26D19B9D1C100924879 /* TCLError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TCLError.h; path = source/TCLError.h; sourceTree = "<group>"; };
+		A788C26E19B9D1C100924879 /* Textes.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Textes.cpp; path = source/Textes.cpp; sourceTree = "<group>"; };
+		A788C26F19B9D1C100924879 /* Textes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Textes.h; path = source/Textes.h; sourceTree = "<group>"; };
+		A788C27019B9D1C100924879 /* Textes2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Textes2.cpp; path = source/Textes2.cpp; sourceTree = "<group>"; };
+		A788C27119B9D1C100924879 /* Transcoder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Transcoder.cpp; path = source/Transcoder.cpp; sourceTree = "<group>"; };
+		A788C27219B9D1C100924879 /* Transcoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Transcoder.h; path = source/Transcoder.h; sourceTree = "<group>"; };
+		A788C27319B9D1C100924879 /* TriggerResourceDeps.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TriggerResourceDeps.cpp; path = source/TriggerResourceDeps.cpp; sourceTree = "<group>"; };
+		A788C27419B9D1C100924879 /* XPage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XPage.cpp; path = source/XPage.cpp; sourceTree = "<group>"; };
+		A788C27519B9D1C100924879 /* XPage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XPage.h; path = source/XPage.h; sourceTree = "<group>"; };
+		A788C27619B9D1C100924879 /* XRail.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XRail.cpp; path = source/XRail.cpp; sourceTree = "<group>"; };
+		A788C27719B9D1C100924879 /* XRail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XRail.h; path = source/XRail.h; sourceTree = "<group>"; };
+		A788C27819B9D1C100924879 /* XRefs.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XRefs.cpp; path = source/XRefs.cpp; sourceTree = "<group>"; };
+		A788C27919B9D1C100924879 /* XRefs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XRefs.h; path = source/XRefs.h; sourceTree = "<group>"; };
+		A7CC29C41BC3FDC10008C49C /* InDesignModel.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = InDesignModel.framework; path = ../../../../../../AdobeSDKs/adobe_indesign_CC2026_Products_SDK/build/mac/release_cocoa64/packagefolder/contents/macos/InDesignModel.framework; sourceTree = "<group>"; };
+		A7EE67251BBAED0A000F7FE2 /* InDesignModelAndUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = InDesignModelAndUI.framework; path = ../../../../../../AdobeSDKs/adobe_indesign_CC2026_Products_SDK/build/mac/release_cocoa64/packagefolder/contents/macos/InDesignModelAndUI.framework; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		F957086B15C90B3E00C95573 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A7515E1D1A2CE2FE00B580B8 /* libPublicPlugIn.a in Frameworks */,
+				8F0979D12C03B89C00700708 /* InDesignModelAndUI.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		4B05EEAD08840E8D00D809E1 = {
+			isa = PBXGroup;
+			children = (
+				4B05EEC708840E8D00D809E1 /* Source */,
+				4B05EED008840E9400D809E1 /* Resources */,
+				7F52248408AFCE1F00139994 /* xcconfig */,
+				F957084215C90B2D00C95573 /* InDesign Libraries */,
+				77355572120250EF00E6FC19 /* Info.plist */,
+			);
+			sourceTree = "<group>";
+		};
+		4B05EEC708840E8D00D809E1 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				A788C1F919B9D1C100924879 /* Blocs.cpp */,
+				A788C1FA19B9D1C100924879 /* Blocs.h */,
+				A788C1FB19B9D1C100924879 /* Calques.cpp */,
+				A788C1FC19B9D1C100924879 /* Calques.h */,
+				A788C1FD19B9D1C100924879 /* Composer.cpp */,
+				A788C1FE19B9D1C100924879 /* Composer.h */,
+				A788C1FF19B9D1C100924879 /* Divers.cpp */,
+				A788C20019B9D1C100924879 /* Divers.h */,
+				A788C20119B9D1C100924879 /* Divers2.cpp */,
+				A788C20219B9D1C100924879 /* Docs.cpp */,
+				A788C20319B9D1C100924879 /* Docs.h */,
+				A788C20419B9D1C100924879 /* ExportUtils.cpp */,
+				A788C20519B9D1C100924879 /* ExportUtils.h */,
+				A788C20619B9D1C100924879 /* GlobalDefs.h */,
+				A788C20719B9D1C100924879 /* Hyperlinks.cpp */,
+				A788C20819B9D1C100924879 /* Hyperlinks.h */,
+				A788C20919B9D1C100924879 /* IEpsDocumentName.h */,
+				A788C20B19B9D1C100924879 /* IPageMakeUpPrefs.h */,
+				A788C20C19B9D1C100924879 /* IParserSuite.h */,
+				A788C20D19B9D1C100924879 /* IPermRefsSuite.h */,
+				A788C20E19B9D1C100924879 /* IPermRefsTag.h */,
+				A788C20F19B9D1C100924879 /* IRegistration.h */,
+				A788C21019B9D1C100924879 /* IReverseTCL.h */,
+				A788C21119B9D1C100924879 /* ITCLParser.h */,
+				A788C21219B9D1C100924879 /* ITCLReader.h */,
+				A788C21319B9D1C100924879 /* ITCLReferencesList.h */,
+				A788C21419B9D1C100924879 /* ITCLWriter.h */,
+				A788C21519B9D1C100924879 /* IWideStringData.h */,
+				A788C21619B9D1C100924879 /* Livres.cpp */,
+				A788C21719B9D1C100924879 /* Livres.h */,
+				A788C21819B9D1C100924879 /* Log.cpp */,
+				A788C21919B9D1C100924879 /* Log.h */,
+				A788C21A19B9D1C100924879 /* Pages.cpp */,
+				A788C21B19B9D1C100924879 /* Pages.h */,
+				A788C21C19B9D1C100924879 /* Paragraphes.cpp */,
+				A788C21D19B9D1C100924879 /* Paragraphes.h */,
+				A788C21E19B9D1C100924879 /* ParserPlugIn.cpp */,
+				A788C21F19B9D1C100924879 /* ParserPlugIn.h */,
+				A788C22021B9D1C100924879 /* ParserSuiteASB.cpp */,
+				A788C22119B9D1C100924879 /* ParserSuiteLayoutCSB.cpp */,
+				A788C22219B9D1C100924879 /* PermRefs.cpp */,
+				A788C22319B9D1C100924879 /* PermRefs.h */,
+				A788C22419B9D1C100924879 /* PermRefsSuiteASB.cpp */,
+				A788C22519B9D1C100924879 /* PermRefsSuiteTextCSB.cpp */,
+				A788C22619B9D1C100924879 /* PermRefsTag.cpp */,
+				A788C22919B9D1C100924879 /* PermRefsTagReport.cpp */,
+				A788C22A19B9D1C100924879 /* PermRefsTagTextAdornment.cpp */,
+				A788C22B19B9D1C100924879 /* PermRefsTextEditPostProcess.cpp */,
+				A788C22C19B9D1C100924879 /* PermRefsTextEditPreProcess.cpp */,
+				A788C22D19B9D1C100924879 /* PermRefsUtils.cpp */,
+				A788C22E19B9D1C100924879 /* PermRefsUtils.h */,
+				A788C22F19B9D1C100924879 /* PMUTypes.cpp */,
+				A788C23019B9D1C100924879 /* PMUTypes.h */,
+				A788C23319B9D1C100924879 /* PrsCustomServiceProvider.cpp */,
+				A788C23419B9D1C100924879 /* PrsDeleteCleanup.cpp */,
+				A788C23619B9D1C100924879 /* PrsEnterSerialNumberCmd.cpp */,
+				A788C23719B9D1C100924879 /* PrsEpsDocumentName.cpp */,
+				A788C23819B9D1C100924879 /* PrsEpsDocumentNamePersist.cpp */,
+				A788C23919B9D1C100924879 /* PrsEpsExportPrefs.cpp */,
+				A788C23A19B9D1C100924879 /* PrsEpsExportPrefsPersist.cpp */,
+				A788C23B19B9D1C100924879 /* PrsErrorStringService.cpp */,
+				A788C23C19B9D1C100924879 /* prsFactoryList.h */,
+				A788C23D19B9D1C100924879 /* PrsInsertTextCmd.cpp */,
+				A788C24119B9D1C100924879 /* PrsParserThread.cpp */,
+				A788C24219B9D1C100924879 /* PrsPasteImportItemObserver.cpp */,
+				A788C24319B9D1C100924879 /* PrsPreferences.cpp */,
+				A788C24419B9D1C100924879 /* PrsPreferencesPersist.cpp */,
+				A788C24619B9D1C100924879 /* PrsRegistration.cpp */,
+				A788C24719B9D1C100924879 /* PrsRegistrationPersist.cpp */,
+				A788C24819B9D1C100924879 /* PrsRespService.cpp */,
+				A788C24919B9D1C100924879 /* PrsReverseTCL.cpp */,
+				A788C24A19B9D1C100924879 /* PrsScriptingDefs.h */,
+				A788C24B19B9D1C100924879 /* PrsScriptProvider.cpp */,
+				A788C24C19B9D1C100924879 /* PrsSerialNumberDialogController.cpp */,
+				A788C24D19B9D1C100924879 /* PrsSetDocEpsExportPrefsCmd.cpp */,
+				A788C24E19B9D1C100924879 /* PrsSetDocPdfExportPrefsCmd.cpp */,
+				A788C24F19B9D1C100924879 /* PrsSetDocTCLReferencesList.cpp */,
+				A788C25019B9D1C100924879 /* PrsSetImageInfosCmd.cpp */,
+				A788C25119B9D1C100924879 /* PrsSetPreferencesCmd.cpp */,
+				A788C25219B9D1C100924879 /* PrsSetRegistrationInfoCmd.cpp */,
+				A788C25319B9D1C100924879 /* PrsSetTCLRefDataCmd.cpp */,
+				A788C25419B9D1C100924879 /* PrsSetTOPPositionCmd.cpp */,
+				A788C25519B9D1C100924879 /* PrsStartupShutdown.cpp */,
+				A788C25619B9D1C100924879 /* PrsTCLAdornmentShape.cpp */,
+				A788C25719B9D1C100924879 /* PrsTCLParser.cpp */,
+				A788C25819B9D1C100924879 /* PrsTCLParser.h */,
+				A788C25919B9D1C100924879 /* PrsTCLReader.cpp */,
+				A788C25A19B9D1C100924879 /* PrsTCLReader.h */,
+				A788C25B19B9D1C100924879 /* PrsTCLReferencesList.cpp */,
+				A788C25C19B9D1C100924879 /* PrsTCLReferencesListPersist.cpp */,
+				A788C25D19B9D1C100924879 /* PrsTCLRefScriptProvider.cpp */,
+				A788C25E19B9D1C100924879 /* PrsTCLWriter.cpp */,
+				A788C25F19B9D1C100924879 /* PrsWideStringData.cpp */,
+				A788C26219B9D1C100924879 /* Reglages.cpp */,
+				A788C26319B9D1C100924879 /* Reglages.h */,
+				A788C26419B9D1C100924879 /* ReverseChecker.cpp */,
+				A788C26519B9D1C100924879 /* ReverseChecker.h */,
+				A788C26619B9D1C100924879 /* Styles.cpp */,
+				A788C26719B9D1C100924879 /* Styles.h */,
+				A788C26819B9D1C100924879 /* Systeme.cpp */,
+				A788C26919B9D1C100924879 /* Systeme.h */,
+				A788C26A19B9D1C100924879 /* Tableaux.cpp */,
+				A788C26B19B9D1C100924879 /* Tableaux.h */,
+				A788C26C19B9D1C100924879 /* TCLError.cpp */,
+				A788C26D19B9D1C100924879 /* TCLError.h */,
+				A788C26E19B9D1C100924879 /* Textes.cpp */,
+				A788C26F19B9D1C100924879 /* Textes.h */,
+				A788C27019B9D1C100924879 /* Textes2.cpp */,
+				A788C27119B9D1C100924879 /* Transcoder.cpp */,
+				A788C27219B9D1C100924879 /* Transcoder.h */,
+				A788C27319B9D1C100924879 /* TriggerResourceDeps.cpp */,
+				A788C27419B9D1C100924879 /* XPage.cpp */,
+				A788C27519B9D1C100924879 /* XPage.h */,
+				A788C27619B9D1C100924879 /* XRail.cpp */,
+				A788C27719B9D1C100924879 /* XRail.h */,
+				A788C27819B9D1C100924879 /* XRefs.cpp */,
+				A788C27919B9D1C100924879 /* XRefs.h */,
+				4B05EECB08840E9100D809E1 /* Plugin */,
+			);
+			name = Source;
+			sourceTree = "<group>";
+		};
+		4B05EECB08840E9100D809E1 /* Plugin */ = {
+			isa = PBXGroup;
+			children = (
+				A7515DE51A2CDA9A00B580B8 /* SDKFileHelper.cpp */,
+				A7515DE61A2CDA9A00B580B8 /* SDKLayoutHelper.cpp */,
+				A7515DE71A2CDA9A00B580B8 /* SDKPlugInEntrypoint.cpp */,
+				4B05EECD08840E9300D809E1 /* PRSNoStrip.cpp */,
+				4B05EECF08840E9400D809E1 /* PRSID.h */,
+				4B05EECE08840E9400D809E1 /* PRSID.cpp */,
+			);
+			name = Plugin;
+			sourceTree = "<group>";
+		};
+		4B05EED008840E9400D809E1 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				8F4C45E727B6617A007DF64F /* PRS_enUS.fr */,
+				8F4C45E627B6617A007DF64F /* PRS_frFR.fr */,
+				4B05EED108840E9500D809E1 /* PRS.fr */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		7F52248408AFCE1F00139994 /* xcconfig */ = {
+			isa = PBXGroup;
+			children = (
+				7FE5845A08AD6DB8007DB654 /* ParserPlugin.xcconfig */,
+				77D687F4113861B500D56A9C /* ParserPlugin_release.xcconfig */,
+			);
+			name = xcconfig;
+			sourceTree = "<group>";
+		};
+		F957084215C90B2D00C95573 /* InDesign Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				F957084915C90B2D00C95573 /* For Cocoa64 */,
+			);
+			name = "InDesign Libraries";
+			sourceTree = "<group>";
+		};
+		F957084915C90B2D00C95573 /* For Cocoa64 */ = {
+			isa = PBXGroup;
+			children = (
+				A7CC29C41BC3FDC10008C49C /* InDesignModel.framework */,
+				A7EE67251BBAED0A000F7FE2 /* InDesignModelAndUI.framework */,
+				A7515E1B1A2CE2FE00B580B8 /* libPublicPlugIn.a */,
+			);
+			name = "For Cocoa64";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		F957086215C90B3E00C95573 /* Release_Cocoa64 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F957087015C90B3E00C95573 /* Build configuration list for PBXNativeTarget "Release_Cocoa64" */;
+			buildPhases = (
+				F957086315C90B3E00C95573 /* Sources */,
+				F957086B15C90B3E00C95573 /* Frameworks */,
+				F957086C15C90B3E00C95573 /* Rez */,
+				F957086D15C90B3E00C95573 /* Resources */,
+				F957086E15C90B3E00C95573 /* ShellScript */,
+			);
+			buildRules = (
+				F957086F15C90B3E00C95573 /* PBXBuildRule */,
+			);
+			dependencies = (
+			);
+			name = Release_Cocoa64;
+			productName = Release;
+			productType = "com.apple.product-type.framework";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		4B05EEAF08840E8D00D809E1 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 1310;
+			};
+			buildConfigurationList = 4B05EEB008840E8D00D809E1 /* Build configuration list for PBXProject "Parser" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				de,
+				Base,
+				ja,
+				fr,
+				en,
+			);
+			mainGroup = 4B05EEAD08840E8D00D809E1;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				F957086215C90B3E00C95573 /* Release_Cocoa64 */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		F957086D15C90B3E00C95573 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXRezBuildPhase section */
+		F957086C15C90B3E00C95573 /* Rez */ = {
+			isa = PBXRezBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXRezBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		F957086E15C90B3E00C95573 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"$ID_SDK_ROOT/build/mac/packagescripts/copyResources.sh\"";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		F957086315C90B3E00C95573 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A788C2E919B9D1C100924879 /* PrsSetDocTCLReferencesList.cpp in Sources */,
+				A788C2F519B9D1C100924879 /* PrsStartupShutdown.cpp in Sources */,
+				A788C2BD19B9D1C100924879 /* PrsEpsDocumentName.cpp in Sources */,
+				A788C2E719B9D1C100924879 /* PrsSetDocPdfExportPrefsCmd.cpp in Sources */,
+				A788C2F919B9D1C100924879 /* PrsTCLParser.cpp in Sources */,
+				A788C28119B9D1C100924879 /* Divers.cpp in Sources */,
+				A788C2DB19B9D1C100924879 /* PrsRegistrationPersist.cpp in Sources */,
+				A788C2FD19B9D1C100924879 /* PrsTCLReferencesList.cpp in Sources */,
+				A788C31119B9D1C100924879 /* Systeme.cpp in Sources */,
+				A788C2EF19B9D1C100924879 /* PrsSetRegistrationInfoCmd.cpp in Sources */,
+				A788C28919B9D1C100924879 /* Hyperlinks.cpp in Sources */,
+				A788C31719B9D1C100924879 /* Textes.cpp in Sources */,
+				A788C2E119B9D1C100924879 /* PrsScriptProvider.cpp in Sources */,
+				A788C28319B9D1C100924879 /* Divers2.cpp in Sources */,
+				A788C31519B9D1C100924879 /* TCLError.cpp in Sources */,
+				A788C2E519B9D1C100924879 /* PrsSetDocEpsExportPrefsCmd.cpp in Sources */,
+				A788C29D19B9D1C100924879 /* PermRefsSuiteTextCSB.cpp in Sources */,
+				A788C2C519B9D1C100924879 /* PrsErrorStringService.cpp in Sources */,
+				A788C2AF19B9D1C100924879 /* PMUTypes.cpp in Sources */,
+				A788C28F19B9D1C100924879 /* Pages.cpp in Sources */,
+				A788C2D119B9D1C100924879 /* PrsPasteImportItemObserver.cpp in Sources */,
+				A788C2D319B9D1C100924879 /* PrsPreferences.cpp in Sources */,
+				A788C2F119B9D1C100924879 /* PrsSetTCLRefDataCmd.cpp in Sources */,
+				A788C28719B9D1C100924879 /* ExportUtils.cpp in Sources */,
+				A788C2CF19B9D1C100924879 /* PrsParserThread.cpp in Sources */,
+				A788C31D19B9D1C100924879 /* TriggerResourceDeps.cpp in Sources */,
+				A788C2C119B9D1C100924879 /* PrsEpsExportPrefs.cpp in Sources */,
+				A788C2B519B9D1C100924879 /* PrsCustomServiceProvider.cpp in Sources */,
+				A788C2BF19B9D1C100924879 /* PrsEpsDocumentNamePersist.cpp in Sources */,
+				A788C2ED19B9D1C100924879 /* PrsSetPreferencesCmd.cpp in Sources */,
+				A788C2A719B9D1C100924879 /* PermRefsTagTextAdornment.cpp in Sources */,
+				A788C2EB19B9D1C100924879 /* PrsSetImageInfosCmd.cpp in Sources */,
+				A788C2C319B9D1C100924879 /* PrsEpsExportPrefsPersist.cpp in Sources */,
+				A788C29119B9D1C100924879 /* Paragraphes.cpp in Sources */,
+				A788C2C719B9D1C100924879 /* PrsInsertTextCmd.cpp in Sources */,
+				A788C32319B9D1C100924879 /* XRefs.cpp in Sources */,
+				A788C29719B9D1C100924879 /* ParserSuiteLayoutCSB.cpp in Sources */,
+				A788C2FF19B9D1C100924879 /* PrsTCLReferencesListPersist.cpp in Sources */,
+				A7515DE91A2CDA9A00B580B8 /* SDKFileHelper.cpp in Sources */,
+				A788C2F719B9D1C100924879 /* PrsTCLAdornmentShape.cpp in Sources */,
+				A788C32119B9D1C100924879 /* XRail.cpp in Sources */,
+				A788C27F19B9D1C100924879 /* Composer.cpp in Sources */,
+				A788C2D519B9D1C100924879 /* PrsPreferencesPersist.cpp in Sources */,
+				A788C31919B9D1C100924879 /* Textes2.cpp in Sources */,
+				A788C27D19B9D1C100924879 /* Calques.cpp in Sources */,
+				A788C30119B9D1C100924879 /* PrsTCLRefScriptProvider.cpp in Sources */,
+				A788C2B719B9D1C100924879 /* PrsDeleteCleanup.cpp in Sources */,
+				A788C2E319B9D1C100924879 /* PrsSerialNumberDialogController.cpp in Sources */,
+				A788C29F19B9D1C100924879 /* PermRefsTag.cpp in Sources */,
+				A788C31319B9D1C100924879 /* Tableaux.cpp in Sources */,
+				A788C30319B9D1C100924879 /* PrsTCLWriter.cpp in Sources */,
+				A788C28519B9D1C100924879 /* Docs.cpp in Sources */,
+				A788C2BB19B9D1C100924879 /* PrsEnterSerialNumberCmd.cpp in Sources */,
+				F957086415C90B3E00C95573 /* PRS.fr in Sources */,
+				A788C29519B9D1C100924879 /* ParserSuiteASB.cpp in Sources */,
+				A788C2DD19B9D1C100924879 /* PrsRespService.cpp in Sources */,
+				A788C28D19B9D1C100924879 /* Log.cpp in Sources */,
+				A788C30F19B9D1C100924879 /* Styles.cpp in Sources */,
+				A788C29919B9D1C100924879 /* PermRefs.cpp in Sources */,
+				F957086615C90B3E00C95573 /* PRSNoStrip.cpp in Sources */,
+				A788C2AD19B9D1C100924879 /* PermRefsUtils.cpp in Sources */,
+				A788C31B19B9D1C100924879 /* Transcoder.cpp in Sources */,
+				A788C2DF19B9D1C100924879 /* PrsReverseTCL.cpp in Sources */,
+				A788C2AB19B9D1C100924879 /* PermRefsTextEditPreProcess.cpp in Sources */,
+				A788C2FB19B9D1C100924879 /* PrsTCLReader.cpp in Sources */,
+				A788C2A519B9D1C100924879 /* PermRefsTagReport.cpp in Sources */,
+				A7515DEB1A2CDA9A00B580B8 /* SDKLayoutHelper.cpp in Sources */,
+				A788C2A919B9D1C100924879 /* PermRefsTextEditPostProcess.cpp in Sources */,
+				A788C29319B9D1C100924879 /* ParserPlugIn.cpp in Sources */,
+				A7515DED1A2CDA9A00B580B8 /* SDKPlugInEntrypoint.cpp in Sources */,
+				A788C27B19B9D1C100924879 /* Blocs.cpp in Sources */,
+				A788C28B19B9D1C100924879 /* Livres.cpp in Sources */,
+				A788C2F319B9D1C100924879 /* PrsSetTOPPositionCmd.cpp in Sources */,
+				A788C30B19B9D1C100924879 /* Reglages.cpp in Sources */,
+				A788C2D919B9D1C100924879 /* PrsRegistration.cpp in Sources */,
+				A788C31F19B9D1C100924879 /* XPage.cpp in Sources */,
+				A788C30519B9D1C100924879 /* PrsWideStringData.cpp in Sources */,
+				F957086715C90B3E00C95573 /* PRSID.cpp in Sources */,
+				A788C29B19B9D1C100924879 /* PermRefsSuiteASB.cpp in Sources */,
+				A788C30D19B9D1C100924879 /* ReverseChecker.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		4B05EEB108840E8D00D809E1 /* Default */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7FE5845A08AD6DB8007DB654 /* ParserPlugin.xcconfig */;
+			buildSettings = {
+				BUILT_PRODUCTS_DIR = "$(ID_BUILT_SDK_SAMPLES_DIR)";
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_PARAMETER = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(HEADER_SEARCH_PATHS)",
+					$ID_SDK_ROOT/source/public/interfaces/tables,
+					$ID_SDK_ROOT/source/public/components/widgetbin/includes,
+					$ID_SDK_ROOT/source/public/interfaces/workgroup,
+					$ID_SDK_ROOT/source/public/interfaces/interactive,
+					$ID_SDK_ROOT/source/public/interfaces/interactive/ui,
+					$ID_SDK_ROOT/source/public/interfaces/colormgmt,
+					$ID_SDK_ROOT/source/public/interfaces/incopy,
+					$ID_SDK_ROOT/source/public/interfaces/cjk,
+					$ID_SDK_ROOT/source/public/facades/graphics,
+					$ID_SDK_ROOT/source/public/facades/text,
+					$ID_SDK_ROOT/source/public/facades/layout,
+					$ID_SDK_ROOT/source/public/components/publiclib/plugins,
+					$ID_SDK_ROOT/source/public/components/publiclib/files,
+					$ID_SDK_ROOT/source/public/components/publiclib/objectmodel,
+					$ID_SDK_ROOT/source/sdksamples/common,
+					$ID_SDK_ROOT/external/afl/includes,
+					source,
+				);
+				INFOPLIST_FILE = $ID_SDK_ROOT/source/sdksamples/common/Info.plist;
+				INFOPLIST_PREPROCESS = YES;
+				PLC_OUTPUT_TYPE = InDa;
+				PRODUCT_NAME = Parser;
+			};
+			name = Default;
+		};
+		F957087115C90B3E00C95573 /* Default */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 77D687F4113861B500D56A9C /* ParserPlugin_release.xcconfig */;
+			buildSettings = {
+				BUILT_PRODUCTS_DIR = "$(ID_BUILT_SDK_SAMPLES_DIR)";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CODE_SIGN_IDENTITY = "Developer ID Application";
+				CODE_SIGN_STYLE = Manual;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = 3WBLWC32YG;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					/Users/macmini2024/AdobeSDKs/Adobe_InDesign_CC2026_Products_SDK/build/mac/release_cocoa64/packagefolder/contents/macos,
+					/Users/macmini2024/AdobeSDKs/Adobe_InDesign_CC2026_Products_SDK/build/mac/release_cocoa64/packagefolder/contents/macos,
+					/Users/macmini2024/AdobeSDKs/Adobe_InDesign_CC2026_Products_SDK/build/mac/release_cocoa64/packagefolder/contents/macos,
+				);
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				HEADER_SEARCH_PATHS = (
+					"$(HEADER_SEARCH_PATHS)",
+					$ID_SDK_ROOT/source/precomp/msvc,
+					$ID_SDK_ROOT/source/public/interfaces/xmedia,
+					$ID_SDK_ROOT/source/public/interfaces/preflight,
+					$ID_SDK_ROOT/source/public/interfaces/ui,
+					$ID_SDK_ROOT/source/public/interfaces/tables,
+					$ID_SDK_ROOT/source/public/interfaces/text,
+					$ID_SDK_ROOT/source/public/interfaces/graphics,
+					$ID_SDK_ROOT/source/public/components/widgetbin/includes,
+					$ID_SDK_ROOT/source/public/interfaces/workgroup,
+					$ID_SDK_ROOT/source/public/interfaces/interactive,
+					$ID_SDK_ROOT/source/public/interfaces/interactive/ui,
+					$ID_SDK_ROOT/source/public/interfaces/colormgmt,
+					$ID_SDK_ROOT/source/public/interfaces/utils,
+					$ID_SDK_ROOT/source/public/interfaces/incopy,
+					$ID_SDK_ROOT/source/public/interfaces/layout,
+					$ID_SDK_ROOT/source/public/interfaces/architecture,
+					$ID_SDK_ROOT/source/public/interfaces/cjk,
+					$ID_SDK_ROOT/source/precomp/common,
+					$ID_SDK_ROOT/source/public/includes,
+					$ID_SDK_ROOT/source/public/facades/graphics,
+					$ID_SDK_ROOT/source/public/facades/text,
+					$ID_SDK_ROOT/source/public/facades/layout,
+					$ID_SDK_ROOT/source/public/components/publiclib/plugins,
+					$ID_SDK_ROOT/source/public/components/publiclib/files,
+					$ID_SDK_ROOT/source/public/components/publiclib/objectmodel,
+					$ID_SDK_ROOT/source/sdksamples/common,
+					$ID_SDK_ROOT/external/afl/includes,
+					$ID_SDK_ROOT/external/asl/boost_libraries,
+					$ID_SDK_ROOT/external/asl/adobe_source_libraries,
+					$ID_SDK_ROOT/external/asl/intel_tbb_libraries/include,
+					$ID_SDK_ROOT/external/icu/include,
+					$ID_SDK_ROOT/external/dva/third_party/boost_libraries,
+					$ID_SDK_ROOT/external/dva/third_party/adobe_source_libraries,
+					source,
+					../../XRail/XRail/source,
+					../../XPage/Core/source,
+					../doclib/source,
+					../textlib/source,
+					../framelib/source,
+					../pagelib/source,
+				);
+				ID_SDK_ROOT = /Users/macmini2024/AdobeSDKs/Adobe_InDesign_CC2026_Products_SDK;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/Users/macmini2024/AdobeSDKs/Adobe_InDesign_CC2026_Products_SDK,
+					/Users/macmini2024/AdobeSDKs/Adobe_InDesign_CC2026_Products_SDK/build/mac/release_cocoa64/packagefolder/contents/macos/libs,
+					/Users/macmini2024/AdobeSDKs/Adobe_InDesign_CC2026_Products_SDK/build/mac/release_cocoa64/packagefolder/contents/macos,
+					"$(PROJECT_DIR)",
+				);
+				OTHER_LDFLAGS = (
+					"-Xlinker",
+					"-no_data_in_code_info",
+					"-ld_classic",
+					"-framework",
+					CoreFoundation,
+					"-framework",
+					CFNetwork,
+					"-framework",
+					SystemConfiguration,
+					"-framework",
+					Security,
+					"-lz",
+				);
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				REZ_SEARCH_PATHS = (
+					"$(ID_COMMON_REZ_SEARCH_PATHS)",
+					"$(ID_SDK_ROOT)/external/palettes",
+					"$(ID_SDK_ROOT)/external/workflow",
+					icons,
+					"$ID_SDK_ROOT/source/**",
+				);
+				SDKROOT = macosx;
+				WARNING_CFLAGS = (
+					"-Wimplicit",
+					"-Wsequence-point",
+					"-Winit-self",
+					"-Wmissing-field-initializers",
+					"-Wpointer-arith",
+					"-Wpacked",
+					"-Wno-unused-parameter",
+					"-Wno-unused-variable",
+					"-Wno-write-strings",
+					"-Wno-format",
+					"-Wno-deprecated",
+					"-Wformat-security",
+					"-Wno-cast-align",
+					"-Wno-logical-op-parentheses",
+					"-Wno-c++11-extensions",
+					"-Wno-switch-enum",
+					"-Wno-char-subscripts",
+					"-Wno-return-stack-address",
+					"-Wno-parentheses-equality",
+					"-Wno-unused-function",
+					"-Wno-empty-body",
+					"-Wno-out-of-line-declaration",
+					"-Wno-return-type-c-linkage",
+					"-Wno-invalid-source-encoding",
+					"-Wno-shadow",
+					"-Wno-#pragma-messages",
+					"-Wno-inline-new-delete",
+				);
+			};
+			name = Default;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		4B05EEB008840E8D00D809E1 /* Build configuration list for PBXProject "Parser" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4B05EEB108840E8D00D809E1 /* Default */,
+			);
+			defaultConfigurationIsVisible = 1;
+			defaultConfigurationName = Default;
+		};
+		F957087015C90B3E00C95573 /* Build configuration list for PBXNativeTarget "Release_Cocoa64" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F957087115C90B3E00C95573 /* Default */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Default;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 4B05EEAF08840E8D00D809E1 /* Project object */;
+}

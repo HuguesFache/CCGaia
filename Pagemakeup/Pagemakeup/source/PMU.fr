@@ -1,0 +1,2498 @@
+/*
+//	File:	PMU.fr
+//
+//	Author: Trias
+//
+//	Date:	14-Apr-2003
+//
+//	Umbrella include file for all the .fr files in the plug-in.
+//
+//	ADOBE SYSTEMS INCORPORATED
+//	Copyright 2003 Trias Developpement. All rights reserved.
+//	
+//	NOTICE: Adobe permits you to use, modify, and distribute this file in
+//	accordance with the terms of the Adobe license agreement accompanying it.
+//	If you have received this file from a source other than Adobe, then your
+//	use, modification, or distribution of it requires the prior written
+//	permission of Adobe.
+//
+//
+*/
+
+// General includes:
+#include "MenuDef.fh"
+#include "ActionDef.fh"
+#include "ActionDefs.h"
+#include "AdobeMenuPositions.h"
+#include "LocaleIndex.h"
+#include "PMLocaleIds.h"
+#include "StringTable.fh"
+//#include "OMTypes.h"
+#include "ObjectModelTypes.fh"
+#include "ShuksanID.h"
+#include "ActionID.h"
+#include "CommandID.h"
+#include "WorkspaceID.h"
+#include "WidgetID.h"
+#include "BuildNumber.h"
+#include "PanelList.fh"
+#include "Widgets.fh"	// for PalettePanelWidget
+#include "InterfaceColorDefines.h"
+#include "IControlViewDefs.h"
+#include "SysControlIDs.h"
+#include "TipsID.h"			// IID_ITIP for kPMUButtonWithTipBoss aggregation
+
+
+// Project includes:
+#include "PMUID.h"
+#include "PrsID.h"
+#include "GlobalDefs.h"
+#include "PlugInModel_UIAttributes.h"
+
+#include "EveInfo.fh"
+
+#ifdef __ODFRC__
+
+/*
+// Plugin version definition.
+*/
+resource PluginVersion (kSDKDefPluginVersionResourceID)
+{
+	kTargetVersion,
+	kPMUPluginID,
+	kSDKDefPlugInMajorVersionNumber, kSDKDefPlugInMinorVersionNumber, 	
+	kSDKDefHostMajorVersionNumber, kSDKDefHostMinorVersionNumber,
+	kPMUCurrentMajorFormatNumber, kPMUCurrentMinorFormatNumber,
+	{ kInDesignProduct }, 
+	{ kWildFS }, 
+	kUIPlugIn,
+	kPMUVersion
+};
+
+/*
+// This is where we define we require the Parser plug-in:
+*/
+resource PluginDependency(kSDKDefPluginDependencyResourceID)
+{
+	kWildFS
+	{
+		kPrsPluginID,
+		kPrsPluginName,
+		kPrsCurrentMajorVersionNumber, 
+		kPrsCurrentMinorVersionNumber, 	
+	}
+}
+
+/*
+//	Boss class definition.
+*/
+resource ClassDescriptionTable(kSDKDefClassDescriptionTableResourceID)
+{{{
+
+
+	/**
+	 This boss class provides the actions invoked by this plug-in's
+	 sub-menu items. It supports two interfaces: 
+	 IActionComponent and IPMPersist. We provide the implementation 
+	 for IActionComponent in PMUAction.cpp. The other
+	 default implementation is provided by the API.
+	*/
+	Class
+	{
+		kPMUActionComponentBoss,
+		kInvalidClass,
+		{
+			/** Handle the actions from the menu. */
+			IID_IACTIONCOMPONENT, kPMUActionComponentImpl,
+			/** Persist the state of the menu across application instantiation.
+			Implementation provided by the API.*/
+			IID_IPMPERSIST, kPMPersistImpl
+		}
+	},
+
+	/**
+	 Custom rollover icon button boss for the 3 main palette buttons that
+	 need tooltips (Exec TCL, Add hidden ref, Identify a block). Aggregates
+	 IID_ITIP onto the stock kRollOverIconButtonBoss; PMUButtonTips reads the
+	 widget ID at runtime to pick the right tooltip text.
+	*/
+	Class
+	{
+		kPMUButtonWithTipBoss,
+		kRollOverIconButtonBoss,
+		{
+			IID_ITIP, kPMUButtonTipsImpl,
+		}
+	},
+
+
+	/**
+		 This boss class inherits from an API panel boss class, and
+		 adds an interface to control a pop-up menu on the panel.
+		 The implementation for this interface is provided by the API.
+	*/
+
+	Class
+	{
+		kPMUPanelWidgetBoss,
+		kPalettePanelWidgetBoss,
+		{
+			/** The plug-in's implementation of ITextControlData with an exotic IID of IID_IPANELMENUDATA.
+			Implementation provided by the API.
+			*/ 
+			IID_IPANELMENUDATA, kCPanelMenuDataImpl,
+
+			/**
+				 Allow to catch a click on the icons.
+			*/
+			IID_IOBSERVER, kPMUPanelWidgetObserverImpl,
+			
+		}
+	},
+
+	/**
+		 This boss class represents a dialog to set preferences
+	*/
+	Class
+	{
+		kPMUPrefsDialogBoss,
+		kDialogBoss,
+		{
+			/** Provides management and control over the dialog. Implementation of IDialogController.
+			*/
+			IID_IDIALOGCONTROLLER, kPMUDialogControllerImpl,
+			/** Allows dynamic processing of dialog changes. Implementation of IObserver.
+			*/
+			IID_IOBSERVER, kPMUDialogObserverImpl,
+		}
+	},
+	
+	/**
+		 This boss class represents a dialog to set preferences
+	*/
+	Class
+	{
+		kPMUDocPathDialogBoss,
+		kDialogBoss,
+		{
+			/** Provides management and control over the dialog. Implementation of IDialogController.
+			*/
+			IID_IDIALOGCONTROLLER, kPMUDocPathDialogControllerImpl,
+			/** Allows dynamic processing of dialog changes. Implementation of IObserver.
+			*/
+			IID_IOBSERVER, kPMUDocPathDialogObserverImpl,
+		}
+	},
+	
+	/**
+		 This boss class represents a dialog to set preferences
+	*/
+	Class
+	{
+		kPMUImageSettingDialogBoss,
+		kDialogBoss,
+		{
+			/** Provides management and control over the dialog. Implementation of IDialogController.
+			*/
+			IID_IDIALOGCONTROLLER, kPMUImageSettingDialogControllerImpl,
+			/** Allows dynamic processing of dialog changes. Implementation of IObserver.
+			*/
+			IID_IOBSERVER, kPMUImageSettingDialogObserverImpl,
+		}
+	},
+	
+	/**
+		 This boss class represents a dialog to set preferences
+	*/
+	Class
+	{
+		kPMUExportPrefsDialogBoss,
+		kDialogBoss,
+		{
+			/** Provides management and control over the dialog. Implementation of IDialogController.
+			*/
+			IID_IDIALOGCONTROLLER, kPMUExportPrefsDialogControllerImpl,
+		}
+	},
+	
+	/**
+		 This boss class represents a dialog to set preferences
+	*/
+	Class
+	{
+		kPMUTypeRefDialogBoss,
+		kDialogBoss,
+		{
+			/** Provides management and control over the dialog. Implementation of IDialogController.
+			*/
+			IID_IDIALOGCONTROLLER, kPMUTypeRefDialogControllerImpl,
+		}
+	},
+	
+#if COMPOSER
+	/** Schedule kPMUSetUpComposerPaletteCmdBoss on startup */
+	Class
+	{
+		kPMUStartupShutdownBoss,
+		kInvalidClass,
+		 {
+				/** Implementation of IStartupShutdownService that installs idle task on startup */
+				IID_ISTARTUPSHUTDOWN, kPMUStartupShutdownImpl,
+				/** identify the service type */
+				IID_IK2SERVICEPROVIDER, kCStartupShutdownProviderImpl,
+		 }
+	},
+	
+	/** Service provider boss class to set up the main palette on startup */
+	Class
+	{
+		kPMUSetUpComposerPaletteCmdBoss,
+		kInvalidClass,
+		 {
+				/** Implementation of IStartupShutdownService that installs idle task on startup */
+				IID_ICOMMAND, kPMUSetUpComposerPaletteCmdImpl,
+		 }
+	},
+	
+#endif
+
+}}};
+
+/*
+// Implementation definition.
+*/
+resource FactoryList (kSDKDefFactoryListResourceID) 
+{
+	kImplementationIDSpace,
+	{
+#include "PMUFactoryList.h"
+	}
+};
+
+/*
+// Menu definition.
+*/
+resource MenuDef (kSDKDefMenuResourceID)
+{
+	{
+			// The About Plug-ins sub-menu item for this plug-in.
+		kPMUAboutActionID,					// ActionID (kInvalidActionID for positional entries)
+		kPMUAboutMenuPath,					// Menu Path.
+		kSDKDefAlphabeticPosition,			// Menu Position.
+		kSDKDefIsNotDynamicMenuFlag,		// kSDKDefIsNotDynamicMenuFlag or kSDKDefIsDynamicMenuFlag.
+
+#if !PAGE_REF
+
+		kPMUExecTCLActionID,
+		kPMUTargetMenuPath,
+		kPMUExecTCLMenuItemPosition,
+		kSDKDefIsNotDynamicMenuFlag,
+		
+		// Separator for the popup menu on the panel
+		kPMUSeparator0ActionID,
+		kPMUInternalPopupMenuNameKey kSDKDefDelimiterAndSeparatorPath,	// :- to mark an item as a separator.
+		kPMUSeparator0MenuItemPosition,
+		kSDKDefIsNotDynamicMenuFlag,
+	
+		kPMUReverseTCLActionID,
+		kPMUTargetMenuPath,
+		kPMUReverseTCLMenuItemPosition,
+		kSDKDefIsNotDynamicMenuFlag, 			
+			 
+		kPMUExportPermRefsTCLActionID,
+		kPMUTargetMenuPath,
+		kPMUExportContentMenuItemPosition,
+		kSDKDefIsNotDynamicMenuFlag, 
+		
+		// Separator for the popup menu on the panel
+		kPMUSeparator1ActionID,
+		kPMUInternalPopupMenuNameKey kSDKDefDelimiterAndSeparatorPath,	// :- to mark an item as a separator.
+		kPMUSeparator1MenuItemPosition,
+		kSDKDefIsNotDynamicMenuFlag,	
+			
+		kPMUDeleteAllPermRefsTCLActionID,
+		kPMUTargetMenuPath,
+		kPMUDeleteAllPermRefsMenuItemPosition,
+		kSDKDefIsNotDynamicMenuFlag,
+
+		kPMUExportRefsListDebugActionID,
+		kPMUTargetMenuPath,
+		kPMUExportRefsListDebugMenuItemPosition,
+		kSDKDefIsNotDynamicMenuFlag,
+
+		kPMURepairRefsListActionID,
+		kPMUTargetMenuPath,
+		kPMURepairRefsListMenuItemPosition,
+		kSDKDefIsNotDynamicMenuFlag,
+
+		// Separator for the popup menu on the panel
+		kPMUSeparator2ActionID,
+		kPMUInternalPopupMenuNameKey kSDKDefDelimiterAndSeparatorPath,	// :- to mark an item as a separator.
+		kPMUSeparator2MenuItemPosition,
+		kSDKDefIsNotDynamicMenuFlag,
+#endif
+
+#if AUTO_TAGGING	 	
+
+		kPMUAutoTagDocumentWithPriceTCLActionID,
+		kPMUTargetMenuPath,
+		kPMUAutoTagDocumentMenuItemPosition,
+		kSDKDefIsNotDynamicMenuFlag, 
+		
+		kPMUAutoTagDocumentWithReferenceTCLActionID,
+		kPMUTargetMenuPath,
+		kPMUAutoTagDocumentMenuItemPosition,
+		kSDKDefIsNotDynamicMenuFlag,
+		
+#endif
+
+#if ILC	 
+
+		// Separator for the popup menu on the panel
+		kPMUSeparator5ActionID,
+		kPMUInternalPopupMenuNameKey kSDKDefDelimiterAndSeparatorPath,	// :- to mark an item as a separator.
+		kPMUSeparator5MenuItemPosition,
+		kSDKDefIsNotDynamicMenuFlag,
+
+		kPMUCreateILCRefsActionID,
+		kPMUTargetMenuPath,
+		kPMUCreateILCRefsMenuItemPosition,
+		kSDKDefIsNotDynamicMenuFlag, 
+		
+		kPMUExportILCRefsActionID,
+		kPMUTargetMenuPath,
+		kPMUExportILCRefsMenuItemPosition,
+		kSDKDefIsNotDynamicMenuFlag, 
+		
+#endif
+
+#if !PAGE_REF
+		// Separator for the popup menu on the panel
+		kPMUSeparator3ActionID,
+		kPMUInternalPopupMenuNameKey kSDKDefDelimiterAndSeparatorPath,	// :- to mark an item as a separator.
+		kPMUSeparator3MenuItemPosition,
+		kSDKDefIsNotDynamicMenuFlag,	
+ 	 
+		kPMUTCLPrefsActionID,
+		kPMUTargetMenuPath,
+		kPMUTCLPrefsMenuItemPosition,
+		kSDKDefIsNotDynamicMenuFlag, 		
+	
+		// Main:PageMakeUp top-level menu — three actions mirroring the main
+		// palette buttons (Exec TCL, Add hidden ref, Identify a block) and
+		// two toggles for the on-canvas displays.
+		kPMUExecTCLActionID,
+		"Main" kSDKDefDelimitMenuPath kPMUPluginsMenuKey,
+		kPMUMainExecTCLMenuItemPosition,
+		kSDKDefIsNotDynamicMenuFlag,
+
+		kPMUAddReferenceTCLActionID,
+		"Main" kSDKDefDelimitMenuPath kPMUPluginsMenuKey,
+		kPMUMainAddPermRefMenuItemPosition,
+		kSDKDefIsNotDynamicMenuFlag,
+
+		kPMUAddTCLRefActionID,
+		"Main" kSDKDefDelimitMenuPath kPMUPluginsMenuKey,
+		kPMUMainAddTCLRefMenuItemPosition,
+		kSDKDefIsNotDynamicMenuFlag,
+
+		kPMUMainSeparatorActionID,
+		"Main" kSDKDefDelimitMenuPath kPMUPluginsMenuKey kSDKDefDelimiterAndSeparatorPath,
+		kPMUMainSeparatorMenuItemPosition,
+		kSDKDefIsNotDynamicMenuFlag,
+
+		kPMUDisplayTCLRefActionID,
+		"Main" kSDKDefDelimitMenuPath kPMUPluginsMenuKey,
+		kPMUMainDisplayTCLRefMenuItemPosition,
+		kSDKDefIsNotDynamicMenuFlag,
+
+		kPMUDisplayPermRefActionID,
+		"Main" kSDKDefDelimitMenuPath kPMUPluginsMenuKey,
+		kPMUMainDisplayPermRefMenuItemPosition,
+		kSDKDefIsNotDynamicMenuFlag,
+
+		
+		// Separator for the popup menu on the panel
+		kPMUSeparator4ActionID,
+		kPMUInternalPopupMenuNameKey kSDKDefDelimiterAndSeparatorPath,	// :- to mark an item as a separator.
+		kPMUSeparator4MenuItemPosition,
+		kSDKDefIsNotDynamicMenuFlag,
+#endif
+		// About this plugin submenu for the popup menu on the panel
+		kPMUPopupAboutThisActionID,
+		kPMUTargetMenuPath
+		kPMUAboutThisMenuItemPosition,
+		kSDKDefIsNotDynamicMenuFlag, 
+			
+#if COMPOSER		
+		kPMUTCLPrefsActionID,
+		kComposerToolTargetMenuPath,
+		kPMUTCLPrefsMenuItemPosition,
+		kSDKDefIsNotDynamicMenuFlag, 
+
+		// Separator for the popup menu
+		kPMUSeparator1ActionID,
+		kComposerToolTargetMenuPath kSDKDefDelimiterAndSeparatorPath
+		kPMUSeparator1MenuItemPosition,
+		kSDKDefIsNotDynamicMenuFlag,
+
+		// About this plugin submenu fo
+		kPMUPopupAboutThisActionID,
+		kComposerToolTargetMenuPath
+		kPMUAboutThisMenuItemPosition,
+		kSDKDefIsNotDynamicMenuFlag, 		
+#endif
+
+	}
+};
+
+/*
+// Action definition.
+*/
+resource ActionDef (kSDKDefActionResourceID)
+{
+	{ 
+		kPMUActionComponentBoss, 		// ClassID of boss class that implements the ActionID.
+		kPMUAboutActionID,	// ActionID.
+		kPMUAboutMenuKey,	// Sub-menu string.
+		kOtherActionArea,				// Area name (see ActionDefs.h).
+		kNormalAction,					// Type of action (see ActionDefs.h).
+		kDisableIfLowMem,				// Enabling type (see ActionDefs.h).
+		kInvalidInterfaceID,			// Selection InterfaceID this action cares about or kInvalidInterfaceID.
+		kSDKDefInvisibleInKBSCEditorFlag, // kSDKDefVisibleInKBSCEditorFlag or kSDKDefInvisibleInKBSCEditorFlag.
+
+		kPMUActionComponentBoss,
+		kPMUExecTCLActionID,		
+		kPMUExecTCLMenuItemKey,		
+		kOtherActionArea,			
+		kNormalAction,				
+		kDisableIfLowMem,	
+		kInvalidInterfaceID,		
+		kSDKDefInvisibleInKBSCEditorFlag,
+		
+		kPMUActionComponentBoss,
+		kPMUReverseTCLActionID,
+		kPMUReverseTCLMenuItemKey,		
+		kOtherActionArea,			
+		kNormalAction,				
+		kDisableIfLowMem,	
+		kInvalidInterfaceID,		
+		kSDKDefInvisibleInKBSCEditorFlag,
+
+		kPMUActionComponentBoss,
+		kPMUExportPermRefsTCLActionID,
+		kPMUExportPermRefsTCLMenuItemKey,		
+		kOtherActionArea,			
+		kNormalAction,				
+		kDisableIfLowMem,	
+		kInvalidInterfaceID,		
+		kSDKDefInvisibleInKBSCEditorFlag,		
+	
+		kPMUActionComponentBoss,
+		kPMUDeleteAllPermRefsTCLActionID,
+		kPMUDeleteAllPermRefsTCLMenuItemKey,
+		kOtherActionArea,
+		kNormalAction,
+		kDisableIfLowMem,
+		kInvalidInterfaceID,
+		kSDKDefInvisibleInKBSCEditorFlag,
+
+		kPMUActionComponentBoss,
+		kPMUExportRefsListDebugActionID,
+		kPMUExportRefsListDebugMenuItemKey,
+		kOtherActionArea,
+		kNormalAction,
+		kDisableIfLowMem,
+		kInvalidInterfaceID,
+		kSDKDefInvisibleInKBSCEditorFlag,
+
+		kPMUActionComponentBoss,
+		kPMURepairRefsListActionID,
+		kPMURepairRefsListMenuItemKey,
+		kOtherActionArea,
+		kNormalAction,
+		kDisableIfLowMem,
+		kInvalidInterfaceID,
+		kSDKDefInvisibleInKBSCEditorFlag,
+
+#if AUTO_TAGGING
+
+		kPMUActionComponentBoss,
+		kPMUAutoTagDocumentWithPriceTCLActionID,
+		kPMUAutoTagDocument1TCLMenuItemKey,	
+		kOtherActionArea,			
+		kNormalAction,				
+		kDisableIfLowMem,	
+		kInvalidInterfaceID,		
+		kSDKDefInvisibleInKBSCEditorFlag,
+		
+		kPMUActionComponentBoss,
+		kPMUAutoTagDocumentWithReferenceTCLActionID,
+		kPMUAutoTagDocument2TCLMenuItemKey,	
+		kOtherActionArea,			
+		kNormalAction,				
+		kDisableIfLowMem,	
+		kInvalidInterfaceID,		
+		kSDKDefInvisibleInKBSCEditorFlag,
+		
+#endif
+
+#if ILC	 
+
+		kPMUActionComponentBoss,
+		kPMUCreateILCRefsActionID,
+		kPMUCreateILCRefsMenuItemKey,	
+		kOtherActionArea,			
+		kNormalAction,				
+		kDisableIfLowMem,	
+		kInvalidInterfaceID,		
+		kSDKDefInvisibleInKBSCEditorFlag,
+		
+		kPMUActionComponentBoss,
+		kPMUExportILCRefsActionID,
+		kPMUExportILCRefsMenuItemKey,	
+		kOtherActionArea,			
+		kNormalAction,				
+		kDisableIfLowMem,	
+		kInvalidInterfaceID,		
+		kSDKDefInvisibleInKBSCEditorFlag,
+		
+#endif
+
+		kPMUActionComponentBoss,
+		kPMUTCLPrefsActionID,
+		kPMUTCLPrefsMenuItemKey,		
+		kOtherActionArea,			
+		kNormalAction,				
+		kDisableIfLowMem,	
+		kInvalidInterfaceID,		
+		kSDKDefInvisibleInKBSCEditorFlag,
+				
+		kPMUActionComponentBoss, 
+		kPMUPopupAboutThisActionID, 
+		kPMUAboutThisPlugInMenuKey,	// Key to the name of this action
+		kOtherActionArea,
+		kNormalAction,
+		kDisableIfLowMem,	
+		kInvalidInterfaceID,
+		kSDKDefInvisibleInKBSCEditorFlag,
+		
+		// "Insérer une référence cachée" — enabled only when a text range
+		// is selected. UpdateActionStates queries IPermRefsSuite.
+		kPMUActionComponentBoss,
+		kPMUAddReferenceTCLActionID,
+		kPMUAddReferenceMenuKey,
+		kOtherActionArea,
+		kNormalAction,
+		kDisableIfLowMem | kCustomEnabling,
+		kInvalidInterfaceID,
+		kSDKDefVisibleInKBSCEditorFlag,
+
+		// "Identifier un bloc" — same code path as the palette button
+		// (PMUUtils::AddTCLRef). Enabled only when a layout (frame) is
+		// selected. UpdateActionStates queries IParserSuite.
+		kPMUActionComponentBoss,
+		kPMUAddTCLRefActionID,
+		kPMUAddTCLRefMenuItemKey,
+		kOtherActionArea,
+		kNormalAction,
+		kDisableIfLowMem | kCustomEnabling,
+		kInvalidInterfaceID,
+		kSDKDefVisibleInKBSCEditorFlag,
+
+		// "Afficher les IDs des blocs" — toggles IPageMakeUpPrefs::
+		// setDisplayTCLRef. UpdateActionStates posts kSelectedAction so
+		// the menu shows a checkmark when the pref is currently on.
+		kPMUActionComponentBoss,
+		kPMUDisplayTCLRefActionID,
+		kPMUDisplayTCLRefMenuItemKey,
+		kOtherActionArea,
+		kNormalAction,
+		kDisableIfLowMem | kCustomEnabling,
+		kInvalidInterfaceID,
+		kSDKDefVisibleInKBSCEditorFlag,
+
+		// "Afficher les références cachées" — toggles
+		// IPageMakeUpPrefs::setDisplayPermRef.
+		kPMUActionComponentBoss,
+		kPMUDisplayPermRefActionID,
+		kPMUDisplayPermRefMenuItemKey,
+		kOtherActionArea,
+		kNormalAction,
+		kDisableIfLowMem | kCustomEnabling,
+		kInvalidInterfaceID,
+		kSDKDefVisibleInKBSCEditorFlag,
+
+	}
+};
+
+
+/*
+// LocaleIndex
+// The LocaleIndex should have indicies that point at your
+// localizations for each language system that you are 
+// localized for.
+*/
+/*
+// String LocaleIndex.
+*/
+resource LocaleIndex (kSDKDefStringsResourceID)
+{
+	kStringTableRsrcType,
+	{
+		kWildFS, k_enUS, kSDKDefStringsResourceID + index_enUS
+		kWildFS, k_enGB, kSDKDefStringsResourceID + index_enUS
+		kWildFS, k_deDE, kSDKDefStringsResourceID + index_enUS
+		kWildFS, k_frFR, kSDKDefStringsResourceID + index_frFR
+		kWildFS, k_esES, kSDKDefStringsResourceID + index_enUS
+		kWildFS, k_ptBR, kSDKDefStringsResourceID + index_enUS
+		kWildFS, k_svSE, kSDKDefStringsResourceID + index_enUS
+		kWildFS, k_daDK, kSDKDefStringsResourceID + index_enUS
+		kWildFS, k_nlNL, kSDKDefStringsResourceID + index_enUS
+		kWildFS, k_itIT, kSDKDefStringsResourceID + index_enUS
+		kWildFS, k_nbNO, kSDKDefStringsResourceID + index_enUS
+		kWildFS, k_fiFI, kSDKDefStringsResourceID + index_enUS
+		kInDesignJapaneseFS, k_jaJP, kSDKDefStringsResourceID + index_enUS
+	}
+};
+
+resource LocaleIndex (kSDKDefStringsNoTransResourceID)
+{
+	kStringTableRsrcType,
+	{
+		kWildFS, k_Wild, kSDKDefStringsNoTransResourceID + index_enUS
+	}
+};
+
+resource StringTable (kSDKDefStringsNoTransResourceID + index_enUS)
+{
+	k_enUS,									// Locale Id
+	kEuropeanMacToWinEncodingConverter,		// Character encoding converter
+	{
+		// No-Translate strings go here:		
+		kPMUInternalPopupMenuNameKey,	kPMUInternalPopupMenuNameKey,		// No need to translate, internal menu name.
+		kComposerToolInternalPopupMenuNameKey, kComposerToolInternalPopupMenuNameKey,
+	}
+};
+
+
+
+/*
+// Panel LocaleIndex.
+*/
+resource LocaleIndex (kPMUPanelResourceID)
+{
+	kViewRsrcType,
+	{
+		kWildFS, k_Wild, 	kPMUPanelResourceID + index_enUS
+	}
+};
+
+#if COMPOSER
+resource LocaleIndex (kComposerToolPanelResourceID)
+{
+	kViewRsrcType,
+	{
+		kWildFS, k_Wild, kComposerToolPanelResourceID + index_enUS
+	}
+};
+#endif
+
+/*
+// Dialog LocaleIndex.
+*/
+resource LocaleIndex (kSDKDefDialogResourceID)
+{
+   kViewRsrcType,
+	{
+		kWildFS,	k_Wild, kSDKDefDialogResourceID + index_enUS
+	}
+};
+
+resource LocaleIndex (kPMUDocPathDialogResourceID)
+{
+   kViewRsrcType,
+	{
+		kWildFS,	k_Wild, kPMUDocPathDialogResourceID + index_enUS
+	}
+};
+
+resource LocaleIndex (kPMUImageSettingDialogResourceID)
+{
+   kViewRsrcType,
+	{
+		kWildFS,	k_Wild, kPMUImageSettingDialogResourceID + index_enUS
+	}
+};
+
+resource LocaleIndex (kPMUExportPrefsDialogResourceID)
+{
+   kViewRsrcType,
+	{
+		kWildFS,	k_Wild, kPMUExportPrefsDialogResourceID + index_enUS
+	}
+};
+
+resource LocaleIndex (kPMUTypeRefDialogResourceID)
+{
+   kViewRsrcType,
+	{
+		kWildFS,	k_Wild, kPMUTypeRefDialogResourceID + index_enUS
+	}
+};
+
+resource LocaleIndex (kPMUTypePermRefDialogResourceID)
+{
+   kViewRsrcType,
+	{
+		kWildFS,	k_Wild, kPMUTypePermRefDialogResourceID + index_enUS
+	}
+};	
+
+resource LocaleIndex (kComposerAboutDialogResourceID)
+{
+   kViewRsrcType,
+	{
+		kWildFS,	k_Wild, kComposerAboutDialogResourceID + index_enUS
+	}
+};
+
+
+/*
+// Type definition.
+*/
+type PMUPanelWidget(kViewRsrcType) : PalettePanelWidget(ClassID = kPMUPanelWidgetBoss) 
+{
+	CPanelMenuData;
+};
+
+#if COMPOSER
+type ComposerToolWidget(kViewRsrcType) : PalettePanelWidget(ClassID = kPMUPanelWidgetBoss) 
+{
+	CPanelMenuData;
+};
+#endif
+
+type PMUPrefsDialogBoss(kViewRsrcType) : DialogBoss(ClassID = kPMUPrefsDialogBoss)
+{
+};
+
+type PMUDocPathDialogBoss(kViewRsrcType) : DialogBoss(ClassID = kPMUDocPathDialogBoss)
+{
+};
+
+type PMUImageSettingDialogBoss(kViewRsrcType) : DialogBoss(ClassID = kPMUImageSettingDialogBoss)
+{
+};
+
+type PMUExportPrefsDialogBoss(kViewRsrcType) : DialogBoss(ClassID = kPMUExportPrefsDialogBoss)
+{
+};
+
+type PMUTypeRefDialogBoss(kViewRsrcType) : DialogBoss(ClassID = kPMUTypeRefDialogBoss)
+{
+};
+
+type PMUTypePermRefDialogBoss(kViewRsrcType) : DialogBoss(ClassID = kPMUTypeRefDialogBoss)
+{
+};
+
+// Custom rollover icon button type that uses kPMUButtonWithTipBoss so it
+// inherits IID_ITIP. Same shape as RollOverIconButtonWidget — used for the
+// 3 main palette buttons that get tooltips.
+type PMUIconButtonWithTipWidget(kViewRsrcType) : RollOverIconButtonWidget(ClassID = kPMUButtonWithTipBoss) { };
+
+/*type PMUProgressBarWidget(kViewRsrcType) : ProgressBarWidget(ClassID = kPMUProgressBarWidgetBoss)
+{
+};*/
+
+
+// For Composer, we don't need declaration of main palette, it will create dynamically (see kPMUStartupShutdown
+#if !COMPOSER  
+
+/*
+// PanelList definition.
+*/
+resource PanelList (kPMUPanelResourceID)
+{
+	{
+		// 1st panel in the list
+		kPMUPanelResourceID,		// Resource ID for this panel (use SDK default rsrc ID)
+		kPMUPluginID,				// ID of plug-in that owns this panel
+		kNotResizable,				// notResizable or isResizable
+		kPMUPanelWidgetActionID,	// Action ID to show/hide the panel
+		kPMUPanelTitleKey,			// Shows up in the Window list.
+		"",							// Alternate menu path of the form "Main:Foo" if you want your palette menu item in a second place
+		0.0,						// Alternate Menu position Alternate Menu position for determining menu order
+		0,0,						// Rsrc ID, Plugin ID for a PNG icon resource to use for this palette
+		c_Panel
+	}	
+};
+
+#endif
+
+/*
+// PNG resources
+*/
+#if COMPOSER
+resource PNGA(kPMUExecTCLPNGIconResourceID) "ExecTCLComposer.png"
+resource PNGA(kPMUReverseTCLPNGIconResourceID) "ReverseTCLComposer.png"
+resource PNGA(kPMUPrefsPNGIconResourceID) "PrefsComposer.png"
+resource PNGA(kPMUAddTCLRefPNGIconResourceID) "AddTCLRefComposer.png"
+resource PNGA(kPMUAddPermRefPNGIconResourceID) "AddPermRefComposer.png"
+resource PNGA(kPMUTextOverFlowPNGIconResourceID) "TextOverFlow.png"
+resource PNGA(kComposerPNGIconResourceID) "AboutComposer.png"
+resource PNGA(kPMUUpdatePicturePNGIconResourceID) "UpdatePictureComposer.png"
+resource PNGA(kPMUSearchPermRefPNGIconResourceID) "SearchPermRefComposer.png"
+#else
+resource PNGA(kPMUExecTCLPNGIconResourceID) "ExecTCL.png"
+resource PNGA(kPMUReverseTCLPNGIconResourceID) "ReverseTCL.png"
+resource PNGA(kPMUPrefsPNGIconResourceID) "Prefs.png"
+resource PNGA(kPMUAddTCLRefPNGIconResourceID) "AddTCLRef.png"
+resource PNGA(kPMUAddPermRefPNGIconResourceID) "AddPermRef.png"
+resource PNGA(kPMUSearchTCLRefPNGIconResourceID) "SearchTCLRef.png"
+resource PNGA(kPMUSearchPermRefPNGIconResourceID) "SearchPermRef.png"
+resource PNGA(kPMUUpdatePicturePNGIconResourceID) "UpdatePicture.png"
+resource PNGA(kPMUExportResourceID) "Export.png"
+resource PNGA(kPMUExportPermRefsPNGIconResourceID) "ExportPermRefs.png"
+#endif
+
+resource PNGA(kPMUInFolderPNGIconResourceID) "InFolder.png"
+resource PNGA(kPMUOutFolderPNGIconResourceID) "OutFolder.png"
+
+#if COMPOSER
+	#define kPMUPaletteWidth 175
+	#define kPMUPaletteHeight 120
+	#define kPMUDisplayRefY   95
+#elif PERMREFS 
+	#define kPMUPaletteWidth 215
+	#define kPMUPaletteHeight 120
+	#define kPMUDisplayRefY   95
+#else
+	#define kPMUPaletteWidth 175
+	#define kPMUPaletteHeight 80 
+	#define kPMUDisplayRefY   55
+#endif
+/*
+// PanelView definition.
+// The view is not currently localised: therefore, it can reside here.
+// However, if you wish to localise it, it is recommended to locate it in one of
+// the localised framework resource files (i.e. PMU_enUS.fr etc.).
+*/
+resource PMUPanelWidget(kPMUPanelResourceID + index_enUS)
+{
+	__FILE__, __LINE__,					// Localization macro		
+	kPMUPanelWidgetID,			// WidgetID 
+	kPMRsrcID_None,						// RsrcID
+	kBindNone,							// Binding (0=none)
+	0, 0, kPMUPaletteWidth, kPMUPaletteHeight,						// Frame: left, top, right, bottom.
+	kTrue, kTrue,						// Visible, Enabled
+	kFalse,								// Erase background
+	kInterfacePaletteFill,				// Erase to color
+	kFalse,								// Draw dropshadow
+	kPMUPanelTitleKey,			// Panel name	
+	{
+				PMUIconButtonWithTipWidget
+				(
+					// kPMUButtonWithTipBoss → tooltip handled by PMUButtonTips.
+					kPMUExecTCLWidgetID, // widget ID
+					kPMUExecTCLPNGIconResourceID, kPMUPluginID, // icon, plugin ID
+					kBindNone, // frame binding
+					Frame(10.0,10.0,45.0,45.0) //  left, top, right, bottom
+					kTrue, // visible
+#if PAGE_REF
+					kFalse, // enabled
+#else
+					kTrue,
+#endif
+					kADBEIconSuiteButtonType,
+				),
+				
+				RollOverIconButtonWidget
+				(
+					// ADBEIconSuiteButtonView properties
+					kPMUReverseTCLWidgetID, // widget ID
+					kPMUReverseTCLPNGIconResourceID, kPMUPluginID, // icon, plugin ID
+					kBindNone, // frame binding
+					Frame(50.0,10.0,85.0,45.0) //  left, top, right, bottom
+					kTrue, // visible
+#if PAGE_REF
+					kFalse, // enabled
+#else
+					kTrue,
+#endif
+					kADBEIconSuiteButtonType,
+				),
+				
+				CheckBoxWidget
+				(
+					kPMUDisplayTCLRefWidgetID,           // WidgetId
+					kSysCheckBoxPMRsrcId,               // RsrcId
+					kBindLeft | kBindTop,
+					Frame(12,kPMUDisplayRefY,12+200,kPMUDisplayRefY+15)                 // Frame
+					kTrue,                              // Visible
+					kTrue,                              // Enabled
+					kAlignLeft,                       // Alignment
+					kPMUDisplayTCLRefTextKey             // Initial text
+				),
+				
+#if COMPOSER
+				RollOverIconButtonWidget
+				(
+					// ADBEIconSuiteButtonView properties
+					kPMUAddTCLRefWidgetID, // widget ID
+					kPMUAddTCLRefPNGIconResourceID, kPMUPluginID, // icon, plugin ID
+					kBindNone, // frame binding
+					Frame(90.0,10.0,125.0,45.0) //  left, top, right, bottom
+					kTrue, // visible
+					kTrue, // enabled
+					kADBEIconSuiteButtonType,
+				),
+				
+				RollOverIconButtonWidget
+				(
+					// ADBEIconSuiteButtonView properties
+					kPMUAddPermRefWidgetID, // widget ID
+					kPMUAddPermRefPNGIconResourceID, kPMUPluginID, // icon, plugin ID
+					kBindNone, // frame binding
+					Frame(10.0,50.0,45.0,85.0) //  left, top, right, bottom
+					kTrue, // visible
+					kTrue, // enabled
+					kADBEIconSuiteButtonType,
+				),
+				
+						
+				RollOverIconButtonWidget
+				(
+					// ADBEIconSuiteButtonView properties
+					kPMUTextOverFlowWidgetID, // widget ID
+					kPMUTextOverFlowPNGIconResourceID, kPMUPluginID, // icon, plugin ID
+					kBindNone, // frame binding
+					Frame(50.0,50.0,85.0,85.0) //  left, top, right, bottom
+					kTrue, // visible
+					kTrue, // enabled
+					kADBEIconSuiteButtonType,
+				),
+							
+				RollOverIconButtonWidget
+				(
+					// ADBEIconSuiteButtonView properties
+					kPMUUpdatePictureWidgetID, // widget ID
+					kPMUUpdatePicturePNGIconResourceID, kPMUPluginID, // icon, plugin ID
+					kBindNone, // frame binding
+					Frame(90.0,50.0,125.0,85.0) //  left, top, right, bottom
+					kTrue, // visible
+					kTrue, // enabled
+					kADBEIconSuiteButtonType,
+				),
+				
+				RollOverIconButtonWidget
+				(
+					// ADBEIconSuiteButtonView properties
+					kPMUSearchPermRefWidgetID, // widget ID
+					kPMUSearchPermRefPNGIconResourceID, kPMUPluginID, // icon, plugin ID
+					kBindNone, // frame binding
+					Frame(130.0,10.0,165.0,45.0) //  left, top, right, bottom
+					kTrue, // visible
+					kTrue, // enabled
+					kADBEIconSuiteButtonType,
+				),
+		
+#else				
+				RollOverIconButtonWidget
+				(
+					// ADBEIconSuiteButtonView properties
+					kPMUTCLPrefsWidgetID, // widget ID
+					kPMUPrefsPNGIconResourceID, kPMUPluginID, // icon, plugin ID
+					kBindNone, // frame binding
+					Frame(90.0,10.0,125.0,45.0) //  left, top, right, bottom
+					kTrue, // visible
+#if PAGE_REF
+					kFalse, // enabled
+#else
+					kTrue,
+#endif
+					kADBEIconSuiteButtonType,
+				),
+				
+				RollOverIconButtonWidget
+				(
+					// ADBEIconSuiteButtonView properties
+					kPMUExportWidgetID, // widget ID
+					kPMUExportResourceID, kPMUPluginID, // icon, plugin ID
+					kBindNone, // frame binding
+					Frame(130.0,10.0,165.0,45.0) //  left, top, right, bottom
+					kTrue, // visible
+#if PAGE_REF
+					kFalse, // enabled
+#else
+					kTrue,
+#endif
+					kADBEIconSuiteButtonType,
+				),				
+#endif
+				
+#if PERMREFS && !COMPOSER
+
+				PMUIconButtonWithTipWidget
+				(
+					// kPMUButtonWithTipBoss → tooltip handled by PMUButtonTips.
+					kPMUAddPermRefWidgetID, // widget ID
+					kPMUAddPermRefPNGIconResourceID, kPMUPluginID, // icon, plugin ID
+					kBindNone, // frame binding
+					Frame(10.0,50.0,45.0,85.0) //  left, top, right, bottom
+					kTrue, // visible
+					kTrue, // enabled
+					kADBEIconSuiteButtonType,
+				),
+
+				PMUIconButtonWithTipWidget
+				(
+					// kPMUButtonWithTipBoss → tooltip handled by PMUButtonTips.
+					kPMUAddTCLRefWidgetID, // widget ID
+					kPMUAddTCLRefPNGIconResourceID, kPMUPluginID, // icon, plugin ID
+					kBindNone, // frame binding
+					Frame(50.0,50.0,85.0,85.0) //  left, top, right, bottom
+					kTrue, // visible
+					kTrue, // enabled
+					kADBEIconSuiteButtonType,
+				),
+				
+				RollOverIconButtonWidget
+				(
+					// ADBEIconSuiteButtonView properties
+					kPMUSearchPermRefWidgetID, // widget ID
+					kPMUSearchPermRefPNGIconResourceID, kPMUPluginID, // icon, plugin ID
+					kBindNone, // frame binding
+					Frame(90.0,50.0,125.0,85.0) //  left, top, right, bottom
+					kTrue, // visible
+#if PAGE_REF
+					kFalse, // enabled
+#else
+					kTrue,
+#endif
+					kADBEIconSuiteButtonType,
+				),
+				
+				RollOverIconButtonWidget
+				(
+					// ADBEIconSuiteButtonView properties
+					kPMUSearchTCLRefWidgetID, // widget ID
+					kPMUSearchTCLRefPNGIconResourceID, kPMUPluginID, // icon, plugin ID
+					kBindNone, // frame binding
+					Frame(130.0,50.0,165.0,85.0) //  left, top, right, bottom
+					kTrue, // visible
+#if PAGE_REF
+					kFalse, // enabled
+#else
+					kTrue,
+#endif
+					kADBEIconSuiteButtonType,
+				),
+				
+				RollOverIconButtonWidget
+				(
+					// ADBEIconSuiteButtonView properties
+					kPMUUpdatePictureWidgetID, // widget ID
+					kPMUUpdatePicturePNGIconResourceID, kPMUPluginID, // icon, plugin ID
+					kBindNone, // frame binding
+					Frame(170.0,50.0,205.0,85.0) //  left, top, right, bottom
+					kTrue, // visible
+#if PAGE_REF
+					kFalse, // enabled
+#else
+					kTrue,
+#endif
+					kADBEIconSuiteButtonType,
+				),
+				
+				RollOverIconButtonWidget
+				(
+					// ADBEIconSuiteButtonView properties
+					kPMUExportPermRefsWidgetID, // widget ID
+					kPMUExportPermRefsPNGIconResourceID, kPMUPluginID, // icon, plugin ID
+					kBindNone, // frame binding
+					Frame(170.0,10.0,205.0,45.0) //  left, top, right, bottom
+					kTrue, // visible
+#if PAGE_REF
+					kFalse, // enabled
+#else
+					kTrue,
+#endif
+					kADBEIconSuiteButtonType,
+				),
+
+#endif
+
+	}
+
+	kPMUInternalPopupMenuNameKey		// Popup menu name (internal)
+};
+
+#if COMPOSER
+resource ComposerToolWidget(kComposerToolPanelResourceID + index_enUS)
+{
+	__FILE__, __LINE__,					// Localization macro		
+	kComposerToolPanelWidgetID,			// WidgetID 
+	kPMRsrcID_None,						// RsrcID
+	kBindNone,							// Binding (0=none)
+	0, 0, 210, 80,						// Frame: left, top, right, bottom.
+	kTrue, kTrue,						// Visible, Enabled
+	kFalse,								// Erase background
+	kInterfacePaletteFill,				// Erase to color
+	kFalse,								// Draw dropshadow
+	kPMUPanelTitleKey,			// Panel name	
+	{
+				RollOverIconButtonWidget
+				(
+					// ADBEIconSuiteButtonView properties
+					kPMUAddTCLRefWidgetID, // widget ID
+					kPMUAddTCLRefPNGIconResourceID, kPMUPluginID, // icon, plugin ID
+					kBindNone, // frame binding
+					Frame(10.0,10.0,45.0,45.0) //  left, top, right, bottom
+					kTrue, // visible
+					kTrue, // enabled
+					kADBEIconSuiteButtonType,
+				),
+				
+				RollOverIconButtonWidget
+				(
+					// ADBEIconSuiteButtonView properties
+					kPMUAddPermRefWidgetID, // widget ID
+					kPMUAddPermRefPNGIconResourceID, kPMUPluginID, // icon, plugin ID
+					kBindNone, // frame binding
+					Frame(49.0,10.0,84.0,45.0) //  left, top, right, bottom
+					kTrue, // visible
+					kTrue, // enabled
+					kADBEIconSuiteButtonType,
+				),
+						
+				RollOverIconButtonWidget
+				(
+					// ADBEIconSuiteButtonView properties
+					kPMUTextOverFlowWidgetID, // widget ID
+					kPMUTextOverFlowPNGIconResourceID, kPMUPluginID, // icon, plugin ID
+					kBindNone, // frame binding
+					Frame(88.0,10.0,123.0,45.0) //  left, top, right, bottom
+					kTrue, // visible
+					kTrue, // enabled
+					kADBEIconSuiteButtonType,
+				),
+							
+				RollOverIconButtonWidget
+				(
+					// ADBEIconSuiteButtonView properties
+					kPMUUpdatePictureWidgetID, // widget ID
+					kPMUUpdatePicturePNGIconResourceID, kPMUPluginID, // icon, plugin ID
+					kBindNone, // frame binding
+					Frame(127.0,10.0,162.0,45.0) //  left, top, right, bottom
+					kTrue, // visible
+					kTrue, // enabled
+					kADBEIconSuiteButtonType,
+				),
+				
+				RollOverIconButtonWidget
+				(
+					// ADBEIconSuiteButtonView properties
+					kPMUSearchPermRefWidgetID, // widget ID
+					kPMUSearchPermRefPNGIconResourceID, kPMUPluginID, // icon, plugin ID
+					kBindNone, // frame binding
+					Frame(166.0,10.0,201.0,45.0) //  left, top, right, bottom
+					kTrue, // visible
+					kTrue, // enabled
+					kADBEIconSuiteButtonType,
+				),
+				
+				CheckBoxWidget
+				(
+					kPMUDisplayTCLRefWidgetID,           // WidgetId
+					kSysCheckBoxPMRsrcId,               // RsrcId
+					kBindLeft | kBindTop,
+					Frame(12,55,12+200,55+15)                 // Frame
+					kTrue,                              // Visible
+					kTrue,                              // Enabled
+					kAlignLeft,                       // Alignment
+					kPMUDisplayTCLRefTextKey             // Initial text
+				),
+	}
+
+	kComposerToolInternalPopupMenuNameKey		// Popup menu name (internal)
+};
+#endif
+
+/*
+// Dialog definition.
+// This view is not localised: therefore, it can reside here.
+// However, if you wish to localise it, it is recommended to locate it in one of 
+// the localised framework resource files (i.e. BscDlg_enUS.fr etc.) and 
+// update your Dialog LocaleIndex accordingly.
+*/
+
+resource DialogBoss (kComposerAboutDialogResourceID + index_enUS)
+{
+	__FILE__, __LINE__,
+	0,	// WidgetID
+	kPMRsrcID_None,				// RsrcID
+	kBindNone,					// Binding
+	0, 0, 487, 443,				// Frame (l,t,r,b)
+	kTrue, kTrue,				// Visible, Enabled
+	"",	// Dialog name
+	{
+		DefaultButtonWidget
+		(
+			kOKButtonWidgetID,		// WidgetID 
+			kSysButtonPMRsrcId,		// RsrcID
+			kBindNone,				// Binding
+			397, 413, 397+80, 413+20,	// Frame (l,t,r,b)
+			kTrue, kTrue,			// Visible, Enabled
+			kSDKDefOKButtonApplicationKey,	// Button text
+		),
+		
+		RollOverIconButtonWidget
+		(
+			// ADBEIconSuiteButtonView properties
+			0, // widget ID
+			kComposerPNGIconResourceID, kPMUPluginID, // icon, plugin ID
+			kBindNone, // frame binding
+			Frame(5,5,5+477,5+398) //  left, top, right, bottom
+			kTrue, // visible
+			kTrue, // enabled
+			kADBEIconSuiteButtonType,
+		),
+		
+		StaticTextWidget
+		(
+			0,
+			kSysStaticTextPMRsrcId, 		// WidgetId, RsrcId
+			kBindNone,
+			10, 413, 10+230, 413+20,				// Frame left, top, right, bottom
+			kTrue, kTrue, kAlignLeft,		// Visible, Enabled, Alignment
+			kEllipsizeEnd,
+			kTrue,
+			kPMUVersionKey,	
+			0,			// WidgetID this shortcut is connected to, 0 if none.
+		),
+		
+	},
+};
+
+
+resource PMUPrefsDialogBoss (kSDKDefDialogResourceID + index_enUS)
+{
+	__FILE__, __LINE__,
+	kPMUPrefsDialogWidgetID,	// WidgetID
+	kPMRsrcID_None,				// RsrcID
+	kBindNone,					// Binding
+	0, 0, 250, 250,				// Frame (l,t,r,b)
+	kTrue, kTrue,				// Visible, Enabled
+	kPMUPrefsDialogTitleKey,	// Dialog name
+	{
+		DefaultButtonWidget
+		(
+			kOKButtonWidgetID,		// WidgetID 
+			kSysButtonPMRsrcId,		// RsrcID
+			kBindNone,				// Binding
+			160, 220, 160+80, 220+20,	// Frame (l,t,r,b)
+			kTrue, kTrue,			// Visible, Enabled
+			kSDKDefOKButtonApplicationKey,	// Button text
+		),
+		CancelButtonWidget				
+		(
+			kCancelButton_WidgetID,	// WidgetID
+			kSysButtonPMRsrcId,		// RsrcID
+			kBindNone,				// Binding
+			70, 220, 70+80, 220+20,	// Frame (l,t,r,b)
+			kTrue, kTrue,			// Visible, Enabled
+			kSDKDefCancelButtonApplicationKey,	// Button name
+			kTrue,					// Change to Reset on option-click.
+		),
+
+		StaticTextWidget
+		(
+			0,
+			kSysStaticTextPMRsrcId, 		// WidgetId, RsrcId
+			kBindNone,
+			10, 5, 10+230, 5+15,				// Frame left, top, right, bottom
+			kTrue, kTrue, kAlignCenter,		// Visible, Enabled, Alignment
+			kEllipsizeEnd,
+			kTrue,
+			kPMUStaticTextKey,	
+			0,			// WidgetID this shortcut is connected to, 0 if none.
+		),
+		
+		CheckBoxWidget
+		(
+			kPMUStopOnErrorWidgetID,           // WidgetId
+			kSysCheckBoxPMRsrcId,               // RsrcId
+			kBindNone,
+			Frame(10,35,10+150,35+15)                // Frame
+			kTrue,                              // Visible
+			kTrue,                              // Enabled
+			kAlignLeft,                       // Alignment
+			kPMUStopOnErrorTextKey             // Initial text
+		),
+		
+#if PERMREFS
+		CheckBoxWidget
+		(
+			kPMUDisplayPermRefWidgetID,           // WidgetId
+			kSysCheckBoxPMRsrcId,               // RsrcId
+			kBindRight | kBindBottom,
+			Frame(10,60,10+240,60+15)                 // Frame
+			kTrue,                              // Visible
+			kTrue,                              // Enabled
+			kAlignLeft,                       // Alignment
+			kPMUDisplayPermRefTextKey             // Initial text
+		),
+#endif
+
+#if !COMPOSER
+		
+		CheckBoxWidget
+		(
+			kPMUPrintTCLRefWidgetID,           // WidgetId
+			kSysCheckBoxPMRsrcId,               // RsrcId
+			kBindRight | kBindBottom,
+			Frame(10,85,10+240,85+15)                 // Frame
+			kTrue,                              // Visible
+			kTrue,                              // Enabled
+			kAlignLeft,                       // Alignment
+			kPMUPrintTCLRefTextKey             // Initial text
+		),
+		
+		ClusterPanelWidget
+		(
+			kPMUExportTypeClusterWidgetID, // widget ID
+			kPMRsrcID_None, // PMRsrc ID
+			kBindNone, // frame binding
+			Frame(10,110,10+230,110+15) //  left, top, right, bottom
+			kTrue, // visible
+			kTrue, // enabled
+			"",
+			{
+				StaticTextWidget
+				(
+					0,
+					kSysStaticTextPMRsrcId, 		// WidgetId, RsrcId
+					kBindNone,
+					0, 0, 100, 15,				// Frame left, top, right, bottom
+					kTrue, kTrue, kAlignLeft,		// Visible, Enabled, Alignment
+					kEllipsizeEnd,
+					kTrue,
+					kPMUTypeExportTextKey,	
+					0,			// WidgetID this shortcut is connected to, 0 if none.
+				),
+				
+				RadioButtonWidget
+				(
+					kPMUPDFExportWidgetID,
+					kSysRadioButtonPMRsrcId, // PMRsrc ID
+					kBindNone, // frame binding
+					Frame(110,0,110+50,15) // (left, top, right, bottom)
+					kTrue, // visible
+					kTrue, // enabled
+					kPMUPDFTextKey,
+				),
+				
+				RadioButtonWidget
+				(
+					kPMUEPSExportWidgetID,
+					kSysRadioButtonPMRsrcId, // PMRsrc ID
+					kBindNone, // frame binding
+					Frame(170,0,170+50,15) // (left, top, right, bottom)
+					kTrue, // visible
+					kTrue, // enabled
+					kPMUEPSTextKey,
+				),
+			},
+		),
+#endif			
+		ButtonWidget
+		(
+			kPMUDocButtonWidgetID,		// WidgetID 
+			kSysButtonPMRsrcId,		// RsrcID
+			kBindNone,				// Binding
+			10, 130, 10+230, 130+20,	// Frame (l,t,r,b)
+			kTrue, kTrue,			// Visible, Enabled
+			kPMUDocButtonTextKey,	// Button text
+		),
+		
+		ButtonWidget
+		(
+			kPMUImportImageButtonWidgetID,		// WidgetID 
+			kSysButtonPMRsrcId,		// RsrcID
+			kBindNone,				// Binding
+			10, 155, 10+230, 155+20,	// Frame (l,t,r,b)
+			kTrue, kTrue,			// Visible, Enabled
+			kPMUImportImageButtonTextKey,	// Button text
+		),
+		
+		ButtonWidget
+		(
+			kPMUExportTCLButtonWidgetID,		// WidgetID 
+			kSysButtonPMRsrcId,		// RsrcID
+			kBindNone,				// Binding
+			10, 180, 10+230, 180+20,	// Frame (l,t,r,b)
+			kTrue, kTrue,			// Visible, Enabled
+			kPMUExportTCLButtonTextKey,	// Button text
+		),
+	},
+};
+
+resource PMUTypeRefDialogBoss (kPMUTypeRefDialogResourceID + index_enUS)
+{
+	__FILE__, __LINE__,
+	kPMUTypeRefDialogWidgetID,	// WidgetID
+	kPMRsrcID_None,				// RsrcID
+	kBindNone,					// Binding
+	0, 0, 355, 50,				// Frame (l,t,r,b)
+	kTrue, kTrue,				// Visible, Enabled
+	kPMUTypeRefDialogTitleKey,	// Dialog name
+	{
+		DefaultButtonWidget
+		(
+			kOKButtonWidgetID,		// WidgetID 
+			kSysButtonPMRsrcId,		// RsrcID
+			kBindNone,				// Binding
+			265, 15, 265+80, 15+20,	// Frame (l,t,r,b)
+			kTrue, kTrue,			// Visible, Enabled
+			kSDKDefOKButtonApplicationKey,	// Button text
+		),
+		CancelButtonWidget				
+		(
+			kCancelButton_WidgetID,	// WidgetID
+			kSysButtonPMRsrcId,		// RsrcID
+			kBindNone,				// Binding
+			175, 15, 175+80, 15+20,	// Frame (l,t,r,b)
+			kTrue, kTrue,			// Visible, Enabled
+			kSDKDefCancelButtonApplicationKey,	// Button name
+			kFalse,					// Change to Reset on option-click.
+		),
+		
+		StaticTextWidget
+		(
+			0,
+			kSysStaticTextPMRsrcId, 		// WidgetId, RsrcId
+			kBindNone,
+			10, 15, 10+80, 15+20,				// Frame left, top, right, bottom
+			kTrue, kTrue, kAlignLeft,		// Visible, Enabled, Alignment
+			kEllipsizeEnd,
+			kTrue,
+			kPMUStaticTextKey6,	
+			0,			// WidgetID this shortcut is connected to, 0 if none.
+		),
+
+#if REF_AS_STRING
+		TextEditBoxWidget
+		(
+			kPMURefEditWidgetID, 
+			kSysEditBoxPMRsrcId,					// WidgetId, RsrcId
+			kBindNone,
+			Frame(95,15,95+70,15+20)		// Frame
+			kTrue, kTrue,							// Visible, Enabled
+			0,										// widget id of nudge button			
+			0,	0,									// small/large nudge amount
+			0,										// max num chars( 0 = no limit)
+			kFalse,									// is read only
+			kFalse,									// should notify each key stroke
+			kFalse,									// range checking enabled
+			kFalse,									// blank entry allowed
+			0, 0,									// upper/lower bounds
+			"",										// initial text
+		),	
+#else
+	
+		IntEditBoxWidget
+		(
+			// CControlView properties
+			kPMURefEditWidgetID, // widget ID
+			kSysEditBoxPMRsrcId, // PMRsrc ID
+			kBindNone, // frame binding
+			Frame(95,15,95+70,15+20) //  left, top, right, bottom
+			kTrue, // visible
+			kTrue, // enabled
+			// CEditBoxAttributes
+			0, // nudgeWidgetId (0 if no nudge
+			1.0, // small nudge amount
+			10.0, // large nudge amount
+			10, // max num chars
+			kFalse, // read only flag
+			kFalse, // should notify on each key stroke
+			// TextDataValidation properties
+			kTrue, // range checking enabled
+			kFalse, // blank entry allowed
+			MAX_BLOC, // upper limit
+			MIN_BLOC, // lower limit
+			// CTextControlData properties
+			"", // control label
+		),
+#endif
+		
+	},
+};
+
+resource PMUTypePermRefDialogBoss (kPMUTypePermRefDialogResourceID + index_enUS)
+{
+	__FILE__, __LINE__,
+	kPMUTypePermRefDialogWidgetID,	// WidgetID
+	kPMRsrcID_None,				// RsrcID
+	kBindNone,					// Binding
+	0, 0, 215, 220,				// Frame (l,t,r,b)
+	kTrue, kTrue,				// Visible, Enabled
+	kPMUTypeRefDialogTitleKey,	// Dialog name
+	{
+		DefaultButtonWidget
+		(
+			kOKButtonWidgetID,		// WidgetID 
+			kSysButtonPMRsrcId,		// RsrcID
+			kBindNone,				// Binding
+			135, 190, 135+70, 190+20,	// Frame (l,t,r,b)
+			kTrue, kTrue,			// Visible, Enabled
+			kSDKDefOKButtonApplicationKey,	// Button text
+		),
+		CancelButtonWidget				
+		(
+			kCancelButton_WidgetID,	// WidgetID
+			kSysButtonPMRsrcId,		// RsrcID
+			kBindNone,				// Binding
+			55, 190, 55+70, 190+20,	// Frame (l,t,r,b)
+			kTrue, kTrue,			// Visible, Enabled
+			kSDKDefCancelButtonApplicationKey,	// Button name
+			kFalse,					// Change to Reset on option-click.
+		),
+		
+		PanelWithHiliteBorderWidget
+		(
+			0, // widget ID
+			kPMRsrcID_None, // PMRsrc ID
+			kBindNone, // frame binding
+			Frame(10,15,10+195,15+40) //  left, top, right, bottom
+			kTrue, // visible
+			kTrue, // enabled
+			"",
+			{
+				StaticTextWidget
+				(
+					0,
+					kSysStaticTextPMRsrcId, 		// WidgetId, RsrcId
+					kBindNone,
+					10, 10, 10+90, 10+20,				// Frame left, top, right, bottom
+					kTrue, kTrue, kAlignLeft,		// Visible, Enabled, Alignment
+					kEllipsizeEnd,
+					kTrue,
+					kPMUStaticTextKey6,	
+					0,			// WidgetID this shortcut is connected to, 0 if none.
+				),
+				
+				IntEditBoxWidget
+				(
+					// CControlView properties
+					kPMURefEditWidgetID, // widget ID
+					kSysEditBoxPMRsrcId, // PMRsrc ID
+					kBindNone, // frame binding
+					Frame(105,10,105+80,10+20) //  left, top, right, bottom
+					kTrue, // visible
+					kTrue, // enabled
+					// CEditBoxAttributes
+					0, // nudgeWidgetId (0 if no nudge
+					1.0, // small nudge amount
+					10.0, // large nudge amount
+					10, // max num chars
+					kFalse, // read only flag
+					kFalse, // should notify on each key stroke
+					// TextDataValidation properties
+					kTrue, // range checking enabled
+					kFalse, // blank entry allowed
+					MAX_BLOC, // upper limit
+					1.0, // lower limit
+					// CTextControlData properties
+					"", // control label
+				),
+			},
+		),
+		
+		PanelWithHiliteBorderWidget
+		(
+			0, // widget ID
+			kPMRsrcID_None, // PMRsrc ID
+			kBindNone, // frame binding
+			Frame(10,65,10+195,65+115) //  left, top, right, bottom
+			kTrue, // visible
+			kTrue, // enabled
+			"",
+			{
+				StaticTextWidget
+				(
+					0,
+					kSysStaticTextPMRsrcId, 		// WidgetId, RsrcId
+					kBindNone,
+					10, 10, 10+90, 10+20,				// Frame left, top, right, bottom
+					kTrue, kTrue, kAlignLeft,		// Visible, Enabled, Alignment
+					kEllipsizeEnd,
+					kTrue,
+					kPMUStaticTextParam1,	
+					0,			// WidgetID this shortcut is connected to, 0 if none.
+				),
+#if AUTOTAGGING
+				DropDownListWidget 
+				( 
+					kPMUParam1EditWidgetID, // WidgetId
+					kSysDropDownPMRsrcId, // RsrcId
+					kBindNone, // Frame binding
+					Frame(105,10,105+80,10+20)	//  left, top, right, bottom
+					kTrue, // Visible
+					kTrue, // Enabled
+					{
+						{
+						}
+					},
+				),
+#else				
+				
+				IntEditBoxWidget
+				(
+					// CControlView properties
+					kPMUParam1EditWidgetID, // widget ID
+					kSysEditBoxPMRsrcId, // PMRsrc ID
+					kBindNone, // frame binding
+					Frame(105,10,105+80,10+20) //  left, top, right, bottom
+					kTrue, // visible
+					kTrue, // enabled
+					// CEditBoxAttributes
+					0, // nudgeWidgetId (0 if no nudge
+					1.0, // small nudge amount
+					10.0, // large nudge amount
+					10, // max num chars
+					kFalse, // read only flag
+					kFalse, // should notify on each key stroke
+					// TextDataValidation properties
+					kTrue, // range checking enabled
+					kFalse, // blank entry allowed
+					MAX_BLOC, // upper limit
+					0.0, // lower limit
+					// CTextControlData properties
+					"", // control label
+				),
+#endif				
+				StaticTextWidget
+				(
+					0,
+					kSysStaticTextPMRsrcId, 		// WidgetId, RsrcId
+					kBindNone,
+					10, 35, 10+90, 35+20,				// Frame left, top, right, bottom
+					kTrue, kTrue, kAlignLeft,		// Visible, Enabled, Alignment
+					kEllipsizeEnd,
+					kTrue,
+					kPMUStaticTextParam2,	
+					0,			// WidgetID this shortcut is connected to, 0 if none.
+				),
+#if AUTOTAGGING
+				DropDownListWidget 
+				( 
+					kPMUParam2EditWidgetID, // WidgetId
+					kSysDropDownPMRsrcId, // RsrcId
+					kBindNone, // Frame binding
+					Frame(105,35,105+80,35+20)		//  left, top, right, bottom
+					kTrue, // Visible
+					kTrue, // Enabled
+					{
+						{
+						}
+					},
+				),
+#else				
+				IntEditBoxWidget
+				(
+					// CControlView properties
+					kPMUParam2EditWidgetID, // widget ID
+					kSysEditBoxPMRsrcId, // PMRsrc ID
+					kBindNone, // frame binding
+					Frame(105,35,105+80,35+20) //  left, top, right, bottom
+					kTrue, // visible
+					kTrue, // enabled
+					// CEditBoxAttributes
+					0, // nudgeWidgetId (0 if no nudge
+					1.0, // small nudge amount
+					10.0, // large nudge amount
+					10, // max num chars
+					kFalse, // read only flag
+					kFalse, // should notify on each key stroke
+					// TextDataValidation properties
+					kTrue, // range checking enabled
+					kFalse, // blank entry allowed
+					MAX_BLOC, // upper limit
+					0.0, // lower limit
+					// CTextControlData properties
+					"", // control label
+				),
+#endif				
+				StaticTextWidget
+				(
+					0,
+					kSysStaticTextPMRsrcId, 		// WidgetId, RsrcId
+					kBindNone,
+					10, 60, 10+90, 60+20,				// Frame left, top, right, bottom
+					kTrue, kTrue, kAlignLeft,		// Visible, Enabled, Alignment
+					kEllipsizeEnd,
+					kTrue,
+					kPMUStaticTextParam3,	
+					0,			// WidgetID this shortcut is connected to, 0 if none.
+				),
+#if GEDIMAT
+				DropDownListWidget 
+				( 
+					kPMUParam3EditWidgetID, // WidgetId
+					kSysDropDownPMRsrcId, // RsrcId
+					kBindNone, // Frame binding
+					Frame(105,60,105+80,60+20)	
+					kTrue, // Visible
+					kTrue, // Enabled
+					{
+						{
+						}
+					},
+				),
+#else				
+				IntEditBoxWidget
+				(
+					// CControlView properties
+					kPMUParam3EditWidgetID, // widget ID
+					kSysEditBoxPMRsrcId, // PMRsrc ID
+					kBindNone, // frame binding
+					Frame(105,60,105+80,60+20) //  left, top, right, bottom
+					kTrue, // visible
+					kTrue, // enabled
+					// CEditBoxAttributes
+					0, // nudgeWidgetId (0 if no nudge
+					1.0, // small nudge amount
+					10.0, // large nudge amount
+					10, // max num chars
+					kFalse, // read only flag
+					kFalse, // should notify on each key stroke
+					// TextDataValidation properties
+					kTrue, // range checking enabled
+					kFalse, // blank entry allowed
+					MAX_BLOC, // upper limit
+					0.0, // lower limit
+					// CTextControlData properties
+					"", // control label
+				),
+#endif
+				StaticTextWidget
+				(
+					0,
+					kSysStaticTextPMRsrcId, 		// WidgetId, RsrcId
+					kBindNone,
+					10, 85, 10+90, 85+20,				// Frame left, top, right, bottom
+					kTrue, kTrue, kAlignLeft,		// Visible, Enabled, Alignment
+					kEllipsizeEnd,
+					kTrue,
+					kPMUStaticTextParam4,	
+					0,			// WidgetID this shortcut is connected to, 0 if none.
+				),
+				
+#if GEDIMAT
+				DropDownListWidget 
+				( 
+					kPMUParam4EditWidgetID, // WidgetId
+					kSysDropDownPMRsrcId, // RsrcId
+					kBindNone, // Frame binding
+					Frame(105,85,105+80,85+20)		//  left, top, right, bottom
+					kTrue, // Visible
+					kTrue, // Enabled
+					{
+						{
+						}
+					},
+				),
+#else
+				IntEditBoxWidget
+				(
+					// CControlView properties
+					kPMUParam4EditWidgetID, // widget ID
+					kSysEditBoxPMRsrcId, // PMRsrc ID
+					kBindNone, // frame binding
+					Frame(105,85,105+80,85+20) //  left, top, right, bottom
+					kTrue, // visible
+					kTrue, // enabled
+					// CEditBoxAttributes
+					0, // nudgeWidgetId (0 if no nudge
+					1.0, // small nudge amount
+					10.0, // large nudge amount
+					10, // max num chars
+					kFalse, // read only flag
+					kFalse, // should notify on each key stroke
+					// TextDataValidation properties
+					kTrue, // range checking enabled
+					kFalse, // blank entry allowed
+					MAX_BLOC, // upper limit
+					0.0, // lower limit
+					// CTextControlData properties
+					"", // control label
+				),
+#endif
+			},
+		),
+
+	},
+};
+
+resource PMUDocPathDialogBoss (kPMUDocPathDialogResourceID + index_enUS)
+{
+	__FILE__, __LINE__,
+	kPMUPrefsDialogWidgetID,	// WidgetID
+	kPMRsrcID_None,				// RsrcID
+	kBindNone,					// Binding
+	0, 0, 300, 250,				// Frame (l,t,r,b)
+	kTrue, kTrue,				// Visible, Enabled
+	kPMUDocPathDialogTitleKey,	// Dialog name
+	{
+		DefaultButtonWidget
+		(
+			kOKButtonWidgetID,		// WidgetID 
+			kSysButtonPMRsrcId,		// RsrcID
+			kBindNone,				// Binding
+			210, 210, 210+80, 210+20,	// Frame (l,t,r,b)
+			kTrue, kTrue,			// Visible, Enabled
+			kSDKDefOKButtonApplicationKey,	// Button text
+		),
+		CancelButtonWidget				
+		(
+			kCancelButton_WidgetID,	// WidgetID
+			kSysButtonPMRsrcId,		// RsrcID
+			kBindNone,				// Binding
+			120, 210, 120+80, 210+20,	// Frame (l,t,r,b)
+			kTrue, kTrue,			// Visible, Enabled
+			kSDKDefCancelButtonApplicationKey,	// Button name
+			kTrue,					// Change to Reset on option-click.
+		),
+		
+		PanelWithHiliteBorderWidget
+		(
+			0, // widget ID
+			kPMRsrcID_None, // PMRsrc ID
+			kBindNone, // frame binding
+			Frame(5,10,5+290,10+85) //  left, top, right, bottom
+			kTrue, // visible
+			kTrue, // enabled
+			"",
+			{
+				CheckBoxWidget
+				(
+					kPMUUseSavePathWidgetID,           // WidgetId
+					kSysCheckBoxPMRsrcId,               // RsrcId
+					kBindNone,
+					Frame(5,5,5+170,5+15)                 // Frame
+					kTrue,                              // Visible
+					kTrue,                              // Enabled
+					kAlignLeft,                       // Alignment
+					kPMUUsePathTextKey            // Initial text
+				),
+			
+				RollOverIconButtonWidget
+				(
+					// ADBEIconSuiteButtonView properties
+					kPMUSelectSavePathWidgetID, // widget ID
+					kPMUOutFolderPNGIconResourceID, kPMUPluginID, // icon, plugin ID
+					kBindNone, // frame binding
+					Frame(5.0,30.0,40.0,65.0) //  left, top, right, bottom
+					kTrue, // visible
+					kTrue, // enabled
+					kADBEIconSuiteButtonType,
+				),
+				
+				StaticTextWidget
+				(
+					0,
+					kSysStaticTextPMRsrcId, 		// WidgetId, RsrcId
+					kBindNone,
+					70, 30, 70+215, 30+15,				// Frame left, top, right, bottom
+					kTrue, kTrue, kAlignLeft,		// Visible, Enabled, Alignment
+					kEllipsizeEnd,
+					kTrue,
+					kPMUStaticTextKey2,	
+					0,			// WidgetID this shortcut is connected to, 0 if none.
+				),
+				
+				StaticTextWidget
+				(
+					kPMUSavePathWidgetID,
+					kSysStaticTextPMRsrcId, 		// WidgetId, RsrcId
+					kBindNone,
+					70, 50, 70+215, 50+20,				// Frame left, top, right, bottom
+					kTrue, kTrue, 
+					kAlignLeft,		// Visible, Enabled, Alignment
+					kEllipsizeBeginning,
+					kTrue,
+					"",	
+					0,			// WidgetID this shortcut is connected to, 0 if none.
+				), 
+			},
+		),
+		
+		PanelWithHiliteBorderWidget
+		(
+			0, // widget ID
+			kPMRsrcID_None, // PMRsrc ID
+			kBindNone, // frame binding
+			Frame(5,105,5+290,105+85) //  left, top, right, bottom
+			kTrue, // visible
+			kTrue, // enabled
+			"",
+			{
+				CheckBoxWidget
+				(
+					kPMUUseOpenPathWidgetID,           // WidgetId
+					kSysCheckBoxPMRsrcId,               // RsrcId
+					kBindNone,
+					Frame(5,5,5+170,5+15)                 // Frame
+					kTrue,                              // Visible
+					kTrue,                              // Enabled
+					kAlignLeft,                       // Alignment
+					kPMUUsePathTextKey            // Initial text
+				),
+			
+				RollOverIconButtonWidget
+				(
+					// ADBEIconSuiteButtonView properties
+					kPMUSelectOpenPathWidgetID, // widget ID
+					kPMUInFolderPNGIconResourceID, kPMUPluginID, // icon, plugin ID
+					kBindNone, // frame binding
+					Frame(5.0,30.0,40.0,65.0) //  left, top, right, bottom
+					kTrue, // visible
+					kTrue, // enabled
+					kADBEIconSuiteButtonType,
+				),
+				
+				StaticTextWidget
+				(
+					0,
+					kSysStaticTextPMRsrcId, 		// WidgetId, RsrcId
+					kBindNone,
+					70, 30, 70+180, 30+15,				// Frame left, top, right, bottom
+					kTrue, kTrue, kAlignLeft,		// Visible, Enabled, Alignment
+					kEllipsizeEnd,
+					kTrue,
+					kPMUStaticTextKey3,	
+					0,			// WidgetID this shortcut is connected to, 0 if none.
+				),
+				
+				StaticTextWidget
+				(
+					kPMUOpenPathWidgetID,
+					kSysStaticTextPMRsrcId, 		// WidgetId, RsrcId
+					kBindNone,
+					70, 50, 70+215, 50+20,				// Frame left, top, right, bottom
+					kTrue, kTrue, 
+					kAlignLeft,		// Visible, Enabled, Alignment
+					kEllipsizeBeginning,
+					kTrue,
+					"",	
+					0,			// WidgetID this shortcut is connected to, 0 if none.
+				), 
+			},
+		),
+	},
+};
+
+resource PMUImageSettingDialogBoss (kPMUImageSettingDialogResourceID + index_enUS)
+{
+	__FILE__, __LINE__,
+	kPMUImageSettingDialogWidgetID,	// WidgetID
+	kPMRsrcID_None,				// RsrcID
+	kBindNone,					// Binding
+	0, 0, 450, 250,				// Frame (l,t,r,b)
+	kTrue, kTrue,				// Visible, Enabled
+	kPMUImageSettingDialogTitleKey,	// Dialog name
+	{
+		DefaultButtonWidget
+		(
+			kOKButtonWidgetID,		// WidgetID 
+			kSysButtonPMRsrcId,		// RsrcID
+			kBindNone,				// Binding
+			360, 210, 360+80, 210+20,	// Frame (l,t,r,b)
+			kTrue, kTrue,			// Visible, Enabled
+			kSDKDefOKButtonApplicationKey,	// Button text
+		),
+		CancelButtonWidget				
+		(
+			kCancelButton_WidgetID,	// WidgetID
+			kSysButtonPMRsrcId,		// RsrcID
+			kBindNone,				// Binding
+			270, 210, 270+80, 210+20,	// Frame (l,t,r,b)
+			kTrue, kTrue,			// Visible, Enabled
+			kSDKDefCancelButtonApplicationKey,	// Button name
+			kTrue,					// Change to Reset on option-click.
+		),
+		
+		PanelWithHiliteBorderWidget
+		(
+			0, // widget ID
+			kPMRsrcID_None, // PMRsrc ID
+			kBindNone, // frame binding
+			Frame(5,10,5+440,10+85) //  left, top, right, bottom
+			kTrue, // visible
+			kTrue, // enabled
+			"",
+			{
+				CheckBoxWidget
+				(
+					kPMUAllowImportImageWidgetID,           // WidgetId
+					kSysCheckBoxPMRsrcId,               // RsrcId
+					kBindNone,
+					Frame(5,5,5+150,5+15)                 // Frame
+					kTrue,                              // Visible
+					kTrue,                              // Enabled
+					kAlignLeft,                       // Alignment
+					kPMUAllowImportImageTextKey            // Initial text
+				),
+				
+				CheckBoxWidget
+				(
+					kPMUUseImagePathWidgetID,           // WidgetId
+					kSysCheckBoxPMRsrcId,               // RsrcId
+					kBindNone,
+					Frame(200,5,200+170,5+15)                 // Frame
+					kTrue,                              // Visible
+					kTrue,                              // Enabled
+					kAlignLeft,                       // Alignment
+					kPMUUsePathTextKey            // Initial text
+				),
+			
+				RollOverIconButtonWidget
+				(
+					// ADBEIconSuiteButtonView properties
+					kPMUSelectImagePathWidgetID, // widget ID
+					kPMUInFolderPNGIconResourceID, kPMUPluginID, // icon, plugin ID
+					kBindNone, // frame binding
+					Frame(5.0,30.0,40.0,65.0) //  left, top, right, bottom
+					kTrue, // visible
+					kTrue, // enabled
+					kADBEIconSuiteButtonType,
+				),
+				
+				StaticTextWidget
+				(
+					0,
+					kSysStaticTextPMRsrcId, 		// WidgetId, RsrcId
+					kBindNone,
+					70, 30, 70+180, 30+15,				// Frame left, top, right, bottom
+					kTrue, kTrue, kAlignLeft,		// Visible, Enabled, Alignment
+					kEllipsizeEnd,
+					kTrue,
+					kPMUStaticTextKey4,	
+					0,			// WidgetID this shortcut is connected to, 0 if none.
+				),
+				
+				StaticTextWidget
+				(
+					kPMUImagePathWidgetID,
+					kSysStaticTextPMRsrcId, 		// WidgetId, RsrcId
+					kBindNone,
+					70, 50, 70+365, 50+20,				// Frame left, top, right, bottom
+					kTrue, kTrue, 
+					kAlignLeft,		// Visible, Enabled, Alignment
+					kEllipsizeBeginning,
+					kTrue,
+					"",	
+					0,			// WidgetID this shortcut is connected to, 0 if none.
+				), 
+			},
+		),
+		
+		PanelWithHiliteBorderWidget
+		(
+			0, // widget ID
+			kPMRsrcID_None, // PMRsrc ID
+			kBindNone, // frame binding
+			Frame(5,105,5+440,105+85) //  left, top, right, bottom
+			kTrue, // visible
+			kTrue, // enabled
+			"",
+			{
+				StaticTextWidget
+				(
+					0,
+					kSysStaticTextPMRsrcId, 		// WidgetId, RsrcId
+					kBindNone,
+					5, 5, 5+220, 5+15,  				// Frame left, top, right, bottom
+					kTrue, kTrue, 
+					kAlignLeft,		// Visible, Enabled, Alignment
+					kEllipsizeEnd,
+					kTrue,
+					kPMUStaticTextKey5,	
+					0,			// WidgetID this shortcut is connected to, 0 if none.
+				), 
+			
+				CheckBoxWidget
+				(
+					kPMUCreateTxtFrameWidgetID,           // WidgetId
+					kSysCheckBoxPMRsrcId,               // RsrcId
+					kBindNone,
+					Frame(5,30,5+230,30+15)                 // Frame
+					kTrue,                              // Visible
+					kTrue,                              // Enabled
+					kAlignLeft,                       // Alignment
+					kPMUCreateTxtFrameTextKey            // Initial text
+				),
+				
+				CheckBoxWidget
+				(
+					kPMUPrintFrameWidgetID,           // WidgetId
+					kSysCheckBoxPMRsrcId,               // RsrcId
+					kBindNone,
+					Frame(240,30,240+120,30+15)                 // Frame
+					kTrue,                              // Visible
+					kTrue,                              // Enabled
+					kAlignLeft,                       // Alignment
+					kPMUPrintFrameTextKey            // Initial text
+				),
+				
+				DropDownListWidget
+				(
+					kPMUDropDownColorListWidgetID, kSysDropDownPMRsrcId,	// WidgetId, RsrcId
+					kBindNone,			// Frame binding
+					Frame( 5, 55, 5+150, 55+20 ),	// Frame (l,t,r,b)
+					kTrue, kTrue,			// Visible, Enabled
+					{{				// List Items
+						kPMUWhiteKey,
+						kPMUBlueKey,
+						kPMUCyanKey,
+						kPMUYellowKey, 
+						kPMUMagentaKey,
+						kPMUBlackKey,
+						kPMURegistrationKey,
+						kPMURedKey,
+						kPMUGreenKey,
+						kPMUNoneKey,						
+					}}					
+				),		
+				
+				NudgeControlWidget
+				(
+					// CControlView properties
+					kPMUColorTintNudgeWidgetID, // widget ID
+					kPMRsrcID_None, // PMRsrc ID
+					kBindNone, // frame binding
+					Frame(165,55,181,55+20) //  left, top, right, bottom
+					kTrue, // visible
+					kTrue, // enabled
+				),
+						
+				PercentageComboBoxWidget
+				(
+					// CControlView properties
+					kPMUColorTintComboBoxWidgetID, // widget ID
+					kPMRsrcID_None, // PMRsrc ID
+					kBindNone, // frame binding
+					Frame(181,55,181+100,55+20) //  left, top, right, bottom
+					kTrue, // visible
+					kTrue, // enabled
+					// CEditBoxAttributes
+					kPMUColorTintNudgeWidgetID, // nudgeWidgetId (0 if no nudge
+					1.0, // small nudge amount
+					5.0, // large nudge amount
+					5, // max num chars
+					kFalse, // read only flag
+					kFalse, // should notify on each key stroke
+					// TextDataValidation properties
+					kTrue, // range checking enabled
+					kFalse, // blank entry allowed
+					100.0, // upper limit
+					0.0, // lower limit
+					// CTextControlData properties
+					"100%", // control label
+					// DropDownListControlData properties
+					{{
+					"0%" , "10%" , "20%" , "30%" , "40%" , "50%" , "60%" , "70%" , "80%" , "90%" , "100%" 
+					}}
+				),					
+						
+			},			
+		),				
+	},					
+};						
+
+resource PMUExportPrefsDialogBoss (kPMUExportPrefsDialogResourceID + index_enUS)
+{
+	__FILE__, __LINE__,
+	kPMUExportPrefsDialogWidgetID,	// WidgetID
+	kPMRsrcID_None,				// RsrcID
+	kBindNone,					// Binding
+	0, 0, 250, 390,				// Frame (l,t,r,b)
+	kTrue, kTrue,				// Visible, Enabled
+	kPMUExportPrefsDialogTitleKey,	// Dialog name
+	{
+		DefaultButtonWidget
+		(
+			kOKButtonWidgetID,		// WidgetID 
+			kSysButtonPMRsrcId,		// RsrcID
+			kBindNone,				// Binding
+			160, 360, 160+80, 360+20,	// Frame (l,t,r,b)
+			kTrue, kTrue,			// Visible, Enabled
+			kSDKDefOKButtonApplicationKey,	// Button text
+		),
+		CancelButtonWidget				
+		(
+			kCancelButton_WidgetID,	// WidgetID
+			kSysButtonPMRsrcId,		// RsrcID
+			kBindNone,				// Binding
+			70, 360, 70+80, 360+20,	// Frame (l,t,r,b)
+			kTrue, kTrue,			// Visible, Enabled
+			kSDKDefCancelButtonApplicationKey,	// Button name
+			kTrue,					// Change to Reset on option-click.
+		),
+		
+		PanelWithHiliteBorderWidget
+		(
+			0, // widget ID
+			kPMRsrcID_None, // PMRsrc ID
+			kBindNone, // frame binding
+			Frame(5,20,5+240,20+115) //  left, top, right, bottom
+			kTrue, // visible
+			kTrue, // enabled
+			"",
+			{
+				CheckBoxWidget
+				(
+					kPMUExportStyleWidgetID,           // WidgetId
+					kSysCheckBoxPMRsrcId,               // RsrcId
+					kBindNone,
+					Frame(5,10,5+230,10+15)              // Frame
+					kTrue,                              // Visible
+					kTrue,                              // Enabled
+					kAlignLeft,                       // Alignment
+					kPMUExportStyleKey            // Initial text
+				),
+				
+				CheckBoxWidget
+				(
+					kPMUExportCJWidgetID,           // WidgetId
+					kSysCheckBoxPMRsrcId,               // RsrcId
+					kBindNone,
+					Frame(5,30,5+234,30+15)              // Frame
+					kTrue,                              // Visible
+					kTrue,                              // Enabled
+					kAlignLeft,                       // Alignment
+					kPMUExportCJKey            // Initial text
+				),
+				
+				CheckBoxWidget
+				(
+					kPMUExportColorsWidgetID,           // WidgetId
+					kSysCheckBoxPMRsrcId,               // RsrcId
+					kBindNone,
+					Frame(5,50,5+230,50+15)              // Frame
+					kTrue,                              // Visible
+					kTrue,                              // Enabled
+					kAlignLeft,                       // Alignment
+					kPMUExportColorsKey            // Initial text
+				),
+				
+				CheckBoxWidget
+				(
+					kPMUExportLayersWidgetID,           // WidgetId
+					kSysCheckBoxPMRsrcId,               // RsrcId
+					kBindNone,
+					Frame(5,70,5+230,70+15)              // Frame
+					kTrue,                              // Visible
+					kTrue,                              // Enabled
+					kAlignLeft,                       // Alignment
+					kPMUExportLayersKey            // Initial text
+				),
+				
+				CheckBoxWidget
+				(
+					kPMUExportMastersWidgetID,           // WidgetId
+					kSysCheckBoxPMRsrcId,               // RsrcId
+					kBindNone,
+					Frame(5,90,5+230,90+15)              // Frame
+					kTrue,                              // Visible
+					kTrue,                              // Enabled
+					kAlignLeft,                       // Alignment
+					kPMUExportMastersKey            // Initial text
+				),
+				
+			}
+		),
+		
+		EVEStaticTextWidget
+		(
+			0,
+			kSysStaticTextPMRsrcId, 		// WidgetId, RsrcId
+			kBindNone,
+			Frame(15, 10, 15+100, 10+15)				// Frame left, top, right, bottom
+			kTrue, kTrue, 					// Visible, Enabled 
+			kAlignCenter,
+			kEllipsizeEnd,					// Alignment
+			kTrue,
+			kPMUPanelHeaderKey,	
+			0,			// WidgetID this shortcut is connected to, 0 if none.
+			kEVEExtraLargeSpaceAfter,
+		),
+		
+		PanelWithHiliteBorderWidget
+		(
+			0, // widget ID
+			kPMRsrcID_None, // PMRsrc ID
+			kBindNone, // frame binding
+			Frame(5,155,5+240,155+75) //  left, top, right, bottom
+			kTrue, // visible
+			kTrue, // enabled
+			"",
+			{
+				CheckBoxWidget
+				(
+					kPMUExportTextFrameWidgetID,           // WidgetId
+					kSysCheckBoxPMRsrcId,               // RsrcId
+					kBindNone,
+					Frame(5,10,5+230,10+15)              // Frame
+					kTrue,                              // Visible
+					kTrue,                              // Enabled
+					kAlignLeft,                       // Alignment
+					kPMUExportTextFrameKey            // Initial text
+				),
+				
+				CheckBoxWidget
+				(
+					kPMUExportImageFrameWidgetID,           // WidgetId
+					kSysCheckBoxPMRsrcId,               // RsrcId
+					kBindNone,
+					Frame(5,30,5+230,30+15)              // Frame
+					kTrue,                              // Visible
+					kTrue,                              // Enabled
+					kAlignLeft,                       // Alignment
+					kPMUExportImageFrameKey            // Initial text
+				),
+				
+				CheckBoxWidget
+				(
+					kPMUExportRuleWidgetID,           // WidgetId
+					kSysCheckBoxPMRsrcId,               // RsrcId
+					kBindNone,
+					Frame(5,50,5+230,50+15)              // Frame
+					kTrue,                              // Visible
+					kTrue,                              // Enabled
+					kAlignLeft,                       // Alignment
+					kPMUExportRuleKey            // Initial text
+				),
+				
+			}
+		),
+		
+		EVEStaticTextWidget
+		(
+			0,
+			kSysStaticTextPMRsrcId, 		// WidgetId, RsrcId
+			kBindNone,
+			15, 145, 15+100, 145+15,				// Frame left, top, right, bottom
+			kTrue, kTrue,							// Visible, Enabled
+			kAlignCenter,								// Alignment
+			kEllipsizeEnd,
+			kTrue,
+			kPMUPanelGeometryKey,	
+			0,			// WidgetID this shortcut is connected to, 0 if none.
+			kEVEExtraLargeSpaceAfter,
+		),
+		
+	
+
+
+
+
+
+
+
+
+
+
+
+
+	PanelWithHiliteBorderWidget
+		(
+			0, // widget ID
+			kPMRsrcID_None, // PMRsrc ID
+			kBindNone, // frame binding
+			Frame(5,250,5+240,250+95) //  left, top, right, bottom
+			kTrue, // visible
+			kTrue, // enabled
+			"",
+			{
+				CheckBoxWidget
+				(
+					kPMUExportTextWidgetID,           // WidgetId
+					kSysCheckBoxPMRsrcId,               // RsrcId
+					kBindNone,
+					Frame(5,10,5+230,10+15)              // Frame
+					kTrue,                              // Visible
+					kTrue,                              // Enabled
+					kAlignLeft,                       // Alignment
+					kPMUExportTextKey            // Initial text
+				),
+				
+				CheckBoxWidget
+				(
+					kPMUExportParaCmdWidgetID,           // WidgetId
+					kSysCheckBoxPMRsrcId,               // RsrcId
+					kBindNone,
+					Frame(25,30,25+210,30+15)              // Frame
+					kTrue,                              // Visible
+					kTrue,                              // Enabled
+					kAlignLeft,                       // Alignment
+					kPMUExportParaCmdKey            // Initial text
+				),
+				
+				CheckBoxWidget
+				(
+					kPMUExportTextCmdWidgetID,           // WidgetId
+					kSysCheckBoxPMRsrcId,               // RsrcId
+					kBindNone,
+					Frame(25,50,25+210,50+15)              // Frame
+					kTrue,                              // Visible
+					kTrue,                              // Enabled
+					kAlignLeft,                       // Alignment
+					kPMUExportTextCmdKey            // Initial text
+				),
+				
+				CheckBoxWidget
+				(
+					kPMUExportStyleCmdWidgetID,           // WidgetId
+					kSysCheckBoxPMRsrcId,               // RsrcId
+					kBindNone,
+					Frame(25,70,25+210,70+15)              // Frame
+					kTrue,                              // Visible
+					kTrue,                              // Enabled
+					kAlignLeft,                       // Alignment
+					kPMUExportStyleCmdKey            // Initial text
+				),				
+			}
+		),
+		
+		EVEStaticTextWidget
+		(
+			0,
+			kSysStaticTextPMRsrcId, 		// WidgetId, RsrcId
+			kBindNone,
+			15, 240, 15+100, 240+15,				// Frame left, top, right, bottom
+			kTrue, kTrue,					// Visible, Enabled
+			kAlignCenter,		// Alignment
+			kEllipsizeEnd,
+			kTrue,
+			kPMUPanelTextKey,	
+			0,			// WidgetID this shortcut is connected to, 0 if none.
+			kEVEExtraLargeSpaceAfter,
+		),
+	},
+};						
+
+#endif // __ODFRC__
+
+#include "PMU_enUS.fr"
+#include "PMU_frFR.fr"
+//  Generated by Dolly build 17: template "IfPanelMenu".
+// End, PMU.fr.
+
+
+
+
+

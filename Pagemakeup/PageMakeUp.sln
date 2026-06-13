@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Parser", "Parser\Parser.vcxproj", "{1B5DDEE3-A948-5C93-A950-3CE1CC08EFB4}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Doclib", "DocLib\DocLib.vcxproj", "{F77F596A-E263-A2EA-C191-478A43085070}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Framelib", "FrameLib\FrameLib.vcxproj", "{5192E766-7665-E166-9B7C-B58E57710C73}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Textlib", "TextLib\TextLib.vcxproj", "{C6128825-AB2E-7BA8-E24F-EC1648821AB2}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Pagelib", "PageLib\PageLib.vcxproj", "{D507A70D-5782-FA8F-03ED-F465317FCA42}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Pagemakeup", "pagemakeup\PageMakeUp.vcxproj", "{8B821735-17FB-627C-56F8-A98F7DDACB8B}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Autopagelink", "Autopagelink\Autopagelink.vcxproj", "{1C493070-0BA8-996A-1C9D-733DFBE75A03}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1B5DDEE3-A948-5C93-A950-3CE1CC08EFB4}.Release|x64.ActiveCfg = Release|x64
+		{1B5DDEE3-A948-5C93-A950-3CE1CC08EFB4}.Release|x64.Build.0 = Release|x64
+		{F77F596A-E263-A2EA-C191-478A43085070}.Release|x64.ActiveCfg = Release|x64
+		{F77F596A-E263-A2EA-C191-478A43085070}.Release|x64.Build.0 = Release|x64
+		{5192E766-7665-E166-9B7C-B58E57710C73}.Release|x64.ActiveCfg = Release|x64
+		{5192E766-7665-E166-9B7C-B58E57710C73}.Release|x64.Build.0 = Release|x64
+		{C6128825-AB2E-7BA8-E24F-EC1648821AB2}.Release|x64.ActiveCfg = Release|x64
+		{C6128825-AB2E-7BA8-E24F-EC1648821AB2}.Release|x64.Build.0 = Release|x64
+		{D507A70D-5782-FA8F-03ED-F465317FCA42}.Release|x64.ActiveCfg = Release|x64
+		{D507A70D-5782-FA8F-03ED-F465317FCA42}.Release|x64.Build.0 = Release|x64
+		{8B821735-17FB-627C-56F8-A98F7DDACB8B}.Release|x64.ActiveCfg = Release|x64
+		{8B821735-17FB-627C-56F8-A98F7DDACB8B}.Release|x64.Build.0 = Release|x64
+		{1C493070-0BA8-996A-1C9D-733DFBE75A03}.Release|x64.ActiveCfg = Release|x64
+		{1C493070-0BA8-996A-1C9D-733DFBE75A03}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

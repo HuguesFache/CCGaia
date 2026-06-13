@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build" ToolsVersion="14.0">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Client-2021|x64"><Configuration>Client-2021</Configuration><Platform>x64</Platform></ProjectConfiguration>
+    <ProjectConfiguration Include="Server-2021|x64"><Configuration>Server-2021</Configuration><Platform>x64</Platform></ProjectConfiguration>
+    <ProjectConfiguration Include="Client-2022|x64"><Configuration>Client-2022</Configuration><Platform>x64</Platform></ProjectConfiguration>
+    <ProjectConfiguration Include="Server-2022|x64"><Configuration>Server-2022</Configuration><Platform>x64</Platform></ProjectConfiguration>
+    <ProjectConfiguration Include="Client-2023|x64"><Configuration>Client-2023</Configuration><Platform>x64</Platform></ProjectConfiguration>
+    <ProjectConfiguration Include="Server-2023|x64"><Configuration>Server-2023</Configuration><Platform>x64</Platform></ProjectConfiguration>
+    <ProjectConfiguration Include="Client-2024|x64"><Configuration>Client-2024</Configuration><Platform>x64</Platform></ProjectConfiguration>
+    <ProjectConfiguration Include="Server-2024|x64"><Configuration>Server-2024</Configuration><Platform>x64</Platform></ProjectConfiguration>
+    <ProjectConfiguration Include="Client-2025|x64"><Configuration>Client-2025</Configuration><Platform>x64</Platform></ProjectConfiguration>
+    <ProjectConfiguration Include="Server-2025|x64"><Configuration>Server-2025</Configuration><Platform>x64</Platform></ProjectConfiguration>
+    <ProjectConfiguration Include="Client-2026|x64"><Configuration>Client-2026</Configuration><Platform>x64</Platform></ProjectConfiguration>
+    <ProjectConfiguration Include="Server-2026|x64"><Configuration>Server-2026</Configuration><Platform>x64</Platform></ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectName>Pagemakeup</ProjectName>
+    <ProjectGuid>{8B821735-17FB-627C-56F8-A98F7DDACB8B}</ProjectGuid>
+    <WindowsTargetPlatformVersion>10.0.19041.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings" />
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="PMUReleaseX64.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  
+  <ItemDefinitionGroup>
+    <Midl>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_DEPRECATE;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MkTypLibCompatible>true</MkTypLibCompatible>
+      <TargetEnvironment>X64</TargetEnvironment>
+      <TypeLibraryName>$(IntDir)Pagemakeup.tlb</TypeLibraryName>
+      <HeaderFileName />
+    </Midl>
+    <ClCompile>
+      <AdditionalOptions>/vmg</AdditionalOptions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_DEPRECATE;STRICT;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>VCPlugInHeaders.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile>$(IntDir)Pagemakeup.pch</PrecompiledHeaderOutputFile>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <AdditionalIncludeDirectories>..\Parser\source;..\Framelib\source;$(ID_SDK_DIR)\external\asl\boost_libraries;$(ID_SDK_DIR)\external\icu\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <TreatWarningAsError>false</TreatWarningAsError>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_DEPRECATE;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+    <PreLinkEvent>
+      <Command>merge_res.cmd "$(IntDir)"  PMU &amp; echo Deleting old resources... &amp; del /f /s "$(TargetDir)($(TargetName) Resources)\"*.idrc &gt; $(IntDir)prevDeletedResources.txt &amp;  xcopy /Q /E "$(IntDir)"*.idrc "$(TargetDir)($(TargetName) Resources)\" /Y</Command>
+    </PreLinkEvent>
+    <Link>
+      <AdditionalOptions>/IGNORE:4089 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>$(UI_PLUGIN_LINKLIST);$(ID_SDK_DIR)\external\afl\libs\win\releasex64\AFL.lib;$(ID_SDK_DIR)\external\dva\third_party\boost_libraries\bin.v2\libs\boost_regex\lib\win\release\64\boost_regex.lib;$(ID_SDK_DIR)\external\icu\libs\win\releasex64\icucnv.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(OutDir)Pagemakeup.pln</OutputFile>
+      <ProgramDatabaseFile>$(IntDir)Pagemakeup.pdb</ProgramDatabaseFile>
+      <ImportLibrary>$(IntDir)Pagemakeup.lib</ImportLibrary>
+    </Link>
+    <PostBuildEvent>
+      <Command>restore_res.cmd "$(IntDir)"  PMU</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="$(id_sdk_dir)\source\public\libs\publiclib\statics\PlugInStatics.cpp" />
+    <ClCompile Include="$(ID_SDK_DIR)\source\sdksamples\common\SDKPlugInEntrypoint.cpp" />
+    <ClCompile Include="..\Parser\source\ExportUtils.cpp" />
+    <ClCompile Include="..\Parser\source\PermRefsUtils.cpp" />
+    <ClCompile Include="$(ID_SDK_DIR)\source\sdksamples\common\SDKFileHelper.cpp" />
+    <ClCompile Include="$(ID_SDK_DIR)\source\sdksamples\common\SDKLayoutHelper.cpp" />
+    <ClCompile Include="source\PMUID.cpp" />
+    <ClCompile Include="source\PMUNoStrip.cpp" />
+    <ClCompile Include="source\TriggerResourceDeps.cpp" />
+    <ClCompile Include="$(id_sdk_dir)\source\precomp\msvc\VCPlugInHeaders.cpp">
+      <PrecompiledHeader>Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="source\PMUActionComponent.cpp" />
+    <ClCompile Include="source\PMUButtonTips.cpp" />
+    <ClCompile Include="source\PMUDialogController.cpp" />
+    <ClCompile Include="source\PMUDialogObserver.cpp" />
+    <ClCompile Include="source\PMUDocPathDialogController.cpp" />
+    <ClCompile Include="source\PMUDocPathDialogObserver.cpp" />
+    <ClCompile Include="source\PMUExportPrefsDialogController.cpp" />
+    <ClCompile Include="source\PMUImageSettingDialogController.cpp" />
+    <ClCompile Include="source\PMUImageSettingDialogObserver.cpp" />
+    <ClCompile Include="source\PMUPanelWidgetObserver.cpp" />
+    <ClCompile Include="source\PMUSetUpComposerPaletteCmd.cpp" />
+    <ClCompile Include="source\PMUStartupShutdown.cpp" />
+    <ClCompile Include="source\PMUTypeRefDialogController.cpp" />
+    <ClCompile Include="source\PMUUtils.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(ID_SDK_DIR)\source\sdksamples\common\SDKFileHelper.h" />
+    <ClInclude Include="$(ID_SDK_DIR)\source\sdksamples\common\SDKLayoutHelper.h" />
+    <ClInclude Include="source\PMUID.h" />
+    <ClInclude Include="source\PMUFactoryList.h" />
+    <ClInclude Include="source\PMUUtils.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="source\PMU.fr">
+      <Command>
+        odfrc -d SERVER=$(SERVER_VALUE) $(ODFRC_ADDITIONAL_FLAGS) "%(FullPath)" -o "$(IntDir)%(Filename).fres" -i "source" $(ODFRC_INC)
+      </Command>
+      <AdditionalInputs>$(IntDir)TriggerResourceDeps.obj;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs>$(IntDir)%(Filename).fres;%(Outputs)</Outputs>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="source\PMU.rc">
+      <PreprocessorDefinitions>_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0809</Culture>
+      <AdditionalIncludeDirectories>source;source;$(ID_SDK_DIR)\source\precomp\msvc;$(ID_SDK_DIR)\source\public\includes;$(ID_SDK_DIR)\source\sdksamples\common;%(AdditionalIncludeDirectories)
+      </AdditionalIncludeDirectories>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="source\PMU_enUS.fr" />
+    <None Include="source\PMU_frFR.fr" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets" />
+</Project>

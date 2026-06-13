@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build" ToolsVersion="14.0">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Client-2021|x64"><Configuration>Client-2021</Configuration><Platform>x64</Platform></ProjectConfiguration>
+    <ProjectConfiguration Include="Server-2021|x64"><Configuration>Server-2021</Configuration><Platform>x64</Platform></ProjectConfiguration>
+    <ProjectConfiguration Include="Client-2022|x64"><Configuration>Client-2022</Configuration><Platform>x64</Platform></ProjectConfiguration>
+    <ProjectConfiguration Include="Server-2022|x64"><Configuration>Server-2022</Configuration><Platform>x64</Platform></ProjectConfiguration>
+    <ProjectConfiguration Include="Client-2023|x64"><Configuration>Client-2023</Configuration><Platform>x64</Platform></ProjectConfiguration>
+    <ProjectConfiguration Include="Server-2023|x64"><Configuration>Server-2023</Configuration><Platform>x64</Platform></ProjectConfiguration>
+    <ProjectConfiguration Include="Client-2024|x64"><Configuration>Client-2024</Configuration><Platform>x64</Platform></ProjectConfiguration>
+    <ProjectConfiguration Include="Server-2024|x64"><Configuration>Server-2024</Configuration><Platform>x64</Platform></ProjectConfiguration>
+    <ProjectConfiguration Include="Client-2025|x64"><Configuration>Client-2025</Configuration><Platform>x64</Platform></ProjectConfiguration>
+    <ProjectConfiguration Include="Server-2025|x64"><Configuration>Server-2025</Configuration><Platform>x64</Platform></ProjectConfiguration>
+    <ProjectConfiguration Include="Client-2026|x64"><Configuration>Client-2026</Configuration><Platform>x64</Platform></ProjectConfiguration>
+    <ProjectConfiguration Include="Server-2026|x64"><Configuration>Server-2026</Configuration><Platform>x64</Platform></ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectName>XRailClient</ProjectName>
+    <ProjectGuid>{7F057676-C311-B3F3-06A2-4E03BBA7CED9}</ProjectGuid>
+    <WindowsTargetPlatformVersion>10.0.19041.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  
+  
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings" />
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="XRCReleaseX64.props" />
+  </ImportGroup>
+  
+  
+  <PropertyGroup Label="UserMacros" />
+  
+  
+  <ItemDefinitionGroup>
+    <Midl>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_DEPRECATE;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MkTypLibCompatible>true</MkTypLibCompatible>
+      <TargetEnvironment>X64</TargetEnvironment>
+      <TypeLibraryName>$(IntDir)XRailClient.tlb</TypeLibraryName>
+      <HeaderFileName>
+      </HeaderFileName>
+    </Midl>
+    <ClCompile>
+      <AdditionalOptions>/vmg</AdditionalOptions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_DEPRECATE;STRICT;NDEBUG;BOOST_SYSTEM_NO_DEPRECATED;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>VCPlugInHeaders.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile>$(IntDir)XRailClient.pch</PrecompiledHeaderOutputFile>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <AdditionalIncludeDirectories>C:\SDKs\vcpkg\installed\x64-windows-static\include;C:\SDKs\vcpkg\installed\x64-windows\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <TreatWarningAsError>false</TreatWarningAsError>
+      <WarningLevel>Level3</WarningLevel>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_DEPRECATE;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+    <PreLinkEvent>
+      <Command>merge_res.cmd "$(IntDir)"  XRC &amp; echo Deleting old resources... &amp; del /f /s "$(TargetDir)($(TargetName) Resources)\"*.idrc &gt; $(IntDir)prevDeletedResources.txt &amp;  xcopy /Q /E "$(IntDir)"*.idrc "$(TargetDir)($(TargetName) Resources)\" /Y</Command>
+    </PreLinkEvent>
+    <Link>
+      <AdditionalOptions>/IGNORE:4089 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>$(UI_PLUGIN_LINKLIST);C:\SDKs\vcpkg\installed\x64-windows-static\lib\libcurl.lib;C:\SDKs\vcpkg\installed\x64-windows-static\lib\zlib.lib;Advapi32.lib;Crypt32.lib;Ws2_32.lib</AdditionalDependencies>
+      <OutputFile>$(OutDir)XRailClient.pln</OutputFile>
+      <ProgramDatabaseFile>$(IntDir)XRailClient.pdb</ProgramDatabaseFile>
+      <ImportLibrary>$(IntDir)XRailClient.lib</ImportLibrary>
+    </Link>
+    <PostBuildEvent>
+      <Command>restore_res.cmd "$(IntDir)"  XRC</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  
+  <ItemGroup>
+    <ClCompile Include="$(ID_SDK_DIR)\source\precomp\msvc\VCPlugInHeaders.cpp">
+      <PrecompiledHeader>Create</PrecompiledHeader>
+      
+    </ClCompile>
+    <ClCompile Include="$(ID_SDK_DIR)\source\public\libs\publiclib\statics\PlugInStatics.cpp" />
+    <ClCompile Include="$(ID_SDK_DIR)\source\sdksamples\common\SDKPlugInEntrypoint.cpp" />
+    <ClCompile Include="source\XRCID.cpp" />
+    <ClCompile Include="source\XRCNoStrip.cpp" />
+    <ClCompile Include="source\TriggerResourceDeps.cpp" />
+    <ClCompile Include="source\XRailWebServices.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="source\IWebServices.h" />
+    <ClInclude Include="source\XRCID.h" />
+    <ClInclude Include="source\XRCFactoryList.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="source\XRC.fr">
+      
+      
+      
+      <Command>
+        odfrc -d SERVER=$(SERVER_VALUE) $(ODFRC_ADDITIONAL_FLAGS) "%(FullPath)" -o "$(IntDir)%(Filename).fres" -i "source" $(ODFRC_INC)
+      </Command>
+      
+      <AdditionalInputs>$(IntDir)TriggerResourceDeps.obj;%(AdditionalInputs)</AdditionalInputs>
+      
+      <Outputs>$(IntDir)%(Filename).fres;%(Outputs)</Outputs>
+      
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="source\XRC_enUS.fr" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets" />
+</Project>

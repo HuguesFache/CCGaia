@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Client-2021|x64"><Configuration>Client-2021</Configuration><Platform>x64</Platform></ProjectConfiguration>
+    <ProjectConfiguration Include="Server-2021|x64"><Configuration>Server-2021</Configuration><Platform>x64</Platform></ProjectConfiguration>
+    <ProjectConfiguration Include="Client-2022|x64"><Configuration>Client-2022</Configuration><Platform>x64</Platform></ProjectConfiguration>
+    <ProjectConfiguration Include="Server-2022|x64"><Configuration>Server-2022</Configuration><Platform>x64</Platform></ProjectConfiguration>
+    <ProjectConfiguration Include="Client-2023|x64"><Configuration>Client-2023</Configuration><Platform>x64</Platform></ProjectConfiguration>
+    <ProjectConfiguration Include="Server-2023|x64"><Configuration>Server-2023</Configuration><Platform>x64</Platform></ProjectConfiguration>
+    <ProjectConfiguration Include="Client-2024|x64"><Configuration>Client-2024</Configuration><Platform>x64</Platform></ProjectConfiguration>
+    <ProjectConfiguration Include="Server-2024|x64"><Configuration>Server-2024</Configuration><Platform>x64</Platform></ProjectConfiguration>
+    <ProjectConfiguration Include="Client-2025|x64"><Configuration>Client-2025</Configuration><Platform>x64</Platform></ProjectConfiguration>
+    <ProjectConfiguration Include="Server-2025|x64"><Configuration>Server-2025</Configuration><Platform>x64</Platform></ProjectConfiguration>
+    <ProjectConfiguration Include="Client-2026|x64"><Configuration>Client-2026</Configuration><Platform>x64</Platform></ProjectConfiguration>
+    <ProjectConfiguration Include="Server-2026|x64"><Configuration>Server-2026</Configuration><Platform>x64</Platform></ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{971A4E79-FBA2-4963-8B1E-A8A2BE1DC1B5}</ProjectGuid>
+    <RootNamespace>XRailUI</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0.19041.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="XRLUIReleaseX64.props" />
+  </ImportGroup>
+  
+  <PropertyGroup Label="UserMacros" />
+  
+  <PropertyGroup>
+    <SourcePath>$(ID_SDK_DIR)\source\sdksamples\common;$(SourcePath)</SourcePath>
+  </PropertyGroup>
+  
+  <ItemDefinitionGroup>
+    <Midl>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_DEPRECATE;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MkTypLibCompatible>true</MkTypLibCompatible>
+      <TargetEnvironment>X64</TargetEnvironment>
+      <TypeLibraryName>$(IntDir)XRailUI.tlb</TypeLibraryName>
+      <HeaderFileName>
+      </HeaderFileName>
+    </Midl>
+    <ClCompile>
+      <AdditionalOptions>/vmg %(AdditionalOptions)</AdditionalOptions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_DEPRECATE;STRICT;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>VCPlugInHeaders.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile>$(IntDir)XRailUI.pch</PrecompiledHeaderOutputFile>
+      <AdditionalIncludeDirectories>..\..\XRailClient\XRailClient\source;..\XRail\source;C:\SDKs\vcpkg\installed\x64-windows-static\include;C:\SDKs\vcpkg\installed\x64-windows\include;..\..\Pagemakeup\Parser\source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <TreatWarningAsError>false</TreatWarningAsError>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_DEPRECATE;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+    <PreLinkEvent>
+      <Command>merge_res.cmd "$(IntDir)"  XRLUI &amp;del /f /s "$(TargetDir)($(TargetName) Resources)\"*.idrc &amp; xcopy /E "$(IntDir)"*.idrc "$(TargetDir)($(TargetName) Resources)\" /Y</Command>
+    </PreLinkEvent>
+    <Link>
+      <AdditionalDependencies>$(UI_PLUGIN_LINKLIST);$(ID_SDK_DIR)\external\afl\libs\win\releasex64\AFL.lib;$(ID_SDK_DIR)\external\dva\third_party\boost_libraries\bin.v2\libs\boost_regex\lib\win\release\64\boost_regex.lib;$(ID_SDK_DIR)\external\icu\libs\win\releasex64\icucnv.lib;$(ID_SDK_DIR)\build\win\objrx64\ASLSupport.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(OutDir)XRailUI.pln</OutputFile>
+      <ProgramDatabaseFile>$(IntDir)XRailUI.pdb</ProgramDatabaseFile>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <ImportLibrary>$(IntDir)XRailUI.lib</ImportLibrary>
+    </Link>
+    <PostBuildEvent>
+      <Command>restore_res.cmd "$(IntDir)"  XRLUI</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\XRail\source\DocUtils.cpp" />
+    <ClCompile Include="$(ID_SDK_DIR)\source\precomp\msvc\VCPlugInHeaders.cpp">
+      <PrecompiledHeader>Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="$(ID_SDK_DIR)\source\public\libs\publiclib\statics\PlugInStatics.cpp" />
+    <ClCompile Include="$(ID_SDK_DIR)\source\sdksamples\common\SDKPlugInEntrypoint.cpp" />
+    <ClCompile Include="source\XRailActionComponent.cpp" />
+    <ClCompile Include="source\XRailChangeStateDialogController.cpp" />
+    <ClCompile Include="source\XRailLinkerDialogController.cpp" />
+    <ClCompile Include="source\XRailLoginDialogController.cpp" />
+    <ClCompile Include="source\XRailOpenLoginDialogCmd.cpp" />
+    <ClCompile Include="source\XRailPrefsDialogController.cpp" />
+    <ClCompile Include="source\XRailUIStartupShutdown.cpp" />
+    <ClCompile Include="source\XRLUIIntList.cpp" />
+    <ClCompile Include="source\XRLUILinkerDialogObserver.cpp" />
+    <ClCompile Include="source\XRLUICommentList.cpp" />
+    <ClCompile Include="source\XRLUICommentsPanelObserver.cpp" />
+    <ClCompile Include="source\XRLUICommentsTVHierarchyAdapter.cpp" />
+    <ClCompile Include="source\XRLUICommentsTVWidgetMgr.cpp" />
+    <ClCompile Include="source\XRLUICommentsNodeEH.cpp" />
+    <ClCompile Include="source\TriggerResourceDeps.cpp">
+      
+      <AdditionalOptions>/vmg %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="source\XRLUIID.cpp">
+      
+      <AdditionalOptions>/vmg %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="source\XRLUINoStrip.cpp">
+      
+      <AdditionalOptions>/vmg %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\XRail\source\DocUtils.h" />
+    <ClInclude Include="source\IIntList.h" />
+    <ClInclude Include="source\XRLUIFactoryList.h" />
+    <ClInclude Include="source\XRLUIID.h" />
+    <ClInclude Include="source\IXRLUICommentList.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="source\XRLUI.fr">
+      
+      
+      
+      <Command>odfrc -d SERVER=$(SERVER_VALUE) "%(FullPath)" -o "$(IntDir)%(Filename).fres"   -i "source" $(ODFRC_INC)
+</Command>
+      <AdditionalInputs>$(IntDir)TriggerResourceDeps.obj;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs>$(IntDir)%(Filename).fres;%(Outputs)</Outputs>
+    </CustomBuild>
+    <None Include="source\XRLUI_enUS.fr" />
+    <None Include="source\XRLUI_frFR.fr" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="source\XRLUI.rc">
+      
+      
+      
+      <PreprocessorDefinitions>_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0809</Culture>
+      <AdditionalIncludeDirectories>source;source;$(ID_SDK_DIR)\source\precomp\msvc;$(ID_SDK_DIR)\source\public\includes;$(ID_SDK_DIR)\source\sdksamples\common;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

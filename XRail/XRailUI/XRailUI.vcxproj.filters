@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{131c7ac5-d9ca-4127-9e7f-ceb1037120eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Plugin">
+      <UniqueIdentifier>{71d71466-5b0a-4ce2-b035-02a567368361}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{bd32ad7d-da4e-40a6-b464-27be51787f34}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{4f66234b-6c5c-4146-a01e-cb928567513c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\XRail\source\DocUtils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XRailActionComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XRailChangeStateDialogController.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XRailLinkerDialogController.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XRailLoginDialogController.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XRailOpenLoginDialogCmd.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XRailPrefsDialogController.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XRailUIStartupShutdown.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XRLUIIntList.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XRLUILinkerDialogObserver.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XRLUICommentList.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XRLUICommentsPanelObserver.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XRLUICommentsTVHierarchyAdapter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XRLUICommentsTVWidgetMgr.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XRLUICommentsNodeEH.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\TriggerResourceDeps.cpp">
+      <Filter>Source Files\Plugin</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XRLUIID.cpp">
+      <Filter>Source Files\Plugin</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XRLUINoStrip.cpp">
+      <Filter>Source Files\Plugin</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\SDKs\adobe_indesign_CC2026\source\precomp\msvc\VCPlugInHeaders.cpp">
+      <Filter>Source Files\Plugin</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\SDKs\adobe_indesign_CC2026\source\sdksamples\common\SDKPlugInEntrypoint.cpp">
+      <Filter>Source Files\Plugin</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\SDKs\adobe_indesign_CC2026\source\public\libs\publiclib\statics\PlugInStatics.cpp">
+      <Filter>Source Files\Plugin</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\XRail\source\DocUtils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\IIntList.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\XRLUIFactoryList.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\XRLUIID.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\IXRLUICommentList.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="source\XRLUI_enUS.fr">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="source\XRLUI_frFR.fr">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="source\XRLUI.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="source\XRLUI.fr">
+      <Filter>Resource Files</Filter>
+    </CustomBuild>
+  </ItemGroup>
+</Project>

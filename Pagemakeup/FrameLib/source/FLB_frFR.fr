@@ -1,0 +1,42 @@
+#ifdef __ODFRC__
+// French string table is defined here
+resource StringTable (kSDKDefStringsResourceID + index_frFR)
+{
+	k_frFR,									// Locale Id
+	kResourceUTF8Encoded,		// Character encoding converter (irp) I made this WinToMac as we have a bias to generate on Win...
+	{
+		kFlbNilInterface,				"Abnormal problem",
+		kTextLinkCmdFailed,				"Impossible de lier les blocs",
+		kTextUnlinkCmdFailed,			"Impossible de délier les blocs", 
+		kFlbNilParameter,				"Problème : au moins un des paramètres passé à la fonction est incorrect (nul)",
+		kErrNotTextFrame,				"L'item doit être un bloc texte",
+		kInsertCmdFailed,				"Insertion de texte échouée",
+		kMoveItemCmdFailed,				"Déplacement d'item échoué",
+		kErrNotSpline,					"L'item doit être un bloc, pas un filet",
+		kMakeInlineCmdFailed,			"Création d'une frame ancrée échouée",
+		kSetStandoffCmdFailed,			"Définition de l'habillage échouée",
+		kCreateTextFrameCmdFailed,		"Création de bloc texte échouée",
+		kSelectCmdFailed,				"Sélection d'item échouée",
+		kErrCannotOpenFile,				"Impossible d'ouvrir le fichier spécifié",
+		kNewPageItemCmdFailed,			"Création d'item échoué",
+		kErrNotImageFile,				"Le fichier spécifié n'est pas un fichier image",
+		kImportImageCommandFailed,		"Importation d'image dans le bloc échouée", 
+		kPlaceItemCommandFailed,		"Placement de l'image dans le bloc échoué",
+		kGroupCommandFailed,			"Groupement des blocs echoué",
+		kErrNoSuchPage,					"La page n'existe pas dans le document",
+		kLockCmdFailed,					"Verouillage ou déverrouillage du bloc echoué",
+		kErrUnableToGroup,				"Impossible de grouper ces blocs",
+		kBringToFrontCmdFailed,			"Passage au premier plan échoué",
+		kSendToBackCmdFailed,			"Passage à l'arrière plan échoué",
+		kResizeCmdFailed,				"Redimensionnement du bloc echoue",
+		kApplyCmdFailed,				"Application du style ou de l'attribut échouée",
+		kCenterContentCmdFailed,		"Centrage du contenu échoué",
+		kFitContentPropCmdFailed, 		"Ajustement du contenu échoué",
+		kFitContentToFrameCmdFailed,	"Ajustement du contenu au bloc échoué",
+		kErrJVImpossible,				"Justification verticale impossible, le texte est trop long",
+		kJVCmdFailed,					"Justification verticale échouée",
+		kFlbErrTextBoxRequired,			"Type de bloc incorrect : bloc texte requis",
+		kFlbErrImageBoxRequired,		"Type de bloc incorrect : bloc image requis",
+	}
+};
+#endif // __ODFRC__

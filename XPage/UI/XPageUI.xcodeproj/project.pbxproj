@@ -1,0 +1,829 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 54;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		8F00E5BC27B523B900A588F7 /* SDKFileHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8F00E5BB27B523B900A588F7 /* SDKFileHelper.cpp */; };
+		8F00E5BE27B523C100A588F7 /* SDKPlugInEntrypoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8F00E5BD27B523C100A588F7 /* SDKPlugInEntrypoint.cpp */; };
+		8F00E5C027B523DC00A588F7 /* SDKUtilities.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8F00E5BF27B523DC00A588F7 /* SDKUtilities.cpp */; };
+		A7EF38C41B14AC4C006FDA0D /* XPGUIAssemblagesPanelObserver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7EF38BA1B14AC4C006FDA0D /* XPGUIAssemblagesPanelObserver.cpp */; };
+		A7EF38C51B14AC4C006FDA0D /* XPGUIAssemblagesTVHierarchyAdapter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7EF38BB1B14AC4C006FDA0D /* XPGUIAssemblagesTVHierarchyAdapter.cpp */; };
+		A7EF38C61B14AC4C006FDA0D /* XPGUINewAssemblageDialogController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7EF38BC1B14AC4C006FDA0D /* XPGUINewAssemblageDialogController.cpp */; };
+		B7EF38C61B14AC4C006FDA0D /* XPGUINewClasseurDialogController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7EF38BC1B14AC4C006FDA0D /* XPGUINewClasseurDialogController.cpp */; };
+		A7EF38C91B14AC4C006FDA0D /* XPGUIXRailImagesPanelObserver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7EF38C01B14AC4C006FDA0D /* XPGUIXRailImagesPanelObserver.cpp */; };
+		A7EF38CA1B14AC4C006FDA0D /* XPGUIXRailPanelObserver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7EF38C11B14AC4C006FDA0D /* XPGUIXRailPanelObserver.cpp */; };
+		A7EF38CB1B14AC4C006FDA0D /* XPGUIXRailXmlDropTarget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7EF38C21B14AC4C006FDA0D /* XPGUIXRailXmlDropTarget.cpp */; };
+		A7EF38DD1B14ACB4006FDA0D /* XPGUIArticleAdornment.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7EF38D91B14ACB4006FDA0D /* XPGUIArticleAdornment.cpp */; };
+		A7EF38DE1B14ACB4006FDA0D /* XPGUIPlacedFormeContentAdornment.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7EF38DA1B14ACB4006FDA0D /* XPGUIPlacedFormeContentAdornment.cpp */; };
+		A7EF38DF1B14ACB4006FDA0D /* XPGUIPlacedFormeFooterAdornment.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7EF38DB1B14ACB4006FDA0D /* XPGUIPlacedFormeFooterAdornment.cpp */; };
+		A7EF38E01B14ACB4006FDA0D /* XPGUIPlacedFormeHeaderAdornment.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7EF38DC1B14ACB4006FDA0D /* XPGUIPlacedFormeHeaderAdornment.cpp */; };
+		A7EF38F91B14ACFE006FDA0D /* XPGUIDisplayImageFormePanelView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7EF38EC1B14ACFE006FDA0D /* XPGUIDisplayImageFormePanelView.cpp */; };
+		A7EF38FA1B14ACFE006FDA0D /* XPGUIFormeAdornmentShape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7EF38ED1B14ACFE006FDA0D /* XPGUIFormeAdornmentShape.cpp */; };
+		A7EF38FB1B14ACFE006FDA0D /* XPGUIFormeDragDropSource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7EF38EE1B14ACFE006FDA0D /* XPGUIFormeDragDropSource.cpp */; };
+		A7EF38FC1B14ACFE006FDA0D /* XPGUIFormeDropTarget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7EF38EF1B14ACFE006FDA0D /* XPGUIFormeDropTarget.cpp */; };
+		A7EF38FD1B14ACFE006FDA0D /* XPGUIFormeFileHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7EF38F01B14ACFE006FDA0D /* XPGUIFormeFileHandler.cpp */; };
+		A7EF38FE1B14ACFE006FDA0D /* XPGUIFormeNodeID.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7EF38F11B14ACFE006FDA0D /* XPGUIFormeNodeID.cpp */; };
+		A7EF38FF1B14ACFE006FDA0D /* XPGUIFormesPanelObserver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7EF38F31B14ACFE006FDA0D /* XPGUIFormesPanelObserver.cpp */; };
+		A7EF39001B14ACFE006FDA0D /* XPGUIFormesTVHierarchyAdapter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7EF38F41B14ACFE006FDA0D /* XPGUIFormesTVHierarchyAdapter.cpp */; };
+		A7EF39011B14ACFE006FDA0D /* XPGUIFormesTVWidgetMgr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7EF38F51B14ACFE006FDA0D /* XPGUIFormesTVWidgetMgr.cpp */; };
+		A7EF39021B14ACFE006FDA0D /* XPGUIImagesFormesViewObserver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7EF38F61B14ACFE006FDA0D /* XPGUIImagesFormesViewObserver.cpp */; };
+		A7EF39031B14ACFE006FDA0D /* XPGUIXRailNewFormeDialogController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7EF38F71B14ACFE006FDA0D /* XPGUIXRailNewFormeDialogController.cpp */; };
+		A7EF39041B14ACFE006FDA0D /* XPGUIXRailNewFormeDialogObserver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7EF38F81B14ACFE006FDA0D /* XPGUIXRailNewFormeDialogObserver.cpp */; };
+		A7EF390A1B14AD24006FDA0D /* XPGUIUpdateFormeDialogController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7EF39071B14AD24006FDA0D /* XPGUIUpdateFormeDialogController.cpp */; };
+		A7EF390B1B14AD24006FDA0D /* XPGUIUpdateStyleMatchingHierarchyAdapter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7EF39081B14AD24006FDA0D /* XPGUIUpdateStyleMatchingHierarchyAdapter.cpp */; };
+		A7EF390C1B14AD24006FDA0D /* XPGUIUpdateStyleMatchingWidgetMgr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7EF39091B14AD24006FDA0D /* XPGUIUpdateStyleMatchingWidgetMgr.cpp */; };
+		A7EF39141B14AD40006FDA0D /* XPGUIMatchingStylesList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7EF390E1B14AD40006FDA0D /* XPGUIMatchingStylesList.cpp */; };
+		A7EF39171B14AD40006FDA0D /* XPGUIStyleMatchingNodeID.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7EF39111B14AD40006FDA0D /* XPGUIStyleMatchingNodeID.cpp */; };
+		A7EF391F1B14AD72006FDA0D /* XPageUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7EF39191B14AD72006FDA0D /* XPageUtils.cpp */; };
+		A7EF39211B14AD72006FDA0D /* XPGFormeDataNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7EF391C1B14AD72006FDA0D /* XPGFormeDataNode.cpp */; };
+		A7EF39221B14AD72006FDA0D /* XPGImageDataNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7EF391E1B14AD72006FDA0D /* XPGImageDataNode.cpp */; };
+		A7EF39311B14ADB1006FDA0D /* XPGUIDisplayImagePanelView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7EF39231B14ADB1006FDA0D /* XPGUIDisplayImagePanelView.cpp */; };
+		A7EF39351B14ADB1006FDA0D /* XPGUIImageFileHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7EF39271B14ADB1006FDA0D /* XPGUIImageFileHandler.cpp */; };
+		A7EF39361B14ADB1006FDA0D /* XPGUIImageNodeID.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7EF39281B14ADB1006FDA0D /* XPGUIImageNodeID.cpp */; };
+		A7EF39371B14ADB1006FDA0D /* XPGUIImagesTVHierarchyAdapter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7EF392A1B14ADB1006FDA0D /* XPGUIImagesTVHierarchyAdapter.cpp */; };
+		A7EF39381B14ADB1006FDA0D /* XPGUIImagesTVWidgetMgr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7EF392B1B14ADB1006FDA0D /* XPGUIImagesTVWidgetMgr.cpp */; };
+		A7EF39391B14ADB1006FDA0D /* XPGUIImagesViewObserver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7EF392C1B14ADB1006FDA0D /* XPGUIImagesViewObserver.cpp */; };
+		A7EF393A1B14ADB1006FDA0D /* XPGUIXRailImageDragDropSource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7EF392D1B14ADB1006FDA0D /* XPGUIXRailImageDragDropSource.cpp */; };
+		A7EF393B1B14ADB1006FDA0D /* XPGUIXRailImageDropTarget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7EF392E1B14ADB1006FDA0D /* XPGUIXRailImageDropTarget.cpp */; };
+		A7EF393C1B14ADB1006FDA0D /* XPGUIXRailInCopyImageDragDropSource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7EF392F1B14ADB1006FDA0D /* XPGUIXRailInCopyImageDragDropSource.cpp */; };
+		A7EF393D1B14ADB1006FDA0D /* XPGUIXRailInCopyImagesPanelObserver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7EF39301B14ADB1006FDA0D /* XPGUIXRailInCopyImagesPanelObserver.cpp */; };
+		A7EF39411B14ADC2006FDA0D /* XPGUITECImageDragDropSource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7EF393E1B14ADC2006FDA0D /* XPGUITECImageDragDropSource.cpp */; };
+		A7EF39421B14ADC2006FDA0D /* XPGUITECImageDropTarget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7EF393F1B14ADC2006FDA0D /* XPGUITECImageDropTarget.cpp */; };
+		A7EF39431B14ADC2006FDA0D /* XPGUITECImagesPanelObserver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7EF39401B14ADC2006FDA0D /* XPGUITECImagesPanelObserver.cpp */; };
+		A7EF3A301B14ADDD006FDA0D /* ActionIDToStringDataImpl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7EF3A2D1B14ADDD006FDA0D /* ActionIDToStringDataImpl.cpp */; };
+		A7EF3A311B14ADDD006FDA0D /* XPGUIActionComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7EF3A2F1B14ADDD006FDA0D /* XPGUIActionComponent.cpp */; };
+		A7EF3A381B14ADF4006FDA0D /* TriggerResourceDeps.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7EF3A371B14ADF4006FDA0D /* TriggerResourceDeps.cpp */; };
+		A7EF3A3C1B14AE03006FDA0D /* XPGUIID.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7EF3A391B14AE03006FDA0D /* XPGUIID.cpp */; };
+		A7EF3A3D1B14AE03006FDA0D /* XPGUINoStrip.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7EF3A3B1B14AE03006FDA0D /* XPGUINoStrip.cpp */; };
+		A7EF3A411B14AE2F006FDA0D /* XPGUITextesPanelView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7EF3A401B14AE2F006FDA0D /* XPGUITextesPanelView.cpp */; };
+		A7EF3A4C1B14AE57006FDA0D /* XPGUIAddToArtDialogController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7EF3A421B14AE57006FDA0D /* XPGUIAddToArtDialogController.cpp */; };
+		A7EF3A4D1B14AE57006FDA0D /* XPGUIAddToArtDialogObserver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7EF3A431B14AE57006FDA0D /* XPGUIAddToArtDialogObserver.cpp */; };
+		A7EF3A4E1B14AE57006FDA0D /* XPGUILinkArtDialogController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7EF3A441B14AE57006FDA0D /* XPGUILinkArtDialogController.cpp */; };
+		A7EF3A4F1B14AE57006FDA0D /* XPGUILinkArtDialogObserver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7EF3A451B14AE57006FDA0D /* XPGUILinkArtDialogObserver.cpp */; };
+		A7EF3A501B14AE57006FDA0D /* XPGUIOrderArtDialogController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7EF3A461B14AE57006FDA0D /* XPGUIOrderArtDialogController.cpp */; };
+		A7EF3A511B14AE57006FDA0D /* XPGUIOrderArtDialogObserver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7EF3A471B14AE57006FDA0D /* XPGUIOrderArtDialogObserver.cpp */; };
+		A7EF3A521B14AE57006FDA0D /* XPGUIXmlFileHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7EF3A481B14AE57006FDA0D /* XPGUIXmlFileHandler.cpp */; };
+		A7EF3A531B14AE57006FDA0D /* XPGUIXmlWithFormeFileHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7EF3A491B14AE57006FDA0D /* XPGUIXmlWithFormeFileHandler.cpp */; };
+		A7EF3A541B14AE57006FDA0D /* XPGUIXRailArticleWithFormeDropTarget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7EF3A4A1B14AE57006FDA0D /* XPGUIXRailArticleWithFormeDropTarget.cpp */; };
+		A7EF3A551B14AE57006FDA0D /* XPGUIXRailTexteDragDropSource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7EF3A4B1B14AE57006FDA0D /* XPGUIXRailTexteDragDropSource.cpp */; };
+		A7EF3A5F1B14AE75006FDA0D /* XPageUIUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7EF3A5A1B14AE75006FDA0D /* XPageUIUtils.cpp */; };
+		A7EF3A871B14B5DC006FDA0D /* XPGUIArticleNodeID.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7EF3A821B14B5DC006FDA0D /* XPGUIArticleNodeID.cpp */; };
+		A7EF3A881B14B5DC006FDA0D /* XPGUIArticleTVHierarchyAdapter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7EF3A841B14B5DC006FDA0D /* XPGUIArticleTVHierarchyAdapter.cpp */; };
+		A7EF3A891B14B5DC006FDA0D /* XPGUIArticleTVWidgetMgr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7EF3A851B14B5DC006FDA0D /* XPGUIArticleTVWidgetMgr.cpp */; };
+		A7EF3A8A1B14B5DC006FDA0D /* XPGUIArticleViewObserver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7EF3A861B14B5DC006FDA0D /* XPGUIArticleViewObserver.cpp */; };
+		A7EF3A8D1B14B608006FDA0D /* XPGArticleData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7EF3A8B1B14B608006FDA0D /* XPGArticleData.cpp */; };
+		A7EF3A8E1B14B608006FDA0D /* XPGArticleDataNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7EF3A8C1B14B608006FDA0D /* XPGArticleDataNode.cpp */; };
+		A7EF3A901B14B73C006FDA0D /* InDesignModelAndUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7EF3A8F1B14B73C006FDA0D /* InDesignModelAndUI.framework */; };
+		F957086415C90B3E00C95573 /* XPGUI.fr in Sources */ = {isa = PBXBuildFile; fileRef = 4B05EED108840E9500D809E1 /* XPGUI.fr */; };
+		F957087515C90B5100C95573 /* libPublicPlugIn.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F957084E15C90B2D00C95573 /* libPublicPlugIn.a */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXBuildRule section */
+		F957086F15C90B3E00C95573 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.apple.compilers.proxy.script;
+			filePatterns = "*.fr";
+			fileType = pattern.proxy;
+			inputFiles = (
+			);
+			isEditable = 1;
+			outputFiles = (
+				"$(REZ_COLLECTOR_DIR)/$(INPUT_FILE_NAME).rsrc",
+			);
+			runOncePerArchitecture = 0;
+			script = "$ID_SDK_ROOT/devtools/bin/odfrc-cmd -d RELEASE $ODFRC_ADDITIONAL_FLAGS -o \"$REZ_COLLECTOR_DIR/$INPUT_FILE_NAME.rsrc\" \"$INPUT_FILE_PATH\"\n";
+		};
+/* End PBXBuildRule section */
+
+/* Begin PBXFileReference section */
+		4B05EED108840E9500D809E1 /* XPGUI.fr */ = {isa = PBXFileReference; lastKnownFileType = text; name = XPGUI.fr; path = source/XPGUI.fr; sourceTree = SOURCE_ROOT; };
+		77D687F4113861B500D56A9C /* UIPlugin_release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = UIPlugin_release.xcconfig; sourceTree = "<group>"; };
+		7FE5845A08AD6DB8007DB654 /* UIPlugin.xcconfig */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xcconfig; path = UIPlugin.xcconfig; sourceTree = SOURCE_ROOT; };
+		8F00E5BB27B523B900A588F7 /* SDKFileHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SDKFileHelper.cpp; path = /Users/macmini2024/AdobeSDKs/adobe_indesign_CC2026_Products_SDK/source/sdksamples/common/SDKFileHelper.cpp; sourceTree = "<absolute>"; };
+		8F00E5BD27B523C100A588F7 /* SDKPlugInEntrypoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SDKPlugInEntrypoint.cpp; path = /Users/macmini2024/AdobeSDKs/adobe_indesign_CC2026_Products_SDK/source/sdksamples/common/SDKPlugInEntrypoint.cpp; sourceTree = "<absolute>"; };
+		8F00E5BF27B523DC00A588F7 /* SDKUtilities.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SDKUtilities.cpp; path = /Users/macmini2024/AdobeSDKs/adobe_indesign_CC2026_Products_SDK/source/sdksamples/common/SDKUtilities.cpp; sourceTree = "<absolute>"; };
+		8F4C45D727B6567E007DF64F /* XPGUI_enUS.fr */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = XPGUI_enUS.fr; path = source/XPGUI_enUS.fr; sourceTree = "<group>"; };
+		8F4C45D827B6567E007DF64F /* XPGUI_frFR.fr */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = XPGUI_frFR.fr; path = source/XPGUI_frFR.fr; sourceTree = "<group>"; };
+		9B5F2FB72D0C67A10006920E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = ../../../../../../AdobeSDKs/Adobe_InDesign_CC2026_Products_SDK/source/sdksamples/common/Info.plist; sourceTree = "<group>"; };
+		A7EF38B91B14AC4C006FDA0D /* FileSystemIterator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FileSystemIterator.h; path = source/FileSystemIterator.h; sourceTree = "<group>"; };
+		A7EF38BA1B14AC4C006FDA0D /* XPGUIAssemblagesPanelObserver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XPGUIAssemblagesPanelObserver.cpp; path = source/XPGUIAssemblagesPanelObserver.cpp; sourceTree = "<group>"; };
+		A7EF38BB1B14AC4C006FDA0D /* XPGUIAssemblagesTVHierarchyAdapter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XPGUIAssemblagesTVHierarchyAdapter.cpp; path = source/XPGUIAssemblagesTVHierarchyAdapter.cpp; sourceTree = "<group>"; };
+		A7EF38BC1B14AC4C006FDA0D /* XPGUINewAssemblageDialogController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XPGUINewAssemblageDialogController.cpp; path = source/XPGUINewAssemblageDialogController.cpp; sourceTree = "<group>"; };
+		B7EF38BC1B14AC4C006FDA0D /* XPGUINewClasseurDialogController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XPGUINewClasseurDialogController.cpp; path = source/XPGUINewClasseurDialogController.cpp; sourceTree = "<group>"; };
+		A7EF38C01B14AC4C006FDA0D /* XPGUIXRailImagesPanelObserver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XPGUIXRailImagesPanelObserver.cpp; path = source/XPGUIXRailImagesPanelObserver.cpp; sourceTree = "<group>"; };
+		A7EF38C11B14AC4C006FDA0D /* XPGUIXRailPanelObserver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XPGUIXRailPanelObserver.cpp; path = source/XPGUIXRailPanelObserver.cpp; sourceTree = "<group>"; };
+		A7EF38C21B14AC4C006FDA0D /* XPGUIXRailXmlDropTarget.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XPGUIXRailXmlDropTarget.cpp; path = source/XPGUIXRailXmlDropTarget.cpp; sourceTree = "<group>"; };
+		A7EF38CD1B14AC5E006FDA0D /* XPGUIFactoryList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XPGUIFactoryList.h; path = source/XPGUIFactoryList.h; sourceTree = "<group>"; };
+		A7EF38D91B14ACB4006FDA0D /* XPGUIArticleAdornment.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XPGUIArticleAdornment.cpp; path = source/XPGUIArticleAdornment.cpp; sourceTree = "<group>"; };
+		A7EF38DA1B14ACB4006FDA0D /* XPGUIPlacedFormeContentAdornment.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XPGUIPlacedFormeContentAdornment.cpp; path = source/XPGUIPlacedFormeContentAdornment.cpp; sourceTree = "<group>"; };
+		A7EF38DB1B14ACB4006FDA0D /* XPGUIPlacedFormeFooterAdornment.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XPGUIPlacedFormeFooterAdornment.cpp; path = source/XPGUIPlacedFormeFooterAdornment.cpp; sourceTree = "<group>"; };
+		A7EF38DC1B14ACB4006FDA0D /* XPGUIPlacedFormeHeaderAdornment.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XPGUIPlacedFormeHeaderAdornment.cpp; path = source/XPGUIPlacedFormeHeaderAdornment.cpp; sourceTree = "<group>"; };
+		A7EF38EC1B14ACFE006FDA0D /* XPGUIDisplayImageFormePanelView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XPGUIDisplayImageFormePanelView.cpp; path = source/XPGUIDisplayImageFormePanelView.cpp; sourceTree = "<group>"; };
+		A7EF38ED1B14ACFE006FDA0D /* XPGUIFormeAdornmentShape.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XPGUIFormeAdornmentShape.cpp; path = source/XPGUIFormeAdornmentShape.cpp; sourceTree = "<group>"; };
+		A7EF38EE1B14ACFE006FDA0D /* XPGUIFormeDragDropSource.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XPGUIFormeDragDropSource.cpp; path = source/XPGUIFormeDragDropSource.cpp; sourceTree = "<group>"; };
+		A7EF38EF1B14ACFE006FDA0D /* XPGUIFormeDropTarget.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XPGUIFormeDropTarget.cpp; path = source/XPGUIFormeDropTarget.cpp; sourceTree = "<group>"; };
+		A7EF38F01B14ACFE006FDA0D /* XPGUIFormeFileHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XPGUIFormeFileHandler.cpp; path = source/XPGUIFormeFileHandler.cpp; sourceTree = "<group>"; };
+		A7EF38F11B14ACFE006FDA0D /* XPGUIFormeNodeID.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XPGUIFormeNodeID.cpp; path = source/XPGUIFormeNodeID.cpp; sourceTree = "<group>"; };
+		A7EF38F21B14ACFE006FDA0D /* XPGUIFormeNodeID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XPGUIFormeNodeID.h; path = source/XPGUIFormeNodeID.h; sourceTree = "<group>"; };
+		A7EF38F31B14ACFE006FDA0D /* XPGUIFormesPanelObserver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XPGUIFormesPanelObserver.cpp; path = source/XPGUIFormesPanelObserver.cpp; sourceTree = "<group>"; };
+		A7EF38F41B14ACFE006FDA0D /* XPGUIFormesTVHierarchyAdapter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XPGUIFormesTVHierarchyAdapter.cpp; path = source/XPGUIFormesTVHierarchyAdapter.cpp; sourceTree = "<group>"; };
+		A7EF38F51B14ACFE006FDA0D /* XPGUIFormesTVWidgetMgr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XPGUIFormesTVWidgetMgr.cpp; path = source/XPGUIFormesTVWidgetMgr.cpp; sourceTree = "<group>"; };
+		A7EF38F61B14ACFE006FDA0D /* XPGUIImagesFormesViewObserver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XPGUIImagesFormesViewObserver.cpp; path = source/XPGUIImagesFormesViewObserver.cpp; sourceTree = "<group>"; };
+		A7EF38F71B14ACFE006FDA0D /* XPGUIXRailNewFormeDialogController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XPGUIXRailNewFormeDialogController.cpp; path = source/XPGUIXRailNewFormeDialogController.cpp; sourceTree = "<group>"; };
+		A7EF38F81B14ACFE006FDA0D /* XPGUIXRailNewFormeDialogObserver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XPGUIXRailNewFormeDialogObserver.cpp; path = source/XPGUIXRailNewFormeDialogObserver.cpp; sourceTree = "<group>"; };
+		A7EF39071B14AD24006FDA0D /* XPGUIUpdateFormeDialogController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XPGUIUpdateFormeDialogController.cpp; path = source/XPGUIUpdateFormeDialogController.cpp; sourceTree = "<group>"; };
+		A7EF39081B14AD24006FDA0D /* XPGUIUpdateStyleMatchingHierarchyAdapter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XPGUIUpdateStyleMatchingHierarchyAdapter.cpp; path = source/XPGUIUpdateStyleMatchingHierarchyAdapter.cpp; sourceTree = "<group>"; };
+		A7EF39091B14AD24006FDA0D /* XPGUIUpdateStyleMatchingWidgetMgr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XPGUIUpdateStyleMatchingWidgetMgr.cpp; path = source/XPGUIUpdateStyleMatchingWidgetMgr.cpp; sourceTree = "<group>"; };
+		A7EF390D1B14AD40006FDA0D /* IMatchingStylesList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IMatchingStylesList.h; path = source/IMatchingStylesList.h; sourceTree = "<group>"; };
+		A7EF390E1B14AD40006FDA0D /* XPGUIMatchingStylesList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XPGUIMatchingStylesList.cpp; path = source/XPGUIMatchingStylesList.cpp; sourceTree = "<group>"; };
+		A7EF39111B14AD40006FDA0D /* XPGUIStyleMatchingNodeID.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XPGUIStyleMatchingNodeID.cpp; path = source/XPGUIStyleMatchingNodeID.cpp; sourceTree = "<group>"; };
+		A7EF39121B14AD40006FDA0D /* XPGUIStyleMatchingNodeID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XPGUIStyleMatchingNodeID.h; path = source/XPGUIStyleMatchingNodeID.h; sourceTree = "<group>"; };
+		A7EF39191B14AD72006FDA0D /* XPageUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XPageUtils.cpp; path = ../Core/source/XPageUtils.cpp; sourceTree = "<group>"; };
+		A7EF391C1B14AD72006FDA0D /* XPGFormeDataNode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XPGFormeDataNode.cpp; path = ../Core/source/XPGFormeDataNode.cpp; sourceTree = "<group>"; };
+		A7EF391D1B14AD72006FDA0D /* XPGFormeDataNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XPGFormeDataNode.h; path = ../Core/source/XPGFormeDataNode.h; sourceTree = "<group>"; };
+		A7EF391E1B14AD72006FDA0D /* XPGImageDataNode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XPGImageDataNode.cpp; path = ../Core/source/XPGImageDataNode.cpp; sourceTree = "<group>"; };
+		A7EF39231B14ADB1006FDA0D /* XPGUIDisplayImagePanelView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XPGUIDisplayImagePanelView.cpp; path = source/XPGUIDisplayImagePanelView.cpp; sourceTree = "<group>"; };
+		A7EF39271B14ADB1006FDA0D /* XPGUIImageFileHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XPGUIImageFileHandler.cpp; path = source/XPGUIImageFileHandler.cpp; sourceTree = "<group>"; };
+		A7EF39281B14ADB1006FDA0D /* XPGUIImageNodeID.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XPGUIImageNodeID.cpp; path = source/XPGUIImageNodeID.cpp; sourceTree = "<group>"; };
+		A7EF39291B14ADB1006FDA0D /* XPGUIImageNodeID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XPGUIImageNodeID.h; path = source/XPGUIImageNodeID.h; sourceTree = "<group>"; };
+		A7EF392A1B14ADB1006FDA0D /* XPGUIImagesTVHierarchyAdapter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XPGUIImagesTVHierarchyAdapter.cpp; path = source/XPGUIImagesTVHierarchyAdapter.cpp; sourceTree = "<group>"; };
+		A7EF392B1B14ADB1006FDA0D /* XPGUIImagesTVWidgetMgr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XPGUIImagesTVWidgetMgr.cpp; path = source/XPGUIImagesTVWidgetMgr.cpp; sourceTree = "<group>"; };
+		A7EF392C1B14ADB1006FDA0D /* XPGUIImagesViewObserver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XPGUIImagesViewObserver.cpp; path = source/XPGUIImagesViewObserver.cpp; sourceTree = "<group>"; };
+		A7EF392D1B14ADB1006FDA0D /* XPGUIXRailImageDragDropSource.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XPGUIXRailImageDragDropSource.cpp; path = source/XPGUIXRailImageDragDropSource.cpp; sourceTree = "<group>"; };
+		A7EF392E1B14ADB1006FDA0D /* XPGUIXRailImageDropTarget.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XPGUIXRailImageDropTarget.cpp; path = source/XPGUIXRailImageDropTarget.cpp; sourceTree = "<group>"; };
+		A7EF392F1B14ADB1006FDA0D /* XPGUIXRailInCopyImageDragDropSource.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XPGUIXRailInCopyImageDragDropSource.cpp; path = source/XPGUIXRailInCopyImageDragDropSource.cpp; sourceTree = "<group>"; };
+		A7EF39301B14ADB1006FDA0D /* XPGUIXRailInCopyImagesPanelObserver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XPGUIXRailInCopyImagesPanelObserver.cpp; path = source/XPGUIXRailInCopyImagesPanelObserver.cpp; sourceTree = "<group>"; };
+		A7EF393E1B14ADC2006FDA0D /* XPGUITECImageDragDropSource.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XPGUITECImageDragDropSource.cpp; path = source/XPGUITECImageDragDropSource.cpp; sourceTree = "<group>"; };
+		A7EF393F1B14ADC2006FDA0D /* XPGUITECImageDropTarget.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XPGUITECImageDropTarget.cpp; path = source/XPGUITECImageDropTarget.cpp; sourceTree = "<group>"; };
+		A7EF39401B14ADC2006FDA0D /* XPGUITECImagesPanelObserver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XPGUITECImagesPanelObserver.cpp; path = source/XPGUITECImagesPanelObserver.cpp; sourceTree = "<group>"; };
+		A7EF3A2D1B14ADDD006FDA0D /* ActionIDToStringDataImpl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ActionIDToStringDataImpl.cpp; path = source/ActionIDToStringDataImpl.cpp; sourceTree = "<group>"; };
+		A7EF3A2E1B14ADDD006FDA0D /* IActionIDToStringData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IActionIDToStringData.h; path = source/IActionIDToStringData.h; sourceTree = "<group>"; };
+		A7EF3A2F1B14ADDD006FDA0D /* XPGUIActionComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XPGUIActionComponent.cpp; path = source/XPGUIActionComponent.cpp; sourceTree = "<group>"; };
+		A7EF3A371B14ADF4006FDA0D /* TriggerResourceDeps.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TriggerResourceDeps.cpp; path = source/TriggerResourceDeps.cpp; sourceTree = "<group>"; };
+		A7EF3A391B14AE03006FDA0D /* XPGUIID.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XPGUIID.cpp; path = source/XPGUIID.cpp; sourceTree = "<group>"; };
+		A7EF3A3A1B14AE03006FDA0D /* XPGUIID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XPGUIID.h; path = source/XPGUIID.h; sourceTree = "<group>"; };
+		A7EF3A3B1B14AE03006FDA0D /* XPGUINoStrip.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XPGUINoStrip.cpp; path = source/XPGUINoStrip.cpp; sourceTree = "<group>"; };
+		A7EF3A401B14AE2F006FDA0D /* XPGUITextesPanelView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XPGUITextesPanelView.cpp; path = source/XPGUITextesPanelView.cpp; sourceTree = "<group>"; };
+		A7EF3A421B14AE57006FDA0D /* XPGUIAddToArtDialogController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XPGUIAddToArtDialogController.cpp; path = source/XPGUIAddToArtDialogController.cpp; sourceTree = "<group>"; };
+		A7EF3A431B14AE57006FDA0D /* XPGUIAddToArtDialogObserver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XPGUIAddToArtDialogObserver.cpp; path = source/XPGUIAddToArtDialogObserver.cpp; sourceTree = "<group>"; };
+		A7EF3A441B14AE57006FDA0D /* XPGUILinkArtDialogController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XPGUILinkArtDialogController.cpp; path = source/XPGUILinkArtDialogController.cpp; sourceTree = "<group>"; };
+		A7EF3A451B14AE57006FDA0D /* XPGUILinkArtDialogObserver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XPGUILinkArtDialogObserver.cpp; path = source/XPGUILinkArtDialogObserver.cpp; sourceTree = "<group>"; };
+		A7EF3A461B14AE57006FDA0D /* XPGUIOrderArtDialogController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XPGUIOrderArtDialogController.cpp; path = source/XPGUIOrderArtDialogController.cpp; sourceTree = "<group>"; };
+		A7EF3A471B14AE57006FDA0D /* XPGUIOrderArtDialogObserver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XPGUIOrderArtDialogObserver.cpp; path = source/XPGUIOrderArtDialogObserver.cpp; sourceTree = "<group>"; };
+		A7EF3A481B14AE57006FDA0D /* XPGUIXmlFileHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XPGUIXmlFileHandler.cpp; path = source/XPGUIXmlFileHandler.cpp; sourceTree = "<group>"; };
+		A7EF3A491B14AE57006FDA0D /* XPGUIXmlWithFormeFileHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XPGUIXmlWithFormeFileHandler.cpp; path = source/XPGUIXmlWithFormeFileHandler.cpp; sourceTree = "<group>"; };
+		A7EF3A4A1B14AE57006FDA0D /* XPGUIXRailArticleWithFormeDropTarget.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XPGUIXRailArticleWithFormeDropTarget.cpp; path = source/XPGUIXRailArticleWithFormeDropTarget.cpp; sourceTree = "<group>"; };
+		A7EF3A4B1B14AE57006FDA0D /* XPGUIXRailTexteDragDropSource.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XPGUIXRailTexteDragDropSource.cpp; path = source/XPGUIXRailTexteDragDropSource.cpp; sourceTree = "<group>"; };
+		A7EF3A5A1B14AE75006FDA0D /* XPageUIUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XPageUIUtils.cpp; path = source/XPageUIUtils.cpp; sourceTree = "<group>"; };
+		A7EF3A5B1B14AE75006FDA0D /* XPageUIUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XPageUIUtils.h; path = source/XPageUIUtils.h; sourceTree = "<group>"; };
+		A7EF3A821B14B5DC006FDA0D /* XPGUIArticleNodeID.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XPGUIArticleNodeID.cpp; path = source/XPGUIArticleNodeID.cpp; sourceTree = "<group>"; };
+		A7EF3A831B14B5DC006FDA0D /* XPGUIArticleNodeID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XPGUIArticleNodeID.h; path = source/XPGUIArticleNodeID.h; sourceTree = "<group>"; };
+		A7EF3A841B14B5DC006FDA0D /* XPGUIArticleTVHierarchyAdapter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XPGUIArticleTVHierarchyAdapter.cpp; path = source/XPGUIArticleTVHierarchyAdapter.cpp; sourceTree = "<group>"; };
+		A7EF3A851B14B5DC006FDA0D /* XPGUIArticleTVWidgetMgr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XPGUIArticleTVWidgetMgr.cpp; path = source/XPGUIArticleTVWidgetMgr.cpp; sourceTree = "<group>"; };
+		A7EF3A861B14B5DC006FDA0D /* XPGUIArticleViewObserver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XPGUIArticleViewObserver.cpp; path = source/XPGUIArticleViewObserver.cpp; sourceTree = "<group>"; };
+		A7EF3A8B1B14B608006FDA0D /* XPGArticleData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XPGArticleData.cpp; path = ../Core/source/XPGArticleData.cpp; sourceTree = "<group>"; };
+		A7EF3A8C1B14B608006FDA0D /* XPGArticleDataNode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XPGArticleDataNode.cpp; path = ../Core/source/XPGArticleDataNode.cpp; sourceTree = "<group>"; };
+		A7EF3A8F1B14B73C006FDA0D /* InDesignModelAndUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = InDesignModelAndUI.framework; path = ../../../../../../AdobeSDKs/adobe_indesign_CC2026_Products_SDK/build/mac/release_cocoa64/packagefolder/contents/macos/InDesignModelAndUI.framework; sourceTree = "<group>"; };
+		F957084E15C90B2D00C95573 /* libPublicPlugIn.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPublicPlugIn.a; path = ../../../../../../AdobeSDKs/adobe_indesign_CC2026_Products_SDK/build/mac/release_cocoa64/packagefolder/contents/macos/libs/libPublicPlugIn.a; sourceTree = SOURCE_ROOT; };
+		F957087215C90B3E00C95573 /* XPageUI.InDesignPlugin */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = XPageUI.InDesignPlugin; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		F957086B15C90B3E00C95573 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F957087515C90B5100C95573 /* libPublicPlugIn.a in Frameworks */,
+				A7EF3A901B14B73C006FDA0D /* InDesignModelAndUI.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		4B05EEAD08840E8D00D809E1 = {
+			isa = PBXGroup;
+			children = (
+				A74260331B14A22000F2C3F2 /* Source */,
+				4B05EED008840E9400D809E1 /* Resources */,
+				7F52248408AFCE1F00139994 /* xcconfig */,
+				F957084215C90B2D00C95573 /* InDesign Libraries */,
+				4B05EEBB08840E8D00D809E1 /* Products */,
+				9B5F2FB72D0C67A10006920E /* Info.plist */,
+			);
+			sourceTree = "<group>";
+		};
+		4B05EEBB08840E8D00D809E1 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F957087215C90B3E00C95573 /* XPageUI.InDesignPlugin */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		4B05EED008840E9400D809E1 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				8F4C45D727B6567E007DF64F /* XPGUI_enUS.fr */,
+				8F4C45D827B6567E007DF64F /* XPGUI_frFR.fr */,
+				4B05EED108840E9500D809E1 /* XPGUI.fr */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		7F52248408AFCE1F00139994 /* xcconfig */ = {
+			isa = PBXGroup;
+			children = (
+				7FE5845A08AD6DB8007DB654 /* UIPlugin.xcconfig */,
+				77D687F4113861B500D56A9C /* UIPlugin_release.xcconfig */,
+			);
+			name = xcconfig;
+			sourceTree = "<group>";
+		};
+		A74260331B14A22000F2C3F2 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				A7EF38B81B14ABFF006FDA0D /* A Trier */,
+				A7EF38B71B14ABF7006FDA0D /* Header Files */,
+				A7EF38B61B14ABE7006FDA0D /* Source Files */,
+			);
+			name = Source;
+			sourceTree = "<group>";
+		};
+		A7EF38B61B14ABE7006FDA0D /* Source Files */ = {
+			isa = PBXGroup;
+			children = (
+				A7EF3A781B14B5BD006FDA0D /* Articles */,
+				A7EF38D81B14AC90006FDA0D /* Adornment */,
+				A7EF38D61B14AC89006FDA0D /* Formes */,
+				A7EF38D51B14AC84006FDA0D /* From Core */,
+				A7EF38D41B14AC80006FDA0D /* Images */,
+				A7EF38D31B14AC7D006FDA0D /* InCopy */,
+				A7EF38D21B14AC7A006FDA0D /* Menu */,
+				A7EF38D11B14AC77006FDA0D /* Plugin */,
+				A7EF38D01B14AC72006FDA0D /* Statistics */,
+				A7EF38CF1B14AC6E006FDA0D /* Textes */,
+				A7EF38CE1B14AC69006FDA0D /* Utils */,
+			);
+			name = "Source Files";
+			sourceTree = "<group>";
+		};
+		A7EF38B71B14ABF7006FDA0D /* Header Files */ = {
+			isa = PBXGroup;
+			children = (
+				A7EF38CD1B14AC5E006FDA0D /* XPGUIFactoryList.h */,
+			);
+			name = "Header Files";
+			sourceTree = "<group>";
+		};
+		A7EF38B81B14ABFF006FDA0D /* A Trier */ = {
+			isa = PBXGroup;
+			children = (
+				A7EF38B91B14AC4C006FDA0D /* FileSystemIterator.h */,
+				A7EF38BA1B14AC4C006FDA0D /* XPGUIAssemblagesPanelObserver.cpp */,
+				A7EF38BB1B14AC4C006FDA0D /* XPGUIAssemblagesTVHierarchyAdapter.cpp */,
+				A7EF38BC1B14AC4C006FDA0D /* XPGUINewAssemblageDialogController.cpp */,
+				B7EF38BC1B14AC4C006FDA0D /* XPGUINewClasseurDialogController.cpp */,
+				A7EF38C01B14AC4C006FDA0D /* XPGUIXRailImagesPanelObserver.cpp */,
+				A7EF38C11B14AC4C006FDA0D /* XPGUIXRailPanelObserver.cpp */,
+				A7EF38C21B14AC4C006FDA0D /* XPGUIXRailXmlDropTarget.cpp */,
+			);
+			name = "A Trier";
+			sourceTree = "<group>";
+		};
+		A7EF38CE1B14AC69006FDA0D /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				A7EF3A5A1B14AE75006FDA0D /* XPageUIUtils.cpp */,
+				A7EF3A5B1B14AE75006FDA0D /* XPageUIUtils.h */,
+			);
+			name = Utils;
+			sourceTree = "<group>";
+		};
+		A7EF38CF1B14AC6E006FDA0D /* Textes */ = {
+			isa = PBXGroup;
+			children = (
+				A7EF3A421B14AE57006FDA0D /* XPGUIAddToArtDialogController.cpp */,
+				A7EF3A431B14AE57006FDA0D /* XPGUIAddToArtDialogObserver.cpp */,
+				A7EF3A441B14AE57006FDA0D /* XPGUILinkArtDialogController.cpp */,
+				A7EF3A451B14AE57006FDA0D /* XPGUILinkArtDialogObserver.cpp */,
+				A7EF3A461B14AE57006FDA0D /* XPGUIOrderArtDialogController.cpp */,
+				A7EF3A471B14AE57006FDA0D /* XPGUIOrderArtDialogObserver.cpp */,
+				A7EF3A481B14AE57006FDA0D /* XPGUIXmlFileHandler.cpp */,
+				A7EF3A491B14AE57006FDA0D /* XPGUIXmlWithFormeFileHandler.cpp */,
+				A7EF3A4A1B14AE57006FDA0D /* XPGUIXRailArticleWithFormeDropTarget.cpp */,
+				A7EF3A4B1B14AE57006FDA0D /* XPGUIXRailTexteDragDropSource.cpp */,
+				A7EF3A401B14AE2F006FDA0D /* XPGUITextesPanelView.cpp */,
+			);
+			name = Textes;
+			sourceTree = "<group>";
+		};
+		A7EF38D11B14AC77006FDA0D /* Plugin */ = {
+			isa = PBXGroup;
+			children = (
+				A7EF3A391B14AE03006FDA0D /* XPGUIID.cpp */,
+				A7EF3A3A1B14AE03006FDA0D /* XPGUIID.h */,
+				A7EF3A3B1B14AE03006FDA0D /* XPGUINoStrip.cpp */,
+				8F00E5BD27B523C100A588F7 /* SDKPlugInEntrypoint.cpp */,
+				A7EF3A371B14ADF4006FDA0D /* TriggerResourceDeps.cpp */,
+				8F00E5BF27B523DC00A588F7 /* SDKUtilities.cpp */,
+				8F00E5BB27B523B900A588F7 /* SDKFileHelper.cpp */,
+			);
+			name = Plugin;
+			sourceTree = "<group>";
+		};
+		A7EF38D21B14AC7A006FDA0D /* Menu */ = {
+			isa = PBXGroup;
+			children = (
+				A7EF3A2D1B14ADDD006FDA0D /* ActionIDToStringDataImpl.cpp */,
+				A7EF3A2E1B14ADDD006FDA0D /* IActionIDToStringData.h */,
+				A7EF3A2F1B14ADDD006FDA0D /* XPGUIActionComponent.cpp */,
+			);
+			name = Menu;
+			sourceTree = "<group>";
+		};
+		A7EF38D31B14AC7D006FDA0D /* InCopy */ = {
+			isa = PBXGroup;
+			children = (
+				A7EF393E1B14ADC2006FDA0D /* XPGUITECImageDragDropSource.cpp */,
+				A7EF393F1B14ADC2006FDA0D /* XPGUITECImageDropTarget.cpp */,
+				A7EF39401B14ADC2006FDA0D /* XPGUITECImagesPanelObserver.cpp */,
+			);
+			name = InCopy;
+			sourceTree = "<group>";
+		};
+		A7EF38D41B14AC80006FDA0D /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				A7EF39231B14ADB1006FDA0D /* XPGUIDisplayImagePanelView.cpp */,
+				A7EF39271B14ADB1006FDA0D /* XPGUIImageFileHandler.cpp */,
+				A7EF39281B14ADB1006FDA0D /* XPGUIImageNodeID.cpp */,
+				A7EF39291B14ADB1006FDA0D /* XPGUIImageNodeID.h */,
+				A7EF392A1B14ADB1006FDA0D /* XPGUIImagesTVHierarchyAdapter.cpp */,
+				A7EF392B1B14ADB1006FDA0D /* XPGUIImagesTVWidgetMgr.cpp */,
+				A7EF392C1B14ADB1006FDA0D /* XPGUIImagesViewObserver.cpp */,
+				A7EF392D1B14ADB1006FDA0D /* XPGUIXRailImageDragDropSource.cpp */,
+				A7EF392E1B14ADB1006FDA0D /* XPGUIXRailImageDropTarget.cpp */,
+				A7EF392F1B14ADB1006FDA0D /* XPGUIXRailInCopyImageDragDropSource.cpp */,
+				A7EF39301B14ADB1006FDA0D /* XPGUIXRailInCopyImagesPanelObserver.cpp */,
+			);
+			name = Images;
+			sourceTree = "<group>";
+		};
+		A7EF38D51B14AC84006FDA0D /* From Core */ = {
+			isa = PBXGroup;
+			children = (
+				A7EF3A8B1B14B608006FDA0D /* XPGArticleData.cpp */,
+				A7EF3A8C1B14B608006FDA0D /* XPGArticleDataNode.cpp */,
+				A7EF39191B14AD72006FDA0D /* XPageUtils.cpp */,
+				A7EF391C1B14AD72006FDA0D /* XPGFormeDataNode.cpp */,
+				A7EF391D1B14AD72006FDA0D /* XPGFormeDataNode.h */,
+				A7EF391E1B14AD72006FDA0D /* XPGImageDataNode.cpp */,
+			);
+			name = "From Core";
+			sourceTree = "<group>";
+		};
+		A7EF38D61B14AC89006FDA0D /* Formes */ = {
+			isa = PBXGroup;
+			children = (
+				A7EF39061B14AD07006FDA0D /* MatchingStyle */,
+				A7EF39051B14AD00006FDA0D /* UpdateMatchingStyle */,
+				A7EF38EC1B14ACFE006FDA0D /* XPGUIDisplayImageFormePanelView.cpp */,
+				A7EF38ED1B14ACFE006FDA0D /* XPGUIFormeAdornmentShape.cpp */,
+				A7EF38EE1B14ACFE006FDA0D /* XPGUIFormeDragDropSource.cpp */,
+				A7EF38EF1B14ACFE006FDA0D /* XPGUIFormeDropTarget.cpp */,
+				A7EF38F01B14ACFE006FDA0D /* XPGUIFormeFileHandler.cpp */,
+				A7EF38F11B14ACFE006FDA0D /* XPGUIFormeNodeID.cpp */,
+				A7EF38F21B14ACFE006FDA0D /* XPGUIFormeNodeID.h */,
+				A7EF38F31B14ACFE006FDA0D /* XPGUIFormesPanelObserver.cpp */,
+				A7EF38F41B14ACFE006FDA0D /* XPGUIFormesTVHierarchyAdapter.cpp */,
+				A7EF38F51B14ACFE006FDA0D /* XPGUIFormesTVWidgetMgr.cpp */,
+				A7EF38F61B14ACFE006FDA0D /* XPGUIImagesFormesViewObserver.cpp */,
+				A7EF38F71B14ACFE006FDA0D /* XPGUIXRailNewFormeDialogController.cpp */,
+				A7EF38F81B14ACFE006FDA0D /* XPGUIXRailNewFormeDialogObserver.cpp */,
+			);
+			name = Formes;
+			sourceTree = "<group>";
+		};
+		A7EF38D81B14AC90006FDA0D /* Adornment */ = {
+			isa = PBXGroup;
+			children = (
+				A7EF38D91B14ACB4006FDA0D /* XPGUIArticleAdornment.cpp */,
+				A7EF38DA1B14ACB4006FDA0D /* XPGUIPlacedFormeContentAdornment.cpp */,
+				A7EF38DB1B14ACB4006FDA0D /* XPGUIPlacedFormeFooterAdornment.cpp */,
+				A7EF38DC1B14ACB4006FDA0D /* XPGUIPlacedFormeHeaderAdornment.cpp */,
+			);
+			name = Adornment;
+			sourceTree = "<group>";
+		};
+		A7EF39051B14AD00006FDA0D /* UpdateMatchingStyle */ = {
+			isa = PBXGroup;
+			children = (
+				A7EF39071B14AD24006FDA0D /* XPGUIUpdateFormeDialogController.cpp */,
+				A7EF39081B14AD24006FDA0D /* XPGUIUpdateStyleMatchingHierarchyAdapter.cpp */,
+				A7EF39091B14AD24006FDA0D /* XPGUIUpdateStyleMatchingWidgetMgr.cpp */,
+			);
+			name = UpdateMatchingStyle;
+			sourceTree = "<group>";
+		};
+		A7EF39061B14AD07006FDA0D /* MatchingStyle */ = {
+			isa = PBXGroup;
+			children = (
+				A7EF390D1B14AD40006FDA0D /* IMatchingStylesList.h */,
+				A7EF390E1B14AD40006FDA0D /* XPGUIMatchingStylesList.cpp */,
+				A7EF39111B14AD40006FDA0D /* XPGUIStyleMatchingNodeID.cpp */,
+				A7EF39121B14AD40006FDA0D /* XPGUIStyleMatchingNodeID.h */,
+			);
+			name = MatchingStyle;
+			sourceTree = "<group>";
+		};
+		A7EF3A781B14B5BD006FDA0D /* Articles */ = {
+			isa = PBXGroup;
+			children = (
+				A7EF3A821B14B5DC006FDA0D /* XPGUIArticleNodeID.cpp */,
+				A7EF3A831B14B5DC006FDA0D /* XPGUIArticleNodeID.h */,
+				A7EF3A841B14B5DC006FDA0D /* XPGUIArticleTVHierarchyAdapter.cpp */,
+				A7EF3A851B14B5DC006FDA0D /* XPGUIArticleTVWidgetMgr.cpp */,
+				A7EF3A861B14B5DC006FDA0D /* XPGUIArticleViewObserver.cpp */,
+			);
+			name = Articles;
+			sourceTree = "<group>";
+		};
+		F957084215C90B2D00C95573 /* InDesign Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				F957084915C90B2D00C95573 /* For Cocoa64 */,
+			);
+			name = "InDesign Libraries";
+			sourceTree = "<group>";
+		};
+		F957084915C90B2D00C95573 /* For Cocoa64 */ = {
+			isa = PBXGroup;
+			children = (
+				A7EF3A8F1B14B73C006FDA0D /* InDesignModelAndUI.framework */,
+				F957084E15C90B2D00C95573 /* libPublicPlugIn.a */,
+			);
+			name = "For Cocoa64";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		F957086215C90B3E00C95573 /* Release_Cocoa64 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F957087015C90B3E00C95573 /* Build configuration list for PBXNativeTarget "Release_Cocoa64" */;
+			buildPhases = (
+				F957086315C90B3E00C95573 /* Sources */,
+				F957086B15C90B3E00C95573 /* Frameworks */,
+				F957086C15C90B3E00C95573 /* Rez */,
+				F957086D15C90B3E00C95573 /* Resources */,
+				F957086E15C90B3E00C95573 /* ShellScript */,
+			);
+			buildRules = (
+				F957086F15C90B3E00C95573 /* PBXBuildRule */,
+			);
+			dependencies = (
+			);
+			name = Release_Cocoa64;
+			productName = Release;
+			productReference = F957087215C90B3E00C95573 /* XPageUI.InDesignPlugin */;
+			productType = "com.apple.product-type.framework";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		4B05EEAF08840E8D00D809E1 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 1310;
+			};
+			buildConfigurationList = 4B05EEB008840E8D00D809E1 /* Build configuration list for PBXProject "XPageUI" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				ja,
+				Base,
+				de,
+				en,
+				fr,
+			);
+			mainGroup = 4B05EEAD08840E8D00D809E1;
+			productRefGroup = 4B05EEBB08840E8D00D809E1 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				F957086215C90B3E00C95573 /* Release_Cocoa64 */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		F957086D15C90B3E00C95573 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXRezBuildPhase section */
+		F957086C15C90B3E00C95573 /* Rez */ = {
+			isa = PBXRezBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXRezBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		F957086E15C90B3E00C95573 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"$ID_SDK_ROOT/build/mac/packagescripts/copyResources.sh\"";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		F957086315C90B3E00C95573 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A7EF390C1B14AD24006FDA0D /* XPGUIUpdateStyleMatchingWidgetMgr.cpp in Sources */,
+				A7EF39221B14AD72006FDA0D /* XPGImageDataNode.cpp in Sources */,
+				A7EF3A891B14B5DC006FDA0D /* XPGUIArticleTVWidgetMgr.cpp in Sources */,
+				A7EF38FA1B14ACFE006FDA0D /* XPGUIFormeAdornmentShape.cpp in Sources */,
+				A7EF38C51B14AC4C006FDA0D /* XPGUIAssemblagesTVHierarchyAdapter.cpp in Sources */,
+				A7EF39361B14ADB1006FDA0D /* XPGUIImageNodeID.cpp in Sources */,
+				A7EF39031B14ACFE006FDA0D /* XPGUIXRailNewFormeDialogController.cpp in Sources */,
+				A7EF3A311B14ADDD006FDA0D /* XPGUIActionComponent.cpp in Sources */,
+				A7EF3A8A1B14B5DC006FDA0D /* XPGUIArticleViewObserver.cpp in Sources */,
+				A7EF38CA1B14AC4C006FDA0D /* XPGUIXRailPanelObserver.cpp in Sources */,
+				A7EF38DF1B14ACB4006FDA0D /* XPGUIPlacedFormeFooterAdornment.cpp in Sources */,
+				A7EF3A8E1B14B608006FDA0D /* XPGArticleDataNode.cpp in Sources */,
+				A7EF39021B14ACFE006FDA0D /* XPGUIImagesFormesViewObserver.cpp in Sources */,
+				A7EF393B1B14ADB1006FDA0D /* XPGUIXRailImageDropTarget.cpp in Sources */,
+				A7EF3A871B14B5DC006FDA0D /* XPGUIArticleNodeID.cpp in Sources */,
+				A7EF3A8D1B14B608006FDA0D /* XPGArticleData.cpp in Sources */,
+				A7EF393D1B14ADB1006FDA0D /* XPGUIXRailInCopyImagesPanelObserver.cpp in Sources */,
+				A7EF3A541B14AE57006FDA0D /* XPGUIXRailArticleWithFormeDropTarget.cpp in Sources */,
+				A7EF3A4F1B14AE57006FDA0D /* XPGUILinkArtDialogObserver.cpp in Sources */,
+				A7EF39371B14ADB1006FDA0D /* XPGUIImagesTVHierarchyAdapter.cpp in Sources */,
+				A7EF39411B14ADC2006FDA0D /* XPGUITECImageDragDropSource.cpp in Sources */,
+				A7EF38FF1B14ACFE006FDA0D /* XPGUIFormesPanelObserver.cpp in Sources */,
+				A7EF391F1B14AD72006FDA0D /* XPageUtils.cpp in Sources */,
+				A7EF38DE1B14ACB4006FDA0D /* XPGUIPlacedFormeContentAdornment.cpp in Sources */,
+				A7EF3A411B14AE2F006FDA0D /* XPGUITextesPanelView.cpp in Sources */,
+				A7EF38E01B14ACB4006FDA0D /* XPGUIPlacedFormeHeaderAdornment.cpp in Sources */,
+				A7EF3A4C1B14AE57006FDA0D /* XPGUIAddToArtDialogController.cpp in Sources */,
+				A7EF390B1B14AD24006FDA0D /* XPGUIUpdateStyleMatchingHierarchyAdapter.cpp in Sources */,
+				A7EF39431B14ADC2006FDA0D /* XPGUITECImagesPanelObserver.cpp in Sources */,
+				A7EF3A3C1B14AE03006FDA0D /* XPGUIID.cpp in Sources */,
+				A7EF38C41B14AC4C006FDA0D /* XPGUIAssemblagesPanelObserver.cpp in Sources */,
+				A7EF3A4D1B14AE57006FDA0D /* XPGUIAddToArtDialogObserver.cpp in Sources */,
+				A7EF39141B14AD40006FDA0D /* XPGUIMatchingStylesList.cpp in Sources */,
+				A7EF3A5F1B14AE75006FDA0D /* XPageUIUtils.cpp in Sources */,
+				A7EF39421B14ADC2006FDA0D /* XPGUITECImageDropTarget.cpp in Sources */,
+				A7EF39311B14ADB1006FDA0D /* XPGUIDisplayImagePanelView.cpp in Sources */,
+				A7EF38C91B14AC4C006FDA0D /* XPGUIXRailImagesPanelObserver.cpp in Sources */,
+				A7EF3A3D1B14AE03006FDA0D /* XPGUINoStrip.cpp in Sources */,
+				A7EF3A4E1B14AE57006FDA0D /* XPGUILinkArtDialogController.cpp in Sources */,
+				A7EF3A301B14ADDD006FDA0D /* ActionIDToStringDataImpl.cpp in Sources */,
+				A7EF39381B14ADB1006FDA0D /* XPGUIImagesTVWidgetMgr.cpp in Sources */,
+				A7EF390A1B14AD24006FDA0D /* XPGUIUpdateFormeDialogController.cpp in Sources */,
+				A7EF3A501B14AE57006FDA0D /* XPGUIOrderArtDialogController.cpp in Sources */,
+				A7EF38DD1B14ACB4006FDA0D /* XPGUIArticleAdornment.cpp in Sources */,
+				A7EF3A551B14AE57006FDA0D /* XPGUIXRailTexteDragDropSource.cpp in Sources */,
+				A7EF38FC1B14ACFE006FDA0D /* XPGUIFormeDropTarget.cpp in Sources */,
+				A7EF38FE1B14ACFE006FDA0D /* XPGUIFormeNodeID.cpp in Sources */,
+				A7EF39211B14AD72006FDA0D /* XPGFormeDataNode.cpp in Sources */,
+				A7EF38C61B14AC4C006FDA0D /* XPGUINewAssemblageDialogController.cpp in Sources */,
+				B7EF38C61B14AC4C006FDA0D /* XPGUINewClasseurDialogController.cpp in Sources */,
+				A7EF3A521B14AE57006FDA0D /* XPGUIXmlFileHandler.cpp in Sources */,
+				A7EF3A381B14ADF4006FDA0D /* TriggerResourceDeps.cpp in Sources */,
+				8F00E5BC27B523B900A588F7 /* SDKFileHelper.cpp in Sources */,
+				8F00E5BE27B523C100A588F7 /* SDKPlugInEntrypoint.cpp in Sources */,
+				A7EF38CB1B14AC4C006FDA0D /* XPGUIXRailXmlDropTarget.cpp in Sources */,
+				A7EF39001B14ACFE006FDA0D /* XPGUIFormesTVHierarchyAdapter.cpp in Sources */,
+				F957086415C90B3E00C95573 /* XPGUI.fr in Sources */,
+				A7EF38FB1B14ACFE006FDA0D /* XPGUIFormeDragDropSource.cpp in Sources */,
+				A7EF3A881B14B5DC006FDA0D /* XPGUIArticleTVHierarchyAdapter.cpp in Sources */,
+				A7EF39351B14ADB1006FDA0D /* XPGUIImageFileHandler.cpp in Sources */,
+				A7EF39011B14ACFE006FDA0D /* XPGUIFormesTVWidgetMgr.cpp in Sources */,
+				A7EF3A511B14AE57006FDA0D /* XPGUIOrderArtDialogObserver.cpp in Sources */,
+				A7EF38F91B14ACFE006FDA0D /* XPGUIDisplayImageFormePanelView.cpp in Sources */,
+				A7EF38FD1B14ACFE006FDA0D /* XPGUIFormeFileHandler.cpp in Sources */,
+				A7EF39171B14AD40006FDA0D /* XPGUIStyleMatchingNodeID.cpp in Sources */,
+				A7EF393C1B14ADB1006FDA0D /* XPGUIXRailInCopyImageDragDropSource.cpp in Sources */,
+				A7EF3A531B14AE57006FDA0D /* XPGUIXmlWithFormeFileHandler.cpp in Sources */,
+				A7EF39391B14ADB1006FDA0D /* XPGUIImagesViewObserver.cpp in Sources */,
+				A7EF393A1B14ADB1006FDA0D /* XPGUIXRailImageDragDropSource.cpp in Sources */,
+				A7EF39041B14ACFE006FDA0D /* XPGUIXRailNewFormeDialogObserver.cpp in Sources */,
+				8F00E5C027B523DC00A588F7 /* SDKUtilities.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		4B05EEB108840E8D00D809E1 /* Default */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7FE5845A08AD6DB8007DB654 /* UIPlugin.xcconfig */;
+			buildSettings = {
+				BUILT_PRODUCTS_DIR = "$(ID_BUILT_SDK_SAMPLES_DIR)";
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNUSED_PARAMETER = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(HEADER_SEARCH_PATHS)",
+					$ID_SDK_ROOT/source/public/interfaces/tables,
+					$ID_SDK_ROOT/source/public/components/widgetbin/includes,
+					$ID_SDK_ROOT/source/public/interfaces/workgroup,
+					$ID_SDK_ROOT/source/public/interfaces/interactive,
+					$ID_SDK_ROOT/source/public/interfaces/interactive/ui,
+					$ID_SDK_ROOT/source/public/interfaces/colormgmt,
+					$ID_SDK_ROOT/source/public/interfaces/incopy,
+					$ID_SDK_ROOT/source/public/interfaces/cjk,
+					$ID_SDK_ROOT/source/public/facades/graphics,
+					$ID_SDK_ROOT/source/public/facades/text,
+					$ID_SDK_ROOT/source/public/facades/layout,
+					$ID_SDK_ROOT/source/public/components/publiclib/plugins,
+					$ID_SDK_ROOT/source/public/components/publiclib/files,
+					$ID_SDK_ROOT/source/public/components/publiclib/objectmodel,
+					$ID_SDK_ROOT/source/sdksamples/common,
+					$ID_SDK_ROOT/external/afl/includes,
+					/Users/melody/deve/InDesign/Sources/cc2023/XPage/UI/source,
+				);
+				INFOPLIST_FILE = $ID_SDK_ROOT/source/sdksamples/common/Info.plist;
+				INFOPLIST_PREPROCESS = YES;
+				PLC_OUTPUT_TYPE = InDa;
+				PRODUCT_NAME = UI;
+			};
+			name = Default;
+		};
+		F957087115C90B3E00C95573 /* Default */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 77D687F4113861B500D56A9C /* UIPlugin_release.xcconfig */;
+			buildSettings = {
+				BUILT_PRODUCTS_DIR = "$(ID_BUILT_SDK_SAMPLES_DIR)";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Developer ID Application";
+				CODE_SIGN_STYLE = Manual;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = 3WBLWC32YG;
+				"DEVELOPMENT_TEAM[sdk=macosx*]" = 3WBLWC32YG;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					/Users/macmini2024/AdobeSDKs/Adobe_InDesign_CC2026_Products_SDK/build/mac/release_cocoa64/packagefolder/contents/macos,
+					/Users/macmini2024/AdobeSDKs/Adobe_InDesign_CC2026_Products_SDK/build/mac/release_cocoa64/packagefolder/contents/macos,
+					/Users/macmini2024/AdobeSDKs/Adobe_InDesign_CC2026_Products_SDK/build/mac/release_cocoa64/packagefolder/contents/macos,
+				);
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				HEADER_SEARCH_PATHS = (
+					"$(HEADER_SEARCH_PATHS)",
+					$ID_SDK_ROOT/source/precomp/msvc,
+					$ID_SDK_ROOT/source/public/interfaces/xmedia,
+					$ID_SDK_ROOT/source/public/interfaces/preflight,
+					$ID_SDK_ROOT/source/public/interfaces/ui,
+					$ID_SDK_ROOT/source/public/interfaces/tables,
+					$ID_SDK_ROOT/source/public/interfaces/text,
+					$ID_SDK_ROOT/source/public/interfaces/graphics,
+					$ID_SDK_ROOT/source/public/components/widgetbin/includes,
+					$ID_SDK_ROOT/source/public/interfaces/workgroup,
+					$ID_SDK_ROOT/source/public/interfaces/interactive,
+					$ID_SDK_ROOT/source/public/interfaces/interactive/ui,
+					$ID_SDK_ROOT/source/public/interfaces/colormgmt,
+					$ID_SDK_ROOT/source/public/interfaces/utils,
+					$ID_SDK_ROOT/source/public/interfaces/incopy,
+					$ID_SDK_ROOT/source/public/interfaces/layout,
+					$ID_SDK_ROOT/source/public/interfaces/architecture,
+					$ID_SDK_ROOT/source/public/interfaces/cjk,
+					$ID_SDK_ROOT/source/precomp/common,
+					$ID_SDK_ROOT/source/public/includes,
+					$ID_SDK_ROOT/source/public/facades/graphics,
+					$ID_SDK_ROOT/source/public/facades/text,
+					$ID_SDK_ROOT/source/public/facades/layout,
+					$ID_SDK_ROOT/source/public/components/publiclib/plugins,
+					$ID_SDK_ROOT/source/public/components/publiclib/files,
+					$ID_SDK_ROOT/source/public/components/publiclib/objectmodel,
+					$ID_SDK_ROOT/source/sdksamples/common,
+					$ID_SDK_ROOT/external/afl/includes,
+					$ID_SDK_ROOT/external/asl/boost_libraries,
+					$ID_SDK_ROOT/external/asl/adobe_source_libraries,
+					$ID_SDK_ROOT/external/asl/intel_tbb_libraries/include,
+					$ID_SDK_ROOT/external/icu/include,
+					$ID_SDK_ROOT/external/dva/third_party/boost_libraries,
+					$ID_SDK_ROOT/external/dva/third_party/adobe_source_libraries,
+					source,
+					../../XRailClient/XRailClient/source,
+					../Core/source,
+					../../XRail/XRail/source,
+					"$(ID_PRJ_DIR)/../../../vcpkg/installed/arm64-osx/include",
+				);
+				ID_SDK_ROOT = /Users/macmini2024/AdobeSDKs/Adobe_InDesign_CC2026_Products_SDK;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					$ID_SDK_ROOT/build/mac/release_cocoa64/packagefolder/contents/macos,
+				);
+				OTHER_LDFLAGS = (
+					"-Xlinker",
+					"-no_data_in_code_info",
+					"-ld_classic",
+				);
+				PRODUCT_NAME = XPageUI;
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				REZ_SEARCH_PATHS = (
+					"$(ID_COMMON_REZ_SEARCH_PATHS)",
+					"$(ID_SDK_ROOT)/external/palettes",
+					"$(ID_SDK_ROOT)/external/workflow",
+					icons,
+					"$ID_SDK_ROOT/source/**",
+				);
+				SDKROOT = macosx;
+				WARNING_CFLAGS = (
+					"-Wimplicit",
+					"-Wsequence-point",
+					"-Winit-self",
+					"-Wmissing-field-initializers",
+					"-Wpointer-arith",
+					"-Wpacked",
+					"-Wno-unused-parameter",
+					"-Wno-unused-variable",
+					"-Wno-write-strings",
+					"-Wno-format",
+					"-Wno-deprecated",
+					"-Wformat-security",
+					"-Wno-cast-align",
+					"-Wno-logical-op-parentheses",
+					"-Wno-c++11-extensions",
+					"-Wno-switch-enum",
+					"-Wno-char-subscripts",
+					"-Wno-return-stack-address",
+					"-Wno-parentheses-equality",
+					"-Wno-unused-function",
+					"-Wno-empty-body",
+					"-Wno-out-of-line-declaration",
+					"-Wno-return-type-c-linkage",
+					"-Wno-invalid-source-encoding",
+					"-Wno-shadow",
+					"-Wno-#pragma-messages",
+					"-Wno-inline-new-delete",
+				);
+			};
+			name = Default;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		4B05EEB008840E8D00D809E1 /* Build configuration list for PBXProject "XPageUI" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4B05EEB108840E8D00D809E1 /* Default */,
+			);
+			defaultConfigurationIsVisible = 1;
+			defaultConfigurationName = Default;
+		};
+		F957087015C90B3E00C95573 /* Build configuration list for PBXNativeTarget "Release_Cocoa64" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F957087115C90B3E00C95573 /* Default */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Default;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 4B05EEAF08840E8D00D809E1 /* Project object */;
+}

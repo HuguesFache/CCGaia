@@ -1,0 +1,21 @@
+#ifdef __ODFRC__
+// English string table is defined here
+resource StringTable (kSDKDefStringsResourceID + index_enUS)
+{
+	k_enUS,									// Locale Id
+	kResourceUTF8Encoded,		// Character encoding converter (irp) I made this WinToMac as we have a bias to generate on Win...
+	{
+	 	kDlbNilInterface,				"Abnormal problem",
+		kNewDocCmdFailed,				"New document creation failed",
+		kSetDocNameCmdFailed,			"Set document namefailed",
+		kNewWinCmdFailed,				"Open document failed",
+		kCloseWinCmdFailed,				"Close document failed",
+		kDlbNilParameter,				"Null parameter passed to the function",
+		kSetPageSizeCmdFailed,			"Set page size failed",
+		kSetColumnCmdFailed,			"Set columns failed",
+		kSetMarginCmdFailed,			"Set margins failed",
+		kErrImpossibleToSave,			"Failed to save document : incorrect path or document is already opened",
+		kErrDocNotFound,				"Error while searching for an InDesign document. The file doesn't exist",
+	}
+};
+#endif // __ODFRC__

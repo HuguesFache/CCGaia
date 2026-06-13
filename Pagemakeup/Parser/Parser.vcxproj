@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build" ToolsVersion="14.0">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Client-2021|x64"><Configuration>Client-2021</Configuration><Platform>x64</Platform></ProjectConfiguration>
+    <ProjectConfiguration Include="Server-2021|x64"><Configuration>Server-2021</Configuration><Platform>x64</Platform></ProjectConfiguration>
+    <ProjectConfiguration Include="Client-2022|x64"><Configuration>Client-2022</Configuration><Platform>x64</Platform></ProjectConfiguration>
+    <ProjectConfiguration Include="Server-2022|x64"><Configuration>Server-2022</Configuration><Platform>x64</Platform></ProjectConfiguration>
+    <ProjectConfiguration Include="Client-2023|x64"><Configuration>Client-2023</Configuration><Platform>x64</Platform></ProjectConfiguration>
+    <ProjectConfiguration Include="Server-2023|x64"><Configuration>Server-2023</Configuration><Platform>x64</Platform></ProjectConfiguration>
+    <ProjectConfiguration Include="Client-2024|x64"><Configuration>Client-2024</Configuration><Platform>x64</Platform></ProjectConfiguration>
+    <ProjectConfiguration Include="Server-2024|x64"><Configuration>Server-2024</Configuration><Platform>x64</Platform></ProjectConfiguration>
+    <ProjectConfiguration Include="Client-2025|x64"><Configuration>Client-2025</Configuration><Platform>x64</Platform></ProjectConfiguration>
+    <ProjectConfiguration Include="Server-2025|x64"><Configuration>Server-2025</Configuration><Platform>x64</Platform></ProjectConfiguration>
+    <ProjectConfiguration Include="Client-2026|x64"><Configuration>Client-2026</Configuration><Platform>x64</Platform></ProjectConfiguration>
+    <ProjectConfiguration Include="Server-2026|x64"><Configuration>Server-2026</Configuration><Platform>x64</Platform></ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectName>Parser</ProjectName>
+    <ProjectGuid>{1B5DDEE3-A948-5C93-A950-3CE1CC08EFB4}</ProjectGuid>
+    <WindowsTargetPlatformVersion>10.0.19041.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings" />
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="prsReleaseX64.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  
+  <ItemDefinitionGroup>
+    <Midl>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_DEPRECATE;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MkTypLibCompatible>true</MkTypLibCompatible>
+      <TargetEnvironment>X64</TargetEnvironment>
+      <TypeLibraryName>$(IntDir)Parser.tlb</TypeLibraryName>
+      <HeaderFileName />
+    </Midl>
+    <ClCompile>
+      <AdditionalOptions>/vmg</AdditionalOptions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_DEPRECATE;STRICT;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>VCPlugInHeaders.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile>$(IntDir)Parser.pch</PrecompiledHeaderOutputFile>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <AdditionalIncludeDirectories>..\Doclib\source;..\Framelib\source;..\Pagelib\source;..\Textlib\source;..\..\Xrail\Xrail\source;..\..\Xpage\Core\source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <TreatWarningAsError>false</TreatWarningAsError>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_DEPRECATE;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+    <PreLinkEvent>
+      <Command>merge_res.cmd "$(IntDir)"  prs &amp; echo Deleting old resources... &amp; del /f /s "$(TargetDir)($(TargetName) Resources)\"*.idrc &gt; $(IntDir)prevDeletedResources.txt &amp;  xcopy /Q /E "$(IntDir)"*.idrc "$(TargetDir)($(TargetName) Resources)\" /Y</Command>
+    </PreLinkEvent>
+    <Link>
+      <AdditionalOptions>/IGNORE:4089 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>$(UI_PLUGIN_LINKLIST);$(ID_SDK_DIR)\external\afl\libs\win\releasex64\AFL.lib;$(ID_SDK_DIR)\external\dva\third_party\boost_libraries\bin.v2\libs\boost_regex\lib\win\release\64\boost_regex.lib;$(ID_SDK_DIR)\external\icu\libs\win\releasex64\icucnv.lib;$(ID_SDK_DIR)\build\win\objrx64\ASLSupport.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(OutDir)Parser.pln</OutputFile>
+      <ProgramDatabaseFile>$(IntDir)Parser.pdb</ProgramDatabaseFile>
+      <ImportLibrary>$(IntDir)Parser.lib</ImportLibrary>
+    </Link>
+    <PostBuildEvent>
+      <Command>restore_res.cmd "$(IntDir)"  prs</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="$(id_sdk_dir)\source\public\libs\publiclib\statics\PlugInStatics.cpp" />
+    <ClCompile Include="$(ID_SDK_DIR)\source\sdksamples\common\SDKPlugInEntrypoint.cpp" />
+    <ClCompile Include="$(ID_SDK_DIR)\source\sdksamples\common\SDKFileHelper.cpp" />
+    <ClCompile Include="$(ID_SDK_DIR)\source\sdksamples\common\SDKLayoutHelper.cpp" />
+    <ClCompile Include="source\prsID.cpp" />
+    <ClCompile Include="source\prsNoStrip.cpp" />
+    <ClCompile Include="source\TriggerResourceDeps.cpp" />
+    <ClCompile Include="$(id_sdk_dir)\source\precomp\msvc\VCPlugInHeaders.cpp">
+      <PrecompiledHeader>Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="source\Blocs.cpp" />
+    <ClCompile Include="source\Calques.cpp" />
+    <ClCompile Include="source\Composer.cpp" />
+    <ClCompile Include="source\Divers.cpp" />
+    <ClCompile Include="source\Divers2.cpp" />
+    <ClCompile Include="source\Docs.cpp" />
+    <ClCompile Include="source\ExportUtils.cpp" />
+    <ClCompile Include="source\Hyperlinks.cpp" />
+    <ClCompile Include="source\Livres.cpp" />
+    <ClCompile Include="source\Log.cpp" />
+    <ClCompile Include="source\Pages.cpp" />
+    <ClCompile Include="source\Paragraphes.cpp" />
+    <ClCompile Include="source\ParserPlugIn.cpp" />
+    <ClCompile Include="source\ParserSuiteASB.cpp" />
+    <ClCompile Include="source\ParserSuiteLayoutCSB.cpp" />
+    <ClCompile Include="source\PermRefs.cpp" />
+    <ClCompile Include="source\PermRefsSuiteASB.cpp" />
+    <ClCompile Include="source\PermRefsSuiteTextCSB.cpp" />
+    <ClCompile Include="source\PermRefsTag.cpp" />
+    <ClCompile Include="source\PermRefsTagReport.cpp" />
+    <ClCompile Include="source\PermRefsTagTextAdornment.cpp" />
+    <ClCompile Include="source\PermRefsTextEditPostProcess.cpp" />
+    <ClCompile Include="source\PermRefsTextEditPreProcess.cpp" />
+    <ClCompile Include="source\PermRefsUtils.cpp" />
+    <ClCompile Include="source\PMUTypes.cpp" />
+    <ClCompile Include="source\PrsCustomServiceProvider.cpp" />
+    <ClCompile Include="source\PrsDeleteCleanup.cpp" />
+    <ClCompile Include="source\PrsEnterSerialNumberCmd.cpp" />
+    <ClCompile Include="source\PrsEpsDocumentName.cpp" />
+    <ClCompile Include="source\PrsEpsDocumentNamePersist.cpp" />
+    <ClCompile Include="source\PrsEpsExportPrefs.cpp" />
+    <ClCompile Include="source\PrsEpsExportPrefsPersist.cpp" />
+    <ClCompile Include="source\PrsErrorStringService.cpp" />
+    <ClCompile Include="source\PrsInsertTextCmd.cpp" />
+    <ClCompile Include="source\PrsParserThread.cpp" />
+    <ClCompile Include="source\PrsPasteImportItemObserver.cpp" />
+    <ClCompile Include="source\PrsPreferences.cpp" />
+    <ClCompile Include="source\PrsPreferencesPersist.cpp" />
+    <ClCompile Include="source\PrsRegistration.cpp" />
+    <ClCompile Include="source\PrsRegistrationPersist.cpp" />
+    <ClCompile Include="source\PrsRespService.cpp" />
+    <ClCompile Include="source\PrsReverseTCL.cpp" />
+    <ClCompile Include="source\PrsScriptProvider.cpp" />
+    <ClCompile Include="source\PrsSerialNumberDialogController.cpp" />
+    <ClCompile Include="source\PrsSetDocEpsExportPrefsCmd.cpp" />
+    <ClCompile Include="source\PrsSetDocPdfExportPrefsCmd.cpp" />
+    <ClCompile Include="source\PrsSetDocTCLReferencesList.cpp" />
+    <ClCompile Include="source\PrsSetImageInfosCmd.cpp" />
+    <ClCompile Include="source\PrsSetPreferencesCmd.cpp" />
+    <ClCompile Include="source\PrsSetRegistrationInfoCmd.cpp" />
+    <ClCompile Include="source\PrsSetTCLRefDataCmd.cpp" />
+    <ClCompile Include="source\PrsSetTOPPositionCmd.cpp" />
+    <ClCompile Include="source\PrsStartupShutdown.cpp" />
+    <ClCompile Include="source\PrsTCLAdornmentShape.cpp" />
+    <ClCompile Include="source\PrsTCLParser.cpp" />
+    <ClCompile Include="source\PrsTCLReader.cpp" />
+    <ClCompile Include="source\PrsTCLReferencesList.cpp" />
+    <ClCompile Include="source\PrsTCLReferencesListPersist.cpp" />
+    <ClCompile Include="source\PrsTCLRefScriptProvider.cpp" />
+    <ClCompile Include="source\PrsTCLWriter.cpp" />
+    <ClCompile Include="source\PrsWideStringData.cpp" />
+    <ClCompile Include="source\Reglages.cpp" />
+    <ClCompile Include="source\ReverseChecker.cpp" />
+    <ClCompile Include="source\Styles.cpp" />
+    <ClCompile Include="source\Systeme.cpp" />
+    <ClCompile Include="source\Tableaux.cpp" />
+    <ClCompile Include="source\TCLError.cpp" />
+    <ClCompile Include="source\Textes.cpp" />
+    <ClCompile Include="source\Textes2.cpp" />
+    <ClCompile Include="source\Transcoder.cpp" />
+    <ClCompile Include="source\XPage.cpp" />
+    <ClCompile Include="source\XRail.cpp" />
+    <ClCompile Include="source\XRefs.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(ID_SDK_DIR)\source\sdksamples\common\SDKFileHelper.h" />
+    <ClInclude Include="$(ID_SDK_DIR)\source\sdksamples\common\SDKLayoutHelper.h" />
+    <ClInclude Include="source\prsID.h" />
+    <ClInclude Include="source\prsFactoryList.h" />
+    <ClInclude Include="source\Blocs.h" />
+    <ClInclude Include="source\Calques.h" />
+    <ClInclude Include="source\Composer.h" />
+    <ClInclude Include="source\Divers.h" />
+    <ClInclude Include="source\Docs.h" />
+    <ClInclude Include="source\ExportUtils.h" />
+    <ClInclude Include="source\GlobalDefs.h" />
+    <ClInclude Include="source\Hyperlinks.h" />
+    <ClInclude Include="source\IEpsDocumentName.h" />
+    <ClInclude Include="source\ILastPremRef.h" />
+    <ClInclude Include="source\IPageMakeUpPrefs.h" />
+    <ClInclude Include="source\IParserSuite.h" />
+    <ClInclude Include="source\IPermRefsSuite.h" />
+    <ClInclude Include="source\IPermRefsTag.h" />
+    <ClInclude Include="source\IRegistration.h" />
+    <ClInclude Include="source\IReverseTCL.h" />
+    <ClInclude Include="source\ITCLParser.h" />
+    <ClInclude Include="source\ITCLReader.h" />
+    <ClInclude Include="source\ITCLReferencesList.h" />
+    <ClInclude Include="source\ITCLWriter.h" />
+    <ClInclude Include="source\IWideStringData.h" />
+    <ClInclude Include="source\Livres.h" />
+    <ClInclude Include="source\Log.h" />
+    <ClInclude Include="source\Pages.h" />
+    <ClInclude Include="source\Paragraphes.h" />
+    <ClInclude Include="source\ParserPlugIn.h" />
+    <ClInclude Include="source\PermRefs.h" />
+    <ClInclude Include="source\PermRefsUtils.h" />
+    <ClInclude Include="source\PMUTypes.h" />
+    <ClInclude Include="source\PrsScriptingDefs.h" />
+    <ClInclude Include="source\PrsTCLParser.h" />
+    <ClInclude Include="source\PrsTCLReader.h" />
+    <ClInclude Include="source\Reglages.h" />
+    <ClInclude Include="source\ReverseChecker.h" />
+    <ClInclude Include="source\Styles.h" />
+    <ClInclude Include="source\Systeme.h" />
+    <ClInclude Include="source\Tableaux.h" />
+    <ClInclude Include="source\TCLError.h" />
+    <ClInclude Include="source\Textes.h" />
+    <ClInclude Include="source\Transcoder.h" />
+    <ClInclude Include="source\XPage.h" />
+    <ClInclude Include="source\XRail.h" />
+    <ClInclude Include="source\XRefs.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="source\prs.fr">
+      <Command>
+        odfrc -d SERVER=$(SERVER_VALUE) $(ODFRC_ADDITIONAL_FLAGS) "%(FullPath)" -o "$(IntDir)%(Filename).fres" -i "source" $(ODFRC_INC)
+      </Command>
+      <AdditionalInputs>$(IntDir)TriggerResourceDeps.obj;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs>$(IntDir)%(Filename).fres;%(Outputs)</Outputs>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="source\prs.rc">
+      <PreprocessorDefinitions>_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0809</Culture>
+      <AdditionalIncludeDirectories>source;source;$(ID_SDK_DIR)\source\precomp\msvc;$(ID_SDK_DIR)\source\public\includes;$(ID_SDK_DIR)\source\sdksamples\common;%(AdditionalIncludeDirectories)
+      </AdditionalIncludeDirectories>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="source\prs_enUS.fr" />
+    <None Include="source\Prs_frFR.fr" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets" />
+</Project>

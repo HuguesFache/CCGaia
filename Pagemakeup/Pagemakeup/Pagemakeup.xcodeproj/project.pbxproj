@@ -1,0 +1,520 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 54;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		8F00E5D527B52E7700A588F7 /* SDKFileHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8F00E5D327B52E7700A588F7 /* SDKFileHelper.cpp */; };
+		8F00E5D627B52E7700A588F7 /* SDKPlugInEntrypoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8F00E5D427B52E7700A588F7 /* SDKPlugInEntrypoint.cpp */; };
+		A7515DE21A2CDA8800B580B8 /* SDKLayoutHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7515DDD1A2CDA8800B580B8 /* SDKLayoutHelper.cpp */; };
+		A7515DFF1A2CDD9100B580B8 /* InDesignModelAndUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7515DFD1A2CDD9100B580B8 /* InDesignModelAndUI.framework */; };
+		A7515E1A1A2CE2F600B580B8 /* libPublicPlugIn.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A7515E181A2CE2F600B580B8 /* libPublicPlugIn.a */; };
+		A788C1D119B9D19C00924879 /* PMUActionComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A788C1BE19B9D19C00924879 /* PMUActionComponent.cpp */; };
+		A788C1D319B9D19C00924879 /* PMUDialogController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A788C1BF19B9D19C00924879 /* PMUDialogController.cpp */; };
+		A788C1D519B9D19C00924879 /* PMUDialogObserver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A788C1C019B9D19C00924879 /* PMUDialogObserver.cpp */; };
+		A788C1D719B9D19C00924879 /* PMUDocPathDialogController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A788C1C119B9D19C00924879 /* PMUDocPathDialogController.cpp */; };
+		A788C1D919B9D19C00924879 /* PMUDocPathDialogObserver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A788C1C219B9D19C00924879 /* PMUDocPathDialogObserver.cpp */; };
+		A788C1DB19B9D19C00924879 /* PMUExportPrefsDialogController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A788C1C319B9D19C00924879 /* PMUExportPrefsDialogController.cpp */; };
+		A788C1DF19B9D19C00924879 /* PMUImageSettingDialogController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A788C1C619B9D19C00924879 /* PMUImageSettingDialogController.cpp */; };
+		A788C1E119B9D19C00924879 /* PMUImageSettingDialogObserver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A788C1C719B9D19C00924879 /* PMUImageSettingDialogObserver.cpp */; };
+		A788C1E319B9D19C00924879 /* PMUPanelWidgetObserver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A788C1C819B9D19C00924879 /* PMUPanelWidgetObserver.cpp */; };
+		A788C1E719B9D19C00924879 /* PMUSetUpComposerPaletteCmd.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A788C1CA19B9D19C00924879 /* PMUSetUpComposerPaletteCmd.cpp */; };
+		A788C1E919B9D19C00924879 /* PMUStartupShutdown.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A788C1CB19B9D19C00924879 /* PMUStartupShutdown.cpp */; };
+		A788C1EB19B9D19C00924879 /* PMUTypeRefDialogController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A788C1CC19B9D19C00924879 /* PMUTypeRefDialogController.cpp */; };
+		A788C1ED19B9D19C00924879 /* PMUUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A788C1CD19B9D19C00924879 /* PMUUtils.cpp */; };
+		A788C1EF19B9D19C00924879 /* TriggerResourceDeps.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A788C1CF19B9D19C00924879 /* TriggerResourceDeps.cpp */; };
+		A7EE672A1BBAF480000F7FE2 /* boost_regex.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7EE67291BBAF480000F7FE2 /* boost_regex.framework */; };
+		A7EE672C1BBAF4A6000F7FE2 /* ICUUnicode.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7EE672B1BBAF4A6000F7FE2 /* ICUUnicode.framework */; };
+		A7F46D5E19BA0AF6005188D8 /* ExportUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7F46D5B19BA0AF6005188D8 /* ExportUtils.cpp */; };
+		A7F46D6019BA0AF6005188D8 /* PermRefsUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7F46D5C19BA0AF6005188D8 /* PermRefsUtils.cpp */; };
+		F957086415C90B3E00C95573 /* PMU.fr in Sources */ = {isa = PBXBuildFile; fileRef = 4B05EED108840E9500D809E1 /* PMU.fr */; };
+		F957086615C90B3E00C95573 /* PMUNoStrip.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4B05EECD08840E9300D809E1 /* PMUNoStrip.cpp */; };
+		F957086715C90B3E00C95573 /* PMUID.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4B05EECE08840E9400D809E1 /* PMUID.cpp */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXBuildRule section */
+		F957086F15C90B3E00C95573 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.apple.compilers.proxy.script;
+			filePatterns = "*.fr";
+			fileType = pattern.proxy;
+			inputFiles = (
+			);
+			isEditable = 1;
+			outputFiles = (
+				"$(REZ_COLLECTOR_DIR)/$(INPUT_FILE_NAME).rsrc",
+			);
+			runOncePerArchitecture = 0;
+			script = "$ID_SDK_ROOT/devtools/bin/odfrc-cmd -d RELEASE $ODFRC_ADDITIONAL_FLAGS -o \"$REZ_COLLECTOR_DIR/$INPUT_FILE_NAME.rsrc\" \"$INPUT_FILE_PATH\"\n";
+		};
+/* End PBXBuildRule section */
+
+/* Begin PBXFileReference section */
+		4B05EECD08840E9300D809E1 /* PMUNoStrip.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = PMUNoStrip.cpp; path = source/PMUNoStrip.cpp; sourceTree = SOURCE_ROOT; };
+		4B05EECE08840E9400D809E1 /* PMUID.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = PMUID.cpp; path = source/PMUID.cpp; sourceTree = SOURCE_ROOT; };
+		4B05EECF08840E9400D809E1 /* PMUID.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PMUID.h; path = source/PMUID.h; sourceTree = SOURCE_ROOT; };
+		4B05EED108840E9500D809E1 /* PMU.fr */ = {isa = PBXFileReference; lastKnownFileType = text; name = PMU.fr; path = source/PMU.fr; sourceTree = SOURCE_ROOT; };
+		77355572120250EF00E6FC19 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = ../../../source/sdksamples/common/Info.plist; sourceTree = SOURCE_ROOT; };
+		77D687F4113861B500D56A9C /* PagemakeupPlugin_release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = PagemakeupPlugin_release.xcconfig; sourceTree = "<group>"; };
+		7FE5845A08AD6DB8007DB654 /* PagemakeupPlugin.xcconfig */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xcconfig; path = PagemakeupPlugin.xcconfig; sourceTree = SOURCE_ROOT; };
+		8F00E5D327B52E7700A588F7 /* SDKFileHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SDKFileHelper.cpp; path = /Users/macmini2024/AdobeSDKs/adobe_indesign_CC2026_Products_SDK/source/sdksamples/common/SDKFileHelper.cpp; sourceTree = "<absolute>"; };
+		8F00E5D427B52E7700A588F7 /* SDKPlugInEntrypoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SDKPlugInEntrypoint.cpp; path = /Users/macmini2024/AdobeSDKs/adobe_indesign_CC2026_Products_SDK/source/sdksamples/common/SDKPlugInEntrypoint.cpp; sourceTree = "<absolute>"; };
+		8F4C45EA27B66191007DF64F /* PMU_enUS.fr */ = {isa = PBXFileReference; lastKnownFileType = text; name = PMU_enUS.fr; path = source/PMU_enUS.fr; sourceTree = "<group>"; };
+		8F4C45EB27B66191007DF64F /* PMU_frFR.fr */ = {isa = PBXFileReference; lastKnownFileType = text; name = PMU_frFR.fr; path = source/PMU_frFR.fr; sourceTree = "<group>"; };
+		A7515DDD1A2CDA8800B580B8 /* SDKLayoutHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SDKLayoutHelper.cpp; path = /Users/macmini2024/AdobeSDKs/adobe_indesign_CC2026_Products_SDK/source/sdksamples/common/SDKLayoutHelper.cpp; sourceTree = "<absolute>"; };
+		A7515DFD1A2CDD9100B580B8 /* InDesignModelAndUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = InDesignModelAndUI.framework; path = ../../../../../../AdobeSDKs/adobe_indesign_CC2026_Products_SDK/build/mac/release_cocoa64/packagefolder/contents/macos/InDesignModelAndUI.framework; sourceTree = "<group>"; };
+		A7515E181A2CE2F600B580B8 /* libPublicPlugIn.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPublicPlugIn.a; path = /Users/macmini2024/AdobeSDKs/adobe_indesign_CC2026_Products_SDK/build/mac/release_cocoa64/packagefolder/contents/macos/libs/libPublicPlugIn.a; sourceTree = "<absolute>"; };
+		A788C1BE19B9D19C00924879 /* PMUActionComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PMUActionComponent.cpp; path = source/PMUActionComponent.cpp; sourceTree = "<group>"; };
+		A788C1BF19B9D19C00924879 /* PMUDialogController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PMUDialogController.cpp; path = source/PMUDialogController.cpp; sourceTree = "<group>"; };
+		A788C1C019B9D19C00924879 /* PMUDialogObserver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PMUDialogObserver.cpp; path = source/PMUDialogObserver.cpp; sourceTree = "<group>"; };
+		A788C1C119B9D19C00924879 /* PMUDocPathDialogController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PMUDocPathDialogController.cpp; path = source/PMUDocPathDialogController.cpp; sourceTree = "<group>"; };
+		A788C1C219B9D19C00924879 /* PMUDocPathDialogObserver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PMUDocPathDialogObserver.cpp; path = source/PMUDocPathDialogObserver.cpp; sourceTree = "<group>"; };
+		A788C1C319B9D19C00924879 /* PMUExportPrefsDialogController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PMUExportPrefsDialogController.cpp; path = source/PMUExportPrefsDialogController.cpp; sourceTree = "<group>"; };
+		A788C1C419B9D19C00924879 /* PMUFactoryList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PMUFactoryList.h; path = source/PMUFactoryList.h; sourceTree = "<group>"; };
+		A788C1C619B9D19C00924879 /* PMUImageSettingDialogController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PMUImageSettingDialogController.cpp; path = source/PMUImageSettingDialogController.cpp; sourceTree = "<group>"; };
+		A788C1C719B9D19C00924879 /* PMUImageSettingDialogObserver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PMUImageSettingDialogObserver.cpp; path = source/PMUImageSettingDialogObserver.cpp; sourceTree = "<group>"; };
+		A788C1C819B9D19C00924879 /* PMUPanelWidgetObserver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PMUPanelWidgetObserver.cpp; path = source/PMUPanelWidgetObserver.cpp; sourceTree = "<group>"; };
+		A788C1CA19B9D19C00924879 /* PMUSetUpComposerPaletteCmd.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PMUSetUpComposerPaletteCmd.cpp; path = source/PMUSetUpComposerPaletteCmd.cpp; sourceTree = "<group>"; };
+		A788C1CB19B9D19C00924879 /* PMUStartupShutdown.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PMUStartupShutdown.cpp; path = source/PMUStartupShutdown.cpp; sourceTree = "<group>"; };
+		A788C1CC19B9D19C00924879 /* PMUTypeRefDialogController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PMUTypeRefDialogController.cpp; path = source/PMUTypeRefDialogController.cpp; sourceTree = "<group>"; };
+		A788C1CD19B9D19C00924879 /* PMUUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PMUUtils.cpp; path = source/PMUUtils.cpp; sourceTree = "<group>"; };
+		A788C1CE19B9D19C00924879 /* PMUUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PMUUtils.h; path = source/PMUUtils.h; sourceTree = "<group>"; };
+		A788C1CF19B9D19C00924879 /* TriggerResourceDeps.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TriggerResourceDeps.cpp; path = source/TriggerResourceDeps.cpp; sourceTree = "<group>"; };
+		A7EE67291BBAF480000F7FE2 /* boost_regex.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = boost_regex.framework; path = /Users/macmini2024/AdobeSDKs/adobe_indesign_CC2026_Products_SDK/build/mac/release_cocoa64/packagefolder/contents/Frameworks/boost_regex.framework; sourceTree = "<absolute>"; };
+		A7EE672B1BBAF4A6000F7FE2 /* ICUUnicode.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ICUUnicode.framework; path = /Users/macmini2024/AdobeSDKs/adobe_indesign_CC2026_Products_SDK/build/mac/release_cocoa64/packagefolder/contents/Frameworks/ICUUnicode.framework; sourceTree = "<absolute>"; };
+		A7F46D5B19BA0AF6005188D8 /* ExportUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ExportUtils.cpp; path = ../Parser/source/ExportUtils.cpp; sourceTree = "<group>"; };
+		A7F46D5C19BA0AF6005188D8 /* PermRefsUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PermRefsUtils.cpp; path = ../Parser/source/PermRefsUtils.cpp; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		F957086B15C90B3E00C95573 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A7EE672C1BBAF4A6000F7FE2 /* ICUUnicode.framework in Frameworks */,
+				A7EE672A1BBAF480000F7FE2 /* boost_regex.framework in Frameworks */,
+				A7515E1A1A2CE2F600B580B8 /* libPublicPlugIn.a in Frameworks */,
+				A7515DFF1A2CDD9100B580B8 /* InDesignModelAndUI.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		4B05EEAD08840E8D00D809E1 = {
+			isa = PBXGroup;
+			children = (
+				4B05EEC708840E8D00D809E1 /* Source */,
+				4B05EED008840E9400D809E1 /* Resources */,
+				7F52248408AFCE1F00139994 /* xcconfig */,
+				F957084215C90B2D00C95573 /* InDesign Libraries */,
+				77355572120250EF00E6FC19 /* Info.plist */,
+			);
+			sourceTree = "<group>";
+		};
+		4B05EEC708840E8D00D809E1 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				A788C1CF19B9D19C00924879 /* TriggerResourceDeps.cpp */,
+				A788C1BE19B9D19C00924879 /* PMUActionComponent.cpp */,
+				A788C1BF19B9D19C00924879 /* PMUDialogController.cpp */,
+				A788C1C019B9D19C00924879 /* PMUDialogObserver.cpp */,
+				A788C1C119B9D19C00924879 /* PMUDocPathDialogController.cpp */,
+				A788C1C219B9D19C00924879 /* PMUDocPathDialogObserver.cpp */,
+				A788C1C319B9D19C00924879 /* PMUExportPrefsDialogController.cpp */,
+				A788C1C419B9D19C00924879 /* PMUFactoryList.h */,
+				A788C1C619B9D19C00924879 /* PMUImageSettingDialogController.cpp */,
+				A788C1C719B9D19C00924879 /* PMUImageSettingDialogObserver.cpp */,
+				A788C1C819B9D19C00924879 /* PMUPanelWidgetObserver.cpp */,
+				A788C1CA19B9D19C00924879 /* PMUSetUpComposerPaletteCmd.cpp */,
+				A788C1CB19B9D19C00924879 /* PMUStartupShutdown.cpp */,
+				A788C1CC19B9D19C00924879 /* PMUTypeRefDialogController.cpp */,
+				A788C1CD19B9D19C00924879 /* PMUUtils.cpp */,
+				A788C1CE19B9D19C00924879 /* PMUUtils.h */,
+				4B05EECB08840E9100D809E1 /* Plugin */,
+			);
+			name = Source;
+			sourceTree = "<group>";
+		};
+		4B05EECB08840E9100D809E1 /* Plugin */ = {
+			isa = PBXGroup;
+			children = (
+				8F00E5D327B52E7700A588F7 /* SDKFileHelper.cpp */,
+				8F00E5D427B52E7700A588F7 /* SDKPlugInEntrypoint.cpp */,
+				A7515DDD1A2CDA8800B580B8 /* SDKLayoutHelper.cpp */,
+				A7F46D5B19BA0AF6005188D8 /* ExportUtils.cpp */,
+				A7F46D5C19BA0AF6005188D8 /* PermRefsUtils.cpp */,
+				4B05EECD08840E9300D809E1 /* PMUNoStrip.cpp */,
+				4B05EECF08840E9400D809E1 /* PMUID.h */,
+				4B05EECE08840E9400D809E1 /* PMUID.cpp */,
+			);
+			name = Plugin;
+			sourceTree = "<group>";
+		};
+		4B05EED008840E9400D809E1 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				8F4C45EA27B66191007DF64F /* PMU_enUS.fr */,
+				8F4C45EB27B66191007DF64F /* PMU_frFR.fr */,
+				4B05EED108840E9500D809E1 /* PMU.fr */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		7F52248408AFCE1F00139994 /* xcconfig */ = {
+			isa = PBXGroup;
+			children = (
+				7FE5845A08AD6DB8007DB654 /* PagemakeupPlugin.xcconfig */,
+				77D687F4113861B500D56A9C /* PagemakeupPlugin_release.xcconfig */,
+			);
+			name = xcconfig;
+			sourceTree = "<group>";
+		};
+		F957084215C90B2D00C95573 /* InDesign Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				F957084915C90B2D00C95573 /* For Cocoa64 */,
+			);
+			name = "InDesign Libraries";
+			sourceTree = "<group>";
+		};
+		F957084915C90B2D00C95573 /* For Cocoa64 */ = {
+			isa = PBXGroup;
+			children = (
+				A7EE672B1BBAF4A6000F7FE2 /* ICUUnicode.framework */,
+				A7EE67291BBAF480000F7FE2 /* boost_regex.framework */,
+				A7515E181A2CE2F600B580B8 /* libPublicPlugIn.a */,
+				A7515DFD1A2CDD9100B580B8 /* InDesignModelAndUI.framework */,
+			);
+			name = "For Cocoa64";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		F957086215C90B3E00C95573 /* Release_Cocoa64 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F957087015C90B3E00C95573 /* Build configuration list for PBXNativeTarget "Release_Cocoa64" */;
+			buildPhases = (
+				F957086315C90B3E00C95573 /* Sources */,
+				F957086B15C90B3E00C95573 /* Frameworks */,
+				F957086C15C90B3E00C95573 /* Rez */,
+				F957086D15C90B3E00C95573 /* Resources */,
+				F957086E15C90B3E00C95573 /* ShellScript */,
+			);
+			buildRules = (
+				F957086F15C90B3E00C95573 /* PBXBuildRule */,
+			);
+			dependencies = (
+			);
+			name = Release_Cocoa64;
+			productName = Release;
+			productType = "com.apple.product-type.framework";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		4B05EEAF08840E8D00D809E1 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 1310;
+			};
+			buildConfigurationList = 4B05EEB008840E8D00D809E1 /* Build configuration list for PBXProject "Pagemakeup" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				fr,
+				de,
+				ja,
+				en,
+			);
+			mainGroup = 4B05EEAD08840E8D00D809E1;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				F957086215C90B3E00C95573 /* Release_Cocoa64 */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		F957086D15C90B3E00C95573 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXRezBuildPhase section */
+		F957086C15C90B3E00C95573 /* Rez */ = {
+			isa = PBXRezBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXRezBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		F957086E15C90B3E00C95573 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"$ID_SDK_ROOT/build/mac/packagescripts/copyResources.sh\"";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		F957086315C90B3E00C95573 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A788C1E719B9D19C00924879 /* PMUSetUpComposerPaletteCmd.cpp in Sources */,
+				A788C1E119B9D19C00924879 /* PMUImageSettingDialogObserver.cpp in Sources */,
+				F957086415C90B3E00C95573 /* PMU.fr in Sources */,
+				F957086615C90B3E00C95573 /* PMUNoStrip.cpp in Sources */,
+				A7F46D5E19BA0AF6005188D8 /* ExportUtils.cpp in Sources */,
+				A788C1D919B9D19C00924879 /* PMUDocPathDialogObserver.cpp in Sources */,
+				A788C1E919B9D19C00924879 /* PMUStartupShutdown.cpp in Sources */,
+				F957086715C90B3E00C95573 /* PMUID.cpp in Sources */,
+				A788C1D719B9D19C00924879 /* PMUDocPathDialogController.cpp in Sources */,
+				A788C1E319B9D19C00924879 /* PMUPanelWidgetObserver.cpp in Sources */,
+				A788C1EB19B9D19C00924879 /* PMUTypeRefDialogController.cpp in Sources */,
+				A788C1ED19B9D19C00924879 /* PMUUtils.cpp in Sources */,
+				A7F46D6019BA0AF6005188D8 /* PermRefsUtils.cpp in Sources */,
+				8F00E5D627B52E7700A588F7 /* SDKPlugInEntrypoint.cpp in Sources */,
+				8F00E5D527B52E7700A588F7 /* SDKFileHelper.cpp in Sources */,
+				A788C1D319B9D19C00924879 /* PMUDialogController.cpp in Sources */,
+				A788C1D519B9D19C00924879 /* PMUDialogObserver.cpp in Sources */,
+				A788C1D119B9D19C00924879 /* PMUActionComponent.cpp in Sources */,
+				A7515DE21A2CDA8800B580B8 /* SDKLayoutHelper.cpp in Sources */,
+				A788C1EF19B9D19C00924879 /* TriggerResourceDeps.cpp in Sources */,
+				A788C1DB19B9D19C00924879 /* PMUExportPrefsDialogController.cpp in Sources */,
+				A788C1DF19B9D19C00924879 /* PMUImageSettingDialogController.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		4B05EEB108840E8D00D809E1 /* Default */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7FE5845A08AD6DB8007DB654 /* PagemakeupPlugin.xcconfig */;
+			buildSettings = {
+				BUILT_PRODUCTS_DIR = "$(ID_BUILT_SDK_SAMPLES_DIR)";
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_PARAMETER = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(HEADER_SEARCH_PATHS)",
+					$ID_SDK_ROOT/source/public/interfaces/tables,
+					$ID_SDK_ROOT/source/public/components/widgetbin/includes,
+					$ID_SDK_ROOT/source/public/interfaces/workgroup,
+					$ID_SDK_ROOT/source/public/interfaces/interactive,
+					$ID_SDK_ROOT/source/public/interfaces/interactive/ui,
+					$ID_SDK_ROOT/source/public/interfaces/colormgmt,
+					$ID_SDK_ROOT/source/public/interfaces/incopy,
+					$ID_SDK_ROOT/source/public/interfaces/cjk,
+					$ID_SDK_ROOT/source/public/facades/graphics,
+					$ID_SDK_ROOT/source/public/facades/text,
+					$ID_SDK_ROOT/source/public/facades/layout,
+					$ID_SDK_ROOT/source/public/components/publiclib/plugins,
+					$ID_SDK_ROOT/source/public/components/publiclib/files,
+					$ID_SDK_ROOT/source/public/components/publiclib/objectmodel,
+					$ID_SDK_ROOT/source/sdksamples/common,
+					$ID_SDK_ROOT/external/afl/includes,
+					source,
+				);
+				INFOPLIST_FILE = $ID_SDK_ROOT/source/sdksamples/common/Info.plist;
+				INFOPLIST_PREPROCESS = YES;
+				PLC_OUTPUT_TYPE = InDa;
+				PRODUCT_NAME = Pagemakeup;
+			};
+			name = Default;
+		};
+		F957087115C90B3E00C95573 /* Default */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 77D687F4113861B500D56A9C /* PagemakeupPlugin_release.xcconfig */;
+			buildSettings = {
+				BOOST_FILESYSTEM_PREPROCESSOR_DEFINITIONS = "$(BOOST_FILESYSTEM_PREPROCESSOR_DEFINITIONS)";
+				BUILT_PRODUCTS_DIR = "$(ID_BUILT_SDK_SAMPLES_DIR)";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_X86_VECTOR_INSTRUCTIONS = default;
+				CODE_SIGN_IDENTITY = "Developer ID Application";
+				CODE_SIGN_STYLE = Manual;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = 3WBLWC32YG;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					/Users/macmini2024/AdobeSDKs/Adobe_InDesign_CC2026_Products_SDK/build/mac/release_cocoa64/packagefolder/contents/macos,
+					/Users/macmini2024/AdobeSDKs/Adobe_InDesign_CC2026_Products_SDK/build/mac/release_cocoa64/packagefolder/contents/macos,
+					/Users/macmini2024/AdobeSDKs/Adobe_InDesign_CC2026_Products_SDK/build/mac/release_cocoa64/packagefolder/contents/Frameworks,
+				);
+				GCC_OPTIMIZATION_LEVEL = 1;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				HEADER_SEARCH_PATHS = (
+					"$(HEADER_SEARCH_PATHS)",
+					$ID_SDK_ROOT/source/precomp/msvc,
+					$ID_SDK_ROOT/source/public/interfaces/xmedia,
+					$ID_SDK_ROOT/source/public/interfaces/preflight,
+					$ID_SDK_ROOT/source/public/interfaces/ui,
+					$ID_SDK_ROOT/source/public/interfaces/tables,
+					$ID_SDK_ROOT/source/public/interfaces/text,
+					$ID_SDK_ROOT/source/public/interfaces/graphics,
+					$ID_SDK_ROOT/source/public/components/widgetbin/includes,
+					$ID_SDK_ROOT/source/public/interfaces/workgroup,
+					$ID_SDK_ROOT/source/public/interfaces/interactive,
+					$ID_SDK_ROOT/source/public/interfaces/interactive/ui,
+					$ID_SDK_ROOT/source/public/interfaces/colormgmt,
+					$ID_SDK_ROOT/source/public/interfaces/utils,
+					$ID_SDK_ROOT/source/public/interfaces/incopy,
+					$ID_SDK_ROOT/source/public/interfaces/layout,
+					$ID_SDK_ROOT/source/public/interfaces/architecture,
+					$ID_SDK_ROOT/source/public/interfaces/cjk,
+					$ID_SDK_ROOT/source/precomp/common,
+					$ID_SDK_ROOT/source/public/includes,
+					$ID_SDK_ROOT/source/public/facades/graphics,
+					$ID_SDK_ROOT/source/public/facades/text,
+					$ID_SDK_ROOT/source/public/facades/layout,
+					$ID_SDK_ROOT/source/public/components/publiclib/plugins,
+					$ID_SDK_ROOT/source/public/components/publiclib/files,
+					$ID_SDK_ROOT/source/public/components/publiclib/objectmodel,
+					$ID_SDK_ROOT/source/sdksamples/common,
+					$ID_SDK_ROOT/external/afl/includes,
+					$ID_SDK_ROOT/external/asl/boost_libraries,
+					$ID_SDK_ROOT/external/asl/adobe_source_libraries,
+					$ID_SDK_ROOT/external/asl/intel_tbb_libraries/include,
+					$ID_SDK_ROOT/external/icu/include,
+					$ID_SDK_ROOT/external/dva/third_party/boost_libraries,
+					$ID_SDK_ROOT/external/dva/third_party/adobe_source_libraries,
+					source,
+					../doclib/source,
+					../textlib/source,
+					../framelib/source,
+					../parser/source,
+					../pagelib/source,
+				);
+				ID_SDK_ROOT = /Users/macmini2024/AdobeSDKs/Adobe_InDesign_CC2026_Products_SDK;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/Users/macmini2024/AdobeSDKs/Adobe_InDesign_CC2026_Products_SDK,
+					/Users/macmini2024/AdobeSDKs/Adobe_InDesign_CC2026_Products_SDK/build/mac/release_cocoa64/packagefolder/contents/macos/libs,
+					/Users/macmini2024/AdobeSDKs/Adobe_InDesign_CC2026_Products_SDK/build/mac/release_cocoa64/packagefolder/contents/macos,
+					"$(PROJECT_DIR)",
+				);
+				OTHER_LDFLAGS = (
+					"-Xlinker",
+					"-no_data_in_code_info",
+					"-ld_classic",
+					"-framework",
+					CoreFoundation,
+					"-framework",
+					CFNetwork,
+					"-framework",
+					SystemConfiguration,
+					"-framework",
+					Security,
+					"-lz",
+				);
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				REZ_SEARCH_PATHS = (
+					"$(ID_COMMON_REZ_SEARCH_PATHS)",
+					"$(ID_SDK_ROOT)/external/palettes",
+					"$(ID_SDK_ROOT)/external/workflow",
+					icons,
+					"$ID_SDK_ROOT/source/**",
+				);
+				SDKROOT = macosx;
+				WARNING_CFLAGS = (
+					"-Wimplicit",
+					"-Wsequence-point",
+					"-Winit-self",
+					"-Wmissing-field-initializers",
+					"-Wpointer-arith",
+					"-Wpacked",
+					"-Wno-unused-parameter",
+					"-Wno-unused-variable",
+					"-Wno-write-strings",
+					"-Wno-format",
+					"-Wno-deprecated",
+					"-Wformat-security",
+					"-Wno-cast-align",
+					"-Wno-logical-op-parentheses",
+					"-Wno-c++11-extensions",
+					"-Wno-switch-enum",
+					"-Wno-char-subscripts",
+					"-Wno-return-stack-address",
+					"-Wno-parentheses-equality",
+					"-Wno-unused-function",
+					"-Wno-empty-body",
+					"-Wno-out-of-line-declaration",
+					"-Wno-return-type-c-linkage",
+					"-Wno-invalid-source-encoding",
+					"-Wno-shadow",
+					"-Wno-#pragma-messages",
+					"-Wno-inline-new-delete",
+				);
+			};
+			name = Default;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		4B05EEB008840E8D00D809E1 /* Build configuration list for PBXProject "Pagemakeup" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4B05EEB108840E8D00D809E1 /* Default */,
+			);
+			defaultConfigurationIsVisible = 1;
+			defaultConfigurationName = Default;
+		};
+		F957087015C90B3E00C95573 /* Build configuration list for PBXNativeTarget "Release_Cocoa64" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F957087115C90B3E00C95573 /* Default */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Default;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 4B05EEAF08840E8D00D809E1 /* Project object */;
+}

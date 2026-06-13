@@ -1,0 +1,497 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 54;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		8F00E5BA27B520DB00A588F7 /* SDKPlugInEntrypoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8F00E5B927B520DB00A588F7 /* SDKPlugInEntrypoint.cpp */; };
+		A7156C8F1A88B14C00C17291 /* InDesignModel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7156C8D1A88B14C00C17291 /* InDesignModel.framework */; };
+		A7156C931A88B16100C17291 /* SDKFileHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7156C901A88B16100C17291 /* SDKFileHelper.cpp */; };
+		A7156C9E1A88B9BF00C17291 /* libPublicPlugIn.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A7156C9C1A88B9BF00C17291 /* libPublicPlugIn.a */; };
+		A769A4571BBE8E6800CE50F3 /* XRLAutoClosingDialogImpl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A769A4561BBE8E6800CE50F3 /* XRLAutoClosingDialogImpl.cpp */; };
+		A778B68818D75ECC0044D96C /* XRLID.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A778B67D18D75DCA0044D96C /* XRLID.cpp */; };
+		A778B68918D75ED60044D96C /* XRLResaPubList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A778B67018D75DB80044D96C /* XRLResaPubList.cpp */; };
+		A778B68A18D75ED90044D96C /* XRL.fr in Sources */ = {isa = PBXBuildFile; fileRef = A778B68518D75DE90044D96C /* XRL.fr */; };
+		A778B68B18D75EDD0044D96C /* DocUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A778B66018D75DB80044D96C /* DocUtils.cpp */; };
+		A778B68C18D75EE10044D96C /* TriggerResourceDeps.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A778B66518D75DB80044D96C /* TriggerResourceDeps.cpp */; };
+		A778B68D18D75EE30044D96C /* XRailPageSlugDataPersist.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A778B66618D75DB80044D96C /* XRailPageSlugDataPersist.cpp */; };
+		A778B68E18D75EE90044D96C /* XRailPrefsDataPersist.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A778B66718D75DB80044D96C /* XRailPrefsDataPersist.cpp */; };
+		A778B68F18D75EEB0044D96C /* XRailServiceProvider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A778B66918D75DB80044D96C /* XRailServiceProvider.cpp */; };
+		A778B69018D75EED0044D96C /* XRailSetMakePreviewCmd.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A778B66A18D75DB80044D96C /* XRailSetMakePreviewCmd.cpp */; };
+		A778B69118D75EF00044D96C /* XRailSetPageSlugCmd.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A778B66B18D75DB80044D96C /* XRailSetPageSlugCmd.cpp */; };
+		A778B69218D75EF30044D96C /* XRailSetPrefsCmd.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A778B66C18D75DB80044D96C /* XRailSetPrefsCmd.cpp */; };
+		A778B69318D75EF60044D96C /* XRailSetResaPubListCmd.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A778B66D18D75DB80044D96C /* XRailSetResaPubListCmd.cpp */; };
+		A778B69518D7642C0044D96C /* XRailResponder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A778B66818D75DB80044D96C /* XRailResponder.cpp */; };
+		A778B69618D764580044D96C /* XRailStartupShutdown.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A778B66E18D75DB80044D96C /* XRailStartupShutdown.cpp */; };
+		A778B69718D764630044D96C /* XRLNoStrip.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A778B67F18D75DCA0044D96C /* XRLNoStrip.cpp */; };
+		A78CEAD71DED8213009F7F7F /* XRLScriptProvider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A78CEAD61DED8213009F7F7F /* XRLScriptProvider.cpp */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXBuildRule section */
+		F957086F15C90B3E00C95573 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.apple.compilers.proxy.script;
+			filePatterns = "*.fr";
+			fileType = pattern.proxy;
+			inputFiles = (
+			);
+			isEditable = 1;
+			outputFiles = (
+				"$(REZ_COLLECTOR_DIR)/$(INPUT_FILE_NAME).rsrc",
+			);
+			runOncePerArchitecture = 0;
+			script = "$ID_SDK_ROOT/devtools/bin/odfrc-cmd -d RELEASE $ODFRC_ADDITIONAL_FLAGS -o \"$REZ_COLLECTOR_DIR/$INPUT_FILE_NAME.rsrc\" \"$INPUT_FILE_PATH\"\n";
+		};
+/* End PBXBuildRule section */
+
+/* Begin PBXFileReference section */
+		77D687F4113861B500D56A9C /* XRailPlugin_release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = XRailPlugin_release.xcconfig; sourceTree = "<group>"; };
+		7FE5845A08AD6DB8007DB654 /* XRailPlugin.xcconfig */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xcconfig; path = XRailPlugin.xcconfig; sourceTree = SOURCE_ROOT; };
+		8F00E5B927B520DB00A588F7 /* SDKPlugInEntrypoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SDKPlugInEntrypoint.cpp; path = /Users/macmini2024/AdobeSDKs/adobe_indesign_CC2026_Products_SDK/source/sdksamples/common/SDKPlugInEntrypoint.cpp; sourceTree = "<absolute>"; };
+		8F4C45F727B66273007DF64F /* XRL_frFR.fr */ = {isa = PBXFileReference; lastKnownFileType = text; name = XRL_frFR.fr; path = source/XRL_frFR.fr; sourceTree = "<group>"; };
+		8F4C45F827B66273007DF64F /* XRL_enUS.fr */ = {isa = PBXFileReference; lastKnownFileType = text; name = XRL_enUS.fr; path = source/XRL_enUS.fr; sourceTree = "<group>"; };
+		A7156C8D1A88B14C00C17291 /* InDesignModel.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = InDesignModel.framework; path = ../../../../../../AdobeSDKs/adobe_indesign_CC2026_Products_SDK/build/mac/release_cocoa64/packagefolder/contents/macos/InDesignModel.framework; sourceTree = "<group>"; };
+		A7156C901A88B16100C17291 /* SDKFileHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SDKFileHelper.cpp; path = /Users/macmini2024/AdobeSDKs/adobe_indesign_CC2026_Products_SDK/source/sdksamples/common/SDKFileHelper.cpp; sourceTree = "<absolute>"; };
+		A7156C9C1A88B9BF00C17291 /* libPublicPlugIn.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPublicPlugIn.a; path = ../../../../../../AdobeSDKs/adobe_indesign_CC2026_Products_SDK/build/mac/release_cocoa64/packagefolder/contents/macos/libs/libPublicPlugIn.a; sourceTree = "<group>"; };
+		A769A4561BBE8E6800CE50F3 /* XRLAutoClosingDialogImpl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XRLAutoClosingDialogImpl.cpp; path = source/XRLAutoClosingDialogImpl.cpp; sourceTree = "<group>"; };
+		A778B66018D75DB80044D96C /* DocUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = DocUtils.cpp; path = source/DocUtils.cpp; sourceTree = "<group>"; };
+		A778B66118D75DB80044D96C /* DocUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DocUtils.h; path = source/DocUtils.h; sourceTree = "<group>"; };
+		A778B66218D75DB80044D96C /* IResaPubList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IResaPubList.h; path = source/IResaPubList.h; sourceTree = "<group>"; };
+		A778B66318D75DB80044D96C /* IXRailPageSlugData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IXRailPageSlugData.h; path = source/IXRailPageSlugData.h; sourceTree = "<group>"; };
+		A778B66418D75DB80044D96C /* IXRailPrefsData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IXRailPrefsData.h; path = source/IXRailPrefsData.h; sourceTree = "<group>"; };
+		A778B66518D75DB80044D96C /* TriggerResourceDeps.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TriggerResourceDeps.cpp; path = source/TriggerResourceDeps.cpp; sourceTree = "<group>"; };
+		A778B66618D75DB80044D96C /* XRailPageSlugDataPersist.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XRailPageSlugDataPersist.cpp; path = source/XRailPageSlugDataPersist.cpp; sourceTree = "<group>"; };
+		A778B66718D75DB80044D96C /* XRailPrefsDataPersist.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XRailPrefsDataPersist.cpp; path = source/XRailPrefsDataPersist.cpp; sourceTree = "<group>"; };
+		A778B66818D75DB80044D96C /* XRailResponder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XRailResponder.cpp; path = source/XRailResponder.cpp; sourceTree = "<group>"; };
+		A778B66918D75DB80044D96C /* XRailServiceProvider.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XRailServiceProvider.cpp; path = source/XRailServiceProvider.cpp; sourceTree = "<group>"; };
+		A778B66A18D75DB80044D96C /* XRailSetMakePreviewCmd.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XRailSetMakePreviewCmd.cpp; path = source/XRailSetMakePreviewCmd.cpp; sourceTree = "<group>"; };
+		A778B66B18D75DB80044D96C /* XRailSetPageSlugCmd.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XRailSetPageSlugCmd.cpp; path = source/XRailSetPageSlugCmd.cpp; sourceTree = "<group>"; };
+		A778B66C18D75DB80044D96C /* XRailSetPrefsCmd.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XRailSetPrefsCmd.cpp; path = source/XRailSetPrefsCmd.cpp; sourceTree = "<group>"; };
+		A778B66D18D75DB80044D96C /* XRailSetResaPubListCmd.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XRailSetResaPubListCmd.cpp; path = source/XRailSetResaPubListCmd.cpp; sourceTree = "<group>"; };
+		A778B66E18D75DB80044D96C /* XRailStartupShutdown.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XRailStartupShutdown.cpp; path = source/XRailStartupShutdown.cpp; sourceTree = "<group>"; };
+		A778B66F18D75DB80044D96C /* XRLFactoryList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XRLFactoryList.h; path = source/XRLFactoryList.h; sourceTree = "<group>"; };
+		A778B67018D75DB80044D96C /* XRLResaPubList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XRLResaPubList.cpp; path = source/XRLResaPubList.cpp; sourceTree = "<group>"; };
+		A778B67D18D75DCA0044D96C /* XRLID.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XRLID.cpp; path = source/XRLID.cpp; sourceTree = "<group>"; };
+		A778B67E18D75DCA0044D96C /* XRLID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XRLID.h; path = source/XRLID.h; sourceTree = "<group>"; };
+		A778B67F18D75DCA0044D96C /* XRLNoStrip.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XRLNoStrip.cpp; path = source/XRLNoStrip.cpp; sourceTree = "<group>"; };
+		A778B68518D75DE90044D96C /* XRL.fr */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = XRL.fr; path = source/XRL.fr; sourceTree = "<group>"; };
+		A78CEAD51DED8213009F7F7F /* XRLScriptingDefs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XRLScriptingDefs.h; path = source/XRLScriptingDefs.h; sourceTree = "<group>"; };
+		A78CEAD61DED8213009F7F7F /* XRLScriptProvider.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XRLScriptProvider.cpp; path = source/XRLScriptProvider.cpp; sourceTree = "<group>"; };
+		F957084B15C90B2D00C95573 /* InDesignModel.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = InDesignModel.framework; path = ../../../../../../../../Developper/adobe_indesign_CC2026_Products_SDK/build/mac/debug_cocoa64/packagefolder/contents/macos/InDesignModel.framework; sourceTree = SOURCE_ROOT; };
+		F957084C15C90B2D00C95573 /* libPublicPlugIn.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPublicPlugIn.a; path = ../debug_cocoa64/packagefolder/contents/macos/libs/libPublicPlugIn.a; sourceTree = SOURCE_ROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		F957086B15C90B3E00C95573 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A7156C8F1A88B14C00C17291 /* InDesignModel.framework in Frameworks */,
+				A7156C9E1A88B9BF00C17291 /* libPublicPlugIn.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		4B05EEAD08840E8D00D809E1 = {
+			isa = PBXGroup;
+			children = (
+				4B05EEC708840E8D00D809E1 /* Source */,
+				4B05EED008840E9400D809E1 /* Resources */,
+				7F52248408AFCE1F00139994 /* xcconfig */,
+				F957084215C90B2D00C95573 /* InDesign Libraries */,
+			);
+			sourceTree = "<group>";
+		};
+		4B05EEC708840E8D00D809E1 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				A78CEAD51DED8213009F7F7F /* XRLScriptingDefs.h */,
+				A78CEAD61DED8213009F7F7F /* XRLScriptProvider.cpp */,
+				A769A4561BBE8E6800CE50F3 /* XRLAutoClosingDialogImpl.cpp */,
+				A778B66018D75DB80044D96C /* DocUtils.cpp */,
+				A778B66118D75DB80044D96C /* DocUtils.h */,
+				A778B66218D75DB80044D96C /* IResaPubList.h */,
+				A778B66318D75DB80044D96C /* IXRailPageSlugData.h */,
+				A778B66418D75DB80044D96C /* IXRailPrefsData.h */,
+				A778B66518D75DB80044D96C /* TriggerResourceDeps.cpp */,
+				A778B66618D75DB80044D96C /* XRailPageSlugDataPersist.cpp */,
+				A778B66718D75DB80044D96C /* XRailPrefsDataPersist.cpp */,
+				A778B66818D75DB80044D96C /* XRailResponder.cpp */,
+				A778B66918D75DB80044D96C /* XRailServiceProvider.cpp */,
+				A778B66A18D75DB80044D96C /* XRailSetMakePreviewCmd.cpp */,
+				A778B66B18D75DB80044D96C /* XRailSetPageSlugCmd.cpp */,
+				A778B66C18D75DB80044D96C /* XRailSetPrefsCmd.cpp */,
+				A778B66D18D75DB80044D96C /* XRailSetResaPubListCmd.cpp */,
+				A778B66E18D75DB80044D96C /* XRailStartupShutdown.cpp */,
+				A778B66F18D75DB80044D96C /* XRLFactoryList.h */,
+				A778B67018D75DB80044D96C /* XRLResaPubList.cpp */,
+				4B05EECB08840E9100D809E1 /* Plugin */,
+			);
+			name = Source;
+			sourceTree = "<group>";
+		};
+		4B05EECB08840E9100D809E1 /* Plugin */ = {
+			isa = PBXGroup;
+			children = (
+				8F00E5B927B520DB00A588F7 /* SDKPlugInEntrypoint.cpp */,
+				A7156C901A88B16100C17291 /* SDKFileHelper.cpp */,
+				A778B67D18D75DCA0044D96C /* XRLID.cpp */,
+				A778B67E18D75DCA0044D96C /* XRLID.h */,
+				A778B67F18D75DCA0044D96C /* XRLNoStrip.cpp */,
+			);
+			name = Plugin;
+			sourceTree = "<group>";
+		};
+		4B05EED008840E9400D809E1 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				8F4C45F827B66273007DF64F /* XRL_enUS.fr */,
+				8F4C45F727B66273007DF64F /* XRL_frFR.fr */,
+				A778B68518D75DE90044D96C /* XRL.fr */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		7F52248408AFCE1F00139994 /* xcconfig */ = {
+			isa = PBXGroup;
+			children = (
+				7FE5845A08AD6DB8007DB654 /* XRailPlugin.xcconfig */,
+				77D687F4113861B500D56A9C /* XRailPlugin_release.xcconfig */,
+			);
+			name = xcconfig;
+			sourceTree = "<group>";
+		};
+		F957084215C90B2D00C95573 /* InDesign Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				F957084915C90B2D00C95573 /* For Cocoa64 */,
+			);
+			name = "InDesign Libraries";
+			sourceTree = "<group>";
+		};
+		F957084915C90B2D00C95573 /* For Cocoa64 */ = {
+			isa = PBXGroup;
+			children = (
+				A7156C9C1A88B9BF00C17291 /* libPublicPlugIn.a */,
+				A7156C8D1A88B14C00C17291 /* InDesignModel.framework */,
+				F957084A15C90B2D00C95573 /* Debug */,
+			);
+			name = "For Cocoa64";
+			sourceTree = "<group>";
+		};
+		F957084A15C90B2D00C95573 /* Debug */ = {
+			isa = PBXGroup;
+			children = (
+				F957084B15C90B2D00C95573 /* InDesignModel.framework */,
+				F957084C15C90B2D00C95573 /* libPublicPlugIn.a */,
+			);
+			name = Debug;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		F957086215C90B3E00C95573 /* Release_Cocoa64 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F957087015C90B3E00C95573 /* Build configuration list for PBXNativeTarget "Release_Cocoa64" */;
+			buildPhases = (
+				F957086315C90B3E00C95573 /* Sources */,
+				F957086B15C90B3E00C95573 /* Frameworks */,
+				F957086C15C90B3E00C95573 /* Rez */,
+				F957086D15C90B3E00C95573 /* Resources */,
+				F957086E15C90B3E00C95573 /* ShellScript */,
+			);
+			buildRules = (
+				F957086F15C90B3E00C95573 /* PBXBuildRule */,
+			);
+			dependencies = (
+			);
+			name = Release_Cocoa64;
+			productName = Release;
+			productType = "com.apple.product-type.framework";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		4B05EEAF08840E8D00D809E1 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 1310;
+			};
+			buildConfigurationList = 4B05EEB008840E8D00D809E1 /* Build configuration list for PBXProject "XRail" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				fr,
+				de,
+				en,
+				ja,
+				Base,
+			);
+			mainGroup = 4B05EEAD08840E8D00D809E1;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				F957086215C90B3E00C95573 /* Release_Cocoa64 */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		F957086D15C90B3E00C95573 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXRezBuildPhase section */
+		F957086C15C90B3E00C95573 /* Rez */ = {
+			isa = PBXRezBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXRezBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		F957086E15C90B3E00C95573 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"$ID_SDK_ROOT/build/mac/packagescripts/copyResources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		F957086315C90B3E00C95573 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A778B68A18D75ED90044D96C /* XRL.fr in Sources */,
+				A778B68818D75ECC0044D96C /* XRLID.cpp in Sources */,
+				A7156C931A88B16100C17291 /* SDKFileHelper.cpp in Sources */,
+				A778B68B18D75EDD0044D96C /* DocUtils.cpp in Sources */,
+				A778B68C18D75EE10044D96C /* TriggerResourceDeps.cpp in Sources */,
+				A78CEAD71DED8213009F7F7F /* XRLScriptProvider.cpp in Sources */,
+				A778B68D18D75EE30044D96C /* XRailPageSlugDataPersist.cpp in Sources */,
+				A778B68E18D75EE90044D96C /* XRailPrefsDataPersist.cpp in Sources */,
+				A769A4571BBE8E6800CE50F3 /* XRLAutoClosingDialogImpl.cpp in Sources */,
+				8F00E5BA27B520DB00A588F7 /* SDKPlugInEntrypoint.cpp in Sources */,
+				A778B69518D7642C0044D96C /* XRailResponder.cpp in Sources */,
+				A778B68F18D75EEB0044D96C /* XRailServiceProvider.cpp in Sources */,
+				A778B69018D75EED0044D96C /* XRailSetMakePreviewCmd.cpp in Sources */,
+				A778B69118D75EF00044D96C /* XRailSetPageSlugCmd.cpp in Sources */,
+				A778B69218D75EF30044D96C /* XRailSetPrefsCmd.cpp in Sources */,
+				A778B69318D75EF60044D96C /* XRailSetResaPubListCmd.cpp in Sources */,
+				A778B69618D764580044D96C /* XRailStartupShutdown.cpp in Sources */,
+				A778B68918D75ED60044D96C /* XRLResaPubList.cpp in Sources */,
+				A778B69718D764630044D96C /* XRLNoStrip.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		4B05EEB108840E8D00D809E1 /* Default */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7FE5845A08AD6DB8007DB654 /* XRailPlugin.xcconfig */;
+			buildSettings = {
+				BUILT_PRODUCTS_DIR = "$(ID_BUILT_SDK_SAMPLES_DIR)";
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_PARAMETER = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(HEADER_SEARCH_PATHS)",
+					$ID_SDK_ROOT/source/public/interfaces/tables,
+					$ID_SDK_ROOT/source/public/components/widgetbin/includes,
+					$ID_SDK_ROOT/source/public/interfaces/workgroup,
+					$ID_SDK_ROOT/source/public/interfaces/interactive,
+					$ID_SDK_ROOT/source/public/interfaces/interactive/ui,
+					$ID_SDK_ROOT/source/public/interfaces/colormgmt,
+					$ID_SDK_ROOT/source/public/interfaces/incopy,
+					$ID_SDK_ROOT/source/public/interfaces/cjk,
+					$ID_SDK_ROOT/source/public/facades/graphics,
+					$ID_SDK_ROOT/source/public/facades/text,
+					$ID_SDK_ROOT/source/public/facades/layout,
+					$ID_SDK_ROOT/source/public/components/publiclib/plugins,
+					$ID_SDK_ROOT/source/public/components/publiclib/files,
+					$ID_SDK_ROOT/source/public/components/publiclib/objectmodel,
+					$ID_SDK_ROOT/source/sdksamples/common,
+					$ID_SDK_ROOT/external/afl/includes,
+					source,
+				);
+				INFOPLIST_FILE = $ID_SDK_ROOT/source/sdksamples/common/Info.plist;
+				INFOPLIST_PREPROCESS = YES;
+				PLC_OUTPUT_TYPE = InDa;
+				PRODUCT_NAME = XRailClient;
+			};
+			name = Default;
+		};
+		F957087115C90B3E00C95573 /* Default */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 77D687F4113861B500D56A9C /* XRailPlugin_release.xcconfig */;
+			buildSettings = {
+				BUILT_PRODUCTS_DIR = "$(ID_BUILT_SDK_SAMPLES_DIR)";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CODE_SIGN_IDENTITY = "Developer ID Application";
+				CODE_SIGN_STYLE = Manual;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = 3WBLWC32YG;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					/Users/macmini2024/AdobeSDKs/Adobe_InDesign_CC2026_Products_SDK/build/mac/release_cocoa64/packagefolder/contents/macos,
+					/Users/macmini2024/AdobeSDKs/Adobe_InDesign_CC2026_Products_SDK/build/mac/release_cocoa64/packagefolder/contents/macos,
+					/Users/macmini2024/AdobeSDKs/Adobe_InDesign_CC2026_Products_SDK/build/mac/release_cocoa64/packagefolder/contents/macos,
+				);
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				HEADER_SEARCH_PATHS = (
+					"$(HEADER_SEARCH_PATHS)",
+					$ID_SDK_ROOT/source/precomp/msvc,
+					$ID_SDK_ROOT/source/public/interfaces/xmedia,
+					$ID_SDK_ROOT/source/public/interfaces/preflight,
+					$ID_SDK_ROOT/source/public/interfaces/ui,
+					$ID_SDK_ROOT/source/public/interfaces/tables,
+					$ID_SDK_ROOT/source/public/interfaces/text,
+					$ID_SDK_ROOT/source/public/interfaces/graphics,
+					$ID_SDK_ROOT/source/public/components/widgetbin/includes,
+					$ID_SDK_ROOT/source/public/interfaces/workgroup,
+					$ID_SDK_ROOT/source/public/interfaces/interactive,
+					$ID_SDK_ROOT/source/public/interfaces/interactive/ui,
+					$ID_SDK_ROOT/source/public/interfaces/colormgmt,
+					$ID_SDK_ROOT/source/public/interfaces/utils,
+					$ID_SDK_ROOT/source/public/interfaces/incopy,
+					$ID_SDK_ROOT/source/public/interfaces/layout,
+					$ID_SDK_ROOT/source/public/interfaces/architecture,
+					$ID_SDK_ROOT/source/public/interfaces/cjk,
+					$ID_SDK_ROOT/source/precomp/common,
+					$ID_SDK_ROOT/source/public/includes,
+					$ID_SDK_ROOT/source/public/facades/graphics,
+					$ID_SDK_ROOT/source/public/facades/text,
+					$ID_SDK_ROOT/source/public/facades/layout,
+					$ID_SDK_ROOT/source/public/components/publiclib/plugins,
+					$ID_SDK_ROOT/source/public/components/publiclib/files,
+					$ID_SDK_ROOT/source/public/components/publiclib/objectmodel,
+					$ID_SDK_ROOT/source/sdksamples/common,
+					$ID_SDK_ROOT/external/afl/includes,
+					source,
+					../XRailUI/source,
+					../../XRailClient/XRailClient/source,
+					$ID_SDK_ROOT/external/dva/third_party/adobe_source_libraries,
+					$ID_SDK_ROOT/external/dva/third_party/boost_libraries,
+					../../XPubClient/XPubConnection/source,
+					"$(ID_PRJ_DIR)/../../../vcpkg/installed/arm64-osx/include",
+				);
+				ID_SDK_ROOT = /Users/macmini2024/AdobeSDKs/Adobe_InDesign_CC2026_Products_SDK;
+				LIBRARY_SEARCH_PATHS = (
+					$ID_SDK_ROOT/build/mac/release_cocoa64/packagefolder/contents/macos,
+					$ID_SDK_ROOT/build/mac/release_cocoa64/packagefolder/contents/macos/libs,
+				);
+				OTHER_LDFLAGS = (
+					"-Xlinker",
+					"-no_data_in_code_info",
+					"-ld_classic",
+				);
+				PRODUCT_NAME = XRail;
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				REZ_SEARCH_PATHS = (
+					"$(ID_COMMON_REZ_SEARCH_PATHS)",
+					"$(ID_SDK_ROOT)/external/palettes",
+					"$(ID_SDK_ROOT)/external/workflow",
+					icons,
+					source,
+				);
+				SDKROOT = macosx;
+				WARNING_CFLAGS = (
+					"-Wimplicit",
+					"-Wsequence-point",
+					"-Winit-self",
+					"-Wmissing-field-initializers",
+					"-Wpointer-arith",
+					"-Wpacked",
+					"-Wno-unused-parameter",
+					"-Wno-unused-variable",
+					"-Wno-write-strings",
+					"-Wno-format",
+					"-Wno-deprecated",
+					"-Wformat-security",
+					"-Wno-cast-align",
+					"-Wno-logical-op-parentheses",
+					"-Wno-c++11-extensions",
+					"-Wno-switch-enum",
+					"-Wno-char-subscripts",
+					"-Wno-return-stack-address",
+					"-Wno-parentheses-equality",
+					"-Wno-unused-function",
+					"-Wno-empty-body",
+					"-Wno-out-of-line-declaration",
+					"-Wno-return-type-c-linkage",
+					"-Wno-invalid-source-encoding",
+					"-Wno-shadow",
+					"-Wno-#pragma-messages",
+					"-Wno-inline-new-delete",
+				);
+			};
+			name = Default;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		4B05EEB008840E8D00D809E1 /* Build configuration list for PBXProject "XRail" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4B05EEB108840E8D00D809E1 /* Default */,
+			);
+			defaultConfigurationIsVisible = 1;
+			defaultConfigurationName = Default;
+		};
+		F957087015C90B3E00C95573 /* Build configuration list for PBXNativeTarget "Release_Cocoa64" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F957087115C90B3E00C95573 /* Default */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Default;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 4B05EEAF08840E8D00D809E1 /* Project object */;
+}

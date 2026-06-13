@@ -1,0 +1,21 @@
+#ifdef __ODFRC__
+// French string table is defined here
+resource StringTable (kSDKDefStringsResourceID + index_frFR)
+{
+	k_frFR,									// Locale Id
+	kResourceUTF8Encoded,		// Character encoding converter (irp) I made this WinToMac as we have a bias to generate on Win...
+	{
+		kPlbNilInterface,				"Problème anormal : mémoire insuffisante ?",
+		kNewPageCmdFailed,				"Création de nouvelle page échouée",
+		kPlbNilParameter,				"Problème : Paramètre incorrect (null) passé à la fonction d'aide",
+		kNewSectionCmdFailed,			"Création de nouvelle section échouée",
+		kDeletePageCmdFailed,			"Suppression de la page échouée",
+		kErrInvalidMaster,				"La maquette n'existe pas",
+		kApplyMasterCmdFailed,			"Application de maquette echouée",
+		kErrInvalidPages,				"Intervalle de pages invalides",
+		kErrInvalidBasedOn,				"La maquette de base n'existe pas",
+		kNewMasterCmdFailed,			"Création de nouvelle maquette échouée",
+		kSelectPageCmdFailed,			"Impossible de sélectionner la page",
+	}
+};
+#endif // __ODFRC__

@@ -1,0 +1,65 @@
+#ifdef __ODFRC__
+// English string table is defined here
+resource StringTable (kSDKDefStringsResourceID + index_enUS)
+{
+	k_enUS,									// Locale Id
+	kResourceUTF8Encoded,		// Character encoding converter (irp) I made this WinToMac as we have a bias to generate on Win...
+	{
+		 // ----- Menu strings
+			kXPGCompanyKey,						kXPGCompanyValue,
+			kXPGAboutMenuKey,					kXPGPluginName "[US]...",
+			kXPGPluginsMenuKey,					kXPGPluginName "[US]",
+
+		// ----- Panel/dialog strings
+			kXPGNoNumeroTextKey,				"No selected parution",
+			kXPGNumeroTextKey,					"",
+
+		// ----- Misc strings
+			kXPGAboutBoxStringKey,				kXPGPluginName " [US], version " kXPGVersion " by " kXPGAuthor "\n\n" kSDKDefCopyrightStandardValue "\n\n" kSDKDefPartnersStandardValue_enUS,
+			kSetTagToStyleMapCmdKey,			"Set tag to style map",			
+			kXPGEraseCurrentVersionKey,		 	"You are opening a version which is not the latest one. It will erase the latest version, do you really want to open it ?",
+			kXPGCannotMoveFileKey,			 	"The file cannot be moved, the current version is locked ! (it may be opened in InDesign)",
+			kXPGFileAlreadyExistsKey,			"This file already exists, do you want to replace it ?",
+			kXPGFileInNewStatusAlreadyExistsKey,"A file with the same name already exists in the specified status, do you want to replace it ?",
+			kXPGErrDescFileNotUpdatedKey,		"The description file has not been updated!",
+			kXPGErrParseMatchingFailed,			"Failed to parse the matching file ^1 ! Import cancelled",
+			kXPGErrImportFailed,				"Failed to import the article !",
+			kXPGErrParseArticleFailed,			"Failed to parse the article file ^1 !",
+			kXPGErrParseImageFailed,			"Failed to parse the image file ^1 !",
+			kXPGErrParseFormeFailed,			"Failed to parse the description forme file ^1 !",
+ 			kXPGErrCannotOpenTemplate,			"Failed to open template file, it must be in used by an other user, please wait a few seconds and try again",
+ 			kXPGErrFolderDontExistKey,			"At least one folder of the spooler is not valid, spooler is disabled",
+			kXPGErrIdenticalFolderKey,			"At least 2 folders of the spooler are identical, spooler is disabled",
+			kXPGSpoolerTaskKey,					"Spooler task",
+			kXPGErrMatchingFileNotFound,		"Folders not found ! (Check your configuration file)",
+			kXPGSetArticleIDCmdKey,				"Save article ID",
+			kXPGErrFormeImportFailed,			"Failed to import template file ^1",
+			kXPGErrArticleLocked,				"The file ^1 is being edited, please wait a few seconds",
+			KXPGErrCopyDoc,						"Failed to copy file ^1 in package",
+			kXPGErrArtStatusNotUpdatedKey,		"Failed to update article status in XRAIL server",
+			kXPGErrImportImageFailed,			"Failed to import image",
+			kXPGErrFailedToCreateInCopyWS,		"Failed to create InCopy files, error ^1 of service web.",
+			kXPGErrFailedToCreateInCopyFiles,	"Failed to create InCopy files, please check that your XRAIL volume is mounted",
+			kXPGErrInvalidInCopyID,				"XRAIL returned an invalid ID for InCopy article",
+			kXPGUpdateArticleXMLFileCmdKey,		"Update story status",
+			kXPGErrInCopyFileNotExistKey,		"The InCopy article file does not exist",
+			kXPGErrCannotOpenInCopyFileKey,		"The InCopy article cannot be open, it may be already in use by another user",
+			kXPGFailedToLoadFormeDataKey,		"Failed to load forme data",
+			kXPGAskForStoriesUpdateKey,			"Some InCopy stories have been modified, do you want to update them ?",
+			kXPGFailedToUpdateStoriesKey,		"Failed to update InCopy stories",
+			kXPGNoInCopyStoryInSelectionKey,	"Selection does not contain any InCopy stories",
+			kXPGMissingInCopyStoriesKey,		"Some InCopy files are missing, impossible to update them", 
+			kXPGErrExportXmlFailed,				"Failed to export ^1 file, please check whether it is a valid path or not", 			
+			kXPGErrDoSnapShotFailed,			"Failed to generate vignette ^1, please check whether it is a valid path or not",
+			kXPGAlertFormatImageKey,			"Le format de l'image n'est pas pris en charge par le système.\n\rVeuillez contacter le support technique. " ,
+			kXPGVersionTextKey,					"La version de XPage actuelle n'est pas à jour, Veuillez contacter le support technique ",
+			kXPGErrParseExportXMLFailed,		"Failed to parse the export file ^1 !",
+			kXPGErrImportXmlFailed,				"L'import XML du fichier ^1 a échoué, vérifiez que le chemin du fichier est valide",
+			kXPGUnTaggedTextKey,				"Texte mal balisé (^1): ",
+			kXPGExtensionInCopyKey, 			".icma",			
+			kXPGExtensionWithoutDotInCopyKey, 	"icma",			
+			kXPGExtensionAffectationKey,		".icml",			
+			kXPGExtensionAffectationWithoutDotKey,"icml",			
+	}
+};
+#endif // __ODFRC__

@@ -1,0 +1,37 @@
+# =====================================================================
+#  CCGaia - .gitignore  (repo racine = CCGaia)
+#  Les sorties de build vont hors-repo (C:\tmp\Gaia, Program Files\...\Plug-Ins,
+#  SDK build dir sur Mac), donc rien a ignorer de ce cote.
+# =====================================================================
+
+# --- Visual Studio ---
+.vs/
+*.user
+*.suo
+*.sdf
+*.opensdf
+*.VC.db
+*.VC.opendb
+*.aps
+*.ncb
+
+# --- macOS ---
+.DS_Store
+
+# --- Xcode (donnees utilisateur / derives) ---
+xcuserdata/
+*.xcuserstate
+*.xcscmblueprint
+*.xccheckout
+DerivedData/
+
+# --- Dossiers de build locaux Xcode : <plugin>/<proj>/build/ ---
+#  (ce projet historise dans des dossiers 'build' locaux par projet)
+#  On les ignore A TOUS LES NIVEAUX, SAUF le /build/ racine (nos scripts).
+build/
+!/build/
+!/build/**
+
+# --- Divers ---
+*.log
+*.tmp

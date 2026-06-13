@@ -1,0 +1,21 @@
+#ifdef __ODFRC__
+// English string table is defined here
+resource StringTable (kSDKDefStringsResourceID + index_enUS)
+{
+	k_enUS,									// Locale Id
+	kResourceUTF8Encoded,		// Character encoding converter (irp) I made this WinToMac as we have a bias to generate on Win...
+	{
+		kPlbNilInterface,				"Abnormal problem",
+		kNewPageCmdFailed,				"Failed to create new page",
+		kPlbNilParameter,				"Null parameter passed to the function",
+		kNewSectionCmdFailed,			"Failed to create new section",
+		kDeletePageCmdFailed,			"Failed to delete paga",
+		kErrInvalidMaster,				"This master page doesn't exist",
+		kApplyMasterCmdFailed,			"Failed to apply master",
+		kErrInvalidPages,				"Invalid page range",
+		kErrInvalidBasedOn,				"\"Based On\" master doesn't exist",
+		kNewMasterCmdFailed,			"Failed to create new master",
+		kSelectPageCmdFailed,			"Failed to select page",
+	}
+};
+#endif // __ODFRC__

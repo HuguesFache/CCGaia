@@ -1,0 +1,65 @@
+#ifdef __ODFRC__
+// French string table is defined here
+resource StringTable (kSDKDefStringsResourceID + index_frFR)
+{
+	k_frFR,									// Locale Id
+	kResourceUTF8Encoded,		// Character encoding converter (irp) I made this WinToMac as we have a bias to generate on Win...
+	{
+		// ----- Menu strings
+			kXRLUICompanyKey,					kXRLUICompanyValue,
+			kXRLUIAboutMenuKey,					"A propos d'XRail...",
+			kXRLUIPluginsMenuKey,				"XRail",
+			kSDKDefAboutThisPlugInMenuKey,		kSDKDefAboutThisPlugInMenuValue_frFR,
+
+		// ----- Misc strings
+			kXRLUIAboutBoxStringKey,			kXRLUIPluginName ", version " kXRLUIVersion " by " kXRLUIAuthor "\n\n",
+			kXRLUIDialogMenuItemKey,			kXRLUIPluginName "...",
+			kXRLUIMenu,							"XRail",
+			kXRLUISousMenuPreferences,			"Serveur XRail",
+			kXRLUISousMenuConnection,			"Connexion",
+			kXRLUISousMenuDeconnection,			"Déconnexion",
+			kXRLUIEnablePreviewMenuKey,			"Générer les vignettes",
+			kXRLUIExternalPDFMenuKey,			"Générer un PDF", 
+			kXRLUIXRailLinkMenuKey,				"Lier avec XRail", 
+			kXRLUIXRailUnLinkMenuKey,			"Délier de XRail", 
+			kXRLUISendToServerMenuKey,			"Renvoyer le document au serveur",
+			kXRLUIErrorSendToServerKey,			"Veuillez vérifier que vous avez bien monté le volume nécessaire et que vous avez les droits d'écriture",
+
+		// ----- Panel/dialog strings
+			kXRLUIPrefsDialogTitleKey, 			"Paramètres de connexion au serveur XRail",
+			kXRLUILoginDialogTitleKey,			"Connexion à XRail",
+			kXRLUIChangeStateDialogTitleKey,	"Etat de la page: ",
+			kXRLUILinkerDialogTitleKey,			"Lier le document avec XRail",
+			kXRLUILoginTextKey,					"Login: ",
+			kXRLUIPasswordTextKey,				"Mot de passe:",
+			kXRLUIRememberMeTextKey,			"Se souvenir de moi",
+			kXRLUIPrefsIPLabel,					"Adresse IP: ", 
+			kXRLUIPrefsPortLabel,				"Port: ", 
+			kXRLUIErrorBlankLoginKey,			"Vous devez saisir un login",
+			kXRLUIErrorBlankPasswordKey,		"Vous devez saisir un mot de passe",		
+			kXRLUIModeRobotTextKey,				"Mode robot",
+			kXRLUIMessageLinkerKey,				"Ce document existe déjà. Voulez-vous le sauvegarder? ",
+			kXRLUIChooseTitlePromptKey,			"Choisissez un titre",
+					
+		// ----- Error strings
+			kXRLUIErrorWSGetStatusKey,			"Erreur de connexion, impossible de récupérer la liste des états",
+			kXRLUIErrorWSSetPageStatusKey,		"Erreur de connexion, la mise à jour du statut des pages a échoué",
+			kXRLUIErrorWSGetSavePathKey,		"Erreur de connexion, le document ne sera pas sauvegardé",
+			kXRLUIErrorWSGetLevelKey,			"Erreur de connexion, impossible de récupérer l'arborescence de production",
+			kXRLUIErrorWSLinkPagesKey,			"Erreur de connexion, impossible de lier les pages avec XRail",
+
+		// ----- Commentaires palette
+			kXRLUICommentsPanelTitleKey,		"Commentaires",
+			kXRLUICommentsColCheckKey,			"",
+			kXRLUICommentsColDateKey,			"Date",
+			kXRLUICommentsColTextKey,			"Commentaire",
+			kXRLUICommentsColUserKey,			"Utilisateur",
+			kXRLUICommentsEmptyKey,				"Aucun commentaire pour cette page",
+			kXRLUICommentsRefreshTipKey,		"Rafraîchir la liste",
+			kXRLUICommentsLoginPromptTextKey,	"Vous devez vous connecter au serveur pour utiliser cette palette.",
+			kXRLUICommentsLoginPromptButtonKey,	"Se connecter",
+			kXRLUICommentsNoGaiaPageTextKey,	"Ouvrez une page Gaia pour utiliser cette palette.",
+			kXRLUICommentsShowAllKey,			"Afficher tous les commentaires",
+	}
+};
+#endif // __ODFRC__

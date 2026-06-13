@@ -1,0 +1,70 @@
+//========================================================================================
+//  
+//  $File: $
+//    
+//  Owner: Trias Developpement 
+//       
+//  $Author: $ 
+//                                           
+//  $DateTime: $     
+//                                                           
+//  $Revision: $    
+//                                          
+//  $Change: $        
+//                         
+//  Copyright Adobe Systems Incorporated. All rights reserved.
+//     
+//  NOTICE:  Adobe permits you to use, modify, and distribute this file in accordance 
+//  with the terms of the Adobe license agreement accompanying it.  If you have received
+//  this file from a source other than Adobe, then your use, modification, or 
+//  distribution of it requires the prior written permission of Adobe.
+//  
+//========================================================================================
+  
+#include "VCPlugInHeaders.h"
+         
+// General includes:
+#include "MenuDef.fh" 
+#include "ActionDef.fh"
+#include "ActionDefs.h"
+#include "AdobeMenuPositions.h"
+#include "LocaleIndex.h"
+#include "PMLocaleIds.h"
+#include "StringTable.fh"
+#include "ObjectModelTypes.fh"
+#include "ShuksanID.h"
+#include "ActionID.h" 
+#include "CommandID.h"
+#include "WorkspaceID.h" 
+#include "WidgetID.h"
+#include "BuildNumber.h"
+#include "PanelList.fh"
+#include "DragDropID.h"
+#include "InterfaceColorDefines.h"
+#include "IControlViewDefs.h"
+#include "SysControlIDs.h" 
+#include "Widgets.fh"	// for PalettePanelWidget or DialogBoss
+#include "SplineID.h"
+#include "LayoutUIID.h"
+#include "AppUIID.h"
+#include "GenericID.h"
+#include "TextID.h"
+#include "TextAttrID.h" 
+#include "TextAttrImplID.h"
+#include "TreeViewDefs.h"
+#include "Tips.fh"
+#include "PlugInModel_UIAttributes.h" 
+ 
+// Project includes:        
+#include "XPGUIID.h"  
+#include "XPGID.h" 
+   
+#ifdef __ODFRC__
+#if INCOPY             
+	#include "XPGUI_InCopy.fr"  
+#else     
+	#include "XPGUI_InDesign.fr" 
+#endif   
+   
+ 
+#endif // __ODFRC__

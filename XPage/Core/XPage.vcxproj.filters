@@ -1,0 +1,345 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{78120e3d-d0ab-4f9e-8a3a-c5e6c5ed0b2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Plugin">
+      <UniqueIdentifier>{29e08cac-b659-428b-bf02-c70f84b41ddf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{7b823eb7-8f35-4529-a4c1-555b53468c58}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{4da94837-4922-4930-b2ec-472d16090ed6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Article">
+      <UniqueIdentifier>{17255861-010a-4257-8f9b-56448bc8b168}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Images">
+      <UniqueIdentifier>{b8d6efdb-3a77-403b-898b-f8d34f08bc93}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Provider">
+      <UniqueIdentifier>{a4f89159-36e1-46bd-9fa1-f9d6776b33e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Suites">
+      <UniqueIdentifier>{febc22d3-6c8f-40ef-9f40-36fdcbe8ca70}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Textes">
+      <UniqueIdentifier>{4bc5e4e5-1095-42cf-8075-fb02a761f9f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utils">
+      <UniqueIdentifier>{49e4f417-4ffe-464a-ae4d-86a15d0f89cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Forme">
+      <UniqueIdentifier>{145c2484-b71d-45c7-8681-84c7464121ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Forme\Style">
+      <UniqueIdentifier>{c7247536-1b6d-4e6f-a140-ed4557031355}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Images\TEC">
+      <UniqueIdentifier>{9447fe0e-8ae4-4847-9983-e5cc2dd8aba8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Textes\TES">
+      <UniqueIdentifier>{ed0d0172-cba4-40a0-a79d-e8b4359fc6aa}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="source\XPGID.cpp">
+      <Filter>Source Files\Plugin</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGNoStrip.cpp">
+      <Filter>Source Files\Plugin</Filter>
+    </ClCompile>
+    <ClCompile Include="source\TriggerResourceDeps.cpp">
+      <Filter>Source Files\Plugin</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPageMgrAccessor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGArticleSizerCmd.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGDocObserver.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGErrorStringService.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGExportArtResp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGFilterStyleCmd.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGKeyValueData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGLSIDData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGPointerData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGPreferences.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGSaveAssignmentCmd.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGSetArticleIDCmd.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGSetStringCmd.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGStartupShutdown.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGUnlockStoriesCmd.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGUpdateArticleXMLFileCmd.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGXmlArticleDescription.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGFileSystemAssemblageModel.cpp">
+      <Filter>Source Files\Forme</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGFileSystemFormeModel.cpp">
+      <Filter>Source Files\Forme</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGFormeData.cpp">
+      <Filter>Source Files\Forme</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGFormeDataNode.cpp">
+      <Filter>Source Files\Forme</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGImportSnippetObserver.cpp">
+      <Filter>Source Files\Forme</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGSetFormeDataCmd.cpp">
+      <Filter>Source Files\Forme</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGXMLFormeDescriptionHandler.cpp">
+      <Filter>Source Files\Forme</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGXMLMatchingStylesListHandler.cpp">
+      <Filter>Source Files\Forme\Style</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGImageDataNode.cpp">
+      <Filter>Source Files\Images</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGImageModelBase.cpp">
+      <Filter>Source Files\Images</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGXMLImageDescriptionHandler.cpp">
+      <Filter>Source Files\Images</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGTECImageModel.cpp">
+      <Filter>Source Files\Images\TEC</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGResponder.cpp">
+      <Filter>Source Files\Provider</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGServiceProvider.cpp">
+      <Filter>Source Files\Provider</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPageIndexSuiteASB.cpp">
+      <Filter>Source Files\Suites</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPageIndexSuiteTextCSB.cpp">
+      <Filter>Source Files\Suites</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPageSuiteASB.cpp">
+      <Filter>Source Files\Suites</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPageSuiteLayoutCSB.cpp">
+      <Filter>Source Files\Suites</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPageSuiteTextCSB.cpp">
+      <Filter>Source Files\Suites</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGTextData.cpp">
+      <Filter>Source Files\Textes\TES</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGCheckTextImportHandler.cpp">
+      <Filter>Source Files\Textes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGSetTagToStyleMapCmd.cpp">
+      <Filter>Source Files\Textes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGTagToStyleMap.cpp">
+      <Filter>Source Files\Textes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGTextImportHandler.cpp">
+      <Filter>Source Files\Textes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGXMLExportFileHandler.cpp">
+      <Filter>Source Files\Textes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGXMLLoadTagHandler.cpp">
+      <Filter>Source Files\Textes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGXMLMatchingFileHandler.cpp">
+      <Filter>Source Files\Textes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGXMLMatchingFileHandler2.cpp">
+      <Filter>Source Files\Textes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGXMLPostImportIterationBase.cpp">
+      <Filter>Source Files\Textes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\PersistStringListData.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPageUtils.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\SDKs\adobe_indesign_CC2026\source\sdksamples\common\SDKFileHelper.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGIAMServiceProvider.cpp">
+      <Filter>Source Files\Provider</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\SDKs\adobe_indesign_CC2026\source\sdksamples\common\SDKPlugInEntrypoint.cpp">
+      <Filter>Source Files\Plugin</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\SDKs\adobe_indesign_CC2026\source\public\libs\publiclib\statics\PlugInStatics.cpp">
+      <Filter>Source Files\Plugin</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\SDKs\adobe_indesign_CC2026\source\precomp\msvc\VCPlugInHeaders.cpp">
+      <Filter>Source Files\Plugin</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGArticleDataModel.cpp">
+      <Filter>Source Files\Article</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGPlacedArticleData.cpp">
+      <Filter>Source Files\Textes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGSetArticleDataCmd.cpp">
+      <Filter>Source Files\Textes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGSetPlacedArticleDataCmd.cpp">
+      <Filter>Source Files\Textes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGArticleDataNode.cpp">
+      <Filter>Source Files\Article</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGArticleData.cpp">
+      <Filter>Source Files\Article</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGXMLParserArticle.cpp">
+      <Filter>Source Files\Article</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XPGScriptProvider.cpp">
+      <Filter>Source Files\Provider</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="source\XPGID.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\XPGFactoryList.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\IImageDataModel.h">
+      <Filter>Source Files\Images</Filter>
+    </ClInclude>
+    <ClInclude Include="source\XPGImageDataNode.h">
+      <Filter>Source Files\Images</Filter>
+    </ClInclude>
+    <ClInclude Include="source\XPGImageModelBase.h">
+      <Filter>Source Files\Images</Filter>
+    </ClInclude>
+    <ClInclude Include="source\IXPageIndexSuite.h">
+      <Filter>Source Files\Suites</Filter>
+    </ClInclude>
+    <ClInclude Include="source\IXPageSuite.h">
+      <Filter>Source Files\Suites</Filter>
+    </ClInclude>
+    <ClInclude Include="source\PlatformFileSystemIterator.h">
+      <Filter>Source Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\SDKs\adobe_indesign_CC2026\source\sdksamples\common\SDKFileHelper.h">
+      <Filter>Source Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="source\IAssemblageDataModel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\IFormeData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\IFormeDataModel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\IKeyValueData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\ILSIDData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\IMatchingStylesList.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\IPlacedArticleData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\IPointerData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\IXPageMgrAccessor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\IXPageUtils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\IXPGTagToStyleMap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\IXPGPreferences.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\XMLDefs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\XPGFormeDataNode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\XPGScriptingDefs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\IArticleDataModel.h">
+      <Filter>Source Files\Article</Filter>
+    </ClInclude>
+    <ClInclude Include="source\XPGArticleDataNode.h">
+      <Filter>Source Files\Article</Filter>
+    </ClInclude>
+    <ClInclude Include="source\IArticleData.h">
+      <Filter>Source Files\Article</Filter>
+    </ClInclude>
+    <ClInclude Include="source\XPGMatchingStyleDataNode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="source\XPG.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="source\XPG.fr">
+      <Filter>Resource Files</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="source\XPG_enUS.fr">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="source\XPG_frFR.fr">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+</Project>

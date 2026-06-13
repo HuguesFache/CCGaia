@@ -1,0 +1,21 @@
+#ifdef __ODFRC__
+// French string table is defined here
+resource StringTable (kSDKDefStringsResourceID + index_frFR)
+{
+	k_frFR,									// Locale Id
+	kResourceUTF8Encoded,		// Character encoding converter (irp) I made this WinToMac as we have a bias to generate on Win...
+	{
+		kDlbNilInterface,				"Problème anormal : mémoire insuffisante ?",
+		kNewDocCmdFailed,				"Création de nouveau document échouée",
+		kSetDocNameCmdFailed,			"Définition du nom de document échouée",
+		kNewWinCmdFailed,				"Ouverture du document échouée",
+		kCloseWinCmdFailed,				"Fermeture du document échouée",
+		kDlbNilParameter,				"Paramètre vide passé à la fonction",
+		kSetPageSizeCmdFailed,			"Changement des dimensions du document échoué",
+		kSetColumnCmdFailed,			"Changement du nombre de colonnes du document échoué",
+		kSetMarginCmdFailed,			"Changement des marges du document échoué",
+		kErrImpossibleToSave,			"Impossible de sauvegarder le document : le chemin n'existe pas ou le document est ouvert",
+		kErrDocNotFound,				"Le chemin est invalide ou le document n'existe pas",	
+	}
+};
+#endif // __ODFRC__

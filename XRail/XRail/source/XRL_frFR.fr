@@ -1,0 +1,35 @@
+#ifdef __ODFRC__
+// French string table is defined here
+resource StringTable (kSDKDefStringsResourceID + index_frFR)
+{
+	k_frFR,									// Locale Id
+	kResourceUTF8Encoded,		// Character encoding converter (irp) I made this WinToMac as we have a bias to generate on Win...
+	{
+		// ----- Menu strings
+			kXRLCompanyKey,					kXRLCompanyValue, 
+			kSDKDefAboutThisPlugInMenuKey,	kSDKDefAboutThisPlugInMenuValue_frFR,
+
+		// ----- Panel/dialog strings				
+			kXRLErrorWSLockPageKey,			"Erreur de connexion, impossible de verrouiller les pages",
+			kXRLErrorWSGenerateVignetteKey, "Erreur de connexion durant la génération des vignettes, opération annulée",	
+			kXRLErrorUnknownUserKey,		"Utilisateur inconnu",
+			kXRLErrorBadPasswordKey,		"Mot de passe incorrect",
+			kXRLErrorPrivilegeKey,			"Vous n'avez pas les privilèges requis pour vous connecter à XRail", 					
+			kXRLErrorSOAPKey,				"Erreur durant le transfert des données",			
+			kXRLErrorWebServiceKey,			"Erreur de connexion, le serveur n'est pas accessible", 
+			kXRLErrorMissingConfigFileKey,	"Impossible de lire le fichier de configuration Gaia.ini, il est peut-être manquant",
+			kXRLErrorCreateResaPubKey,		"Une erreur est survenue lors de la création de la réserve de pub",
+			kXRLErrorInvalidResaPageKey,	"La réserve de pub est associée à une page qui n'existe pas dans le document",
+			kXRLErrorPDFNotCreatedStringKey,"L'export en PDF a échoué, vérifiez que le dossier cible pour les PDFs est accessible en écriture (un lecteur est peut être déconnecté)",
+			kXRLErrorPDFStyleNotFoundKey,	"Style d'export PDF non trouvé",
+			kXRLErrorGetPDFFileNameKey,		"Erreur de connexion, impossible de récupérer le nom du PDF à générer",
+			kXRLErrorMovePDFFileKey,		"Erreur de connexion, le fichier PDF généré n'a pas pu être déplacé",
+			kXRLVersionTextKey, 			"La version de XRailClient actuelle n'est pas à jour, veuillez contacter le support technique ",
+			kXRLDocumentReadOnly, 			"Ce document est en mode lecture seule, si le problème persiste veuillez contacter votre support technique",
+					
+		// ----- Misc strings
+			kCommandXRailSetPrefsCmdKey, 	"Sauvegarde préférences", 
+			kCommandXRailSetPageSlugCmdKey,	"Attribuer XRail ID aux pages",
+		}
+};
+#endif // __ODFRC__

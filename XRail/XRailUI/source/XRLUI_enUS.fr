@@ -1,0 +1,63 @@
+#ifdef __ODFRC__
+// English string table is defined here
+resource StringTable (kSDKDefStringsResourceID + index_enUS)
+{
+	k_enUS,									// Locale Id
+	kResourceUTF8Encoded,		// Character encoding converter (irp) I made this WinToMac as we have a bias to generate on Win...
+	{
+	 	// ----- Menu strings
+			kXRLUICompanyKey,					kXRLUICompanyValue,
+			kXRLUIAboutMenuKey,					"About XRail...",
+			kXRLUIPluginsMenuKey,				"XRail",	
+			kSDKDefAboutThisPlugInMenuKey,		kSDKDefAboutThisPlugInMenuValue_enUS,
+
+		// ----- Misc strings
+			kXRLUIAboutBoxStringKey,			kXRLUIPluginName ", version " kXRLUIVersion " by " kXRLUIAuthor "\n\n",
+			kXRLUIDialogMenuItemKey,			kXRLUIPluginName "[US]...",
+			kXRLUIMenu,							"XRail",
+			kXRLUISousMenuPreferences,			"XRail server",
+			kXRLUISousMenuConnection,			"Connection",
+			kXRLUISousMenuDeconnection,			"Disconnection",
+			kXRLUIEnablePreviewMenuKey,			"Enable previews",
+			kXRLUIExternalPDFMenuKey,			"Make PDF", 
+			kXRLUIXRailLinkMenuKey,				"XRail Link", 
+			kXRLUIXRailUnLinkMenuKey,			"XRail Unlink", 
+			kXRLUISendToServerMenuKey,			"Send Document To Server",
+			kXRLUIErrorSendToServerKey,			"Check the folder exists and you can access it",
+	
+		// ----- Panel/dialog strings 
+			kXRLUIPrefsDialogTitleKey,			"XRail server settings",
+			kXRLUILoginDialogTitleKey,			"Connect to XRail",
+			kXRLUIChangeStateDialogTitleKey,	"Page status: ",
+			kXRLUILinkerDialogTitleKey,			"XRail Link",
+			kXRLUILoginTextKey,					"Login: ",
+			kXRLUIPasswordTextKey,				"Password:",
+			kXRLUIRememberMeTextKey,			"Remember me",
+			kXRLUIPrefsIPLabel,					"IP address: ", 
+			kXRLUIPrefsPortLabel,				"Port: ", 		
+			kXRLUIErrorBlankLoginKey,			"You must enter a login",
+			kXRLUIErrorBlankPasswordKey,		"You must enter a password",
+			kXRLUIModeRobotTextKey,				"Robot mode",
+			kXRLUIMessageLinkerKey,				"This file exists already. Save-it anyway? ",
+			kXRLUIChooseTitlePromptKey,			"Choose a title",
+			kXRLUIErrorWSGetStatusKey,			"Connection error, failed to get list of statuses",
+			kXRLUIErrorWSSetPageStatusKey,		"Connection error, failed to update page statuses",
+			kXRLUIErrorWSGetSavePathKey,		"Connection error, the document won't be saved",
+			kXRLUIErrorWSGetLevelKey,			"Connection error, failed to get production tree",
+			kXRLUIErrorWSLinkPagesKey,			"Connection error, failed to link pages to xrail",
+
+		// ----- Comments palette
+			kXRLUICommentsPanelTitleKey,		"Comments",
+			kXRLUICommentsColCheckKey,			"",
+			kXRLUICommentsColDateKey,			"Date",
+			kXRLUICommentsColTextKey,			"Comment",
+			kXRLUICommentsColUserKey,			"User",
+			kXRLUICommentsEmptyKey,				"No comments for this page",
+			kXRLUICommentsRefreshTipKey,		"Refresh list",
+			kXRLUICommentsLoginPromptTextKey,	"You need to connect to the server to use this palette.",
+			kXRLUICommentsLoginPromptButtonKey,	"Sign in",
+			kXRLUICommentsNoGaiaPageTextKey,	"Open a Gaia page to use this palette.",
+			kXRLUICommentsShowAllKey,			"Show all comments",
+	}
+};
+#endif // __ODFRC__

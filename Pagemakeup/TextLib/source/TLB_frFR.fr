@@ -1,0 +1,16 @@
+#ifdef __ODFRC__
+// French string table is defined here
+resource StringTable (kSDKDefStringsResourceID + index_frFR)
+{
+	k_frFR,									// Locale Id
+	kResourceUTF8Encoded,		// Character encoding converter (irp) I made this WinToMac as we have a bias to generate on Win...
+	{
+		kTlbNilInterface,			"Problème anormal : mémoire insuffisante ?",
+		kTlbNilParameter,			"Problème : au moins un des paramêtres passé à la fonction est incorrect (nul)",
+		kNewStyleCmdFailed,			"Création de feuille de style échouée",
+		kDefaultStyleCmdFailed,		"Définition du style par défaut échouée",
+		kEditStyleCmdFailed,		"Edition de style échouée",
+		kErrLanguageNotDefined,		"Le language n'existe ni dans le document, ni dans l'application",
+	}
+};
+#endif // __ODFRC__

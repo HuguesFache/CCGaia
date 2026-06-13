@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <ImportGroup Label="PropertySheets">
+    <Import Project="..\..\build\Gaia.Common.props" />
+  </ImportGroup>
+  <PropertyGroup>
+    <ODFRC_INC>-i "..\Core\source" -i "..\UI\source" $(ID_ODFRC_SDK)</ODFRC_INC>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+</Project>
