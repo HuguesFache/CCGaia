@@ -17,13 +17,14 @@ CC = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # --- (annee, racine SDK absolue, Intel?) ------------------------------------
 VERSIONS = [
+    # Mac macmini2021 (Big Sur, Xcode 13) — SDK universels x86_64+arm64, pas de variante Intel separee
+    ('2021', '/Users/macmini2021/AdobeSDKs/Adobe_InDesign_CC2021_Products_SDK', False),
+    ('2022', '/Users/macmini2021/AdobeSDKs/Adobe_InDesign_CC2022_Products_SDK', False),
+    ('2023', '/Users/macmini2021/AdobeSDKs/Adobe_InDesign_CC2023_Products_SDK', False),
+    ('2024', '/Users/macmini2021/AdobeSDKs/Adobe_InDesign_CC2024_Products_SDK', False),
+    # Mac macmini2024 (Sequoia, Xcode 16) — universels + variante Intel (x86_64) pour InDesign Intel
     ('2025', '/Users/macmini2024/AdobeSDKs/Adobe_InDesign_CC2025_Products_SDK', True),
     ('2026', '/Users/macmini2024/AdobeSDKs/Adobe_InDesign_CC2026_Products_SDK', True),
-    # --- Mac 2021-2024 : verifier le chemin reel puis decommenter ---
-    # ('2021', '/Users/macmini2021/AdobeSDKs/Adobe_InDesign_CC2021_Products_SDK', False),
-    # ('2022', '/Users/macmini2021/AdobeSDKs/Adobe_InDesign_CC2022_Products_SDK', False),
-    # ('2023', '/Users/macmini2021/AdobeSDKs/Adobe_InDesign_CC2023_Products_SDK', False),
-    # ('2024', '/Users/macmini2021/AdobeSDKs/Adobe_InDesign_CC2024_Products_SDK', False),
 ]
 
 # --- (projdir, Name, has_server) --------------------------------------------
@@ -35,6 +36,10 @@ PROJECTS = [
     ('XPage/UI','XPageUI',False), ('XRail/XRail','XRail',True),
     ('XRail/XRailUI','XRailUI',False), ('XRailClient/XRailClient','XRailClient',True),
 ]
+# Includes _shared_build_settings SUPPLEMENTAIRES (au-dela de common.xcconfig) que certains
+# commons hardcodaient sur le SDK 2026 -> deplaces dans les wrappers (version-correct).
+EXTRA_SDK_INC = {'XPageUI':['plugin.sdk.xcconfig'], 'XRailUI':['plugin.sdk.xcconfig'],
+                 'XRail':['plugin.sdk.xcconfig'], 'XRailClient':['plugin.sdk.xcconfig']}
 TARGET='F957086215C90B3E00C95573'   # PBXNativeTarget id partage
 PLIST='4B05EEB008840E8D00D809E1'    # XCConfigurationList projet
 TLIST='F957087015C90B3E00C95573'    # XCConfigurationList target
@@ -61,6 +66,12 @@ def gaia_common():
     L+=['SERVER_VALUE[config=Server-%s] = 1'%v for v,_,_ in VERSIONS]
     L+=['','ID_MODEL_FRAMEWORK = InDesignModelAndUI']
     L+=['ID_MODEL_FRAMEWORK[config=Server-%s] = InDesignModel'%v for v,_,_ in VERSIONS]
+    # -ld_classic : requis par le nouveau linker (Xcode 15+, SDK 2025+), INEXISTANT sur Xcode 13 (2021-2024).
+    L+=['','GAIA_LD_CLASSIC =']
+    for ver,_,intel in VERSIONS:
+        if int(ver) >= 2025:
+            cc=['Client-%s'%ver,'Server-%s'%ver]+(['Client-%s-Intel'%ver] if intel else [])
+            L+=['GAIA_LD_CLASSIC[config=%s] = -ld_classic'%c for c in cc]
     open(os.path.join(CC,'build','Gaia.Common.xcconfig'),'w').write('\n'.join(L)+'\n')
 
 # ---------------------------------------------------------------- schemes
@@ -102,6 +113,7 @@ def stamp(template, newid, cfg, basefile, baseid, intel):
              'baseConfigurationReference = %s /* %s */;'%(baseid,basefile), b, count=1)
     b=re.sub(r'\n\t\t\t\tARCHS = x86_64;','',b)
     b=re.sub(r'name = [^;]+;','name = %s;'%cfg, b, count=1)
+    b=b.replace('"-ld_classic",','"$(GAIA_LD_CLASSIC)",')   # -ld_classic version-conditionnel
     if intel: b=b.replace('buildSettings = {\n','buildSettings = {\n\t\t\t\tARCHS = x86_64;\n',1)
     return b
 
@@ -117,16 +129,22 @@ def sync_project(projdir, name, has_server):
     projcommon=re.search(r'7FE5845A08AD6DB8007DB654 /\* [^*]+ \*/ = \{[^}]*?path = ([^;]+);', s).group(1).strip()
     relcommon =re.search(r'77D687F4113861B500D56A9C /\* [^*]+ \*/ = \{[^}]*?path = ([^;]+);', s).group(1).strip()
 
+    # nettoyer les includes SDK residuels (ex plugin.sdk.xcconfig hardcode 2026) dans les commons
+    for cf in (projcommon, relcommon):
+        cp=os.path.join(pdir,cf); ct=open(cp).read()
+        ct2=re.sub(r'#include "[^"]*/_shared_build_settings/[^"]+"\n','',ct)
+        if ct2!=ct: open(cp,'w').write(ct2)
+    extras=EXTRA_SDK_INC.get(name, [])
+
     # wrappers + filerefs
     wref={}; wfiles=[]
     for ver,root,_ in VERSIONS:
-        for kind,inc,suff,common in (('P','common.xcconfig','',projcommon),
-                                      ('R','common_release.xcconfig','Release',relcommon)):
+        for kind,inc,suff,common,exs in (('P','common.xcconfig','',projcommon,extras),
+                                          ('R','common_release.xcconfig','Release',relcommon,[])):
             wn='%s%s_%s.xcconfig'%(name,suff,ver)
-            open(os.path.join(pdir,wn),'w').write(
-                '// GENERE par sync_mac_versions.py\n'
-                '#include "%s/build/mac/prj/_shared_build_settings/%s"\n'
-                'ID_SDK_ROOT = %s\n#include "%s"\n'%(root,inc,root,common))
+            incs='#include "%s/build/mac/prj/_shared_build_settings/%s"\n'%(root,inc)
+            for e in exs: incs+='#include "%s/build/mac/prj/_shared_build_settings/%s"\n'%(root,e)
+            open(os.path.join(pdir,wn),'w').write('// GENERE par sync_mac_versions.py\n'+incs+'ID_SDK_ROOT = %s\n#include "%s"\n'%(root,common))
             fid=oid('wref',name,kind,ver); wref[(kind,ver)]=fid; wfiles.append((fid,wn))
 
     # section XCBuildConfiguration

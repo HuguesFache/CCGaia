@@ -2,9 +2,25 @@
 // Axe CLIENT/SERVER derive du nom de configuration.
 
 SERVER_VALUE = 0
+SERVER_VALUE[config=Server-2021] = 1
+SERVER_VALUE[config=Server-2022] = 1
+SERVER_VALUE[config=Server-2023] = 1
+SERVER_VALUE[config=Server-2024] = 1
 SERVER_VALUE[config=Server-2025] = 1
 SERVER_VALUE[config=Server-2026] = 1
 
 ID_MODEL_FRAMEWORK = InDesignModelAndUI
+ID_MODEL_FRAMEWORK[config=Server-2021] = InDesignModel
+ID_MODEL_FRAMEWORK[config=Server-2022] = InDesignModel
+ID_MODEL_FRAMEWORK[config=Server-2023] = InDesignModel
+ID_MODEL_FRAMEWORK[config=Server-2024] = InDesignModel
 ID_MODEL_FRAMEWORK[config=Server-2025] = InDesignModel
 ID_MODEL_FRAMEWORK[config=Server-2026] = InDesignModel
+
+GAIA_LD_CLASSIC =
+GAIA_LD_CLASSIC[config=Client-2025] = -ld_classic
+GAIA_LD_CLASSIC[config=Server-2025] = -ld_classic
+GAIA_LD_CLASSIC[config=Client-2025-Intel] = -ld_classic
+GAIA_LD_CLASSIC[config=Client-2026] = -ld_classic
+GAIA_LD_CLASSIC[config=Server-2026] = -ld_classic
+GAIA_LD_CLASSIC[config=Client-2026-Intel] = -ld_classic

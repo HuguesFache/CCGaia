@@ -5,7 +5,6 @@
 ID_BUILD_CONFIG_PLUGIN_SDK = YES
 
 // InDesign sdk project build settings (based on common build settings)
-#include "/Users/macmini2024/AdobeSDKs/Adobe_InDesign_CC2026_Products_SDK/build/mac/prj/_shared_build_settings/plugin.sdk.xcconfig"
 
 // InDesign sdk project specific build settings
 

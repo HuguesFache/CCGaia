@@ -1,0 +1,4 @@
+// GENERE par sync_mac_versions.py
+#include "/Users/macmini2021/AdobeSDKs/Adobe_InDesign_CC2024_Products_SDK/build/mac/prj/_shared_build_settings/common_release.xcconfig"
+ID_SDK_ROOT = /Users/macmini2021/AdobeSDKs/Adobe_InDesign_CC2024_Products_SDK
+#include "DocLibPlugin_release.xcconfig"

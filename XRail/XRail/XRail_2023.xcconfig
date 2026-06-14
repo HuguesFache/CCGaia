@@ -1,0 +1,5 @@
+// GENERE par sync_mac_versions.py
+#include "/Users/macmini2021/AdobeSDKs/Adobe_InDesign_CC2023_Products_SDK/build/mac/prj/_shared_build_settings/common.xcconfig"
+#include "/Users/macmini2021/AdobeSDKs/Adobe_InDesign_CC2023_Products_SDK/build/mac/prj/_shared_build_settings/plugin.sdk.xcconfig"
+ID_SDK_ROOT = /Users/macmini2021/AdobeSDKs/Adobe_InDesign_CC2023_Products_SDK
+#include "XRailPlugin.xcconfig"
