@@ -1,3 +1,4 @@
+// GENERE par sync_mac_versions.py
 #include "/Users/macmini2024/AdobeSDKs/Adobe_InDesign_CC2025_Products_SDK/build/mac/prj/_shared_build_settings/common.xcconfig"
 ID_SDK_ROOT = /Users/macmini2024/AdobeSDKs/Adobe_InDesign_CC2025_Products_SDK
 #include "UIPlugin.xcconfig"

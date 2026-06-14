@@ -107,6 +107,10 @@
 /* End PBXBuildRule section */
 
 /* Begin PBXFileReference section */
+		D3AD6B4B907435D73A23009E /* XPageUI_2025.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = XPageUI_2025.xcconfig; sourceTree = "<group>"; };
+		EEB9428EA43674D14536806C /* XPageUIRelease_2025.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = XPageUIRelease_2025.xcconfig; sourceTree = "<group>"; };
+		24AC86E814B25BD6782A8CD0 /* XPageUI_2026.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = XPageUI_2026.xcconfig; sourceTree = "<group>"; };
+		CADAD633D8EA8C65FC1DF123 /* XPageUIRelease_2026.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = XPageUIRelease_2026.xcconfig; sourceTree = "<group>"; };
 		C0DE00000000000005005000 /* XPGUIImageNodeButtonsObserver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XPGUIImageNodeButtonsObserver.cpp; path = source/XPGUIImageNodeButtonsObserver.cpp; sourceTree = "<group>"; };
 		C0DE00000000000005005002 /* XPGUIXRailDisplayImageDragDropSource.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XPGUIXRailDisplayImageDragDropSource.cpp; path = source/XPGUIXRailDisplayImageDragDropSource.cpp; sourceTree = "<group>"; };
 		C0DE00000000000005005004 /* XPGUIImageInLayoutDropTarget.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XPGUIImageInLayoutDropTarget.cpp; path = source/XPGUIImageInLayoutDropTarget.cpp; sourceTree = "<group>"; };
@@ -116,10 +120,6 @@
 		C0DE0000000000000500500C /* XPGUIImageEtatSwatchEH.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XPGUIImageEtatSwatchEH.cpp; path = source/XPGUIImageEtatSwatchEH.cpp; sourceTree = "<group>"; };
 		4B05EED108840E9500D809E1 /* XPGUI.fr */ = {isa = PBXFileReference; lastKnownFileType = text; name = XPGUI.fr; path = source/XPGUI.fr; sourceTree = SOURCE_ROOT; };
 		77D687F4113861B500D56A9C /* UIPlugin_release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = UIPlugin_release.xcconfig; sourceTree = "<group>"; };
-		5E54076200000000C0DE2026 /* XPageUI_2026.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = XPageUI_2026.xcconfig; sourceTree = "<group>"; };
-		5E54076200000000C0DE2025 /* XPageUI_2025.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = XPageUI_2025.xcconfig; sourceTree = "<group>"; };
-		5E54076300000000C0DE2026 /* XPageUIRelease_2026.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = XPageUIRelease_2026.xcconfig; sourceTree = "<group>"; };
-		5E54076300000000C0DE2025 /* XPageUIRelease_2025.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = XPageUIRelease_2025.xcconfig; sourceTree = "<group>"; };
 		7FE5845A08AD6DB8007DB654 /* UIPlugin.xcconfig */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xcconfig; path = UIPlugin.xcconfig; sourceTree = SOURCE_ROOT; };
 		8F00E5BB27B523B900A588F7 /* SDKFileHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SDKFileHelper.cpp; path = "$(ID_SDK_ROOT)/source/sdksamples/common/SDKFileHelper.cpp"; sourceTree = "<absolute>"; };
 		8F00E5BD27B523C100A588F7 /* SDKPlugInEntrypoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SDKPlugInEntrypoint.cpp; path = "$(ID_SDK_ROOT)/source/sdksamples/common/SDKPlugInEntrypoint.cpp"; sourceTree = "<absolute>"; };
@@ -664,60 +664,9 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		4B05EEB108840E8D00D809E1 /* Default */ = {
+		7E599A48854360C67A94554C /* Client-2025 */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5E54076200000000C0DE2026 /* XPageUI_2026.xcconfig */;
-			buildSettings = {
-				BUILT_PRODUCTS_DIR = "$(ID_BUILT_SDK_SAMPLES_DIR)";
-				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
-				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
-				CLANG_WARN_COMMA = YES;
-				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
-				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
-				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
-				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
-				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
-				CLANG_WARN_STRICT_PROTOTYPES = YES;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNUSED_PARAMETER = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = (
-					"$(HEADER_SEARCH_PATHS)",
-					$ID_SDK_ROOT/source/public/interfaces/tables,
-					$ID_SDK_ROOT/source/public/components/widgetbin/includes,
-					$ID_SDK_ROOT/source/public/interfaces/workgroup,
-					$ID_SDK_ROOT/source/public/interfaces/interactive,
-					$ID_SDK_ROOT/source/public/interfaces/interactive/ui,
-					$ID_SDK_ROOT/source/public/interfaces/colormgmt,
-					$ID_SDK_ROOT/source/public/interfaces/incopy,
-					$ID_SDK_ROOT/source/public/interfaces/cjk,
-					$ID_SDK_ROOT/source/public/facades/graphics,
-					$ID_SDK_ROOT/source/public/facades/text,
-					$ID_SDK_ROOT/source/public/facades/layout,
-					$ID_SDK_ROOT/source/public/components/publiclib/plugins,
-					$ID_SDK_ROOT/source/public/components/publiclib/files,
-					$ID_SDK_ROOT/source/public/components/publiclib/objectmodel,
-					$ID_SDK_ROOT/source/sdksamples/common,
-					$ID_SDK_ROOT/external/afl/includes,
-					/Users/melody/deve/InDesign/Sources/cc2023/XPage/UI/source,
-				);
-				INFOPLIST_FILE = $ID_SDK_ROOT/source/sdksamples/common/Info.plist;
-				INFOPLIST_PREPROCESS = YES;
-				PLC_OUTPUT_TYPE = InDa;
-				PRODUCT_NAME = UI;
-			};
-			name = Client-2026;
-		};
-		5E5407C000000000C0DE2025 /* Default */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5E54076200000000C0DE2025 /* XPageUI_2025.xcconfig */;
+			baseConfigurationReference = D3AD6B4B907435D73A23009E /* XPageUI_2025.xcconfig */;
 			buildSettings = {
 				BUILT_PRODUCTS_DIR = "$(ID_BUILT_SDK_SAMPLES_DIR)";
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
@@ -766,60 +715,9 @@
 			};
 			name = Client-2025;
 		};
-		5E5407C200000000C0DE2026 /* Default */ = {
+		2B9D834A8B7358ABF0D0CACE /* Client-2025-Intel */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5E54076200000000C0DE2026 /* XPageUI_2026.xcconfig */;
-			buildSettings = {
-				BUILT_PRODUCTS_DIR = "$(ID_BUILT_SDK_SAMPLES_DIR)";
-				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
-				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
-				CLANG_WARN_COMMA = YES;
-				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
-				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
-				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
-				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
-				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
-				CLANG_WARN_STRICT_PROTOTYPES = YES;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNUSED_PARAMETER = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = (
-					"$(HEADER_SEARCH_PATHS)",
-					$ID_SDK_ROOT/source/public/interfaces/tables,
-					$ID_SDK_ROOT/source/public/components/widgetbin/includes,
-					$ID_SDK_ROOT/source/public/interfaces/workgroup,
-					$ID_SDK_ROOT/source/public/interfaces/interactive,
-					$ID_SDK_ROOT/source/public/interfaces/interactive/ui,
-					$ID_SDK_ROOT/source/public/interfaces/colormgmt,
-					$ID_SDK_ROOT/source/public/interfaces/incopy,
-					$ID_SDK_ROOT/source/public/interfaces/cjk,
-					$ID_SDK_ROOT/source/public/facades/graphics,
-					$ID_SDK_ROOT/source/public/facades/text,
-					$ID_SDK_ROOT/source/public/facades/layout,
-					$ID_SDK_ROOT/source/public/components/publiclib/plugins,
-					$ID_SDK_ROOT/source/public/components/publiclib/files,
-					$ID_SDK_ROOT/source/public/components/publiclib/objectmodel,
-					$ID_SDK_ROOT/source/sdksamples/common,
-					$ID_SDK_ROOT/external/afl/includes,
-					/Users/melody/deve/InDesign/Sources/cc2023/XPage/UI/source,
-				);
-				INFOPLIST_FILE = $ID_SDK_ROOT/source/sdksamples/common/Info.plist;
-				INFOPLIST_PREPROCESS = YES;
-				PLC_OUTPUT_TYPE = InDa;
-				PRODUCT_NAME = UI;
-			};
-			name = Client-2026-Intel;
-		};
-		5E5407C300000000C0DE2025 /* Default */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5E54076200000000C0DE2025 /* XPageUI_2025.xcconfig */;
+			baseConfigurationReference = D3AD6B4B907435D73A23009E /* XPageUI_2025.xcconfig */;
 			buildSettings = {
 				BUILT_PRODUCTS_DIR = "$(ID_BUILT_SDK_SAMPLES_DIR)";
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
@@ -868,46 +766,40 @@
 			};
 			name = Client-2025-Intel;
 		};
-		F957087115C90B3E00C95573 /* Default */ = {
+		CA537F4AF5959E2179F87B4C /* Client-2026 */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5E54076300000000C0DE2026 /* XPageUIRelease_2026.xcconfig */;
+			baseConfigurationReference = 24AC86E814B25BD6782A8CD0 /* XPageUI_2026.xcconfig */;
 			buildSettings = {
 				BUILT_PRODUCTS_DIR = "$(ID_BUILT_SDK_SAMPLES_DIR)";
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Developer ID Application";
-				CODE_SIGN_STYLE = Manual;
-				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = 3WBLWC32YG;
-				"DEVELOPMENT_TEAM[sdk=macosx*]" = 3WBLWC32YG;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(ID_SDK_ROOT)/build/mac/release_cocoa64/packagefolder/contents/macos",
-					"$(ID_SDK_ROOT)/build/mac/release_cocoa64/packagefolder/contents/macos",
-					"$(ID_SDK_ROOT)/build/mac/release_cocoa64/packagefolder/contents/macos",
-				);
-				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNUSED_PARAMETER = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(HEADER_SEARCH_PATHS)",
-					$ID_SDK_ROOT/source/precomp/msvc,
-					$ID_SDK_ROOT/source/public/interfaces/xmedia,
-					$ID_SDK_ROOT/source/public/interfaces/preflight,
-					$ID_SDK_ROOT/source/public/interfaces/ui,
 					$ID_SDK_ROOT/source/public/interfaces/tables,
-					$ID_SDK_ROOT/source/public/interfaces/text,
-					$ID_SDK_ROOT/source/public/interfaces/graphics,
 					$ID_SDK_ROOT/source/public/components/widgetbin/includes,
 					$ID_SDK_ROOT/source/public/interfaces/workgroup,
 					$ID_SDK_ROOT/source/public/interfaces/interactive,
 					$ID_SDK_ROOT/source/public/interfaces/interactive/ui,
 					$ID_SDK_ROOT/source/public/interfaces/colormgmt,
-					$ID_SDK_ROOT/source/public/interfaces/utils,
 					$ID_SDK_ROOT/source/public/interfaces/incopy,
-					$ID_SDK_ROOT/source/public/interfaces/layout,
-					$ID_SDK_ROOT/source/public/interfaces/architecture,
 					$ID_SDK_ROOT/source/public/interfaces/cjk,
-					$ID_SDK_ROOT/source/precomp/common,
-					$ID_SDK_ROOT/source/public/includes,
 					$ID_SDK_ROOT/source/public/facades/graphics,
 					$ID_SDK_ROOT/source/public/facades/text,
 					$ID_SDK_ROOT/source/public/facades/layout,
@@ -916,75 +808,69 @@
 					$ID_SDK_ROOT/source/public/components/publiclib/objectmodel,
 					$ID_SDK_ROOT/source/sdksamples/common,
 					$ID_SDK_ROOT/external/afl/includes,
-					$ID_SDK_ROOT/external/asl/boost_libraries,
-					$ID_SDK_ROOT/external/asl/adobe_source_libraries,
-					$ID_SDK_ROOT/external/asl/intel_tbb_libraries/include,
-					$ID_SDK_ROOT/external/icu/include,
-					$ID_SDK_ROOT/external/dva/third_party/boost_libraries,
-					$ID_SDK_ROOT/external/dva/third_party/adobe_source_libraries,
-					source,
-					../../XRailClient/XRailClient/source,
-					../Core/source,
-					../../XRail/XRail/source,
-					"$(ID_PRJ_DIR)/../../../vcpkg/installed/arm64-osx/include",
+					/Users/melody/deve/InDesign/Sources/cc2023/XPage/UI/source,
 				);
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					$ID_SDK_ROOT/build/mac/release_cocoa64/packagefolder/contents/macos,
-				);
-				OTHER_LDFLAGS = (
-					"-Xlinker",
-					"-no_data_in_code_info",
-					"-ld_classic",
-					"-lPublicPlugIn",
-					"-framework",
-					"InDesignModelAndUI",
-				);
-				PRODUCT_NAME = XPageUI;
-				PROVISIONING_PROFILE_SPECIFIER = "";
-				REZ_SEARCH_PATHS = (
-					"$(ID_COMMON_REZ_SEARCH_PATHS)",
-					"$(ID_SDK_ROOT)/external/palettes",
-					"$(ID_SDK_ROOT)/external/workflow",
-					icons,
-					"$ID_SDK_ROOT/source/**",
-				);
-				SDKROOT = macosx;
-				WARNING_CFLAGS = (
-					"-Wimplicit",
-					"-Wsequence-point",
-					"-Winit-self",
-					"-Wmissing-field-initializers",
-					"-Wpointer-arith",
-					"-Wpacked",
-					"-Wno-unused-parameter",
-					"-Wno-unused-variable",
-					"-Wno-write-strings",
-					"-Wno-format",
-					"-Wno-deprecated",
-					"-Wformat-security",
-					"-Wno-cast-align",
-					"-Wno-logical-op-parentheses",
-					"-Wno-c++11-extensions",
-					"-Wno-switch-enum",
-					"-Wno-char-subscripts",
-					"-Wno-return-stack-address",
-					"-Wno-parentheses-equality",
-					"-Wno-unused-function",
-					"-Wno-empty-body",
-					"-Wno-out-of-line-declaration",
-					"-Wno-return-type-c-linkage",
-					"-Wno-invalid-source-encoding",
-					"-Wno-shadow",
-					"-Wno-#pragma-messages",
-					"-Wno-inline-new-delete",
-				);
+				INFOPLIST_FILE = $ID_SDK_ROOT/source/sdksamples/common/Info.plist;
+				INFOPLIST_PREPROCESS = YES;
+				PLC_OUTPUT_TYPE = InDa;
+				PRODUCT_NAME = UI;
 			};
 			name = Client-2026;
 		};
-		5E5407D000000000C0DE2025 /* Default */ = {
+		A23794C3F3F0EDE41047435F /* Client-2026-Intel */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5E54076300000000C0DE2025 /* XPageUIRelease_2025.xcconfig */;
+			baseConfigurationReference = 24AC86E814B25BD6782A8CD0 /* XPageUI_2026.xcconfig */;
+			buildSettings = {
+				BUILT_PRODUCTS_DIR = "$(ID_BUILT_SDK_SAMPLES_DIR)";
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNUSED_PARAMETER = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(HEADER_SEARCH_PATHS)",
+					$ID_SDK_ROOT/source/public/interfaces/tables,
+					$ID_SDK_ROOT/source/public/components/widgetbin/includes,
+					$ID_SDK_ROOT/source/public/interfaces/workgroup,
+					$ID_SDK_ROOT/source/public/interfaces/interactive,
+					$ID_SDK_ROOT/source/public/interfaces/interactive/ui,
+					$ID_SDK_ROOT/source/public/interfaces/colormgmt,
+					$ID_SDK_ROOT/source/public/interfaces/incopy,
+					$ID_SDK_ROOT/source/public/interfaces/cjk,
+					$ID_SDK_ROOT/source/public/facades/graphics,
+					$ID_SDK_ROOT/source/public/facades/text,
+					$ID_SDK_ROOT/source/public/facades/layout,
+					$ID_SDK_ROOT/source/public/components/publiclib/plugins,
+					$ID_SDK_ROOT/source/public/components/publiclib/files,
+					$ID_SDK_ROOT/source/public/components/publiclib/objectmodel,
+					$ID_SDK_ROOT/source/sdksamples/common,
+					$ID_SDK_ROOT/external/afl/includes,
+					/Users/melody/deve/InDesign/Sources/cc2023/XPage/UI/source,
+				);
+				INFOPLIST_FILE = $ID_SDK_ROOT/source/sdksamples/common/Info.plist;
+				INFOPLIST_PREPROCESS = YES;
+				PLC_OUTPUT_TYPE = InDa;
+				PRODUCT_NAME = UI;
+			};
+			name = Client-2026-Intel;
+		};
+		7F976F75927E7CFF2E47706A /* Client-2025 */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = EEB9428EA43674D14536806C /* XPageUIRelease_2025.xcconfig */;
 			buildSettings = {
 				BUILT_PRODUCTS_DIR = "$(ID_BUILT_SDK_SAMPLES_DIR)";
 				CLANG_ENABLE_OBJC_WEAK = YES;
@@ -1096,124 +982,9 @@
 			};
 			name = Client-2025;
 		};
-		5E5407D200000000C0DE2026 /* Default */ = {
+		BE5FAEABB3D87C0A8A8A69DA /* Client-2025-Intel */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5E54076300000000C0DE2026 /* XPageUIRelease_2026.xcconfig */;
-			buildSettings = {
-				ARCHS = x86_64;
-				BUILT_PRODUCTS_DIR = "$(ID_BUILT_SDK_SAMPLES_DIR)";
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Developer ID Application";
-				CODE_SIGN_STYLE = Manual;
-				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = 3WBLWC32YG;
-				"DEVELOPMENT_TEAM[sdk=macosx*]" = 3WBLWC32YG;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(ID_SDK_ROOT)/build/mac/release_cocoa64/packagefolder/contents/macos",
-					"$(ID_SDK_ROOT)/build/mac/release_cocoa64/packagefolder/contents/macos",
-					"$(ID_SDK_ROOT)/build/mac/release_cocoa64/packagefolder/contents/macos",
-				);
-				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
-				HEADER_SEARCH_PATHS = (
-					"$(HEADER_SEARCH_PATHS)",
-					$ID_SDK_ROOT/source/precomp/msvc,
-					$ID_SDK_ROOT/source/public/interfaces/xmedia,
-					$ID_SDK_ROOT/source/public/interfaces/preflight,
-					$ID_SDK_ROOT/source/public/interfaces/ui,
-					$ID_SDK_ROOT/source/public/interfaces/tables,
-					$ID_SDK_ROOT/source/public/interfaces/text,
-					$ID_SDK_ROOT/source/public/interfaces/graphics,
-					$ID_SDK_ROOT/source/public/components/widgetbin/includes,
-					$ID_SDK_ROOT/source/public/interfaces/workgroup,
-					$ID_SDK_ROOT/source/public/interfaces/interactive,
-					$ID_SDK_ROOT/source/public/interfaces/interactive/ui,
-					$ID_SDK_ROOT/source/public/interfaces/colormgmt,
-					$ID_SDK_ROOT/source/public/interfaces/utils,
-					$ID_SDK_ROOT/source/public/interfaces/incopy,
-					$ID_SDK_ROOT/source/public/interfaces/layout,
-					$ID_SDK_ROOT/source/public/interfaces/architecture,
-					$ID_SDK_ROOT/source/public/interfaces/cjk,
-					$ID_SDK_ROOT/source/precomp/common,
-					$ID_SDK_ROOT/source/public/includes,
-					$ID_SDK_ROOT/source/public/facades/graphics,
-					$ID_SDK_ROOT/source/public/facades/text,
-					$ID_SDK_ROOT/source/public/facades/layout,
-					$ID_SDK_ROOT/source/public/components/publiclib/plugins,
-					$ID_SDK_ROOT/source/public/components/publiclib/files,
-					$ID_SDK_ROOT/source/public/components/publiclib/objectmodel,
-					$ID_SDK_ROOT/source/sdksamples/common,
-					$ID_SDK_ROOT/external/afl/includes,
-					$ID_SDK_ROOT/external/asl/boost_libraries,
-					$ID_SDK_ROOT/external/asl/adobe_source_libraries,
-					$ID_SDK_ROOT/external/asl/intel_tbb_libraries/include,
-					$ID_SDK_ROOT/external/icu/include,
-					$ID_SDK_ROOT/external/dva/third_party/boost_libraries,
-					$ID_SDK_ROOT/external/dva/third_party/adobe_source_libraries,
-					source,
-					../../XRailClient/XRailClient/source,
-					../Core/source,
-					../../XRail/XRail/source,
-					"$(ID_PRJ_DIR)/../../../vcpkg/installed/arm64-osx/include",
-				);
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					$ID_SDK_ROOT/build/mac/release_cocoa64/packagefolder/contents/macos,
-				);
-				OTHER_LDFLAGS = (
-					"-Xlinker",
-					"-no_data_in_code_info",
-					"-ld_classic",
-					"-lPublicPlugIn",
-					"-framework",
-					"InDesignModelAndUI",
-				);
-				PRODUCT_NAME = XPageUI;
-				PROVISIONING_PROFILE_SPECIFIER = "";
-				REZ_SEARCH_PATHS = (
-					"$(ID_COMMON_REZ_SEARCH_PATHS)",
-					"$(ID_SDK_ROOT)/external/palettes",
-					"$(ID_SDK_ROOT)/external/workflow",
-					icons,
-					"$ID_SDK_ROOT/source/**",
-				);
-				SDKROOT = macosx;
-				WARNING_CFLAGS = (
-					"-Wimplicit",
-					"-Wsequence-point",
-					"-Winit-self",
-					"-Wmissing-field-initializers",
-					"-Wpointer-arith",
-					"-Wpacked",
-					"-Wno-unused-parameter",
-					"-Wno-unused-variable",
-					"-Wno-write-strings",
-					"-Wno-format",
-					"-Wno-deprecated",
-					"-Wformat-security",
-					"-Wno-cast-align",
-					"-Wno-logical-op-parentheses",
-					"-Wno-c++11-extensions",
-					"-Wno-switch-enum",
-					"-Wno-char-subscripts",
-					"-Wno-return-stack-address",
-					"-Wno-parentheses-equality",
-					"-Wno-unused-function",
-					"-Wno-empty-body",
-					"-Wno-out-of-line-declaration",
-					"-Wno-return-type-c-linkage",
-					"-Wno-invalid-source-encoding",
-					"-Wno-shadow",
-					"-Wno-#pragma-messages",
-					"-Wno-inline-new-delete",
-				);
-			};
-			name = Client-2026-Intel;
-		};
-		5E5407D300000000C0DE2025 /* Default */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5E54076300000000C0DE2025 /* XPageUIRelease_2025.xcconfig */;
+			baseConfigurationReference = EEB9428EA43674D14536806C /* XPageUIRelease_2025.xcconfig */;
 			buildSettings = {
 				ARCHS = x86_64;
 				BUILT_PRODUCTS_DIR = "$(ID_BUILT_SDK_SAMPLES_DIR)";
@@ -1325,6 +1096,235 @@
 				);
 			};
 			name = Client-2025-Intel;
+		};
+		257E1CB222CB4527842D7AF8 /* Client-2026 */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = CADAD633D8EA8C65FC1DF123 /* XPageUIRelease_2026.xcconfig */;
+			buildSettings = {
+				BUILT_PRODUCTS_DIR = "$(ID_BUILT_SDK_SAMPLES_DIR)";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Developer ID Application";
+				CODE_SIGN_STYLE = Manual;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = 3WBLWC32YG;
+				"DEVELOPMENT_TEAM[sdk=macosx*]" = 3WBLWC32YG;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(ID_SDK_ROOT)/build/mac/release_cocoa64/packagefolder/contents/macos",
+					"$(ID_SDK_ROOT)/build/mac/release_cocoa64/packagefolder/contents/macos",
+					"$(ID_SDK_ROOT)/build/mac/release_cocoa64/packagefolder/contents/macos",
+				);
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				HEADER_SEARCH_PATHS = (
+					"$(HEADER_SEARCH_PATHS)",
+					$ID_SDK_ROOT/source/precomp/msvc,
+					$ID_SDK_ROOT/source/public/interfaces/xmedia,
+					$ID_SDK_ROOT/source/public/interfaces/preflight,
+					$ID_SDK_ROOT/source/public/interfaces/ui,
+					$ID_SDK_ROOT/source/public/interfaces/tables,
+					$ID_SDK_ROOT/source/public/interfaces/text,
+					$ID_SDK_ROOT/source/public/interfaces/graphics,
+					$ID_SDK_ROOT/source/public/components/widgetbin/includes,
+					$ID_SDK_ROOT/source/public/interfaces/workgroup,
+					$ID_SDK_ROOT/source/public/interfaces/interactive,
+					$ID_SDK_ROOT/source/public/interfaces/interactive/ui,
+					$ID_SDK_ROOT/source/public/interfaces/colormgmt,
+					$ID_SDK_ROOT/source/public/interfaces/utils,
+					$ID_SDK_ROOT/source/public/interfaces/incopy,
+					$ID_SDK_ROOT/source/public/interfaces/layout,
+					$ID_SDK_ROOT/source/public/interfaces/architecture,
+					$ID_SDK_ROOT/source/public/interfaces/cjk,
+					$ID_SDK_ROOT/source/precomp/common,
+					$ID_SDK_ROOT/source/public/includes,
+					$ID_SDK_ROOT/source/public/facades/graphics,
+					$ID_SDK_ROOT/source/public/facades/text,
+					$ID_SDK_ROOT/source/public/facades/layout,
+					$ID_SDK_ROOT/source/public/components/publiclib/plugins,
+					$ID_SDK_ROOT/source/public/components/publiclib/files,
+					$ID_SDK_ROOT/source/public/components/publiclib/objectmodel,
+					$ID_SDK_ROOT/source/sdksamples/common,
+					$ID_SDK_ROOT/external/afl/includes,
+					$ID_SDK_ROOT/external/asl/boost_libraries,
+					$ID_SDK_ROOT/external/asl/adobe_source_libraries,
+					$ID_SDK_ROOT/external/asl/intel_tbb_libraries/include,
+					$ID_SDK_ROOT/external/icu/include,
+					$ID_SDK_ROOT/external/dva/third_party/boost_libraries,
+					$ID_SDK_ROOT/external/dva/third_party/adobe_source_libraries,
+					source,
+					../../XRailClient/XRailClient/source,
+					../Core/source,
+					../../XRail/XRail/source,
+					"$(ID_PRJ_DIR)/../../../vcpkg/installed/arm64-osx/include",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					$ID_SDK_ROOT/build/mac/release_cocoa64/packagefolder/contents/macos,
+				);
+				OTHER_LDFLAGS = (
+					"-Xlinker",
+					"-no_data_in_code_info",
+					"-ld_classic",
+					"-lPublicPlugIn",
+					"-framework",
+					"InDesignModelAndUI",
+				);
+				PRODUCT_NAME = XPageUI;
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				REZ_SEARCH_PATHS = (
+					"$(ID_COMMON_REZ_SEARCH_PATHS)",
+					"$(ID_SDK_ROOT)/external/palettes",
+					"$(ID_SDK_ROOT)/external/workflow",
+					icons,
+					"$ID_SDK_ROOT/source/**",
+				);
+				SDKROOT = macosx;
+				WARNING_CFLAGS = (
+					"-Wimplicit",
+					"-Wsequence-point",
+					"-Winit-self",
+					"-Wmissing-field-initializers",
+					"-Wpointer-arith",
+					"-Wpacked",
+					"-Wno-unused-parameter",
+					"-Wno-unused-variable",
+					"-Wno-write-strings",
+					"-Wno-format",
+					"-Wno-deprecated",
+					"-Wformat-security",
+					"-Wno-cast-align",
+					"-Wno-logical-op-parentheses",
+					"-Wno-c++11-extensions",
+					"-Wno-switch-enum",
+					"-Wno-char-subscripts",
+					"-Wno-return-stack-address",
+					"-Wno-parentheses-equality",
+					"-Wno-unused-function",
+					"-Wno-empty-body",
+					"-Wno-out-of-line-declaration",
+					"-Wno-return-type-c-linkage",
+					"-Wno-invalid-source-encoding",
+					"-Wno-shadow",
+					"-Wno-#pragma-messages",
+					"-Wno-inline-new-delete",
+				);
+			};
+			name = Client-2026;
+		};
+		0176444AC47062B240254D8B /* Client-2026-Intel */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = CADAD633D8EA8C65FC1DF123 /* XPageUIRelease_2026.xcconfig */;
+			buildSettings = {
+				ARCHS = x86_64;
+				BUILT_PRODUCTS_DIR = "$(ID_BUILT_SDK_SAMPLES_DIR)";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Developer ID Application";
+				CODE_SIGN_STYLE = Manual;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = 3WBLWC32YG;
+				"DEVELOPMENT_TEAM[sdk=macosx*]" = 3WBLWC32YG;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(ID_SDK_ROOT)/build/mac/release_cocoa64/packagefolder/contents/macos",
+					"$(ID_SDK_ROOT)/build/mac/release_cocoa64/packagefolder/contents/macos",
+					"$(ID_SDK_ROOT)/build/mac/release_cocoa64/packagefolder/contents/macos",
+				);
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				HEADER_SEARCH_PATHS = (
+					"$(HEADER_SEARCH_PATHS)",
+					$ID_SDK_ROOT/source/precomp/msvc,
+					$ID_SDK_ROOT/source/public/interfaces/xmedia,
+					$ID_SDK_ROOT/source/public/interfaces/preflight,
+					$ID_SDK_ROOT/source/public/interfaces/ui,
+					$ID_SDK_ROOT/source/public/interfaces/tables,
+					$ID_SDK_ROOT/source/public/interfaces/text,
+					$ID_SDK_ROOT/source/public/interfaces/graphics,
+					$ID_SDK_ROOT/source/public/components/widgetbin/includes,
+					$ID_SDK_ROOT/source/public/interfaces/workgroup,
+					$ID_SDK_ROOT/source/public/interfaces/interactive,
+					$ID_SDK_ROOT/source/public/interfaces/interactive/ui,
+					$ID_SDK_ROOT/source/public/interfaces/colormgmt,
+					$ID_SDK_ROOT/source/public/interfaces/utils,
+					$ID_SDK_ROOT/source/public/interfaces/incopy,
+					$ID_SDK_ROOT/source/public/interfaces/layout,
+					$ID_SDK_ROOT/source/public/interfaces/architecture,
+					$ID_SDK_ROOT/source/public/interfaces/cjk,
+					$ID_SDK_ROOT/source/precomp/common,
+					$ID_SDK_ROOT/source/public/includes,
+					$ID_SDK_ROOT/source/public/facades/graphics,
+					$ID_SDK_ROOT/source/public/facades/text,
+					$ID_SDK_ROOT/source/public/facades/layout,
+					$ID_SDK_ROOT/source/public/components/publiclib/plugins,
+					$ID_SDK_ROOT/source/public/components/publiclib/files,
+					$ID_SDK_ROOT/source/public/components/publiclib/objectmodel,
+					$ID_SDK_ROOT/source/sdksamples/common,
+					$ID_SDK_ROOT/external/afl/includes,
+					$ID_SDK_ROOT/external/asl/boost_libraries,
+					$ID_SDK_ROOT/external/asl/adobe_source_libraries,
+					$ID_SDK_ROOT/external/asl/intel_tbb_libraries/include,
+					$ID_SDK_ROOT/external/icu/include,
+					$ID_SDK_ROOT/external/dva/third_party/boost_libraries,
+					$ID_SDK_ROOT/external/dva/third_party/adobe_source_libraries,
+					source,
+					../../XRailClient/XRailClient/source,
+					../Core/source,
+					../../XRail/XRail/source,
+					"$(ID_PRJ_DIR)/../../../vcpkg/installed/arm64-osx/include",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					$ID_SDK_ROOT/build/mac/release_cocoa64/packagefolder/contents/macos,
+				);
+				OTHER_LDFLAGS = (
+					"-Xlinker",
+					"-no_data_in_code_info",
+					"-ld_classic",
+					"-lPublicPlugIn",
+					"-framework",
+					"InDesignModelAndUI",
+				);
+				PRODUCT_NAME = XPageUI;
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				REZ_SEARCH_PATHS = (
+					"$(ID_COMMON_REZ_SEARCH_PATHS)",
+					"$(ID_SDK_ROOT)/external/palettes",
+					"$(ID_SDK_ROOT)/external/workflow",
+					icons,
+					"$ID_SDK_ROOT/source/**",
+				);
+				SDKROOT = macosx;
+				WARNING_CFLAGS = (
+					"-Wimplicit",
+					"-Wsequence-point",
+					"-Winit-self",
+					"-Wmissing-field-initializers",
+					"-Wpointer-arith",
+					"-Wpacked",
+					"-Wno-unused-parameter",
+					"-Wno-unused-variable",
+					"-Wno-write-strings",
+					"-Wno-format",
+					"-Wno-deprecated",
+					"-Wformat-security",
+					"-Wno-cast-align",
+					"-Wno-logical-op-parentheses",
+					"-Wno-c++11-extensions",
+					"-Wno-switch-enum",
+					"-Wno-char-subscripts",
+					"-Wno-return-stack-address",
+					"-Wno-parentheses-equality",
+					"-Wno-unused-function",
+					"-Wno-empty-body",
+					"-Wno-out-of-line-declaration",
+					"-Wno-return-type-c-linkage",
+					"-Wno-invalid-source-encoding",
+					"-Wno-shadow",
+					"-Wno-#pragma-messages",
+					"-Wno-inline-new-delete",
+				);
+			};
+			name = Client-2026-Intel;
 		};
 /* End XCBuildConfiguration section */
 
@@ -1332,24 +1332,24 @@
 		4B05EEB008840E8D00D809E1 /* Build configuration list for PBXProject "XPageUI" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				4B05EEB108840E8D00D809E1 /* Client-2026 */,
-				5E5407C000000000C0DE2025 /* Client-2025 */,
-				5E5407C200000000C0DE2026 /* Client-2026-Intel */,
-				5E5407C300000000C0DE2025 /* Client-2025-Intel */,
+				7E599A48854360C67A94554C /* Client-2025 */,
+				2B9D834A8B7358ABF0D0CACE /* Client-2025-Intel */,
+				CA537F4AF5959E2179F87B4C /* Client-2026 */,
+				A23794C3F3F0EDE41047435F /* Client-2026-Intel */,
 			);
 			defaultConfigurationIsVisible = 1;
-			defaultConfigurationName = Client-2026;
+			defaultConfigurationName = Client-2025;
 		};
 		F957087015C90B3E00C95573 /* Build configuration list for PBXNativeTarget "Release_Cocoa64" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				F957087115C90B3E00C95573 /* Client-2026 */,
-				5E5407D000000000C0DE2025 /* Client-2025 */,
-				5E5407D200000000C0DE2026 /* Client-2026-Intel */,
-				5E5407D300000000C0DE2025 /* Client-2025-Intel */,
+				7F976F75927E7CFF2E47706A /* Client-2025 */,
+				BE5FAEABB3D87C0A8A8A69DA /* Client-2025-Intel */,
+				257E1CB222CB4527842D7AF8 /* Client-2026 */,
+				0176444AC47062B240254D8B /* Client-2026-Intel */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Client-2026;
+			defaultConfigurationName = Client-2025;
 		};
 /* End XCConfigurationList section */
 	};

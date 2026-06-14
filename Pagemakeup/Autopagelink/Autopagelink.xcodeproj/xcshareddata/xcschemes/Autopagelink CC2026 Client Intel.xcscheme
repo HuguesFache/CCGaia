@@ -3,7 +3,7 @@
    <BuildAction parallelizeBuildables="YES" buildImplicitDependencies="YES">
       <PostActions>
          <ExecutionAction ActionType="Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
-            <ActionContent title="Deployer vers les Plug-Ins d'InDesign" scriptText="&quot;$PROJECT_DIR/../../build/deploy_to_indesign.sh&quot;&#10;">
+            <ActionContent title="Deployer vers InDesign" scriptText="&quot;$PROJECT_DIR/../../build/deploy_to_indesign.sh&quot;&#10;">
                <EnvironmentBuildable>
                   <BuildableReference BuildableIdentifier="primary" BlueprintIdentifier="F957086215C90B3E00C95573" BuildableName="Autopagelink.InDesignPlugin" BlueprintName="Release_Cocoa64" ReferencedContainer="container:Autopagelink.xcodeproj"></BuildableReference>
                </EnvironmentBuildable>

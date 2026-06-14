@@ -1,23 +1,10 @@
-// ============================================================================
-//  Gaia.Common.xcconfig — equivalent Mac de build/Gaia.Common.props
-//  Axe CLIENT/SERVER derive du NOM de configuration (sert aux build settings).
-//  A inclure dans les xcconfig de chaque projet.
-//
-//  NB : l'axe VERSION (ID_SDK_VER / GAIA_SDK_ROOT) ne peut PAS vivre ici :
-//  l'expansion de variable dans un chemin d'#include ne voit pas les variables
-//  d'un fichier deja inclus. Il est donc declare INLINE en tete de chaque xcconfig.
-//
-//  Configurations attendues :
-//    Client-2025  Server-2025  Client-2026  Server-2026
-//    Client-2025-Intel  Client-2026-Intel   (client uniquement, ARCHS=x86_64 cote pbxproj)
-// ============================================================================
+// GENERE par build/sync_mac_versions.py — NE PAS EDITER A LA MAIN.
+// Axe CLIENT/SERVER derive du nom de configuration.
 
-// --- Axe CLIENT/SERVER : 0 par defaut, 1 pour les configs Server-* ---
 SERVER_VALUE = 0
 SERVER_VALUE[config=Server-2025] = 1
 SERVER_VALUE[config=Server-2026] = 1
 
-// --- Framework modele : UI (client) vs modele seul (serveur) ---
 ID_MODEL_FRAMEWORK = InDesignModelAndUI
 ID_MODEL_FRAMEWORK[config=Server-2025] = InDesignModel
 ID_MODEL_FRAMEWORK[config=Server-2026] = InDesignModel
