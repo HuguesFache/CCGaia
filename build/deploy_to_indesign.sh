@@ -12,11 +12,8 @@
 # ============================================================================
 set -u
 
-case "${CONFIGURATION:-}" in
-  *2025*) IDVER=2025 ;;
-  *2026*) IDVER=2026 ;;
-  *) echo "deploy: version inconnue pour '${CONFIGURATION:-}' - ignore"; exit 0 ;;
-esac
+IDVER=$(printf '%s' "${CONFIGURATION:-}" | grep -oE '20[0-9][0-9]' | head -1)
+[ -n "$IDVER" ] || { echo "deploy: version inconnue pour '${CONFIGURATION:-}' - ignore"; exit 0; }
 
 APP="/Applications/Adobe InDesign $IDVER"   # toujours l'app InDesign normale
 case "${CONFIGURATION:-}" in

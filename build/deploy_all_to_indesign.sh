@@ -9,7 +9,8 @@
 #     Client-*-Intel -> /Applications/Adobe InDesign <ver>/Plug-Ins/TriasIntel
 # ============================================================================
 set -u
-case "${CONFIGURATION:-}" in *2025*) V=2025 ;; *2026*) V=2026 ;; *) echo "deploy-all: version inconnue '${CONFIGURATION:-}'"; exit 0 ;; esac
+V=$(printf '%s' "${CONFIGURATION:-}" | grep -oE '20[0-9][0-9]' | head -1)
+[ -n "$V" ] || { echo "deploy-all: version inconnue '${CONFIGURATION:-}'"; exit 0; }
 APP="/Applications/Adobe InDesign $V"   # toujours l'app InDesign normale
 case "${CONFIGURATION:-}" in
   Server-*)  SUB="TriasServeur" ;;
