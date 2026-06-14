@@ -1,15 +1,19 @@
+// === Parser — reglages projet COMMUNS (sans version) ===
+// Inclus par les wrappers de version Parser_2025/2026.xcconfig APRES l'include
+// du common.xcconfig du SDK et la definition de ID_SDK_ROOT.
 
 ID_BUILD_CONFIG_PLUGIN_SDK = YES
 
-// InDesign sdk project build settings (based on common build settings)
-#include "/Users/macmini2024/AdobeSDKs/Adobe_InDesign_CC2026_Products_SDK/build/mac/prj/_shared_build_settings/common.xcconfig"
+// Axe client/serveur (SERVER_VALUE, ID_MODEL_FRAMEWORK)
+#include "../../build/Gaia.Common.xcconfig"
 
 // InDesign sdk project specific build settings
-
-// InDesign Build variables
-BUILT_APPLICATION_DIR = ../$(TARGET_NAME)/packagefolder/contents/macos/
 TARGET_BUILD_DIR = $(BUILT_PRODUCTS_DIR)
 WRAPPER_EXTENSION = InDesignPlugin
+
+// Identifiant du bundle : le common/Info.plist du SDK 2025 reference $(PRODUCT_BUNDLE_IDENTIFIER)
+// (le 2026 utilise com.adobe.InDesign.$(PRODUCT_NAME) en dur). On le definit pour aligner les deux.
+PRODUCT_BUNDLE_IDENTIFIER = com.adobe.InDesign.$(PRODUCT_NAME)
 
 // Include search paths
 HEADER_SEARCH_PATHS = $(OS_HEADER_SEARCH_PATHS) $(ID_PUBLIC_HEADER_SEARCH_PATHS) $(ID_OPEN_HEADER_SEARCH_PATHS) $(ASL_HEADER_SEARCH_PATHS) $(ID_SDK_ROOT)/external/afl/includes
@@ -19,10 +23,9 @@ REZ_SEARCH_PATHS = $(ID_COMMON_REZ_SEARCH_PATHS) $(ID_SDK_ROOT)/external/palette
 // GCC flags
 GCC_ENABLE_SYMBOL_SEPARATION = YES
 GCC_PREFIX_HEADER = $(ID_SDK_ROOT)/source/precomp/gcc/PluginPrefix.pch
-GCC_PREPROCESSOR_DEFINITIONS = $(GCC_PREPROCESSOR_DEFINITIONS) MACINTOSH MACOSX_SDKVERSION=$(MACOSX_SDKVERSION) $(BIB_THROW)
+GCC_PREPROCESSOR_DEFINITIONS = $(GCC_PREPROCESSOR_DEFINITIONS) MACINTOSH MACOSX_SDKVERSION=$(MACOSX_SDKVERSION) $(BIB_THROW) SERVER=$(SERVER_VALUE)
 GCC_WARN_UNUSED_VARIABLE = NO
 GCC_WARN_CHECK_SWITCH_STATEMENTS = NO
-//WARNING_CFLAGS = -Wchar-subscripts -Wimplicit -Wsequence-point -Winit-self -Wmissing-field-initializers -Wpointer-arith -Wcast-align -Wpacked
 
 // Linker Flags
 DEAD_CODE_STRIPPING = YES
@@ -38,7 +41,4 @@ PLC_OUTPUT_TYPE = ????
 // Misc flags
 ALWAYS_REZ = YES
 
-//HEADER_SEARCH_PATHS = /Developer/Headers/FlatCarbon $(ID_SDK_ROOT)/external/asl/boost_libraries/ $(ID_SDK_ROOT)/external/asl/intel_tbb_libraries/include/ $(ID_SDK_ROOT)/external/afl/includes $(ID_SDK_ROOT)/source/precomp/common $(ID_SDK_ROOT)/source/precomp/msvc $(ID_SDK_ROOT)/source/public/includes $(ID_SDK_ROOT)/source/public/interfaces/architecture $(ID_SDK_ROOT)/source/public/includes/utils $(ID_SDK_ROOT)/source/public/interfaces/utils $(ID_SDK_ROOT)/source/public/interfaces/xmedia $(ID_SDK_ROOT)/source/public/libs/widgetbin/includes
-
-ID_SDK_ROOT = /Developer/Adobe_InDesign_CC2026_Products_SDK
 BUILT_APPLICATION_DIR = $(ID_SDK_ROOT)/build/mac/$(TARGET_NAME)/packagefolder/contents/macos/

@@ -69,7 +69,12 @@
 #include "ITCLParser.h"
 #include "PrsID.h"
 #include <cstdio>
+#if WINDOWS
 #include <windows.h>
+#else
+#include <cstdlib>
+#include <unistd.h>
+#endif
 
 #include "IK2ServiceRegistry.h"
 #include "IK2ServiceProvider.h"
@@ -1374,13 +1379,24 @@ ErrorCode RunPagemakeupString(const PMString& tclContent)
 	// Build a unique temp file path under %TEMP%. GetTempFileNameA creates
 	// the file as a side-effect (0-byte), which is fine — we'll overwrite
 	// it with the TCL content below.
+	char tempPath[1024] = {0};
+#if WINDOWS
 	char tempDir[MAX_PATH] = {0};
 	if (::GetTempPathA(MAX_PATH, tempDir) == 0)
 		return kFailure;
 
-	char tempPath[MAX_PATH] = {0};
 	if (::GetTempFileNameA(tempDir, "xrl", 0, tempPath) == 0)
 		return kFailure;
+#else
+	// Mac/POSIX : cree un fichier temporaire unique sous $TMPDIR (defaut /tmp).
+	const char* td = ::getenv("TMPDIR");
+	if (td == nil || *td == 0) td = "/tmp";
+	::snprintf(tempPath, sizeof(tempPath), "%s/xrlXXXXXX", td);
+	int fd = ::mkstemp(tempPath);
+	if (fd < 0)
+		return kFailure;
+	::close(fd);
+#endif
 
 	PMString tempPathPM(tempPath);
 	tempPathPM.SetTranslatable(kFalse);
@@ -1425,8 +1441,12 @@ ErrorCode RunPagemakeupString(const PMString& tclContent)
 	} while (false);
 
 	// Best-effort cleanup; if the parser kept a handle open, this just
-	// silently fails and Windows reaps the file later.
+	// silently fails and the OS reaps the file later.
+#if WINDOWS
 	::DeleteFileA(tempPath);
+#else
+	::remove(tempPath);
+#endif
 
 	return status;
 }

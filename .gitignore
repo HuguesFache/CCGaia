@@ -32,6 +32,9 @@ build/
 !/build/
 !/build/**
 
+# --- Sortie de build Mac (xcodebuild) : <plugin>/release_cocoa64/SDK/*.InDesignPlugin ---
+release_cocoa64/
+
 # --- Divers ---
 *.log
 *.tmp

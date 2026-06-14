@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Scheme
+   LastUpgradeVersion = "1620"
+   version = "1.7">
+   <BuildAction
+      parallelizeBuildables = "YES"
+      buildImplicitDependencies = "YES">
+      <PostActions>
+         <ExecutionAction
+            ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
+            <ActionContent
+               title = "Deployer toute la suite vers InDesign"
+               scriptText = "&quot;$PROJECT_DIR/../../build/deploy_all_to_indesign.sh&quot;&#10;">
+               <EnvironmentBuildable>
+                  <BuildableReference
+                     BuildableIdentifier = "primary"
+                     BlueprintIdentifier = "F957086215C90B3E00C95573"
+                     BuildableName = "Release_Cocoa64"
+                     BlueprintName = "Release_Cocoa64"
+                     ReferencedContainer = "container:../Pagemakeup/Parser/Parser.xcodeproj">
+                  </BuildableReference>
+               </EnvironmentBuildable>
+            </ActionContent>
+         </ExecutionAction>
+      </PostActions>
+      <BuildActionEntries>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "F957086215C90B3E00C95573"
+               BuildableName = "Release_Cocoa64"
+               BlueprintName = "Release_Cocoa64"
+               ReferencedContainer = "container:../Pagemakeup/Parser/Parser.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "F957086215C90B3E00C95573"
+               BuildableName = "Release_Cocoa64"
+               BlueprintName = "Release_Cocoa64"
+               ReferencedContainer = "container:../Pagemakeup/DocLib/DocLib.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "F957086215C90B3E00C95573"
+               BuildableName = "Release_Cocoa64"
+               BlueprintName = "Release_Cocoa64"
+               ReferencedContainer = "container:../Pagemakeup/FrameLib/FrameLib.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "F957086215C90B3E00C95573"
+               BuildableName = "Release_Cocoa64"
+               BlueprintName = "Release_Cocoa64"
+               ReferencedContainer = "container:../Pagemakeup/PageLib/PageLib.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "F957086215C90B3E00C95573"
+               BuildableName = "Release_Cocoa64"
+               BlueprintName = "Release_Cocoa64"
+               ReferencedContainer = "container:../Pagemakeup/TextLib/TextLib.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "F957086215C90B3E00C95573"
+               BuildableName = "Autopagelink.InDesignPlugin"
+               BlueprintName = "Release_Cocoa64"
+               ReferencedContainer = "container:../Pagemakeup/Autopagelink/Autopagelink.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "F957086215C90B3E00C95573"
+               BuildableName = "Release_Cocoa64"
+               BlueprintName = "Release_Cocoa64"
+               ReferencedContainer = "container:../Pagemakeup/Pagemakeup/Pagemakeup.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "F957086215C90B3E00C95573"
+               BuildableName = "XPage.InDesignPlugin"
+               BlueprintName = "Release_Cocoa64"
+               ReferencedContainer = "container:../XPage/Core/XPage.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "F957086215C90B3E00C95573"
+               BuildableName = "XPageUI.InDesignPlugin"
+               BlueprintName = "Release_Cocoa64"
+               ReferencedContainer = "container:../XPage/UI/XPageUI.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "F957086215C90B3E00C95573"
+               BuildableName = "Release_Cocoa64"
+               BlueprintName = "Release_Cocoa64"
+               ReferencedContainer = "container:../XRail/XRail/XRail.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "F957086215C90B3E00C95573"
+               BuildableName = "XRailUI.InDesignPlugin"
+               BlueprintName = "Release_Cocoa64"
+               ReferencedContainer = "container:../XRail/XRailUI/XRailUI.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "F957086215C90B3E00C95573"
+               BuildableName = "Release_Cocoa64"
+               BlueprintName = "Release_Cocoa64"
+               ReferencedContainer = "container:../XRailClient/XRailClient/XRailClient.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+      </BuildActionEntries>
+   </BuildAction>
+   <TestAction
+      buildConfiguration = "Client-2026-Intel"
+      selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
+      selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
+      shouldUseLaunchSchemeArgsEnv = "YES">
+      <Testables>
+      </Testables>
+   </TestAction>
+   <LaunchAction
+      buildConfiguration = "Client-2026-Intel"
+      selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
+      selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
+      launchStyle = "0"
+      useCustomWorkingDirectory = "NO"
+      ignoresPersistentStateOnLaunch = "NO"
+      debugDocumentVersioning = "YES"
+      debugServiceExtension = "internal"
+      allowLocationSimulation = "YES">
+   </LaunchAction>
+   <ProfileAction
+      buildConfiguration = "Client-2026-Intel"
+      shouldUseLaunchSchemeArgsEnv = "YES"
+      savedToolIdentifier = ""
+      useCustomWorkingDirectory = "NO"
+      debugDocumentVersioning = "YES">
+   </ProfileAction>
+   <AnalyzeAction
+      buildConfiguration = "Client-2026-Intel">
+   </AnalyzeAction>
+   <ArchiveAction
+      buildConfiguration = "Client-2026-Intel"
+      revealArchiveInOrganizer = "YES">
+   </ArchiveAction>
+</Scheme>

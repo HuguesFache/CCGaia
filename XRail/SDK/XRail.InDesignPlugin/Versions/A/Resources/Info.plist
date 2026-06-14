@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>BuildMachineOSBuild</key>
+	<string>24C101</string>
+	<key>CFBundleExecutable</key>
+	<string>XRail</string>
+	<key>CFBundleGetInfoString</key>
+	<string>21.0, Copyright 1999-2025 Adobe. All rights reserved.</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.adobe.InDesign.XRail</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleLongVersionString</key>
+	<string>21.0, Copyright 1999-2025 Adobe. All rights reserved.</string>
+	<key>CFBundlePackageType</key>
+	<string>"InD3"</string>
+	<key>CFBundleShortVersionString</key>
+	<string>21.0.0</string>
+	<key>CFBundleSignature</key>
+	<string>"InDn"</string>
+	<key>CFBundleSupportedPlatforms</key>
+	<array>
+		<string>MacOSX</string>
+	</array>
+	<key>DTCompiler</key>
+	<string>com.apple.compilers.llvm.clang.1_0</string>
+	<key>DTPlatformBuild</key>
+	<string>24C94</string>
+	<key>DTPlatformName</key>
+	<string>macosx</string>
+	<key>DTPlatformVersion</key>
+	<string>15.2</string>
+	<key>DTSDKBuild</key>
+	<string>24C94</string>
+	<key>DTSDKName</key>
+	<string>macosx15.2</string>
+	<key>DTXcode</key>
+	<string>1620</string>
+	<key>DTXcodeBuild</key>
+	<string>16C5032a</string>
+	<key>LSMinimumSystemVersion</key>
+	<string>13.0</string>
+	<key>NSHumanReadableCopyright</key>
+	<string>21.0, Copyright 1999-2025 Adobe. All rights reserved.</string>
+</dict>
+</plist>

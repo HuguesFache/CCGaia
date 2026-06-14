@@ -1,25 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1310"
-   version = "1.3">
+   LastUpgradeVersion = "1620"
+   version = "1.7">
    <BuildAction
       parallelizeBuildables = "YES"
       buildImplicitDependencies = "YES">
+      <PostActions>
+         <ExecutionAction
+            ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
+            <ActionContent
+               title = "Deployer vers les Plug-Ins d&apos;InDesign"
+               scriptText = "&quot;$PROJECT_DIR/../../build/deploy_to_indesign.sh&quot;&#10;">
+               <EnvironmentBuildable>
+                  <BuildableReference
+                     BuildableIdentifier = "primary"
+                     BlueprintIdentifier = "F957086215C90B3E00C95573"
+                     BuildableName = "Release_Cocoa64"
+                     BlueprintName = "Release_Cocoa64"
+                     ReferencedContainer = "container:DocLib.xcodeproj">
+                  </BuildableReference>
+               </EnvironmentBuildable>
+            </ActionContent>
+         </ExecutionAction>
+      </PostActions>
       <BuildActionEntries>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "F957086215C90B3E00C95573"
-               BuildableName = "XRailUI.InDesignPlugin"
-               BlueprintName = "Release_Cocoa64"
-               ReferencedContainer = "container:XRailUI.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
          <BuildActionEntry
             buildForTesting = "YES"
             buildForRunning = "YES"
@@ -31,13 +35,13 @@
                BlueprintIdentifier = "F957086215C90B3E00C95573"
                BuildableName = "Release_Cocoa64"
                BlueprintName = "Release_Cocoa64"
-               ReferencedContainer = "container:../XRail/XRail.xcodeproj">
+               ReferencedContainer = "container:DocLib.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
-      buildConfiguration = "Default"
+      buildConfiguration = "Server-2026"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
@@ -45,7 +49,7 @@
       </Testables>
    </TestAction>
    <LaunchAction
-      buildConfiguration = "Default"
+      buildConfiguration = "Server-2026"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
@@ -56,26 +60,17 @@
       allowLocationSimulation = "YES">
    </LaunchAction>
    <ProfileAction
-      buildConfiguration = "Default"
+      buildConfiguration = "Server-2026"
       shouldUseLaunchSchemeArgsEnv = "YES"
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "F957086215C90B3E00C95573"
-            BuildableName = "XRailUI.InDesignPlugin"
-            BlueprintName = "Release_Cocoa64"
-            ReferencedContainer = "container:XRailUI.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
-      buildConfiguration = "Default">
+      buildConfiguration = "Server-2026">
    </AnalyzeAction>
    <ArchiveAction
-      buildConfiguration = "Default"
+      buildConfiguration = "Server-2026"
       revealArchiveInOrganizer = "YES">
    </ArchiveAction>
 </Scheme>
