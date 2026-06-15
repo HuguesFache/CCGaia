@@ -151,14 +151,16 @@ private:
 	void DisplayInfoPage(const PMString& titreLib, const PMString& parutionLib);
 	void DisplayCurrentUser();
 
-	// Adornments			
-	void DisplayFormeAdornmentShape(bool16 visible);
+	// Adornments
 	void DisplayAdornmentShape(bool16 visible);
 	void DisplayAdornmentText(bool16 visible);
 	void DeleteAdonments(const UIDList& itemList);
 	void RefreshAdornment();
 	void ChangeStyles();
 	void RefreshAdornmentForme();
+	// Reflect the shared session "Afficher les formes" state on our checkbox
+	// (no re-fire). Called on attach and on the sibling-palette sync message.
+	void SyncDisplayFormesCheckbox();
 
 	// Selection
 	void HandleSelectionChanged(const ISelectionMessage * message);
@@ -254,9 +256,10 @@ void XPGUIXRailPanelObserver::AutoAttach() {
 		AttachWidget(panelControlData, kXPGUIRefreshFormesAdornmentWidgetID, ITriStateControlData::kDefaultIID);
 		AttachWidget(panelControlData, kXPGUIChangeStylesWidgetID, IID_IBOOLEANCONTROLDATA);
 
-		InterfacePtr<ITriStateControlData> displayFormesControlData(panelControlData->FindWidget(kXPGUIDisplayFormesWidgetID), UseDefaultIID());
-		if (displayFormesControlData)
-			this->DisplayFormeAdornmentShape(displayFormesControlData->GetState());
+		// Sync the checkbox visual to the shared session state (set by the
+		// sibling XDA palette, if any). Don't re-apply adornments here — they
+		// are (re)applied on an actual toggle/refresh.
+		this->SyncDisplayFormesCheckbox();
 
 		InterfacePtr<ITriStateControlData> displayStoryStatesControlData(panelControlData->FindWidget(kXPGUIDisplayStoryStatesWidgetID), UseDefaultIID());
 		if (displayStoryStatesControlData)
@@ -376,7 +379,7 @@ void XPGUIXRailPanelObserver::Update(const ClassID& theChange, ISubject* theSubj
 
 				// Adornments
 			case kXPGUIDisplayFormesWidgetID:
-				this->DisplayFormeAdornmentShape(kTrue);
+				XPageUIUtils::SetDisplayFormes(kTrue);
 				break;
 
 			case kXPGUIDisplayStoryStatesWidgetID:
@@ -411,7 +414,7 @@ void XPGUIXRailPanelObserver::Update(const ClassID& theChange, ISubject* theSubj
 			switch (widgetID.Get()) {
 
 			case kXPGUIDisplayFormesWidgetID:
-				DisplayFormeAdornmentShape(kFalse);
+				XPageUIUtils::SetDisplayFormes(kFalse);
 				break;
 
 			case kXPGUIDisplayStoryStatesWidgetID:
@@ -448,6 +451,12 @@ void XPGUIXRailPanelObserver::Update(const ClassID& theChange, ISubject* theSubj
 
 	else if (theChange == kXPGRefreshMsg && protocol == IID_IREFRESHPROTOCOL) {
 		this->HandleParutionSelection();
+	}
+
+	else if (theChange == kXPGDisplayFormesChangedMsg && protocol == IID_IREFRESHPROTOCOL) {
+		// The sibling palette toggled "Afficher les formes" — re-sync our
+		// checkbox to the shared session state (visual only, no re-fire).
+		this->SyncDisplayFormesCheckbox();
 	}
 
 	else if (theChange == kXRLUILoginChangedMsg && protocol == IID_IXRLUILOGINPROTOCOL) {
@@ -748,120 +757,61 @@ void XPGUIXRailPanelObserver::AddToAssignment() {
 }
 void XPGUIXRailPanelObserver::UnlinkAssignment() {
 
-	
 	int16 rep = CAlert::ModalAlert(PMString(kXPGUIUnlinkStoryKey), kYesString, kNoString, kNullString, 2, CAlert::eWarningIcon);
-	if (rep == 1) {
+	if (rep != 1)
+		return;
 
-		do {
-			InterfacePtr<IStringData> isDeleteArticle(GetExecutionContextSession(), IID_IUNLINKASSIGNMENT);
-			isDeleteArticle->Set("true");
+	do {
+		InterfacePtr<ISelectionManager> selectionMgr(Utils<ISelectionUtils>()->QueryActiveSelection());
+		InterfacePtr<IXPageSuite> xpgSuite(selectionMgr, IID_IXPAGESUITE);
+		if (xpgSuite == nil)
+			break;
 
-			InterfacePtr<ISelectionManager> selectionMgr(Utils<ISelectionUtils>()->QueryActiveSelection());
-			InterfacePtr<IXPageSuite> xpgSuite(selectionMgr, IID_IXPAGESUITE);
-			if (xpgSuite == nil)
-				break;
+		UIDList textFrames, graphicFrames, selectedItems;
+		xpgSuite->GetSelectedItems(textFrames, graphicFrames, selectedItems);
 
-			UIDList textFrames, graphicFrames, selectedItems;
-			xpgSuite->GetSelectedItems(textFrames, graphicFrames, selectedItems);
+		UIDList exportableItems(textFrames);
+		exportableItems.Append(graphicFrames);
 
-			UIDList exportableItems(textFrames);
-			exportableItems.Append(graphicFrames);
+		IDataBase * db = exportableItems.GetDataBase();
+		if (db == nil || exportableItems.IsEmpty())
+			break;
 
-			IDataBase * db = exportableItems.GetDataBase();
-			if (db == nil)
-				break;
+		// Collect only the selected frames that carry article info. We do NOT
+		// expand to the full article group: only the frames actually selected
+		// get unlinked. Carton / forme data (IFormeData) is left untouched.
+		UIDList articleItems(db);
+		for (int32 i = 0; i < exportableItems.Length(); ++i) {
 
-			if (selectedItems.size() == 0)
-				break;
+			UIDRef itemRef = exportableItems.GetRef(i);
+			InterfacePtr<IPlacedArticleData> placedArticleData(itemRef, UseDefaultIID());
+			if (placedArticleData == nil || placedArticleData->GetUniqueId() == kNullString)
+				continue;
 
-			InterfacePtr<IAssignmentMgr> assignMgr(GetExecutionContextSession(), UseDefaultIID());
+			articleItems.Append(exportableItems[i]);
+		}
 
-			// Delete article from xrail if an incopy story and placed story
-			UIDRef itemRef = textFrames.GetRef(0);
+		if (articleItems.IsEmpty())
+			break;
 
-			if (!assignMgr->IsAssigned(itemRef)) {
-				InterfacePtr<IPlacedArticleData> placedArticleData(itemRef, UseDefaultIID());
-				if (placedArticleData) {
-					if (placedArticleData->GetUniqueId() != kNullString) {
+		// Clear only the article data (id / folder / topic). The carton stays.
+		InterfacePtr<ICommand> deletePlacedArticleDataCmd(CmdUtils::CreateCommand(kXPGSetPlacedArticleDataCmdBoss));
+		InterfacePtr<IPlacedArticleData> deleteArticleData(deletePlacedArticleDataCmd, IID_IPLACEDARTICLEDATA);
+		deleteArticleData->SetUniqueId(kNullString);
+		deleteArticleData->SetStoryFolder(kNullString);
+		deleteArticleData->SetStoryTopic(kNullString);
+		deletePlacedArticleDataCmd->SetItemList(articleItems);
+		if (CmdUtils::ProcessCommand(deletePlacedArticleDataCmd) != kSuccess)
+			break;
 
-						PMString idArt = placedArticleData->GetUniqueId();
+		// Remove the article adornment only (kXPGUIArticleAdornmentBoss).
+		this->DeleteAdonments(articleItems);
 
-						UIDList storyItems(selectedItems.GetDataBase());
-						Utils<IXPageUtils>()->GetPlacedArtItemsFromTarget(itemRef, storyItems);
+		// Send notification so that texte panel is updated
+		InterfacePtr<ISubject> sessionSubject(GetExecutionContextSession(), UseDefaultIID());
+		sessionSubject->Change(kXPGRefreshMsg, IID_IREFRESHPROTOCOL);
 
-						// Delete data of placed story				
-						InterfacePtr<ICommand> deletePlacedArticleDataCmd(CmdUtils::CreateCommand(kXPGSetPlacedArticleDataCmdBoss));
-
-						InterfacePtr<IPlacedArticleData> deleteArticleData(deletePlacedArticleDataCmd, IID_IPLACEDARTICLEDATA);
-						deleteArticleData->SetUniqueId(kNullString);
-						deleteArticleData->SetStoryFolder(kNullString);
-						deleteArticleData->SetStoryTopic(kNullString);
-
-						deletePlacedArticleDataCmd->SetItemList(storyItems);
-						if (CmdUtils::ProcessCommand(deletePlacedArticleDataCmd) != kSuccess)
-							break;
-
-						// Delete adromnment from page item with kXPGUIArticleAdornmentBoss
-						this->DeleteAdonments(storyItems);
-					}
-				}
-			}
-			else {
-
-				K2Vector<PMString> assignFilePaths;
-				for (int32 i = 0; i < selectedItems.Length(); ++i) {
-
-					InterfacePtr<IAssignment> assignment(nil);
-					InterfacePtr<IAssignedStory> assignedStory(nil);
-
-					assignMgr->QueryAssignmentAndAssignedStory(exportableItems.GetRef(i), assignment, assignedStory);
-					if (assignment == nil || assignedStory == nil)
-						break;
-
-					PMString assignFilePath = assignment->GetFile();
-					if (::K2find(assignFilePaths, assignFilePath) == assignFilePaths.end())
-						assignFilePaths.push_back(assignFilePath);
-				}
-
-				if (assignFilePaths.size() == 1) {
-
-					InterfacePtr<IAssignment> assignmentToDelete(nil);
-					InterfacePtr<IAssignedStory> assignedStory(nil);
-
-					assignMgr->QueryAssignmentAndAssignedStory(exportableItems.GetRef(0), assignmentToDelete, assignedStory);
-					if (assignmentToDelete == nil || assignedStory == nil)
-						break;
-
-					UIDList storyList;
-					assignMgr->GetStoryListOnAssignment(assignmentToDelete, storyList);
-
-					// Delete stories List on assignement      
-					Utils<Facade::ILinkFacade>()->DeleteLinksByObject(storyList, kTrue, kTrue);
-
-					// Delete Assignment
-					IDataBase *assignementdb = ::GetDataBase(assignmentToDelete);
-					PMString fromAssignPath = assignmentToDelete->GetFile();
-					IAssignedDocumentPtr assignDoc(assignementdb, assignementdb->GetRootUID(), UseDefaultIID());
-
-					InterfacePtr<ICommand> unassignDocCmd(CmdUtils::CreateCommand(kUnassignDocCmdBoss));
-					UIDList uidl(::GetUIDRef(assignDoc));
-					unassignDocCmd->SetItemList(uidl);
-					InterfacePtr<IStringData> sd(unassignDocCmd, UseDefaultIID());
-					sd->Set(fromAssignPath);
-					CmdUtils::ProcessCommand(unassignDocCmd);
-
-					// Update Assignment Panel List
-					assignMgr->NotifyPanel();
-
-
-				}
-			}
-			// Send notification so that texte panel is updated
-			InterfacePtr<ISubject> sessionSubject(GetExecutionContextSession(), UseDefaultIID());
-			sessionSubject->Change(kXPGRefreshMsg, IID_IREFRESHPROTOCOL);
-
-		} while (kFalse);
-	}
+	} while (kFalse);
 }
 
 
@@ -1474,65 +1424,24 @@ void XPGUIXRailPanelObserver::RefreshAdornmentForme() {
 	IControlView* displayShapeCtrlView = panelControlData->FindWidget(kXPGUIDisplayFormesWidgetID);
 	InterfacePtr<ITriStateControlData> displayShapeValue(displayShapeCtrlView, UseDefaultIID());
 
-	if (displayShapeValue->IsSelected())
-		this->DisplayFormeAdornmentShape(kTrue);
-	else
-		this->DisplayFormeAdornmentShape(kFalse);
+	// Re-apply the current checkbox state (shared code) and re-sync the
+	// sibling palette.
+	XPageUIUtils::SetDisplayFormes(displayShapeValue->IsSelected());
 }
 
-void XPGUIXRailPanelObserver::DisplayFormeAdornmentShape(bool16 visible) {
+// Reflect the shared session "Afficher les formes" state on our own checkbox,
+// without firing the toggle action again (notifyOfChange = kFalse).
+void XPGUIXRailPanelObserver::SyncDisplayFormesCheckbox() {
 
-	IDocument * theDoc = Utils<ILayoutUIUtils>()->GetFrontDocument();
+	InterfacePtr<IPanelControlData> panelControlData(this, UseDefaultIID());
+	if (panelControlData == nil)
+		return;
 
-	std::map<PMString, UIDList> formeDataList = Utils<IXPageUtils>()->GetFormeDataList(theDoc);
-	std::map<PMString, UIDList>::iterator iter;
-
-	for (iter = formeDataList.begin(); iter != formeDataList.end(); ++iter) {
-
-		UIDList formeItems = iter->second;
-
-		// Le Header adornment était autrefois posé uniquement sur le bloc
-		// le plus haut/gauche du carton (un seul label "nom de carton" par
-		// carton). Maintenant que chaque label affiche le type/index
-		// spécifique du bloc (Photo 1, Légende 2…), on l'attache à
-		// chaque bloc — comme le Content adornment.
-
-		if (visible) {
-
-			// Header adornment — sur tous les blocs du carton.
-			InterfacePtr<ICommand> addPageItemHeaderAdornmentCmd(CmdUtils::CreateCommand(kAddPageItemAdornmentCmdBoss));
-			InterfacePtr<IClassIDData> classIDHeaderData(addPageItemHeaderAdornmentCmd, UseDefaultIID());
-			classIDHeaderData->Set(kXPGUIPlacedFormeHeaderAdornmentBoss);
-			addPageItemHeaderAdornmentCmd->SetItemList(formeItems);
-			CmdUtils::ProcessCommand(addPageItemHeaderAdornmentCmd);
-
-			// Content adornment — cadre bleu sur tous les blocs.
-			InterfacePtr<ICommand> addPageItemContentAdornmentCmd(CmdUtils::CreateCommand(kAddPageItemAdornmentCmdBoss));
-			InterfacePtr<IClassIDData> classIDContentData(addPageItemContentAdornmentCmd, UseDefaultIID());
-			classIDContentData->Set(kXPGUIPlacedFormeContentAdornmentBoss);
-			addPageItemContentAdornmentCmd->SetItemList(formeItems);
-			CmdUtils::ProcessCommand(addPageItemContentAdornmentCmd);
-		}
-		else {
-			// Header adornment — retirer de tous les blocs.
-			InterfacePtr<ICommand> removePageItemHeaderAdornmentCmd(CmdUtils::CreateCommand(kRemovePageItemAdornmentCmdBoss));
-			InterfacePtr<IClassIDData> classIDHeaderData(removePageItemHeaderAdornmentCmd, UseDefaultIID());
-			classIDHeaderData->Set(kXPGUIPlacedFormeHeaderAdornmentBoss);
-			removePageItemHeaderAdornmentCmd->SetItemList(formeItems);
-			CmdUtils::ProcessCommand(removePageItemHeaderAdornmentCmd);
-
-			// Content adornment — retirer de tous les blocs.
-			InterfacePtr<ICommand> addPageItemContentAdornmentCmd(CmdUtils::CreateCommand(kRemovePageItemAdornmentCmdBoss));
-			InterfacePtr<IClassIDData> classIDContentData(addPageItemContentAdornmentCmd, UseDefaultIID());
-			classIDContentData->Set(kXPGUIPlacedFormeContentAdornmentBoss);
-			addPageItemContentAdornmentCmd->SetItemList(formeItems);
-			CmdUtils::ProcessCommand(addPageItemContentAdornmentCmd);
-		}
-	}
-
-	// Refresh the views of a document
-	if (theDoc)
-		Utils<ILayoutUIUtils>()->InvalidateViews(theDoc);
+	InterfacePtr<ITriStateControlData> displayFormesControlData(panelControlData->FindWidget(kXPGUIDisplayFormesWidgetID), UseDefaultIID());
+	if (displayFormesControlData)
+		displayFormesControlData->SetState(
+			XPageUIUtils::GetDisplayFormeState() ? ITriStateControlData::kSelected : ITriStateControlData::kUnselected,
+			kTrue, kFalse);
 }
 
 
@@ -1592,7 +1501,9 @@ void XPGUIXRailPanelObserver::HandleSelectionChanged(const ISelectionMessage * m
 
 	// === Step 2 — selection-driven button rules (only relevant when gate open) ===
 	// Ajouter / Ajouter à : enabled iff selection non-empty AND no LEAF item has a Gaia ID.
-	// Délier  / MAJ       : enabled iff selection non-empty AND every LEAF item has a Gaia ID.
+	// MAJ                 : enabled iff selection non-empty AND every LEAF item has a Gaia ID.
+	// Délier              : enabled as soon as selection is non-empty (it only
+	//                       clears article info, no-ops on blocks without one).
 	// Groups are walked transparently — a group of two ID'd frames behaves
 	// the same as the two frames being selected directly.
 	bool16 enableNew    = kFalse;
@@ -1615,9 +1526,9 @@ void XPGUIXRailPanelObserver::HandleSelectionChanged(const ISelectionMessage * m
 
 			if (total > 0)
 			{
-				if (withGaia == 0)        { enableNew = kTrue;    enableAddTo  = kTrue; }
-				if (withGaia == total)    { enableUnlink = kTrue; enableUpdate = kTrue; }
-				// Mixed selection: all four stay disabled.
+				enableUnlink = kTrue;	// Délier : actif dès qu'au moins un bloc est sélectionné
+				if (withGaia == 0)        { enableNew = kTrue; enableAddTo = kTrue; }
+				if (withGaia == total)    { enableUpdate = kTrue; }
 			}
 		}
 	}

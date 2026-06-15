@@ -58,9 +58,6 @@ public:
 	 */
 	virtual void Shutdown();
 
-	virtual int32 GetIllicoFlag();
-
-
 };
 
 CREATE_PMINTERFACE(XRailUIStartupShutdown, kXRLUIUIStartupShutdownImpl)
@@ -76,112 +73,18 @@ XRailUIStartupShutdown::XRailUIStartupShutdown(IPMUnknown* boss) : CPMUnknown<IS
 */
 void XRailUIStartupShutdown::Startup()
 {
-	InterfacePtr<IWorkspace> workspace(GetExecutionContextSession()->QueryWorkspace());
-
-	InterfacePtr<IXRailPrefsData>  xrailPrefsData((IXRailPrefsData*)workspace->QueryInterface(IID_IXRAILPREFSDATA));
-	if (GetIllicoFlag() == 0) {
-		// Open login dialog so that the user has to connect to XRail on startup directly
-		InterfacePtr<ICommand> openLoginDialogCmd(CmdUtils::CreateCommand(kXRLUIOpenLoginDialogCmdBoss));
-
-		CmdUtils::ScheduleCommand(openLoginDialogCmd, ICommand::kLowestPriority);
-	}
+	// Sequence de connexion au demarrage, differee hors du chemin de chargement :
+	// l'autolog "Se souvenir de moi" fait un appel reseau, et l'executer inline
+	// ici bloquerait le demarrage / le chargement du plugin Illico. La commande
+	// tente d'abord l'autolog silencieux, puis n'ouvre le dialogue de login
+	// qu'en cas d'echec ET si ILLICO==0 (en ILLICO==1, jamais de modal au
+	// demarrage). Voir XRailOpenLoginDialogCmd::Do.
+	InterfacePtr<ICommand> openLoginDialogCmd(CmdUtils::CreateCommand(kXRLUIOpenLoginDialogCmdBoss));
+	CmdUtils::ScheduleCommand(openLoginDialogCmd, ICommand::kLowestPriority);
 }
 
 /*
 */
 void XRailUIStartupShutdown::Shutdown()
 {
-}
-
-int32 XRailUIStartupShutdown::GetIllicoFlag()
-{
-	int32 illicoFlag = 0;
-
-	// Read config file if are running under InDesign Server	
-	ErrorCode status = kFailure;
-	PMString ip, port;
-	int32 fromServeur = 0;
-	K2Vector<PMString> listeBases;
-	K2Vector<PMString> IPBases;
-
-	do {
-		IDFile configFile;
-
-		// GD 28/07/2022 ++
-		IDFile approamingdatafolder, parent1, parent2, parent3, parent4, parent5;
-		PMString message;
-		PMString subFolderName; // on laisse volontairement vide.
-		FileUtils::GetAppRoamingDataFolder(&approamingdatafolder, subFolderName);
-		FileUtils::GetParentDirectory(approamingdatafolder, parent1);
-		FileUtils::GetParentDirectory(parent1, parent2);
-		FileUtils::GetParentDirectory(parent2, parent3);
-		FileUtils::GetParentDirectory(parent3, parent4);
-		FileUtils::GetParentDirectory(parent4, parent5);
-		FileUtils::GetParentDirectory(parent5, configFile);
-		FileUtils::AppendPath(&configFile, "Gaia.ini");
-
-		if (!FileUtils::DoesFileExist(configFile)) {
-			FileUtils::GetAppInstallationFolder(&configFile);
-			FileUtils::AppendPath(&configFile, "Gaia.ini");
-		}
-
-		InterfacePtr<IPMStream> input(StreamUtil::CreateFileStreamRead(configFile));
-
-		if (!input)
-			break;
-
-		uchar c;
-		while (input->GetStreamState() == kStreamStateGood) {
-			string line;
-			while ((input->GetStreamState() == kStreamStateGood) && (input->XferByte(c) != '\n'))
-			{
-				if (c == '\r')
-					break;
-
-				//if(c != '\n')
-				line += c;
-			}
-			PlatformChar equal;
-			equal.Set('=');
-
-			PMString str(line.c_str());
-			if (!str.IsEmpty())
-			{
-				if (str[str.NumUTF16TextChars() - 1].IsChar('\r'))
-					str.Remove(str.NumUTF16TextChars() - 1);
-
-				int32 pos = str.IndexOfCharacter(equal);
-				if (pos != -1)
-				{
-					PMString* keyFound = str.Substring(0, pos);
-					if (keyFound)
-					{
-						keyFound->StripWhiteSpace();
-
-						PMString* value = str.Substring(pos + 1);
-						if (value)
-						{
-							if (!value->IsEmpty())
-							{
-								value->StripWhiteSpace(PMString::kLeadingAndTrailingWhiteSpace);
-
-								if (keyFound->Compare(kFalse, "ILLICO") == 0)
-									illicoFlag = Utils<IDataStringUtils>()->StringToInt32(WideString(*value));
-							}
-
-							delete value;
-						}
-						delete keyFound;
-					}
-				}
-			}
-		}
-
-		input->Close();
-
-	} while (kFalse);
-
-
-
-	return illicoFlag;
 }

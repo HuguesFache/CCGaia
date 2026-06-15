@@ -198,8 +198,11 @@ ErrorCode PrsScriptProvider::ExecTCL(
 	
 	ScriptData outputData;
 	outputData.SetInt32(numError);
-	data->InsertRequestData(data->GetDesiredType(), outputData);
-	
+	// Retour de la valeur de la méthode dans le DOM JS : AppendReturnData (cible = parent
+	// = l'objet application, requestID = ScriptID de la méthode). InsertRequestData/GetDesiredType
+	// (mécanisme AppleScript) ne remonte PAS la valeur côté ExtendScript -> retournait undefined.
+	data->AppendReturnData(parent, e_ExecuteTCLFile, outputData);
+
 	return status;
 }
 

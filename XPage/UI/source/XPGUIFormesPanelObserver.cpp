@@ -6,6 +6,7 @@
 #include "IControlView.h"
 #include "IPanelControlData.h"
 #include "ITextControlData.h"
+#include "ITriStateControlData.h"
 #include "ISubject.h"
 #include "IApplication.h"
 #include "IDocument.h"
@@ -107,12 +108,11 @@ private:
 	void CreateForme();
 	void PlaceForme();
 	void DeleteForme();
-	// Phase 0 manual trigger : reads the document selection, picks the
-	// first item with a unit (article ID or carton name), and asks
-	// IXPageUtils to renumber that unit. Alerts if selection has no
-	// unit-tagged item.
-	void RenumberActiveUnit();
-	
+	// Reflect the shared session "Afficher les formes" state on this palette's
+	// checkbox (no re-fire). Called on attach and on the sibling-palette sync
+	// message, so this checkbox always mirrors the XPage palette one.
+	void SyncDisplayFormesCheckbox();
+
 	PMString currentNumero;
 };
 
@@ -160,16 +160,20 @@ void XPGUIFormesPanelObserver::AutoAttach()
 		AttachWidget(panelControlData, kXPGUIComboClasseurListWidgetID, IID_ISTRINGLISTCONTROLDATA);
 		AttachWidget(panelControlData, kXPGUIPlaceAutoFormeWidgetID,	IID_IBOOLEANCONTROLDATA);
 		AttachWidget(panelControlData, kXPGUINewClasseurButtonWidgetID,	IID_ITRISTATECONTROLDATA);
-		// ButtonWidget (text-label) broadcasts on IID_IBOOLEANCONTROLDATA,
-		// not IID_ITRISTATECONTROLDATA like the RollOverIconButtonWidget
-		// new/delete buttons. Match the kXPGUIPlaceAutoFormeWidgetID
-		// pattern above.
-		AttachWidget(panelControlData, kXPGUIRenumberUnitButtonWidgetID, IID_IBOOLEANCONTROLDATA);
+		// "Afficher les formes" checkbox + its refresh button — same widget
+		// IDs as the XPage palette so they share the string key and the
+		// shared toggle logic. The CheckBoxWidget broadcasts on
+		// ITriStateControlData (kTrue/kFalseStateMessage); the refresh
+		// RollOverIconButton on ITriStateControlData too.
+		AttachWidget(panelControlData, kXPGUIDisplayFormesWidgetID,			IID_ITRISTATECONTROLDATA);
+		AttachWidget(panelControlData, kXPGUIRefreshFormesAdornmentWidgetID,	IID_ITRISTATECONTROLDATA);
 
 		// Initialise widget state.
 		this->HandleSelectionChanged(nil);
-		this->EnableDeleteButton();		
+		this->EnableDeleteButton();
 		this->FillClasseurList();
+		// Mirror the current shared "Afficher les formes" state.
+		this->SyncDisplayFormesCheckbox();
 
 	} while(false);
 	
@@ -197,7 +201,8 @@ void XPGUIFormesPanelObserver::AutoDetach()
 		DetachWidget(panelControlData, kXPGUIComboClasseurListWidgetID, IID_ISTRINGLISTCONTROLDATA);
 		DetachWidget(panelControlData, kXPGUIPlaceAutoFormeWidgetID,	IID_IBOOLEANCONTROLDATA);
 		DetachWidget(panelControlData, kXPGUINewClasseurButtonWidgetID,	IID_ITRISTATECONTROLDATA);
-		DetachWidget(panelControlData, kXPGUIRenumberUnitButtonWidgetID, IID_IBOOLEANCONTROLDATA);
+		DetachWidget(panelControlData, kXPGUIDisplayFormesWidgetID,			IID_ITRISTATECONTROLDATA);
+		DetachWidget(panelControlData, kXPGUIRefreshFormesAdornmentWidgetID,	IID_ITRISTATECONTROLDATA);
 
 	} while(false);
 }
@@ -233,15 +238,28 @@ void XPGUIFormesPanelObserver::Update(const ClassID& theChange, ISubject* theSub
 					XPageUIUtils::DisplayNewClasseurDialog();
 					break;
 
-				case kXPGUIRenumberUnitButtonWidgetID :
-					this->RenumberActiveUnit();
+				case kXPGUIDisplayFormesWidgetID:
+					XPageUIUtils::SetDisplayFormes(kTrue);
 					break;
+
+				case kXPGUIRefreshFormesAdornmentWidgetID:
+				{
+					InterfacePtr<IPanelControlData> panelControlData(this, UseDefaultIID());
+					InterfacePtr<ITriStateControlData> displayFormes(panelControlData->FindWidget(kXPGUIDisplayFormesWidgetID), UseDefaultIID());
+					XPageUIUtils::SetDisplayFormes(displayFormes != nil && displayFormes->IsSelected());
+					break;
+				}
 
 				default:
 					break;
 			}
-			
+
 		}
+	}
+	else if (theChange == kFalseStateMessage)
+	{
+		if (controlView != nil && controlView->GetWidgetID() == kXPGUIDisplayFormesWidgetID)
+			XPageUIUtils::SetDisplayFormes(kFalse);
 	}
 	else if ((protocol == IID_ITREEVIEWCONTROLLER) && (theChange == kListSelectionChangedMessage))
 	{
@@ -270,9 +288,15 @@ void XPGUIFormesPanelObserver::Update(const ClassID& theChange, ISubject* theSub
 	else if(theChange == kXPGRefreshMsg && protocol == IID_IREFRESHPROTOCOL)
 	{
 		InterfacePtr<IPanelControlData> panelControlData(this, UseDefaultIID());
-		this->RefreshModel(panelControlData);	
+		this->RefreshModel(panelControlData);
 	}
-}		
+	else if(theChange == kXPGDisplayFormesChangedMsg && protocol == IID_IREFRESHPROTOCOL)
+	{
+		// The sibling XPage palette toggled "Afficher les formes" — re-sync
+		// our checkbox to the shared session state (visual only, no re-fire).
+		this->SyncDisplayFormesCheckbox();
+	}
+}
 
 
 /* AttachWidget
@@ -546,45 +570,19 @@ void XPGUIFormesPanelObserver::DeleteForme()
 	}while(kFalse);
 }
 
-/* RenumberActiveUnit
-   Phase 0 manual trigger : pick the unit (article ID, else carton name)
-   off the first selected page item and ask IXPageUtils to renumber it.
-   Will eventually be auto-fired by document hooks (delete, paste, type
-   change, article association) — for now the user clicks the button to
-   force the pass.
+/* SyncDisplayFormesCheckbox
+   Reflect the shared session "Afficher les formes" state on this palette's
+   checkbox, without firing the toggle action again (notifyOfChange = kFalse).
 */
-void XPGUIFormesPanelObserver::RenumberActiveUnit() {
-	do {
-		InterfacePtr<IXPageSuite> xpgSuite(fCurrentSelection, IID_IXPAGESUITE);
-		if (xpgSuite == nil) {
-			CAlert::InformationAlert(kXPGUIRenumberNoSelectionKey);
-			break;
-		}
+void XPGUIFormesPanelObserver::SyncDisplayFormesCheckbox() {
 
-		UIDList textFrames, graphicFrames, selectedItems;
-		xpgSuite->GetSelectedItems(textFrames, graphicFrames, selectedItems);
-		if (selectedItems.Length() == 0) {
-			CAlert::InformationAlert(kXPGUIRenumberNoSelectionKey);
-			break;
-		}
+	InterfacePtr<IPanelControlData> panelControlData(this, UseDefaultIID());
+	if (panelControlData == nil)
+		return;
 
-		// Walk the selection until we find an item that carries a unit
-		// (an article ID or a carton name). Selecting any one block of
-		// the unit is enough — RenumberUnit re-walks the whole document.
-		PMString unitId;
-		for (int32 i = 0; i < selectedItems.Length(); ++i) {
-			unitId = Utils<IXPageUtils>()->GetUnitId(selectedItems.GetRef(i));
-			if (!unitId.IsEmpty()) break;
-		}
-
-		if (unitId.IsEmpty()) {
-			CAlert::InformationAlert(kXPGUIRenumberNoSelectionKey);
-			break;
-		}
-
-		IDocument* doc = Utils<ILayoutUIUtils>()->GetFrontDocument();
-		if (doc == nil) break;
-
-		Utils<IXPageUtils>()->RenumberUnit(doc, unitId);
-	} while (kFalse);
+	InterfacePtr<ITriStateControlData> displayFormesControlData(panelControlData->FindWidget(kXPGUIDisplayFormesWidgetID), UseDefaultIID());
+	if (displayFormesControlData)
+		displayFormesControlData->SetState(
+			XPageUIUtils::GetDisplayFormeState() ? ITriStateControlData::kSelected : ITriStateControlData::kUnselected,
+			kTrue, kFalse);
 }

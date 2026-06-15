@@ -105,7 +105,8 @@ resource ImplementationAlias(1)
 		kXPGDeleteArticleBoolImpl, kStringDataImpl,
 		kXPGCurrentStatusImpl, kStringDataImpl,
 		kXPGDisplayShapeBoolImpl, kBoolDataImpl,
-        kXPGDisplayAdornmentTextBoolImpl, kBoolDataImpl,         
+        kXPGDisplayAdornmentTextBoolImpl, kBoolDataImpl,
+		kXPGDisplayFormeBoolImpl, kBoolDataImpl,
         kXPGCurrentStoryImpl, kStringDataImpl,
 		kXPGCurrentGroupImpl, kStringDataImpl,
 		kXPGCurrentRecepientImpl, kStringDataImpl,
@@ -303,6 +304,7 @@ resource ClassDescriptionTable(kSDKDefClassDescriptionTableResourceID)
                          
             IID_IDISPLAYSHAPE, kXPGDisplayShapeBoolImpl,
             IID_IDISPLAYADORNMRNTTEXT, kXPGDisplayAdornmentTextBoolImpl,
+            IID_IDISPLAYFORME, kXPGDisplayFormeBoolImpl,
                                    
             IID_IUNLINKASSIGNMENT, kXPGDeleteArticleBoolImpl,
         }

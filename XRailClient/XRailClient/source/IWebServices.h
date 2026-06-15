@@ -92,7 +92,7 @@ public:
 	// etatsImages_* and etatsArticles_* are parallel arrays populated from the
 	// "etatsimages"/"etatsarticles" JSON arrays returned by Plugin_GetPrefs.
 	// They're cleared on entry. If the server omits them the vectors stay empty.
-	virtual bool GetPrefsXPage_v2(const PMString& address, const PMString& fromServeur, int32& prefs_ExportXML, int32& prefs_GestionIDMS, int32& prefs_IDMSMAJIDMS, int32& prefs_IDMSALLBLOCS, int32& prefs_ImportLegendes, int32& prefs_ImportCredits,
+	virtual bool GetPrefsXPage_v2(const PMString& address, const PMString& fromServeur, int32& prefs_ExportXML, int32& prefs_GestionIDMS, int32& prefs_IDMSMAJIDMS, int32& prefs_IDMSALLBLOCS, int32& prefs_ImportLegendes, int32& prefs_ImportCredits, int32& prefs_ChangePictureState,
 		K2Vector<int32>& etatsImages_IDs, K2Vector<int32>& etatsImages_Ordres, K2Vector<PMString>& etatsImages_Noms, K2Vector<PMString>& etatsImages_Couleurs,
 		K2Vector<int32>& etatsArticles_IDs, K2Vector<int32>& etatsArticles_Ordres, K2Vector<PMString>& etatsArticles_Noms, K2Vector<PMString>& etatsArticles_CouleursHTML, K2Vector<int32>& etatsArticles_Couleurs, K2Vector<int32>& etatsArticles_Rayures) = 0;
 

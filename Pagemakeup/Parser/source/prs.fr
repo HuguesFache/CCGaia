@@ -1342,71 +1342,79 @@ resource UserErrorTable(kSDKDefErrorStringResourceID)
 	{
 		// global err code, error string
 		kPrsExecTCLFailedErrorCode, kErrExecTCLFailedStringkey,
-		
+
 	}
-	
+
 };
+
+#endif // COMPOSER
 
 
 /*  Scripting definition
 	In InDesign/InCopy, scripting resources are defined via ODFRez statements for cross-platform compatibility.
+	Exposé sous kCoreScriptManagerBoss (JavaScript/ExtendScript, utilisé par RunScript SOAP sur
+	InDesign Server) ET kAppleScriptMgrBoss, et sorti du #if COMPOSER pour être disponible
+	dans le build Pagemakeup standard.
 */
 resource VersionedScriptElementInfo(4)
 {
 	// Contexts
 	{
 		// Scripting support added at InDesign CS 2.0
-        kFiredrakeScriptVersion, kAppleScriptMgrBoss, kWildFS, k_Wild,
+		// Exposé sous le CoreScriptManager (JavaScript/ExtendScript), utilisé par RunScript SOAP.
+		// IMPORTANT : kWildFS n'est PAS reconnu par le matcher de feature set d'InDesign
+		// Server. Il faut une entrée explicite kInDesignServerAllLanguagesFS pour que le
+		// verbe soit exposé via RunScript sur Server (cf. samples SDK basicme, framelabel...).
+		kFiredrakeScriptVersion, kCoreScriptManagerBoss, kWildFS, k_Wild,
+		kFiredrakeScriptVersion, kCoreScriptManagerBoss, kInDesignServerAllLanguagesFS, k_Wild,
 	}
 	
 	// Elements
 	{
-		// Specifies an event
-		Event
+		// Specifies a scripting API method 'executeTCLFile'
+		Method
 		{
 			kPrsExecTCLEventScriptElement,
 			e_ExecuteTCLFile,
 			"ExecuteTCLFile",
 			"Execute the given TCL file",
 			Int32Type,
-			"Error code",
+			"Error code returned by the TCL parser (0 = success)",
 			{
-				p_FileName, "FileName", "TCL file absolute path", StringType, kRequired, 
+				p_FileName, "FileName", "TCL file absolute path", StringType, kRequired,
 			}
-		}	
-		
-		Event
+		}
+
+		Method
 		{
 			kPrsGetPermRefsTagEventScriptElement,
 			e_GetPermRefs,
 			"GetTextTag",
 			"Return the PermRefs found in the selected text box",
 			Int32ArrayType(kVariableLength),
-			"Return the PermRefs found in the selected text box"
+			"List of PermRefs found in the selected text box",
 			{
 				p_Ref, "TCLRef", "TextBox Reference number from which we want to obtain the Permrefs",
 #if REF_AS_STRING
 				StringDefaultType(""), kOptional,
 #else
 				Int32DefaultType(0), kOptional,
-#endif				
+#endif
 			}
 		}
-		
-		// Connects this plug-in's events and properties to scripting.
+
+		// Connects this plug-in's methods to scripting.
 		Provider
 		{
 			kPrsScriptProviderBoss,	// provider boss ID
 			{
 				Object{ kApplicationObjectScriptElement },
-				Event{ kPrsExecTCLEventScriptElement },
-				Event{ kPrsGetPermRefsTagEventScriptElement },
+				Method{ kPrsExecTCLEventScriptElement },
+				Method{ kPrsGetPermRefsTagEventScriptElement },
 			}
 		}
 	}
 };
-
-#endif
 
 #endif // __ODFRC__
 

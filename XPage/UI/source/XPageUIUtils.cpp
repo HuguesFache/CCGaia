@@ -39,6 +39,8 @@
 #include "FileUtils.h"
 #include "CAlert.h"
 #include "XPGUIID.h"
+#include "XPGID.h"
+#include "ISubject.h"
 #include "XRCID.h"
 #include "IPMPointData.h"
 #include "IUIDData.h"
@@ -432,7 +434,8 @@ void XPageUIUtils::RefreshXPagePrefsFromServer()
 		return;
 
 	int32 prefs_ExportXML = 0, prefs_GestionIDMS = 1, prefs_IDMSMAJIDMS = 1,
-	      prefs_IDMSALLBLOCS = 0, prefs_ImportLegendes = 1, prefs_ImportCredits = 1;
+	      prefs_IDMSALLBLOCS = 0, prefs_ImportLegendes = 1, prefs_ImportCredits = 1,
+	      prefs_ChangePictureState = 0;
 
 	K2Vector<int32> ei_IDs, ei_Ordres;
 	K2Vector<PMString> ei_Noms, ei_Couleurs;
@@ -441,7 +444,7 @@ void XPageUIUtils::RefreshXPagePrefsFromServer()
 
 	if (baseHTTP->GetPrefsXPage_v2(xpgPrefs->GetTEC_URL(), xpgPrefs->GetPluginServerName(),
 		prefs_ExportXML, prefs_GestionIDMS, prefs_IDMSMAJIDMS, prefs_IDMSALLBLOCS,
-		prefs_ImportLegendes, prefs_ImportCredits,
+		prefs_ImportLegendes, prefs_ImportCredits, prefs_ChangePictureState,
 		ei_IDs, ei_Ordres, ei_Noms, ei_Couleurs,
 		ea_IDs, ea_Ordres, ea_Noms, ea_CouleursHTML, ea_Couleurs, ea_Rayures))
 	{
@@ -450,6 +453,7 @@ void XPageUIUtils::RefreshXPagePrefsFromServer()
 		xpgPrefs->SetIDMSALLBLOCS(prefs_IDMSALLBLOCS);
 		xpgPrefs->SetImportLegende(prefs_ImportLegendes);
 		xpgPrefs->SetImportCredit(prefs_ImportCredits);
+		xpgPrefs->SetChangePictureState(prefs_ChangePictureState);
 
 		EtatImageList etatsImages;
 		for (int32 i = 0; i < ei_IDs.size(); ++i) {
@@ -1239,4 +1243,87 @@ bool16 XPageUIUtils::ValidateSelectionForCarton(const UIDList& textFrames, PMStr
 	}
 
 	return kFalse;
+}
+
+/* DisplayFormeAdornmentShape
+   Shared implementation of the "Afficher les formes" toggle. Adds/removes the
+   carton header + content adornments on every block of every carton in the
+   front document, then stores the new state on the session so both palettes
+   (XPage / XDA) can re-sync their checkbox. Moved here verbatim from
+   XPGUIXRailPanelObserver so the two palettes run identical code.
+*/
+void XPageUIUtils::DisplayFormeAdornmentShape(bool16 visible)
+{
+	IDocument * theDoc = Utils<ILayoutUIUtils>()->GetFrontDocument();
+
+	std::map<PMString, UIDList> formeDataList = Utils<IXPageUtils>()->GetFormeDataList(theDoc);
+	std::map<PMString, UIDList>::iterator iter;
+
+	for (iter = formeDataList.begin(); iter != formeDataList.end(); ++iter) {
+
+		UIDList formeItems = iter->second;
+
+		if (visible) {
+
+			// Header adornment — sur tous les blocs du carton.
+			InterfacePtr<ICommand> addPageItemHeaderAdornmentCmd(CmdUtils::CreateCommand(kAddPageItemAdornmentCmdBoss));
+			InterfacePtr<IClassIDData> classIDHeaderData(addPageItemHeaderAdornmentCmd, UseDefaultIID());
+			classIDHeaderData->Set(kXPGUIPlacedFormeHeaderAdornmentBoss);
+			addPageItemHeaderAdornmentCmd->SetItemList(formeItems);
+			CmdUtils::ProcessCommand(addPageItemHeaderAdornmentCmd);
+
+			// Content adornment — cadre bleu sur tous les blocs.
+			InterfacePtr<ICommand> addPageItemContentAdornmentCmd(CmdUtils::CreateCommand(kAddPageItemAdornmentCmdBoss));
+			InterfacePtr<IClassIDData> classIDContentData(addPageItemContentAdornmentCmd, UseDefaultIID());
+			classIDContentData->Set(kXPGUIPlacedFormeContentAdornmentBoss);
+			addPageItemContentAdornmentCmd->SetItemList(formeItems);
+			CmdUtils::ProcessCommand(addPageItemContentAdornmentCmd);
+		}
+		else {
+			// Header adornment — retirer de tous les blocs.
+			InterfacePtr<ICommand> removePageItemHeaderAdornmentCmd(CmdUtils::CreateCommand(kRemovePageItemAdornmentCmdBoss));
+			InterfacePtr<IClassIDData> classIDHeaderData(removePageItemHeaderAdornmentCmd, UseDefaultIID());
+			classIDHeaderData->Set(kXPGUIPlacedFormeHeaderAdornmentBoss);
+			removePageItemHeaderAdornmentCmd->SetItemList(formeItems);
+			CmdUtils::ProcessCommand(removePageItemHeaderAdornmentCmd);
+
+			// Content adornment — retirer de tous les blocs.
+			InterfacePtr<ICommand> removePageItemContentAdornmentCmd(CmdUtils::CreateCommand(kRemovePageItemAdornmentCmdBoss));
+			InterfacePtr<IClassIDData> classIDContentData(removePageItemContentAdornmentCmd, UseDefaultIID());
+			classIDContentData->Set(kXPGUIPlacedFormeContentAdornmentBoss);
+			removePageItemContentAdornmentCmd->SetItemList(formeItems);
+			CmdUtils::ProcessCommand(removePageItemContentAdornmentCmd);
+		}
+	}
+
+	// Refresh the views of a document
+	if (theDoc)
+		Utils<ILayoutUIUtils>()->InvalidateViews(theDoc);
+
+	// Record the state on the session so both palettes can re-sync.
+	InterfacePtr<IBoolData> isDisplayForme(GetExecutionContextSession(), IID_IDISPLAYFORME);
+	if (isDisplayForme)
+		isDisplayForme->Set(visible);
+}
+
+/* SetDisplayFormes
+   Apply the new state, then notify the sibling palette so its checkbox
+   follows. The broadcast carries no payload — receivers read the new state
+   back from IID_IDISPLAYFORME (set above).
+*/
+void XPageUIUtils::SetDisplayFormes(bool16 visible)
+{
+	XPageUIUtils::DisplayFormeAdornmentShape(visible);
+
+	InterfacePtr<ISubject> sessionSubject(GetExecutionContextSession(), UseDefaultIID());
+	if (sessionSubject)
+		sessionSubject->Change(kXPGDisplayFormesChangedMsg, IID_IREFRESHPROTOCOL);
+}
+
+/* GetDisplayFormeState
+*/
+bool16 XPageUIUtils::GetDisplayFormeState()
+{
+	InterfacePtr<IBoolData> isDisplayForme(GetExecutionContextSession(), IID_IDISPLAYFORME);
+	return (isDisplayForme != nil) ? isDisplayForme->Get() : kFalse;
 }

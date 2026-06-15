@@ -89,6 +89,10 @@ void XPGStartupShutdown::Startup()
 		// Init AdronmentShape
 		InterfacePtr<IBoolData> isAdronmentShape(GetExecutionContextSession(), IID_IDISPLAYSHAPE);
 		isAdronmentShape->Set(kFalse);
+
+		// Init "Afficher les formes" (shared by the XPage + XDA palettes)
+		InterfacePtr<IBoolData> isDisplayForme(GetExecutionContextSession(), IID_IDISPLAYFORME);
+		isDisplayForme->Set(kFalse);
 	} while (kFalse);
 }
 
@@ -139,6 +143,7 @@ void XPGStartupShutdown::ReadConfFile() {
 		xpgPrefs->SetGestionIDMS(1);
 		xpgPrefs->SetIDMS_MAJIDMS(1);
 		xpgPrefs->SetIDMSALLBLOCS(0);
+		xpgPrefs->SetChangePictureState(0); // bloqué tant que Gaia n'autorise pas
 
 		while (input->GetStreamState() == kStreamStateGood) {
 			string line;
@@ -218,12 +223,12 @@ void XPGStartupShutdown::ReadConfFile() {
 		// dialog to re-fetch once the user successfully signs in. No alert
 		// is surfaced here — it would fire on every cold start when offline.
 		InterfacePtr<IWebServices> baseHTTP(::CreateObject2<IWebServices>(kXRCXRailClientBoss));
-		int32 prefs_ExportXML, prefs_GestionIDMS, prefs_IDMSMAJIDMS, prefs_IDMSALLBLOCS, prefs_ImportLegendes, prefs_ImportCredits;
+		int32 prefs_ExportXML, prefs_GestionIDMS, prefs_IDMSMAJIDMS, prefs_IDMSALLBLOCS, prefs_ImportLegendes, prefs_ImportCredits, prefs_ChangePictureState = 0;
 		K2Vector<int32> ei_IDs, ei_Ordres;
 		K2Vector<PMString> ei_Noms, ei_Couleurs;
 		K2Vector<int32> ea_IDs, ea_Ordres, ea_Couleurs, ea_Rayures;
 		K2Vector<PMString> ea_Noms, ea_CouleursHTML;
-		if (baseHTTP->GetPrefsXPage_v2(xpgPrefs->GetTEC_URL(), serveurPlugin, prefs_ExportXML, prefs_GestionIDMS, prefs_IDMSMAJIDMS, prefs_IDMSALLBLOCS, prefs_ImportLegendes, prefs_ImportCredits,
+		if (baseHTTP->GetPrefsXPage_v2(xpgPrefs->GetTEC_URL(), serveurPlugin, prefs_ExportXML, prefs_GestionIDMS, prefs_IDMSMAJIDMS, prefs_IDMSALLBLOCS, prefs_ImportLegendes, prefs_ImportCredits, prefs_ChangePictureState,
 			ei_IDs, ei_Ordres, ei_Noms, ei_Couleurs,
 			ea_IDs, ea_Ordres, ea_Noms, ea_CouleursHTML, ea_Couleurs, ea_Rayures))
 		{
@@ -232,6 +237,7 @@ void XPGStartupShutdown::ReadConfFile() {
 			xpgPrefs->SetIDMSALLBLOCS(prefs_IDMSALLBLOCS);
 			xpgPrefs->SetImportLegende(prefs_ImportLegendes);
 			xpgPrefs->SetImportCredit(prefs_ImportCredits);
+			xpgPrefs->SetChangePictureState(prefs_ChangePictureState);
 
 			EtatImageList etatsImages;
 			for (int32 i = 0; i < ei_IDs.size(); ++i) {

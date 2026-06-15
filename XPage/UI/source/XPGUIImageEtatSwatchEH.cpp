@@ -75,6 +75,12 @@ bool16 XPGUIImageEtatSwatchEH::LButtonUp(IEvent* /*e*/)
 {
 	do
 	{
+		// Flag de licence (vient de Gaia via les prefs) : si le changement
+		// d'état n'est pas autorisé, on consomme le clic sans rien faire.
+		InterfacePtr<IXPGPreferences> xpgPrefs(GetExecutionContextSession(), UseDefaultIID());
+		if (xpgPrefs == nil || xpgPrefs->GetChangePictureState() != 1)
+			break;
+
 		// Walk up from the swatch to the row boss (kXPGUIImageNodeWidgetBoss),
 		// which carries the tree node id data.
 		InterfacePtr<IWidgetParent> wparent(this, UseDefaultIID());

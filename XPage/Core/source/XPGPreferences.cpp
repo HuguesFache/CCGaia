@@ -72,6 +72,9 @@ public:
 	virtual int32 GetIDMSALLBLOCS() const;
 	virtual void SetIDMSALLBLOCS(const int32& b);
 
+	virtual int32 GetChangePictureState() const;
+	virtual void SetChangePictureState(const int32& b);
+
 	virtual EtatImageList GetEtatsImages() const;
 	virtual void SetEtatsImages(const EtatImageList& l);
 
@@ -89,7 +92,7 @@ private:
 	PMString racineArbo,  noUpdateFile;
 	bool16 creationForme;
 	bool16 importCredit, importLegende;
-	int32 gestionIDMS, majIDMS, idmsAllBlocs;
+	int32 gestionIDMS, majIDMS, idmsAllBlocs, changePictureState;
 	PMString status;
     PMString cheminFormes, cheminAssemblageCartons;
 	PMString urlXR, urlTEC;
@@ -122,6 +125,7 @@ CREATE_PMINTERFACE(XPGPreferences, kXPGPreferencesImpl)
 	matchingTagsList.clear();
 	etatsImages.clear();
 	etatsArticles.clear();
+	changePictureState = 0; // bloqué par défaut tant que Gaia n'envoie pas 1
 }
 
 /**	Destructor
@@ -288,6 +292,16 @@ int32 XPGPreferences::GetIDMSALLBLOCS() const
 void XPGPreferences::SetIDMSALLBLOCS(const int32& b)
 {
 	idmsAllBlocs = b;
+}
+
+int32 XPGPreferences::GetChangePictureState() const
+{
+	return changePictureState;
+}
+
+void XPGPreferences::SetChangePictureState(const int32& b)
+{
+	changePictureState = b;
 }
 
 EtatImageList XPGPreferences::GetEtatsImages() const

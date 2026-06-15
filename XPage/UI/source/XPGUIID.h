@@ -495,14 +495,9 @@ DECLARE_PMID(kWidgetIDSpace, kXPGUIPhotoDownButtonWidgetID,		kXPGUIPrefix + 242)
 // / legendList, then rewrites IFormeData::photoIndex on every block
 // impacted so the adornment numbering tracks the dropdown.
 DECLARE_PMID(kWidgetIDSpace, kXPGUIPhotoPositionListWidgetID,	kXPGUIPrefix + 243)
-// Phase 0 manual trigger : renumber the active unit (carton or article)
-// from the XDA palette. Walks the doc, sorts kPhoto blocks of the unit
-// by current PhotoIndex, reassigns 0..N-1 (closes gaps), and patches
-// kCredit / kLegend mappings via Utils<IXPageUtils>()->RenumberUnit.
-// Will eventually be auto-triggered by document hooks (delete, paste,
-// type change, article association) ; this button stays as a manual
-// fallback for diagnostics.
-DECLARE_PMID(kWidgetIDSpace, kXPGUIRenumberUnitButtonWidgetID,	kXPGUIPrefix + 244)
+// kXPGUIPrefix + 244 (ex-kXPGUIRenumberUnitButtonWidgetID) — bouton Renum
+// manuel supprimé de la palette XDA. La renumérotation reste auto-déclenchée
+// par XPGDocObserver via Utils<IXPageUtils>()->RenumberUnit.
 // "Choose état image" dialog : root widget + état dropdown.
 DECLARE_PMID(kWidgetIDSpace, kXPGUIChooseEtatImageDialogWidgetID,	kXPGUIPrefix + 245)
 DECLARE_PMID(kWidgetIDSpace, kXPGUIChooseEtatImageListWidgetID,		kXPGUIPrefix + 246)
@@ -594,8 +589,6 @@ DECLARE_PMID(kMessageIDSpace, kXPGUICloseFormeDialogMsg,						kXPGUIPrefix + 1)
 #define kXPGUIPhotoDownKey						kXPGUIStringPrefix		"kXPGUIPhotoDownKey"
 #define kXPGUIPhotoPositionTextKey				kXPGUIStringPrefix		"kXPGUIPhotoPositionTextKey"
 #define kXPGUINoTextFrameSelectedKey			kXPGUIStringPrefix		"kXPGUINoTextFrameSelectedKey"
-#define kXPGUIRenumberUnitKey					kXPGUIStringPrefix		"kXPGUIRenumberUnitKey"
-#define kXPGUIRenumberNoSelectionKey			kXPGUIStringPrefix		"kXPGUIRenumberNoSelectionKey"
 #define kXPGUIPlacementAutoKey					kXPGUIStringPrefix		"kXPGUIPlacementAutoKey"
 #define kXPGUISelectionDontBelongToFormeKey		kXPGUIStringPrefix		"kXPGUISelectionDontBelongToFormeKey"
 #define kXPGUITextFrameAlreadyDefinedKey		kXPGUIStringPrefix		"kXPGUITextFrameAlreadyDefinedKey"

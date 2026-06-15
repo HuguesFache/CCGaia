@@ -165,6 +165,27 @@ public:
 	                                            const UIDRef& targetSpread,
 	                                            const PMString& cropData = kNullString);
 
+	/** Apply (visible=kTrue) or remove (kFalse) the "forme" adornments — the
+		carton header label + blue content frame — on every carton block of
+		the front document, and record the new state in the session
+		IID_IDISPLAYFORME bool. This is the single shared implementation behind
+		the "Afficher les formes" checkbox; both the XPage (XRail) palette and
+		the XDA (Formes) palette call it so the behaviour is identical.
+	*/
+	static void DisplayFormeAdornmentShape(bool16 visible);
+
+	/** Toggle the "Afficher les formes" state: runs DisplayFormeAdornmentShape
+		then broadcasts kXPGDisplayFormesChangedMsg on the session subject so
+		the sibling palette's checkbox re-syncs. Called by both palette
+		observers on a checkbox click and on a refresh-button click.
+	*/
+	static void SetDisplayFormes(bool16 visible);
+
+	/** Current "Afficher les formes" state stored on the session
+		(IID_IDISPLAYFORME). Defaults kFalse. Used by the palettes to
+		initialise / re-sync their checkbox visual state. */
+	static bool16 GetDisplayFormeState();
+
 private:
 	XPageUIUtils(); // this is an util class, only to be used with static methods calls
 };

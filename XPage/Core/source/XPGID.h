@@ -141,6 +141,10 @@ DECLARE_PMID(kInterfaceIDSpace, IID_IASSEMBLAGEDATAMODEL, 			kXPGPrefix + 46)
 DECLARE_PMID(kInterfaceIDSpace, IID_IFONTUTILS,						kXPGPrefix + 47)
 DECLARE_PMID(kInterfaceIDSpace, IID_IARTICLEDATAMODEL,				kXPGPrefix + 49)
 DECLARE_PMID(kInterfaceIDSpace, IID_XPAGESTORYDATA,					kXPGPrefix + 50)
+// Session bool holding the current "Afficher les formes" state, shared by
+// the XPage (XRail) palette and the XDA (Formes) palette so both checkboxes
+// stay in sync. Mirrors IID_IDISPLAYSHAPE.
+DECLARE_PMID(kInterfaceIDSpace, IID_IDISPLAYFORME,					kXPGPrefix + 51)
 
 
 // ImplementationIDs:
@@ -220,6 +224,7 @@ DECLARE_PMID(kImplementationIDSpace, kXPGCheckTextImportHandlerImpl,		kXPGPrefix
 DECLARE_PMID(kImplementationIDSpace, kXPGArticleSizerCmdImpl,				kXPGPrefix + 88)
 DECLARE_PMID(kImplementationIDSpace, kXPGFileSystemAssemblageModelImpl,		kXPGPrefix + 91)
 DECLARE_PMID(kImplementationIDSpace, kXPGArticleDataModelImpl,				kXPGPrefix + 96)
+DECLARE_PMID(kImplementationIDSpace, kXPGDisplayFormeBoolImpl,				kXPGPrefix + 97)
 
 
 
@@ -231,6 +236,10 @@ DECLARE_PMID(kMessageIDSpace,		 kXPGDeleteClasseurMsg,					kXPGPrefix + 3)
 DECLARE_PMID(kMessageIDSpace,		 kXPGRefreshAssemblageMsg,				kXPGPrefix + 4)
 DECLARE_PMID(kMessageIDSpace,		 kXPGNewClasseurAssemblageMsg,			kXPGPrefix + 5)
 DECLARE_PMID(kMessageIDSpace,		 kXPGDeleteClasseurAssemblageMsg,		kXPGPrefix + 6)
+// Broadcast on the session subject (IID_IREFRESHPROTOCOL) when the
+// "Afficher les formes" state changes on either palette, so the sibling
+// palette's checkbox re-syncs from IID_IDISPLAYFORME.
+DECLARE_PMID(kMessageIDSpace,		 kXPGDisplayFormesChangedMsg,			kXPGPrefix + 7)
 
 //ScriptIDs
 DECLARE_PMID(kScriptInfoIDSpace,			kXPGFormeDataPropScriptElement,			kXPGPrefix + 0)

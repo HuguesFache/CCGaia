@@ -2004,16 +2004,30 @@ resource XPGUIFormesPanelWidget (kXPGUIFormesPanelResourceID + index_enUS)
 			kTrue, // enabled
 			kADBEIconSuiteButtonType,
 		),
-		// Phase 0 manual trigger : renumber the active carton/article
-		// from the document selection. See IXPageUtils::RenumberUnit.
-		ButtonWidget
+		// "Afficher les formes" — même case + bouton refresh que la palette
+		// XPage. Widget IDs identiques pour partager la logique (les deux
+		// cases se synchronisent via la session).
+		RollOverIconButtonWidget
 		(
-			kXPGUIRenumberUnitButtonWidgetID, // WidgetId
-			kSysButtonPMRsrcId,				// RsrcId
+			kXPGUIRefreshFormesAdornmentWidgetID,	// widget ID
+			kXPGUIToggleIconResourceID,				// resource ID
+			kXPGUIPluginID,							// plugin ID
+			kBindLeft | kBindBottom,				// frame binding
+			Frame(175, 567, 195, 585)				// left, top, right, bottom
+			kTrue,
+			kTrue,									// visible, enabled
+			kADBEIconSuiteButtonType,
+		),
+		CheckBoxWidget
+		(
+			kXPGUIDisplayFormesWidgetID,	// WidgetId
+			kSysCheckBoxPMRsrcId,			// RsrcId
 			kBindLeft | kBindBottom,		// Frame binding
-			Frame(175, 569, 240, 583)
-			kTrue, kTrue,					// Visible, Enabled
-			kXPGUIRenumberUnitKey,			// Button name
+			Frame(198, 569, 410, 583)
+			kTrue,							// Visible
+			kTrue,							// Enabled
+			kAlignLeft,						// Alignment
+			kXPGUIDisplayFormesKey,			// String value
 		),
 	//
 	}

@@ -107,6 +107,12 @@ public:
 	virtual int32 GetIDMSALLBLOCS() const = 0;
 	virtual void SetIDMSALLBLOCS(const int32& b) = 0;
 
+	// Flag de licence (vient de Gaia, clé JSON "ChangePictureState") : autorise
+	// ou non le changement d'état d'une photo depuis la palette Photos liées.
+	// Bloqué par défaut (0) : l'option n'est active que si Gaia renvoie 1.
+	virtual int32 GetChangePictureState() const = 0;
+	virtual void SetChangePictureState(const int32& b) = 0;
+
 	// Etats (image/article statuses) fetched from Gaia at startup and after
 	// XRail login. Used by the Photos Liées palette and other XPage UI to
 	// render status colors and labels consistently with the server config.
