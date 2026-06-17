@@ -65,6 +65,11 @@ DECLARE_PMID(kClassIDSpace, kXRLUIIDDropDownListWidgetBoss, kXRLUIPrefix + 7)
 DECLARE_PMID(kClassIDSpace, kXRLUICommentsPanelWidgetBoss,	kXRLUIPrefix + 8)
 DECLARE_PMID(kClassIDSpace, kXRLUICommentsViewWidgetBoss,	kXRLUIPrefix + 9)
 DECLARE_PMID(kClassIDSpace, kXRLUICommentsNodeWidgetBoss,	kXRLUIPrefix + 10)
+// Case à cocher de validation d'une ligne — checkbox dérivé qui ajoute son
+// propre observer (appelle Plugin_Comm_Valid au toggle).
+DECLARE_PMID(kClassIDSpace, kXRLUICommentsCellCheckWidgetBoss,	kXRLUIPrefix + 11)
+// Adornment dessinant les pins de commentaires sur les pages Gaia.
+DECLARE_PMID(kClassIDSpace, kXRLUICommentsPinAdornmentBoss,		kXRLUIPrefix + 12)
 
 //DECLARE_PMID(kClassIDSpace, kXRLUIBoss, kXRLUIPrefix + 13)
 //DECLARE_PMID(kClassIDSpace, kXRLUIBoss, kXRLUIPrefix + 14)
@@ -149,6 +154,8 @@ DECLARE_PMID(kImplementationIDSpace, kXRLUICommentListImpl,						kXRLUIPrefix + 
 DECLARE_PMID(kImplementationIDSpace, kXRLUICommentsTVHierarchyAdapterImpl,		kXRLUIPrefix + 11)
 DECLARE_PMID(kImplementationIDSpace, kXRLUICommentsTVWidgetMgrImpl,				kXRLUIPrefix + 12)
 DECLARE_PMID(kImplementationIDSpace, kXRLUICommentsNodeEHImpl,					kXRLUIPrefix + 13)
+DECLARE_PMID(kImplementationIDSpace, kXRLUICommentsCellCheckObserverImpl,		kXRLUIPrefix + 14)
+DECLARE_PMID(kImplementationIDSpace, kXRLUICommentsPinAdornmentImpl,				kXRLUIPrefix + 15)
 //DECLARE_PMID(kImplementationIDSpace, kXRLUIImpl, kXRLUIPrefix + 17)
 //DECLARE_PMID(kImplementationIDSpace, kXRLUIImpl, kXRLUIPrefix + 18)
 //DECLARE_PMID(kImplementationIDSpace, kXRLUIImpl, kXRLUIPrefix + 19)

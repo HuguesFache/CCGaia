@@ -13,13 +13,15 @@
 struct XRLUIComment
 {
 	int32     idComm;
+	int32     idPage;        // Gaia page the comment belongs to (0 = no location).
 	PMString  commentaire;
 	PMString  dateISO;       // raw "YYYY-MM-DDT…Z" — not pre-formatted.
 	int32     heureSecs;     // seconds since midnight (server local time).
 	PMString  nomUser;
 	bool      check;
-	PMReal    x;             // % of page width
-	PMReal    y;             // % of page height
+	bool      hasCoord;      // false when idPage == 0 (no pin to draw).
+	PMReal    x;             // % of page width  (normalized to single page).
+	PMReal    y;             // % of page height (normalized to single page).
 };
 
 /** Data model for the Commentaires palette. Aggregated on the panel widget
@@ -40,6 +42,13 @@ public:
 		ISubject so observers (the tree view) refresh.
 	*/
 	virtual void                   SetRows(const std::vector<XRLUIComment>& newRows) = 0;
+
+	/** Met à jour le flag `check` d'une ligne en mémoire, sans rediffuser.
+		Appelé après un toggle utilisateur de la case : la case affiche déjà le
+		nouvel état, on garde juste le modèle synchrone pour que le recyclage du
+		tree view ne réaffiche pas l'ancienne valeur. No-op si index hors borne.
+	*/
+	virtual void                   SetCheckAt(int32 index, bool check) = 0;
 
 	virtual void                   Clear() = 0;
 };

@@ -233,15 +233,19 @@ public:
 		const PMString& groupID,
 		PMString& result);
 
-	virtual bool GetCommentaires_v2(const PMString& address, const int32& IDPage,
+	virtual bool GetCommentaires_v2(const PMString& address, const K2Vector<int32>& IDPages,
 		K2Vector<int32>& IDsComm,
+		K2Vector<int32>& IDsPage,
 		K2Vector<PMString>& Commentaires,
 		K2Vector<PMString>& DatesISO,
 		K2Vector<int32>& HeuresSecs,
 		K2Vector<PMString>& NomsUser,
 		K2Vector<bool>& Checks,
 		K2Vector<PMReal>& Xs,
-		K2Vector<PMReal>& Ys);
+		K2Vector<PMReal>& Ys,
+		bool& fromPhp);
+
+	virtual bool CommValid(const PMString& address, const int32& IDComm);
 
 	virtual Value convert_PMStringToUTF8(PMString mystring, Document::AllocatorType& allocator);
 	virtual bool CallWebServiceAndParseJson(const std::string& url, rapidjson::Document& doc);
@@ -1872,20 +1876,24 @@ bool XRailWebServices::CreateAffectation_v2(const PMString& address, const PMStr
 }
 
 //----------------------------------------------------------------------------------------------------------------
-// Plugin_Comm_List — flat JSON array, one element per comment.
+// Plugin_Comm_List — POST JSON { listepages:[{id},...], onwindows } pour toutes
+// les pages du document ; réponse = tableau JSON plat, un élément par commentaire.
 //----------------------------------------------------------------------------------------------------------------
 
-bool XRailWebServices::GetCommentaires_v2(const PMString& address, const int32& IDPage,
+bool XRailWebServices::GetCommentaires_v2(const PMString& address, const K2Vector<int32>& IDPages,
 	K2Vector<int32>& IDsComm,
+	K2Vector<int32>& IDsPage,
 	K2Vector<PMString>& Commentaires,
 	K2Vector<PMString>& DatesISO,
 	K2Vector<int32>& HeuresSecs,
 	K2Vector<PMString>& NomsUser,
 	K2Vector<bool>& Checks,
 	K2Vector<PMReal>& Xs,
-	K2Vector<PMReal>& Ys)
+	K2Vector<PMReal>& Ys,
+	bool& fromPhp)
 {
 	IDsComm.clear();
+	IDsPage.clear();
 	Commentaires.clear();
 	DatesISO.clear();
 	HeuresSecs.clear();
@@ -1893,24 +1901,80 @@ bool XRailWebServices::GetCommentaires_v2(const PMString& address, const int32& 
 	Checks.clear();
 	Xs.clear();
 	Ys.clear();
+	fromPhp = false;
+
+	if (IDPages.empty())
+		return true;
+
+	// Liste des pages envoyée en POST JSON, même format que Plugin_GetListePubs :
+	// { "listepages": [ {"id": 1}, {"id": 2} ], "onwindows": 0/1 }.
+	Document doc(kObjectType);
+	Document::AllocatorType& allocator = doc.GetAllocator();
+
+	Value myarray(kArrayType);
+	for (int i = 0; i < IDPages.size(); ++i) {
+		Value obj(kObjectType);
+		obj.AddMember("id", IDPages[i], allocator);
+		myarray.PushBack(obj, allocator);
+	}
+	doc.AddMember("listepages", myarray, allocator);
+	doc.AddMember("onwindows", onwindows, allocator);
+
+	StringBuffer buffer;
+	Writer<StringBuffer> writer(buffer);
+	doc.Accept(writer);
+	std::string jsonBody = buffer.GetString();
 
 	std::string serverURL = address.GetPlatformString().c_str();
-	std::string url = serverURL + "/Plugin_Comm_List?IDPage=" + std::to_string(IDPage);
+	std::string url = serverURL + "/Plugin_Comm_List";
 
-	Document doc;
-	if (!CallWebServiceAndParseJson(url, doc))
+	CURL* curl = curl_easy_init();
+	if (!curl)
 		return false;
 
-	if (!doc.IsArray())
+	struct curl_slist* headers = nullptr;
+	headers = curl_slist_append(headers, "Content-Type: application/json; charset=utf-8");
+
+	std::string responseStr;
+	curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
+	curl_easy_setopt(curl, CURLOPT_POST, 1L);
+	curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
+	curl_easy_setopt(curl, CURLOPT_POSTFIELDS, jsonBody.c_str());
+	curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, jsonBody.length());
+	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
+	curl_easy_setopt(curl, CURLOPT_WRITEDATA, &responseStr);
+	ApplyCommonCurlOpts(curl);
+
+	CURLcode res = curl_easy_perform(curl);
+	curl_slist_free_all(headers);
+	curl_easy_cleanup(curl);
+
+	if (res != CURLE_OK)
 		return false;
 
-	for (SizeType i = 0; i < doc.Size(); ++i)
+	// Réutilise doc pour parser la réponse : objet { fromPhp, comments:[...] }.
+	if (doc.Parse(responseStr.c_str()).HasParseError())
+		return false;
+
+	if (!doc.IsObject())
+		return false;
+
+	// Source du jeu de données complet : true = PHP, false = 4D.
+	if (doc.HasMember("fromPhp") && doc["fromPhp"].IsBool())
+		fromPhp = doc["fromPhp"].GetBool();
+
+	if (!doc.HasMember("comments") || !doc["comments"].IsArray())
+		return true;	// pas de commentaires : fromPhp reste renseigné.
+
+	const Value& comments = doc["comments"];
+	for (SizeType i = 0; i < comments.Size(); ++i)
 	{
-		const Value& row = doc[i];
+		const Value& row = comments[i];
 		if (!row.IsObject())
 			continue;
 
 		int32 idComm = 0;
+		int32 idPage = 0;
 		PMString commentaire;
 		PMString dateISO;
 		int32 heureSecs = 0;
@@ -1921,6 +1985,8 @@ bool XRailWebServices::GetCommentaires_v2(const PMString& address, const int32& 
 
 		if (row.HasMember("IDComm") && row["IDComm"].IsInt())
 			idComm = row["IDComm"].GetInt();
+		if (row.HasMember("IDPage") && row["IDPage"].IsInt())
+			idPage = row["IDPage"].GetInt();
 		if (row.HasMember("Commentaire") && row["Commentaire"].IsString())
 			commentaire = PMString(row["Commentaire"].GetString());
 		if (row.HasMember("DateCommentaire") && row["DateCommentaire"].IsString())
@@ -1931,12 +1997,27 @@ bool XRailWebServices::GetCommentaires_v2(const PMString& address, const int32& 
 			nomUser = PMString(row["NomUser"].GetString());
 		if (row.HasMember("Check") && row["Check"].IsBool())
 			check = row["Check"].GetBool();
-		if (row.HasMember("X") && row["X"].IsNumber())
-			x = PMReal(row["X"].GetDouble());
-		if (row.HasMember("Y") && row["Y"].IsNumber())
-			y = PMReal(row["Y"].GetDouble());
+
+		// Champs coord selon la source : PHP => coord_x/coord_y (déjà % page),
+		// 4D => X/Y (Y % page, X % spread). Stockés bruts ; la normalisation du
+		// X 4D se fait côté UI (besoin de la géométrie du document).
+		if (fromPhp)
+		{
+			if (row.HasMember("coord_x") && row["coord_x"].IsNumber())
+				x = PMReal(row["coord_x"].GetDouble());
+			if (row.HasMember("coord_y") && row["coord_y"].IsNumber())
+				y = PMReal(row["coord_y"].GetDouble());
+		}
+		else
+		{
+			if (row.HasMember("X") && row["X"].IsNumber())
+				x = PMReal(row["X"].GetDouble());
+			if (row.HasMember("Y") && row["Y"].IsNumber())
+				y = PMReal(row["Y"].GetDouble());
+		}
 
 		IDsComm.push_back(idComm);
+		IDsPage.push_back(idPage);
 		Commentaires.push_back(commentaire);
 		DatesISO.push_back(dateISO);
 		HeuresSecs.push_back(heureSecs);
@@ -1947,4 +2028,31 @@ bool XRailWebServices::GetCommentaires_v2(const PMString& address, const int32& 
 	}
 
 	return true;
+}
+
+//----------------------------------------------------------------------------------------------------------------
+// Plugin_Comm_Valid — toggle de l'état "validé" d'un commentaire. Le serveur
+// renvoie un corps vide : on fait un simple GET et on ignore la réponse.
+//----------------------------------------------------------------------------------------------------------------
+
+bool XRailWebServices::CommValid(const PMString& address, const int32& IDComm)
+{
+	std::string serverURL = address.GetPlatformString().c_str();
+	std::string url = serverURL + "/Plugin_Comm_Valid?idcomm=" + std::to_string(IDComm);
+
+	CURL* curl = curl_easy_init();
+	if (!curl)
+		return false;
+
+	std::string responseStr;
+	curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
+	curl_easy_setopt(curl, CURLOPT_HTTPGET, 1L);
+	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
+	curl_easy_setopt(curl, CURLOPT_WRITEDATA, &responseStr);
+	ApplyCommonCurlOpts(curl);
+
+	CURLcode res = curl_easy_perform(curl);
+	curl_easy_cleanup(curl);
+
+	return (res == CURLE_OK);
 }

@@ -170,24 +170,49 @@ public:
 		const PMString& groupID,
 		PMString& result) = 0;
 
-	// Plugin_Comm_List — fetches the comment list for a given Gaia
-	// page. Returns parallel arrays (one entry per comment). Empty arrays on
-	// success-with-no-comments. False on HTTP/parse error. Vectors are cleared
-	// on entry so callers can reuse the same buffers across calls.
+	// Plugin_Comm_List — fetches the comment list for all Gaia pages of the
+	// document. IDPages is the list of Gaia page IDs, sent as a POST JSON body
+	// { listepages:[{id:..},..], onwindows:.. } — same shape as
+	// Plugin_GetListePubs. Returns parallel arrays (one entry per comment, all
+	// pages merged). Empty arrays on success-with-no-comments. False on
+	// HTTP/parse error. Vectors are cleared on entry so callers can reuse the
+	// same buffers across calls.
 	//
-	// Server returns a flat JSON array (not wrapped in a key) where each
-	// element has: IDComm (int), Commentaire (string), DateCommentaire (ISO
-	// string), HeureCommentaire (int — seconds since midnight), NomUser
-	// (string), Check (bool), X / Y (double — page-relative percentage).
-	virtual bool GetCommentaires_v2(const PMString& address, const int32& IDPage,
+	// fromPhp (out): true if the whole dataset was served by PHP, false if it
+	// came from 4D — the caller post-processes differently depending on the
+	// source. Read from the top-level "fromPhp" field of the response.
+	//
+	// IDsPage (out): the Gaia page ID each comment belongs to (0 when the
+	// comment has no location). The caller uses it to place the pin on the
+	// right page and to normalize the X coordinate (4D X is spread-relative).
+	//
+	// Coordinate fields depend on the source: PHP sends coord_x / coord_y
+	// (already page-relative %), 4D sends X / Y (Y page-relative %, X
+	// spread-relative %). Both are stored raw into Xs / Ys; the caller
+	// normalizes X when !fromPhp.
+	//
+	// Server returns a JSON object { "fromPhp": bool, "comments": [ ... ] }
+	// where each comment element has: IDComm (int), IDPage (int),
+	// Commentaire (string), DateCommentaire (ISO string), HeureCommentaire
+	// (int — seconds since midnight), NomUser (string), Check (bool), and the
+	// coordinate fields above.
+	virtual bool GetCommentaires_v2(const PMString& address, const K2Vector<int32>& IDPages,
 		K2Vector<int32>& IDsComm,
+		K2Vector<int32>& IDsPage,
 		K2Vector<PMString>& Commentaires,
 		K2Vector<PMString>& DatesISO,
 		K2Vector<int32>& HeuresSecs,
 		K2Vector<PMString>& NomsUser,
 		K2Vector<bool>& Checks,
 		K2Vector<PMReal>& Xs,
-		K2Vector<PMReal>& Ys) = 0;
+		K2Vector<PMReal>& Ys,
+		bool& fromPhp) = 0;
+
+	// Plugin_Comm_Valid — bascule l'état "validé" d'un commentaire côté serveur
+	// (toggle). Appelé quand l'utilisateur coche/décoche la case d'une ligne de
+	// la palette Commentaires. Fire-and-forget : le serveur renvoie un corps
+	// vide, on ne parse rien. Retourne false sur erreur HTTP.
+	virtual bool CommValid(const PMString& address, const int32& IDComm) = 0;
 
 
 

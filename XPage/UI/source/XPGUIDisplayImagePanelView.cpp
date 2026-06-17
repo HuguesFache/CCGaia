@@ -30,6 +30,9 @@
 #include "AcquireModalCursor.h"
 // Project includes:
 #include "XPGUIID.h"
+#include "XPGUIStripExif.h"
+
+#include <vector>
 
   
 /** Color space family from AGM, subsetted to meet our needs here.
@@ -226,17 +229,24 @@ void XPGUIDisplayImagePanelView::Draw(IViewPort* viewPort, SysRgn updateRgn)
 */
 
 ErrorCode XPGUIDisplayImagePanelView::createPreview(
-	const IDFile& previewFile, 
-	uint32 width, 
-	uint32 height, 
+	const IDFile& previewFile,
+	uint32 width,
+	uint32 height,
 	uint8 backGrey
 	)
 {
+	// Copie assainie du fichier (APP1/Exif retire). Doit rester vivante tant que
+	// le flux memoire ci-dessous est utilise -> declaree avant fileStream.
+	std::vector<char> sanitizedBuf;
+	const bool16 haveSanitized = XPGUIReadFileStrippingExif(previewFile, sanitizedBuf);
+
 	do
 	{
 		// get source stream (image file to preview)
-		InterfacePtr<IPMStream>
-			fileStream(StreamUtil::CreateFileStreamRead(previewFile));
+		InterfacePtr<IPMStream> fileStream(
+			haveSanitized
+				? StreamUtil::CreatePointerStreamRead(sanitizedBuf.data(), sanitizedBuf.size())
+				: StreamUtil::CreateFileStreamRead(previewFile));
 
 		if(fileStream == nil) {
 			break;

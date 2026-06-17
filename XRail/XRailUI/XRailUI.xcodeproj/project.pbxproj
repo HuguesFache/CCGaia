@@ -12,6 +12,9 @@
 		C0DE00000000000005005005 /* XRLUICommentsTVHierarchyAdapter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C0DE00000000000005005004 /* XRLUICommentsTVHierarchyAdapter.cpp */; };
 		C0DE00000000000005005007 /* XRLUICommentsTVWidgetMgr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C0DE00000000000005005006 /* XRLUICommentsTVWidgetMgr.cpp */; };
 		C0DE00000000000005005009 /* XRLUICommentsNodeEH.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C0DE00000000000005005008 /* XRLUICommentsNodeEH.cpp */; };
+		C0DE0000000000000500500B /* XRLUICommentsCellCheckObserver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C0DE0000000000000500500A /* XRLUICommentsCellCheckObserver.cpp */; };
+		C0DE0000000000000500500D /* XRLUICommentsPinAdornment.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C0DE0000000000000500500C /* XRLUICommentsPinAdornment.cpp */; };
+		C0DE0000000000000500500F /* XRLUICommentPinStore.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C0DE0000000000000500500E /* XRLUICommentPinStore.cpp */; };
 		8F00E5B827B520C200A588F7 /* SDKPlugInEntrypoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8F00E5B727B520C200A588F7 /* SDKPlugInEntrypoint.cpp */; };
 		9B7F5E3F2D0C728400134C16 /* XRLUI.fr in Sources */ = {isa = PBXBuildFile; fileRef = 8F00E5B527B5209100A588F7 /* XRLUI.fr */; };
 		A728CA641CE37D7C0067883D /* libPublicPlugIn.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A728CA631CE37D7C0067883D /* libPublicPlugIn.a */; };
@@ -66,6 +69,9 @@
 		C0DE00000000000005005004 /* XRLUICommentsTVHierarchyAdapter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XRLUICommentsTVHierarchyAdapter.cpp; path = source/XRLUICommentsTVHierarchyAdapter.cpp; sourceTree = "<group>"; };
 		C0DE00000000000005005006 /* XRLUICommentsTVWidgetMgr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XRLUICommentsTVWidgetMgr.cpp; path = source/XRLUICommentsTVWidgetMgr.cpp; sourceTree = "<group>"; };
 		C0DE00000000000005005008 /* XRLUICommentsNodeEH.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XRLUICommentsNodeEH.cpp; path = source/XRLUICommentsNodeEH.cpp; sourceTree = "<group>"; };
+		C0DE0000000000000500500A /* XRLUICommentsCellCheckObserver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XRLUICommentsCellCheckObserver.cpp; path = source/XRLUICommentsCellCheckObserver.cpp; sourceTree = "<group>"; };
+		C0DE0000000000000500500C /* XRLUICommentsPinAdornment.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XRLUICommentsPinAdornment.cpp; path = source/XRLUICommentsPinAdornment.cpp; sourceTree = "<group>"; };
+		C0DE0000000000000500500E /* XRLUICommentPinStore.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XRLUICommentPinStore.cpp; path = source/XRLUICommentPinStore.cpp; sourceTree = "<group>"; };
 		4B05EECD08840E9300D809E1 /* XRLUINoStrip.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = XRLUINoStrip.cpp; path = source/XRLUINoStrip.cpp; sourceTree = SOURCE_ROOT; };
 		4B05EECE08840E9400D809E1 /* XRLUIID.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = XRLUIID.cpp; path = source/XRLUIID.cpp; sourceTree = SOURCE_ROOT; };
 		4B05EECF08840E9400D809E1 /* XRLUIID.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = XRLUIID.h; path = source/XRLUIID.h; sourceTree = SOURCE_ROOT; };
@@ -288,6 +294,9 @@
 				C0DE00000000000005005005 /* XRLUICommentsTVHierarchyAdapter.cpp in Sources */,
 				C0DE00000000000005005007 /* XRLUICommentsTVWidgetMgr.cpp in Sources */,
 				C0DE00000000000005005009 /* XRLUICommentsNodeEH.cpp in Sources */,
+				C0DE0000000000000500500B /* XRLUICommentsCellCheckObserver.cpp in Sources */,
+				C0DE0000000000000500500D /* XRLUICommentsPinAdornment.cpp in Sources */,
+				C0DE0000000000000500500F /* XRLUICommentPinStore.cpp in Sources */,
 				9B7F5E3F2D0C728400134C16 /* XRLUI.fr in Sources */,
 				A749C9531A88C213003E67BB /* XRailLoginDialogController.cpp in Sources */,
 				A749C94F1A88C213003E67BB /* XRailChangeStateDialogController.cpp in Sources */,

@@ -1,5 +1,6 @@
 #include "VCPlugInHeaders.h"
 #include <vector>
+#include <map>
 
 // Interface includes
 #include "IControlView.h"
@@ -15,13 +16,30 @@
 #include "ITriStateControlData.h"
 #include "IBooleanControlData.h"
 #include "ICommand.h"
+#include "IClassIDData.h"
 #include "ISpreadList.h"
 #include "ISpread.h"
+#include "ISpreadLayer.h"
+#include "IGeometry.h"
+#include "IHierarchy.h"
+#include "ILayerUtils.h"
+#include "IDocumentLayer.h"
+#include "INewPageItemCmdData.h"
+#include "IPathUtils.h"
+#include "IGraphicAttributeUtils.h"
+#include "IDataBase.h"
+#include "PMRect.h"
+#include "PMPoint.h"
+#include "UIDList.h"
+#include "IPageItemAdornmentList.h"
+#include "SplineID.h"          // kSplineItemBoss
+#include "PageItemScrapID.h"   // kDeleteCmdBoss
 
 // General includes
 #include "CObserver.h"
 #include "CmdUtils.h"
 #include "PersistUtils.h"      // ::GetDataBase
+#include "GenericID.h"         // kAddPageItemAdornmentCmdBoss / kRemovePageItemAdornmentCmdBoss
 
 // Project includes (XRail)
 #include "XRLUIID.h"
@@ -31,6 +49,11 @@
 #include "XRCID.h"             // kXRCXRailClientBoss
 #include "IXRailPageSlugData.h"
 #include "DocUtils.h"          // GetGoodUrlXR
+#include "XRLUICommentPinStore.h"
+
+// Helpers définis plus bas (anonymous namespace). Déclarations anticipées car
+// Update()/AutoDetach() les utilisent.
+namespace { void SyncPinAdornments(bool attach); void DeletePinAnchors(); }
 
 /** Comments palette observer — drives the Commentaires palette under
 	Window > Gaia > Commentaires. Refreshes the list when:
@@ -60,6 +83,7 @@ private:
 
 	void RefreshList();
 	int32 ResolveCurrentGaiaPageID() const;
+	void ResolveAllGaiaPageIDs(K2Vector<int32>& outIDs) const;
 	PMString GetXRailServerURL() const;
 
 	// Login + no-Gaia-page overlay management. Same gating logic as the
@@ -133,6 +157,9 @@ void XRLUICommentsPanelObserver::AutoDetach()
 	this->DetachWidget(panelData, kXRLUICommentsRefreshButtonWidgetID, IID_ITRISTATECONTROLDATA);
 	this->DetachWidget(panelData, kXRLUICommentsLoginPromptButtonWidgetID, IID_IBOOLEANCONTROLDATA);
 	this->DetachWidget(panelData, kXRLUICommentsShowAllCheckWidgetID, IID_ITRISTATECONTROLDATA);
+
+	// Palette fermée : on retire les blocs-ancres (le doc est encore valide ici).
+	DeletePinAnchors();
 }
 
 void XRLUICommentsPanelObserver::Update(const ClassID& theChange, ISubject* theSubject, const PMIID& protocol, void* /*changedBy*/)
@@ -140,6 +167,9 @@ void XRLUICommentsPanelObserver::Update(const ClassID& theChange, ISubject* theS
 	if (protocol == IID_IDOCUMENTLIST &&
 	    (theChange == kSetFrontDocCmdBoss || theChange == kCloseDocCmdBoss))
 	{
+		// Retire les ancres du doc courant pendant qu'il est encore valide,
+		// avant que le front ne change. RefreshList les recréera si besoin.
+		DeletePinAnchors();
 		this->RefreshList();
 		this->UpdateLoginState();
 		return;
@@ -170,10 +200,11 @@ void XRLUICommentsPanelObserver::Update(const ClassID& theChange, ISubject* theS
 		}
 		if (wid == kXRLUICommentsShowAllCheckWidgetID)
 		{
-			// On toggle: invalidate the layout views so any future spread
-			// adornment that paints the markers picks up the new state.
-			// The actual marker rendering is deferred — see the TODO comment
-			// next to the checkbox declaration in XRLUI.fr.
+			// Affiche/masque les pins. On reflète l'état dans le store, on
+			// attache/retire l'adornment sur les pages Gaia, et on rafraîchit.
+			const bool show = (theChange == kTrueStateMessage);
+			XRLUICommentPinStore::Instance().SetShow(show);
+			SyncPinAdornments(show);
 			IDocument* doc = Utils<ILayoutUIUtils>()->GetFrontDocument();
 			if (doc != nil)
 				Utils<ILayoutUIUtils>()->InvalidateViews(doc);
@@ -273,18 +304,262 @@ int32 XRLUICommentsPanelObserver::ResolveCurrentGaiaPageID() const
 	return 0;
 }
 
+void XRLUICommentsPanelObserver::ResolveAllGaiaPageIDs(K2Vector<int32>& outIDs) const
+{
+	// Collecte les IDs de slug XRail de TOUTES les pages du document (pas
+	// seulement la première), pour récupérer les commentaires de l'ensemble du
+	// document. Même parcours que ResolveCurrentGaiaPageID, sans early-return.
+	outIDs.clear();
+
+	IDocument* doc = Utils<ILayoutUIUtils>()->GetFrontDocument();
+	if (doc == nil)
+		return;
+
+	IDataBase* db = ::GetDataBase(doc);
+	if (db == nil)
+		return;
+
+	InterfacePtr<ISpreadList> spreadList(doc, UseDefaultIID());
+	if (spreadList == nil)
+		return;
+
+	const int32 nSpreads = spreadList->GetSpreadCount();
+	for (int32 s = 0; s < nSpreads; ++s)
+	{
+		const UID spreadUID = spreadList->GetNthSpreadUID(s);
+		InterfacePtr<ISpread> spread(db, spreadUID, UseDefaultIID());
+		if (spread == nil)
+			continue;
+
+		const int32 nPages = spread->GetNumPages();
+		for (int32 p = 0; p < nPages; ++p)
+		{
+			const UID pageUID = spread->GetNthPageUID(p);
+			InterfacePtr<IXRailPageSlugData> slug(db, pageUID, IID_PAGESLUGDATA);
+			if (slug == nil)
+				continue;
+			const int32 id = slug->GetID();
+			if (id > 0)
+				outIDs.push_back(id);
+		}
+	}
+}
+
+namespace {
+
+// Infos géométriques d'une page Gaia, indexées par son idPage.
+struct PageGeo
+{
+	UID    uid;
+	int32  idx;      // index de la page dans son spread (0 = gauche)
+	int32  nPages;   // nb de pages du spread
+};
+
+// idPage -> infos de page (UID + position dans le spread) pour le document de
+// devant. Sert à la normalisation du X 4D et à l'attache de l'adornment.
+void BuildPageGeoInfo(std::map<int32, PageGeo>& out)
+{
+	out.clear();
+	IDocument* doc = Utils<ILayoutUIUtils>()->GetFrontDocument();
+	if (doc == nil) return;
+	IDataBase* db = ::GetDataBase(doc);
+	if (db == nil) return;
+	InterfacePtr<ISpreadList> spreadList(doc, UseDefaultIID());
+	if (spreadList == nil) return;
+
+	const int32 nSpreads = spreadList->GetSpreadCount();
+	for (int32 s = 0; s < nSpreads; ++s)
+	{
+		InterfacePtr<ISpread> spread(db, spreadList->GetNthSpreadUID(s), UseDefaultIID());
+		if (spread == nil) continue;
+		const int32 nPages = spread->GetNumPages();
+		for (int32 p = 0; p < nPages; ++p)
+		{
+			const UID pageUID = spread->GetNthPageUID(p);
+			InterfacePtr<IXRailPageSlugData> slug(db, pageUID, IID_PAGESLUGDATA);
+			if (slug == nil) continue;
+			const int32 id = slug->GetID();
+			if (id > 0)
+			{
+				PageGeo g; g.uid = pageUID; g.idx = p; g.nPages = nPages;
+				out[id] = g;
+			}
+		}
+	}
+}
+
+// X 4D -> X page seule (% page). Le X 4D (cf. zoom.js getCoordClicImg) est :
+//   X = posPixels / largeur(#contentzoom) * 100   (+ largeur image gauche pour
+//   la page droite). Or #contentzoom est ~r fois plus large qu'une page, donc
+//   X est un % du CONTENEUR, pas de la page. On rétablit le % page par
+//   X_page = X * r - idx*100, avec r = largeurConteneur / largeurPage.
+// kXScale = r = largeur(#contentzoom) / largeur(#imgpageleft), relevé dans la
+// console navigateur AVEC le panneau commentaires ouvert (état de capture, car
+// le panneau est toujours ouvert pour poser un commentaire -> col-sm-9).
+// NB : dépend un peu de la largeur de fenêtre du relecteur ; fix robuste =
+// diviser par la largeur de l'image côté zoom.js (option A).
+static const PMReal kXScale = 1.0757812542022704;
+
+PMReal NormalizeX4D(const PMReal& xCumul, int32 pageIdx)
+{
+	return xCumul * kXScale - pageIdx * 100.0;
+}
+
+PMString FormatDateFr(const PMString& dateISO)
+{
+	if (dateISO.NumUTF16TextChars() < 10)
+		return dateISO;
+	PMString* dayP = dateISO.Substring(8, 2);
+	PMString* monP = dateISO.Substring(5, 2);
+	PMString out;
+	if (dayP != nil && monP != nil) { out = *dayP; out += "/"; out += *monP; }
+	else                            { out = dateISO; }
+	delete dayP;
+	delete monP;
+	return out;
+}
+
+PMString FormatTimeFr(int32 secs)
+{
+	if (secs < 0) secs = 0;
+	const int32 hh = (secs / 3600) % 24;
+	const int32 mm = (secs / 60) % 60;
+	PMString out;
+	if (hh < 10) out += "0";
+	out.AppendNumber(hh);
+	out += ":";
+	if (mm < 10) out += "0";
+	out.AppendNumber(mm);
+	return out;
+}
+
+// Blocs-ancres créés (splines 1x1, premier plan) qui portent l'adornment des
+// pins. Tracés ici pour pouvoir les supprimer. Process / main thread.
+static std::vector<UIDRef> gPinAnchors;
+
+// Supprime les blocs-ancres encore présents. Garde IsValidUID pour ne pas
+// toucher un item déjà disparu (doc fermé, undo, etc.).
+void DeletePinAnchors()
+{
+	for (size_t i = 0; i < gPinAnchors.size(); ++i)
+	{
+		IDataBase* adb = gPinAnchors[i].GetDataBase();
+		const UID   uid = gPinAnchors[i].GetUID();
+		if (adb == nil || uid == kInvalidUID || !adb->IsValidUID(uid))
+			continue;
+
+		InterfacePtr<ICommand> del(CmdUtils::CreateCommand(kDeleteCmdBoss));
+		if (del == nil)
+			continue;
+		del->SetUndoability(ICommand::kAutoUndo);
+		UIDList l(adb);
+		l.Append(uid);
+		del->SetItemList(l);
+		CmdUtils::ProcessCommand(del);
+	}
+	gPinAnchors.clear();
+}
+
+// Crée un bloc-ancre 1x1 au premier plan sur chaque spread Gaia et y attache
+// l'adornment des pins. Le bloc neuf est l'item le plus haut -> kAfterShape
+// dessine au-dessus de toute la maquette.
+void CreatePinAnchors()
+{
+	IDocument* doc = Utils<ILayoutUIUtils>()->GetFrontDocument();
+	if (doc == nil) return;
+	IDataBase* db = ::GetDataBase(doc);
+	if (db == nil) return;
+	InterfacePtr<IDocumentLayer> activeLayer(Utils<ILayerUtils>()->QueryDocumentActiveLayer(doc));
+	if (activeLayer == nil) return;
+	InterfacePtr<ISpreadList> spreadList(doc, UseDefaultIID());
+	if (spreadList == nil) return;
+
+	const int32 nSpreads = spreadList->GetSpreadCount();
+	for (int32 s = 0; s < nSpreads; ++s)
+	{
+		const UID spreadUID = spreadList->GetNthSpreadUID(s);
+		InterfacePtr<ISpread> spread(db, spreadUID, UseDefaultIID());
+		if (spread == nil) continue;
+
+		bool hasGaia = false;
+		const int32 nPages = spread->GetNumPages();
+		for (int32 p = 0; p < nPages && !hasGaia; ++p)
+		{
+			InterfacePtr<IXRailPageSlugData> slug(db, spread->GetNthPageUID(p), IID_PAGESLUGDATA);
+			if (slug != nil && slug->GetID() > 0) hasGaia = true;
+		}
+		if (!hasGaia) continue;
+
+		InterfacePtr<ISpreadLayer> spreadLayer(spread->QueryLayer(activeLayer));
+		if (spreadLayer == nil) continue;
+		const UID ownerSpreadLayer = ::GetUID(spreadLayer);
+
+		// Cadre-ancre 100x100 dans le pasteboard, à gauche de la page de gauche
+		// du spread (hors maquette).
+		PMReal bx = -110.0, by = 0.0;
+		InterfacePtr<IGeometry> spreadGeo(db, spreadUID, UseDefaultIID());
+		if (spreadGeo != nil)
+		{
+			const PMRect sb = spreadGeo->GetStrokeBoundingBox();
+			bx = sb.Left() - 110.0;   // 100 (bloc) + 10 d'écart avec la page
+			by = sb.Top();
+		}
+		PMRect anchorBounds(bx, by, bx + 100.0, by + 100.0);
+
+		// Vrai cadre graphique rectangulaire (même helper que Pagemakeup/Blocs).
+		const UIDRef anchorRef = Utils<IPathUtils>()->CreateRectangleSpline(
+			UIDRef(db, ownerSpreadLayer), anchorBounds, INewPageItemCmdData::kGraphicFrameAttributes);
+		if (anchorRef == UIDRef(nil, kInvalidUID)) continue;
+
+		// Attache l'adornment des pins.
+		InterfacePtr<ICommand> add(CmdUtils::CreateCommand(kAddPageItemAdornmentCmdBoss));
+		if (add == nil) continue;
+		add->SetUndoability(ICommand::kAutoUndo);
+		InterfacePtr<IClassIDData> cid(add, UseDefaultIID());
+		if (cid == nil) continue;
+		cid->Set(kXRLUICommentsPinAdornmentBoss);
+		UIDList al(db);
+		al.Append(anchorRef.GetUID());
+		add->SetItemList(al);
+		CmdUtils::ProcessCommand(add);
+
+		// Rend le bloc non imprimable (aucun impact impression / export / preflight).
+		InterfacePtr<ICommand> nonPrint(Utils<IGraphicAttributeUtils>()->CreateNonPrintCommand(kTrue, &al, kTrue, kTrue));
+		if (nonPrint != nil)
+		{
+			nonPrint->SetUndoability(ICommand::kAutoUndo);
+			CmdUtils::ProcessCommand(nonPrint);
+		}
+
+		gPinAnchors.push_back(anchorRef);
+	}
+}
+
+// Affiche (attach=true) / masque les pins : on (re)crée ou on supprime les
+// blocs-ancres. On supprime toujours d'abord pour repartir propre.
+void SyncPinAdornments(bool attach)
+{
+	DeletePinAnchors();
+	if (attach)
+		CreatePinAnchors();
+}
+
+} // namespace
+
 void XRLUICommentsPanelObserver::RefreshList()
 {
 	InterfacePtr<IXRLUICommentList> list(this, UseDefaultIID());
 	if (list == nil)
 		return;
 
-	const int32 pageID = this->ResolveCurrentGaiaPageID();
-	if (pageID <= 0)
+	K2Vector<int32> pageIDs;
+	this->ResolveAllGaiaPageIDs(pageIDs);
+	if (pageIDs.empty())
 	{
-		// No Gaia page at the front — clear the list so the palette doesn't
+		// No Gaia page in the document — clear the list so the palette doesn't
 		// show stale rows from the previous document.
 		list->Clear();
+		XRLUICommentPinStore::Instance().Clear();
 		return;
 	}
 
@@ -292,10 +567,12 @@ void XRLUICommentsPanelObserver::RefreshList()
 	if (serverURL.IsEmpty())
 	{
 		list->Clear();
+		XRLUICommentPinStore::Instance().Clear();
 		return;
 	}
 
 	K2Vector<int32>     ids;
+	K2Vector<int32>     pageOf;
 	K2Vector<PMString>  texts;
 	K2Vector<PMString>  dates;
 	K2Vector<int32>     hours;
@@ -303,37 +580,80 @@ void XRLUICommentsPanelObserver::RefreshList()
 	K2Vector<bool>      checks;
 	K2Vector<PMReal>    xs;
 	K2Vector<PMReal>    ys;
+	bool                fromPhp = false;	// true = données PHP, false = 4D.
 
 	InterfacePtr<IWebServices> http(::CreateObject2<IWebServices>(kXRCXRailClientBoss));
 	if (http == nil)
 	{
 		list->Clear();
+		XRLUICommentPinStore::Instance().Clear();
 		return;
 	}
 
-	if (!http->GetCommentaires_v2(serverURL, pageID, ids, texts, dates, hours, users, checks, xs, ys))
+	if (!http->GetCommentaires_v2(serverURL, pageIDs, ids, pageOf, texts, dates, hours, users, checks, xs, ys, fromPhp))
 	{
 		// Network/parse error — wipe the cached list rather than showing a
 		// stale snapshot. Silent: a popup on every doc switch would be noisy.
 		list->Clear();
+		XRLUICommentPinStore::Instance().Clear();
 	}
 	else
 	{
-		std::vector<XRLUIComment> rows;
+		// Géométrie des pages Gaia (pour normaliser le X 4D selon gauche/droite).
+		std::map<int32, PageGeo> pageGeo;
+		BuildPageGeoInfo(pageGeo);
+
+		std::vector<XRLUIComment>     rows;
+		std::vector<XRLUICommentPin>  pins;
 		for (size_t i = 0; i < ids.size(); ++i)
 		{
 			XRLUIComment c;
 			c.idComm     = ids[i];
+			c.idPage     = pageOf[i];
 			c.commentaire = texts[i];
 			c.dateISO    = dates[i];
 			c.heureSecs  = hours[i];
 			c.nomUser    = users[i];
 			c.check      = checks[i];
-			c.x          = xs[i];
-			c.y          = ys[i];
+			c.hasCoord   = false;
+			c.x          = 0.0;
+			c.y          = 0.0;
+
+			// Pas de coordonnées si idPage vide/0 ou page absente du document.
+			std::map<int32, PageGeo>::const_iterator it = (c.idPage > 0) ? pageGeo.find(c.idPage) : pageGeo.end();
+			if (it != pageGeo.end())
+			{
+				c.hasCoord = true;
+				c.y = ys[i];	// Y toujours en % page.
+				c.x = fromPhp ? xs[i] : NormalizeX4D(xs[i], it->second.idx);
+
+				XRLUICommentPin pin;
+				pin.idPage = c.idPage;
+				pin.xPct   = c.x;
+				pin.yPct   = c.y;
+				pin.header = c.nomUser;
+				pin.header += " - ";
+				pin.header += FormatDateFr(c.dateISO);
+				pin.header += " à ";
+				pin.header += FormatTimeFr(c.heureSecs);
+				pin.text   = c.commentaire;
+				pins.push_back(pin);
+			}
+
 			rows.push_back(c);
 		}
 		list->SetRows(rows);
+
+		// Met à jour les pins et (ré)attache l'adornment si l'affichage est actif.
+		XRLUICommentPinStore& store = XRLUICommentPinStore::Instance();
+		store.SetPins(pins);
+		if (store.GetShow())
+		{
+			SyncPinAdornments(true);
+			IDocument* frontDoc = Utils<ILayoutUIUtils>()->GetFrontDocument();
+			if (frontDoc != nil)
+				Utils<ILayoutUIUtils>()->InvalidateViews(frontDoc);
+		}
 	}
 
 	// Tell the tree view to rebuild against the new comment count. The list

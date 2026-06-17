@@ -23,6 +23,9 @@
 // Project includes:
 #include "XPGUIID.h"
 #include "CAlert.h"
+#include "XPGUIStripExif.h"
+
+#include <vector>
 
   
 /** Color space family from AGM, subsetted to meet our needs here.
@@ -237,11 +240,18 @@ ErrorCode XPGUIDisplayImageFormePanelView::createPreview(
 	uint8 backGrey
 	)
 {
+	// Copie assainie du fichier (APP1/Exif retire). Doit rester vivante tant que
+	// le flux memoire ci-dessous est utilise -> declaree avant fileStream.
+	std::vector<char> sanitizedBuf;
+	const bool16 haveSanitized = XPGUIReadFileStrippingExif(previewFile, sanitizedBuf);
+
 	do
 	{
 		// get source stream (image file to preview)
-		InterfacePtr<IPMStream>
-			fileStream(StreamUtil::CreateFileStreamRead(previewFile));
+		InterfacePtr<IPMStream> fileStream(
+			haveSanitized
+				? StreamUtil::CreatePointerStreamRead(sanitizedBuf.data(), sanitizedBuf.size())
+				: StreamUtil::CreateFileStreamRead(previewFile));
 
 		if(fileStream == nil) {
 			break;

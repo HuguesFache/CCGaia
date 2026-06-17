@@ -60,6 +60,15 @@
     <ClCompile Include="source\XRLUICommentsNodeEH.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="source\XRLUICommentsCellCheckObserver.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XRLUICommentsPinAdornment.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\XRLUICommentPinStore.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="source\TriggerResourceDeps.cpp">
       <Filter>Source Files\Plugin</Filter>
     </ClCompile>
@@ -93,6 +102,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="source\IXRLUICommentList.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\XRLUICommentPinStore.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -23,6 +23,7 @@ public:
 	virtual const XRLUIComment& GetAt(int32 index) const  { return fRows[index]; }
 
 	virtual void SetRows(const std::vector<XRLUIComment>& newRows);
+	virtual void SetCheckAt(int32 index, bool check);
 	virtual void Clear();
 
 private:
@@ -47,6 +48,12 @@ void XRLUICommentList::SetRows(const std::vector<XRLUIComment>& newRows)
 	});
 
 	this->Broadcast();
+}
+
+void XRLUICommentList::SetCheckAt(int32 index, bool check)
+{
+	if (index >= 0 && index < static_cast<int32>(fRows.size()))
+		fRows[index].check = check;
 }
 
 void XRLUICommentList::Clear()

@@ -276,6 +276,34 @@ resource ClassDescriptionTable(kSDKDefClassDescriptionTableResourceID)
 		}
 	},
 
+	/**
+		Case à cocher de validation d'une ligne — dérive du checkbox standard
+		(toggle géré par l'event handler de base) et ajoute un observer qui
+		appelle Plugin_Comm_Valid au changement d'état. Même pattern que l'oeil
+		du panneau Texte conditionnel (kConditionTagEyeballWidgetBoss).
+	*/
+	Class
+	{
+		kXRLUICommentsCellCheckWidgetBoss,
+		kCheckBoxWidgetBoss,
+		{
+			IID_IOBSERVER,					kXRLUICommentsCellCheckObserverImpl,
+		}
+	},
+
+	/**
+		Adornment des pins de commentaires, attaché aux pages Gaia par
+		l'observer de la palette quand la case "tout afficher" est cochée.
+	*/
+	Class
+	{
+		kXRLUICommentsPinAdornmentBoss,
+		kInvalidClass,
+		{
+			IID_IADORNMENTSHAPE,			kXRLUICommentsPinAdornmentImpl,
+		}
+	},
+
 }}};
 
 /*  Implementation definition.
@@ -1232,6 +1260,12 @@ resource LocaleIndex (kXRLUICommentsNodeWidgetResID)
 	}
 };
 
+// Case à cocher de validation — même structure qu'un CheckBoxWidget standard,
+// mais sur notre boss dérivé qui porte l'observer Plugin_Comm_Valid.
+type XRLUICommentsCellCheckWidget (kViewRsrcType) : CheckBoxWidget (ClassID = kXRLUICommentsCellCheckWidgetBoss)
+{
+};
+
 type XRLUICommentsNodeWidget(kViewRsrcType) : PrimaryResourcePanelWidget(ClassID = kXRLUICommentsNodeWidgetBoss)
 {
 };
@@ -1249,10 +1283,11 @@ resource XRLUICommentsNodeWidget (kXRLUICommentsNodeWidgetResID + index_enUS)
 	kTrue, kTrue,
 	"",
 	{
-		// Validation checkbox (cell 1). CheckBoxWidget interfaces:
+		// Validation checkbox (cell 1). Boss dérivé portant l'observer
+		// Plugin_Comm_Valid ; mêmes interfaces qu'un CheckBoxWidget standard :
 		// CControlView + TriStateControlAttributes (alignment) +
 		// CTextControlData (label).
-		CheckBoxWidget
+		XRLUICommentsCellCheckWidget
 		(
 			kXRLUICommentsCellCheckWidgetID,
 			kSysCheckBoxPMRsrcId,

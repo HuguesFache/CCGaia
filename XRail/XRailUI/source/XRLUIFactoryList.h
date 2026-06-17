@@ -37,3 +37,5 @@ REGISTER_PMINTERFACE(XRLUICommentsPanelObserver,		kXRLUICommentsPanelObserverImp
 REGISTER_PMINTERFACE(XRLUICommentsTVHierarchyAdapter,	kXRLUICommentsTVHierarchyAdapterImpl)
 REGISTER_PMINTERFACE(XRLUICommentsTVWidgetMgr,			kXRLUICommentsTVWidgetMgrImpl)
 REGISTER_PMINTERFACE(XRLUICommentsNodeEH,				kXRLUICommentsNodeEHImpl)
+REGISTER_PMINTERFACE(XRLUICommentsCellCheckObserver,	kXRLUICommentsCellCheckObserverImpl)
+REGISTER_PMINTERFACE(XRLUICommentsPinAdornment,			kXRLUICommentsPinAdornmentImpl)

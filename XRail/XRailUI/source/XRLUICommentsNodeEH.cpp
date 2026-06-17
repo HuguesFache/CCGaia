@@ -78,7 +78,7 @@ public:
 	virtual void   SetView(IControlView* view)    { InterfacePtr<IEventHandler> d(this, IID_IXRLUICOMMENTSSHADOWEH); if (d) d->SetView(view); }
 
 private:
-	bool   ResolveCurrentPageUID(IDocument*& outDoc, UID& outPageUID) const;
+	bool   ResolvePageUIDByID(int32 idPage, IDocument*& outDoc, UID& outPageUID) const;
 	bool   ResolveRowFromNode(int32 nodeIndex, XRLUIComment& outRow) const;
 	bool   ScrollLayoutToPagePoint(IDocument* doc, UID pageUID, PMReal xPct, PMReal yPct) const;
 };
@@ -102,9 +102,13 @@ bool16 XRLUICommentsNodeEH::ButtonDblClk(IEvent* e)
 		if (!this->ResolveRowFromNode(nodeID->Get(), row))
 			break;
 
+		// Commentaire sans localisation : rien où naviguer.
+		if (!row.hasCoord)
+			break;
+
 		IDocument* doc = nil;
 		UID pageUID = kInvalidUID;
-		if (!this->ResolveCurrentPageUID(doc, pageUID))
+		if (!this->ResolvePageUIDByID(row.idPage, doc, pageUID))
 			break;
 
 		this->ScrollLayoutToPagePoint(doc, pageUID, row.x, row.y);
@@ -137,11 +141,13 @@ bool XRLUICommentsNodeEH::ResolveRowFromNode(int32 nodeIndex, XRLUIComment& outR
 }
 
 
-bool XRLUICommentsNodeEH::ResolveCurrentPageUID(IDocument*& outDoc, UID& outPageUID) const
+bool XRLUICommentsNodeEH::ResolvePageUIDByID(int32 idPage, IDocument*& outDoc, UID& outPageUID) const
 {
-	// Same "first page with a non-zero XRail slug ID" rule the panel observer
-	// uses — keeps the navigation target consistent with the data we
-	// already loaded for the same page.
+	// Cherche la page dont le slug XRail == idPage du commentaire, pour
+	// centrer la vue sur la BONNE page (un document peut en contenir plusieurs).
+	if (idPage <= 0)
+		return false;
+
 	outDoc = Utils<ILayoutUIUtils>()->GetFrontDocument();
 	if (outDoc == nil)
 		return false;
@@ -166,7 +172,7 @@ bool XRLUICommentsNodeEH::ResolveCurrentPageUID(IDocument*& outDoc, UID& outPage
 		{
 			const UID pageUID = spread->GetNthPageUID(p);
 			InterfacePtr<IXRailPageSlugData> slug(db, pageUID, IID_PAGESLUGDATA);
-			if (slug != nil && slug->GetID() > 0)
+			if (slug != nil && slug->GetID() == idPage)
 			{
 				outPageUID = pageUID;
 				return true;

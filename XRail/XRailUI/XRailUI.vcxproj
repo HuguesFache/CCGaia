@@ -99,6 +99,9 @@
     <ClCompile Include="source\XRLUICommentsTVHierarchyAdapter.cpp" />
     <ClCompile Include="source\XRLUICommentsTVWidgetMgr.cpp" />
     <ClCompile Include="source\XRLUICommentsNodeEH.cpp" />
+    <ClCompile Include="source\XRLUICommentsCellCheckObserver.cpp" />
+    <ClCompile Include="source\XRLUICommentsPinAdornment.cpp" />
+    <ClCompile Include="source\XRLUICommentPinStore.cpp" />
     <ClCompile Include="source\TriggerResourceDeps.cpp">
       
       <AdditionalOptions>/vmg %(AdditionalOptions)</AdditionalOptions>
@@ -118,6 +121,7 @@
     <ClInclude Include="source\XRLUIFactoryList.h" />
     <ClInclude Include="source\XRLUIID.h" />
     <ClInclude Include="source\IXRLUICommentList.h" />
+    <ClInclude Include="source\XRLUICommentPinStore.h" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="source\XRLUI.fr">
