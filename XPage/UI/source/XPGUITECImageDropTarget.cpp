@@ -220,7 +220,7 @@ XPGUITECImageDropTarget::ProcessDragDropCommand(IDragDropTarget* target , IDragD
 
 		//Fill Prop picture
 		UIDList imageList = UIDList(imageItem);
-		Utils<Facade::IFrameContentFacade>()->FitContentProp(imageList);
+		Utils<Facade::IFrameContentFacade>()->FillFrameProp(imageList);
 
 		// Import credit and legend
 		InterfacePtr<IStringData> creditData(handler, IID_ICREDITPHOTO);

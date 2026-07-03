@@ -92,6 +92,12 @@ public:
 	virtual bool16 GetImportCredit() const = 0;
 	virtual void SetImportCredit(const bool16& b) = 0;
 
+	// Quand la legende/credit importe est vide : faut-il vider le bloc InDesign
+	// correspondant ? Une seule pref pour legende ET credit. Defaut = kTrue (on
+	// vide). Certains clients veulent conserver le contenu existant (kFalse).
+	virtual bool16 GetViderBlocSiVide() const = 0;
+	virtual void SetViderBlocSiVide(const bool16& b) = 0;
+
 	// Matching Styles Preferences
 
 	virtual void SetListeMatchingTag(K2Vector<Tag> listTags) = 0;

@@ -159,7 +159,7 @@ public:
 	virtual bool GetPDFFileName_v2(const PMString& address, const int32& IDPage, PMString& profilPDF, PMString& pdfFileName);
 
 
-	virtual bool GetPrefsXPage_v2(const PMString& address, const PMString& fromServeur, int32& prefs_ExportXML, int32& prefs_GestionIDMS, int32& prefs_IDMSMAJIDMS, int32& prefs_IDMSALLBLOCS, int32& prefs_ImportLegendes, int32& prefs_ImportCredits, int32& prefs_ChangePictureState,
+	virtual bool GetPrefsXPage_v2(const PMString& address, const PMString& fromServeur, int32& prefs_ExportXML, int32& prefs_GestionIDMS, int32& prefs_IDMSMAJIDMS, int32& prefs_IDMSALLBLOCS, int32& prefs_ImportLegendes, int32& prefs_ImportCredits, int32& prefs_ChangePictureState, int32& prefs_ViderBlocSiVide,
 		K2Vector<int32>& etatsImages_IDs, K2Vector<int32>& etatsImages_Ordres, K2Vector<PMString>& etatsImages_Noms, K2Vector<PMString>& etatsImages_Couleurs,
 		K2Vector<int32>& etatsArticles_IDs, K2Vector<int32>& etatsArticles_Ordres, K2Vector<PMString>& etatsArticles_Noms, K2Vector<PMString>& etatsArticles_CouleursHTML, K2Vector<int32>& etatsArticles_Couleurs, K2Vector<int32>& etatsArticles_Rayures);
 
@@ -656,7 +656,7 @@ static const Value* ResolveArrayDoc(const Value& v, Document& fallback)
 	return nil;
 }
 
-bool XRailWebServices::GetPrefsXPage_v2(const PMString& address, const PMString& fromServeur, int32& prefs_ExportXML, int32& prefs_GestionIDMS, int32& prefs_IDMSMAJIDMS, int32& prefs_IDMSALLBLOCS, int32& prefs_ImportLegendes, int32& prefs_ImportCredits, int32& prefs_ChangePictureState,
+bool XRailWebServices::GetPrefsXPage_v2(const PMString& address, const PMString& fromServeur, int32& prefs_ExportXML, int32& prefs_GestionIDMS, int32& prefs_IDMSMAJIDMS, int32& prefs_IDMSALLBLOCS, int32& prefs_ImportLegendes, int32& prefs_ImportCredits, int32& prefs_ChangePictureState, int32& prefs_ViderBlocSiVide,
 	K2Vector<int32>& etatsImages_IDs, K2Vector<int32>& etatsImages_Ordres, K2Vector<PMString>& etatsImages_Noms, K2Vector<PMString>& etatsImages_Couleurs,
 	K2Vector<int32>& etatsArticles_IDs, K2Vector<int32>& etatsArticles_Ordres, K2Vector<PMString>& etatsArticles_Noms, K2Vector<PMString>& etatsArticles_CouleursHTML, K2Vector<int32>& etatsArticles_Couleurs, K2Vector<int32>& etatsArticles_Rayures)
 {
@@ -699,6 +699,11 @@ bool XRailWebServices::GetPrefsXPage_v2(const PMString& address, const PMString&
 	}
 	if (doc.HasMember("ImportCredits") && doc["ImportCredits"].IsInt()) {
 		prefs_ImportCredits = doc["ImportCredits"].GetInt();
+	}
+	// Vider le bloc legende/credit InDesign quand la valeur importee est vide.
+	// Absent => on laisse la valeur passee par l'appelant (defaut : vider).
+	if (doc.HasMember("ViderBlocSiVide") && doc["ViderBlocSiVide"].IsInt()) {
+		prefs_ViderBlocSiVide = doc["ViderBlocSiVide"].GetInt();
 	}
 	// Flag de licence : autorise le changement d'état depuis la palette Photos
 	// liées. Absent => on laisse la valeur passée par l'appelant (bloqué par

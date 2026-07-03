@@ -87,6 +87,7 @@ private:
 	uint8* fDataBuffer;
 	int32 fCachedImWidth;
 	int32 fCachedImHeight;
+	int32 fOrientation;		// tag EXIF Orientation 1..8 de l'image courante
 };
 
 
@@ -104,7 +105,8 @@ XPGUIDisplayImagePanelView::XPGUIDisplayImagePanelView(IPMUnknown* boss)
       fpCurAGMImage(nil),
 	  fDataBuffer(nil),
 	  fCachedImWidth(0),
-	 fCachedImHeight(0)
+	 fCachedImHeight(0),
+	  fOrientation(1)
 {
 }
 
@@ -207,14 +209,28 @@ void XPGUIDisplayImagePanelView::Draw(IViewPort* viewPort, SysRgn updateRgn)
 			gPort->setrgbcolor(defaultGreyFill.red, defaultGreyFill.green, defaultGreyFill.blue);
 			gPort->rectpath(frame);
 			gPort->fill();
-			PMReal imageWidth = (fpCurAGMImage->bounds.xMax - fpCurAGMImage->bounds.xMin);
-			PMReal imageHeight = (fpCurAGMImage->bounds.yMax - fpCurAGMImage->bounds.yMin);
-			PMReal xOffset = frame.GetHCenter() - imageWidth/2;
-			PMReal yOffset = frame.GetVCenter() - imageHeight/2;
-			// Centered
-			gPort->translate(xOffset, yOffset);
-			PMMatrix theMatrix;	// No transform 
+			// Image ancree en haut a gauche de la zone (0,0) et clippee a la zone :
+			// l'apercu reste toujours dans son cadre, jamais sous les champs
+			// credit/legende. La taille a deja ete ajustee au ratio dans
+			// createPreview, donc l'image occupe l'espace disponible.
+			gPort->rectclip(frame);
 			ASSERT(fpCurAGMImage);
+			// Rotation/miroir selon le tag EXIF Orientation. La matrice envoie le
+			// rectangle du buffer (0,0,bw,bh) sur le rectangle affiche, ancre en
+			// (0,0). PMMatrix(a,b,c,d,e,f) : x'=a*x+c*y+e, y'=b*x+d*y+f.
+			const PMReal bw = fpCurAGMImage->bounds.xMax - fpCurAGMImage->bounds.xMin;
+			const PMReal bh = fpCurAGMImage->bounds.yMax - fpCurAGMImage->bounds.yMin;
+			PMMatrix theMatrix;	// orientation 1 : identite
+			switch(fOrientation) {
+				case 2: theMatrix = PMMatrix(-1, 0,  0, 1, bw,  0); break;	// miroir horizontal
+				case 3: theMatrix = PMMatrix(-1, 0,  0,-1, bw, bh); break;	// 180 deg
+				case 4: theMatrix = PMMatrix( 1, 0,  0,-1,  0, bh); break;	// miroir vertical
+				case 5: theMatrix = PMMatrix( 0, 1,  1, 0,  0,  0); break;	// transpose
+				case 6: theMatrix = PMMatrix( 0, 1, -1, 0, bh,  0); break;	// 90 deg horaire
+				case 7: theMatrix = PMMatrix( 0,-1, -1, 0, bh, bw); break;	// transverse
+				case 8: theMatrix = PMMatrix( 0,-1,  1, 0,  0, bw); break;	// 90 deg anti-horaire
+				default: break;												// 1 : identite
+			}
 			gPort->image(fpCurAGMImage, theMatrix, 0);
 		}
 		else {
@@ -238,7 +254,29 @@ ErrorCode XPGUIDisplayImagePanelView::createPreview(
 	// Copie assainie du fichier (APP1/Exif retire). Doit rester vivante tant que
 	// le flux memoire ci-dessous est utilise -> declaree avant fileStream.
 	std::vector<char> sanitizedBuf;
-	const bool16 haveSanitized = XPGUIReadFileStrippingExif(previewFile, sanitizedBuf);
+	int32 nativeW = 0, nativeH = 0, orientation = 1;
+	const bool16 haveSanitized = XPGUIReadFileStrippingExif(previewFile, sanitizedBuf, nativeW, nativeH, orientation);
+	this->fOrientation = orientation;
+
+	// Taille du buffer NON tourne (ce que Create24bitRGBPreview va remplir). On
+	// inscrit l'image AFFICHEE (apres rotation EXIF) dans le widget en preservant
+	// son ratio ; pour les orientations 5..8 (90/270deg) la largeur et la hauteur
+	// affichees sont echangees. drawW/drawH restent les dimensions du buffer non
+	// tourne ; la rotation finale est appliquee cote Draw.
+	uint32 drawW = width;
+	uint32 drawH = height;
+	if(nativeW > 0 && nativeH > 0 && width > 0 && height > 0) {
+		const bool swapWH = (orientation >= 5 && orientation <= 8);
+		const double dispW = swapWH ? nativeH : nativeW;	// dimensions affichees
+		const double dispH = swapWH ? nativeW : nativeH;
+		const double sx = static_cast<double>(width)  / dispW;
+		const double sy = static_cast<double>(height) / dispH;
+		const double scale = (sx < sy) ? sx : sy;
+		drawW = static_cast<uint32>(nativeW * scale + 0.5);
+		drawH = static_cast<uint32>(nativeH * scale + 0.5);
+		if(drawW < 1) drawW = 1;
+		if(drawH < 1) drawH = 1;
+	}
 
 	do
 	{
@@ -272,51 +310,47 @@ ErrorCode XPGUIDisplayImagePanelView::createPreview(
 
 					
 					bool16 reallocateNeeded = kTrue;
-					// If the dimensions we're trying to write to have 
-					// changed, do a realloc. This might happen for instance
-					// if we decide to let the widget be resizable in some way,
-					// either programmatically by us or by the end-user. But at
-					// present (Mar 2005), the image widget is fixed dimension
-					if( (this->fCachedImHeight == height) &&
-						(this->fCachedImWidth == width)) {
+					// Realloc si la taille d'affichage (ajustee au ratio) a change.
+					if( (this->fCachedImHeight == static_cast<int32>(drawH)) &&
+						(this->fCachedImWidth == static_cast<int32>(drawW)) ) {
 							reallocateNeeded = kFalse;
 						}
 
 					if(reallocateNeeded) {
 						// Trash any existing storage
 						this->deleteBuffers();
-					
+
 						fpCurAGMImage = new AGMImageRecord;
 						memset (fpCurAGMImage, 0, sizeof(AGMImageRecord));
 						fpCurAGMImage->bounds.xMin 			= 0;
 						fpCurAGMImage->bounds.yMin 			= 0;
-						fpCurAGMImage->bounds.xMax 			= width;
-						fpCurAGMImage->bounds.yMax 			= height;
-						fpCurAGMImage->byteWidth 			= 3*width; //BYTES2ROWBYTES(3*width);
+						fpCurAGMImage->bounds.xMax 			= drawW;
+						fpCurAGMImage->bounds.yMax 			= drawH;
+						fpCurAGMImage->byteWidth 			= 3*drawW; //BYTES2ROWBYTES(3*drawW);
 						fpCurAGMImage->colorSpace 			= kAGMCsRGB;
 						fpCurAGMImage->bitsPerPixel 		= 24;
 						fpCurAGMImage->decodeArray 			= 0;
 						fpCurAGMImage->colorTab.numColors 	= 0;
 						fpCurAGMImage->colorTab.theColors 	= nil;
 
-						this->fDataBuffer =	new uint8[((fpCurAGMImage->byteWidth) * height)];
+						this->fDataBuffer =	new uint8[((fpCurAGMImage->byteWidth) * drawH)];
 						ASSERT(this->fDataBuffer);
 						fpCurAGMImage->baseAddr = static_cast<void *>(this->fDataBuffer);
 
-						this->fCachedImHeight = height;
-						this->fCachedImWidth = width;
+						this->fCachedImHeight = drawH;
+						this->fCachedImWidth = drawW;
 					}
 					ASSERT(fpCurAGMImage);
 					//set the background to be grey
-					::memset(fpCurAGMImage->baseAddr, backGrey, (fpCurAGMImage->byteWidth) * height);
-			
+					::memset(fpCurAGMImage->baseAddr, backGrey, (fpCurAGMImage->byteWidth) * drawH);
+
 					if (fpCurAGMImage->baseAddr) {
 						AcquireWaitCursor busyCursor;
 						preview->Create24bitRGBPreview( (uint8*)fpCurAGMImage->baseAddr,
-							width, height, fileStream, kTrue );
+							drawW, drawH, fileStream, kTrue );
 						fCurImageSysFile = previewFile;
 						// Exit, we don't need another handler
-						
+
 						return kSuccess;
 					}
 				}

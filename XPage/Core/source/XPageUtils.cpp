@@ -690,7 +690,7 @@ ErrorCode XPageUtils::ImportImages(K2Vector<UIDRef> blocsImages, IDFile articleF
 							ApplyCropToImage(parentUID, imageItem, cropX, cropY, cropW, cropH, brFile) == kSuccess))
 						{
 							UIDList imageList = UIDList(imageItem);
-							Utils<Facade::IFrameContentFacade>()->FitContentProp(imageList);
+							Utils<Facade::IFrameContentFacade>()->FillFrameProp(imageList);
 						}
 
 
@@ -1206,7 +1206,13 @@ ErrorCode XPageUtils::ImportCreditOrLegend(UIDRef storyRef, const PMString& text
 	}
 
 	do {
-		if (text == kNullString || text == PMString("")) { // No text to import -> exit with succes		
+		if (text == kNullString || text == PMString("")) { // No text to import
+			// Legende/credit vide : selon la pref client, soit on vide le bloc
+			// InDesign, soit on conserve son contenu existant.
+			if (xpgPrefs->GetViderBlocSiVide() && txtModel->GetPrimaryStoryThreadSpan() > 1) {
+				InterfacePtr<ICommand> deleteCmd(txtModelCmds->DeleteCmd(0, txtModel->GetPrimaryStoryThreadSpan() - 1));
+				CmdUtils::ProcessCommand(deleteCmd);
+			}
 			status = kSuccess;
 			break;
 		}

@@ -243,7 +243,8 @@ ErrorCode XPGUIDisplayImageFormePanelView::createPreview(
 	// Copie assainie du fichier (APP1/Exif retire). Doit rester vivante tant que
 	// le flux memoire ci-dessous est utilise -> declaree avant fileStream.
 	std::vector<char> sanitizedBuf;
-	const bool16 haveSanitized = XPGUIReadFileStrippingExif(previewFile, sanitizedBuf);
+	int32 nativeW = 0, nativeH = 0, orientation = 1;	// non utilises ici (cette variante surechantillonne et centre)
+	const bool16 haveSanitized = XPGUIReadFileStrippingExif(previewFile, sanitizedBuf, nativeW, nativeH, orientation);
 
 	do
 	{

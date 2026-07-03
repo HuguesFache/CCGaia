@@ -57,6 +57,9 @@ public:
 	virtual bool16 GetImportCredit() const;
 	virtual void SetImportCredit(const bool16& b);
 
+	virtual bool16 GetViderBlocSiVide() const;
+	virtual void SetViderBlocSiVide(const bool16& b);
+
 	// Matching Styles Preferences
 
 	virtual void SetListeMatchingTag(K2Vector<Tag> listTags);
@@ -91,7 +94,7 @@ private:
 
 	PMString racineArbo,  noUpdateFile;
 	bool16 creationForme;
-	bool16 importCredit, importLegende;
+	bool16 importCredit, importLegende, viderBlocSiVide;
 	int32 gestionIDMS, majIDMS, idmsAllBlocs, changePictureState;
 	PMString status;
     PMString cheminFormes, cheminAssemblageCartons;
@@ -126,6 +129,7 @@ CREATE_PMINTERFACE(XPGPreferences, kXPGPreferencesImpl)
 	etatsImages.clear();
 	etatsArticles.clear();
 	changePictureState = 0; // bloqué par défaut tant que Gaia n'envoie pas 1
+	viderBlocSiVide = kTrue; // défaut : on vide le bloc légende/crédit si vide
 }
 
 /**	Destructor
@@ -242,6 +246,15 @@ bool16 XPGPreferences::GetImportCredit() const
 void XPGPreferences::SetImportCredit(const bool16& b)
 {
 	importCredit = b;
+}
+
+bool16 XPGPreferences::GetViderBlocSiVide() const
+{
+	return viderBlocSiVide;
+}
+void XPGPreferences::SetViderBlocSiVide(const bool16& b)
+{
+	viderBlocSiVide = b;
 }
 
 
