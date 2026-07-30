@@ -252,12 +252,8 @@
     <ClCompile Include="source\XRefs.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\SDKs\adobe_indesign_CC2026\source\sdksamples\common\SDKFileHelper.cpp">
-      <Filter>Source Files\Plugin</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\SDKs\adobe_indesign_CC2026\source\sdksamples\common\SDKLayoutHelper.cpp">
-      <Filter>Source Files\Plugin</Filter>
-    </ClCompile>
+    <ClCompile Include="$(ID_SDK_DIR)\source\sdksamples\common\SDKFileHelper.cpp" />
+    <ClCompile Include="$(ID_SDK_DIR)\source\sdksamples\common\SDKLayoutHelper.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\prsID.h">
@@ -395,12 +391,8 @@
     <ClInclude Include="source\GlobalDefs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\SDKs\adobe_indesign_CC2026\source\sdksamples\common\SDKFileHelper.h">
-      <Filter>Source Files\Plugin</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\SDKs\adobe_indesign_CC2026\source\sdksamples\common\SDKLayoutHelper.h">
-      <Filter>Source Files\Plugin</Filter>
-    </ClInclude>
+    <ClInclude Include="$(ID_SDK_DIR)\source\sdksamples\common\SDKFileHelper.h" />
+    <ClInclude Include="$(ID_SDK_DIR)\source\sdksamples\common\SDKLayoutHelper.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="source\prs.rc">

@@ -198,20 +198,8 @@
     <ClCompile Include="source\XPageUtils.cpp">
       <Filter>Source Files\Utils</Filter>
     </ClCompile>
-    <ClCompile Include="C:\SDKs\adobe_indesign_CC2026\source\sdksamples\common\SDKFileHelper.cpp">
-      <Filter>Source Files\Utils</Filter>
-    </ClCompile>
     <ClCompile Include="source\XPGIAMServiceProvider.cpp">
       <Filter>Source Files\Provider</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\SDKs\adobe_indesign_CC2026\source\sdksamples\common\SDKPlugInEntrypoint.cpp">
-      <Filter>Source Files\Plugin</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\SDKs\adobe_indesign_CC2026\source\public\libs\publiclib\statics\PlugInStatics.cpp">
-      <Filter>Source Files\Plugin</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\SDKs\adobe_indesign_CC2026\source\precomp\msvc\VCPlugInHeaders.cpp">
-      <Filter>Source Files\Plugin</Filter>
     </ClCompile>
     <ClCompile Include="source\XPGArticleDataModel.cpp">
       <Filter>Source Files\Article</Filter>
@@ -237,6 +225,10 @@
     <ClCompile Include="source\XPGScriptProvider.cpp">
       <Filter>Source Files\Provider</Filter>
     </ClCompile>
+    <ClCompile Include="$(ID_SDK_DIR)\source\precomp\msvc\VCPlugInHeaders.cpp" />
+    <ClCompile Include="$(ID_SDK_DIR)\source\public\libs\publiclib\statics\PlugInStatics.cpp" />
+    <ClCompile Include="$(ID_SDK_DIR)\source\sdksamples\common\SDKFileHelper.cpp" />
+    <ClCompile Include="$(ID_SDK_DIR)\source\sdksamples\common\SDKPlugInEntrypoint.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\XPGID.h">
@@ -261,9 +253,6 @@
       <Filter>Source Files\Suites</Filter>
     </ClInclude>
     <ClInclude Include="source\PlatformFileSystemIterator.h">
-      <Filter>Source Files\Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\SDKs\adobe_indesign_CC2026\source\sdksamples\common\SDKFileHelper.h">
       <Filter>Source Files\Utils</Filter>
     </ClInclude>
     <ClInclude Include="source\IAssemblageDataModel.h">
@@ -323,6 +312,7 @@
     <ClInclude Include="source\XPGMatchingStyleDataNode.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="$(ID_SDK_DIR)\source\sdksamples\common\SDKFileHelper.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="source\XPG.rc">

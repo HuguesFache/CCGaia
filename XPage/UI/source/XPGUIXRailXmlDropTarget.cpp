@@ -242,26 +242,27 @@ XPGUIXRailXmlDropTarget::ProcessDragDropCommand(IDragDropTarget* target , IDragD
 		// Get cartn and classeur from unique carton name
 		PMString classeur, carton;
 		Utils<IXPageUtils>()->SplitFormeDescription(formeDescription, classeur, carton);
-		// Try to use matching file associated with the story if any	
+		// Au glisser-deposer, on prend en priorite le matching de la forme cible.
+		// Le cheatforme (matching d'origine de l'article, livre a cote du xml) ne sert
+		// qu'a la mise a jour ; il n'est utilise ici qu'en secours si la forme cible n'a pas de matching.
 		InterfacePtr<IXPGPreferences> xpgPrefs (GetExecutionContextSession(), UseDefaultIID());
 
-        IDFile cheatFile;
-        PMString temp;
-        FileUtils::GetPathOnly(xmlFileToImport, temp, kTrue);
-        cheatFile = FileUtils::PMStringToSysFile(temp);
         IDFile matchingFile;
-        
-        FileUtils::AppendPath(&cheatFile, "cheatforme.xml");
-        if (FileUtils::DoesFileExist(cheatFile)) { // Apapap Message alert
-            matchingFile = cheatFile;
-        }
-        else {
-            // Try to use matching file associated with the story if any
-            PMString racine = xpgPrefs->GetCheminFormes();
-            FileUtils::PMStringToIDFile(racine, matchingFile);
-            FileUtils::AppendPath(&matchingFile, classeur);
-            FileUtils::AppendPath(&matchingFile, "Typographie");
-            FileUtils::AppendPath(&matchingFile, carton + ".xml");
+        PMString racine = xpgPrefs->GetCheminFormes();
+        FileUtils::PMStringToIDFile(racine, matchingFile);
+        FileUtils::AppendPath(&matchingFile, classeur);
+        FileUtils::AppendPath(&matchingFile, "Typographie");
+        FileUtils::AppendPath(&matchingFile, carton + ".xml");
+
+        if (!FileUtils::DoesFileExist(matchingFile)) {
+            // Secours : matching d'origine de l'article
+            IDFile cheatFile;
+            PMString temp;
+            FileUtils::GetPathOnly(xmlFileToImport, temp, kTrue);
+            cheatFile = FileUtils::PMStringToSysFile(temp);
+            FileUtils::AppendPath(&cheatFile, "cheatforme.xml");
+            if (FileUtils::DoesFileExist(cheatFile))
+                matchingFile = cheatFile;
         }
 		
         
