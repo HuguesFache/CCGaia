@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash",
+      "Edit(//Users/macmini2024/deve/InDesign/Sources/CCGaia/**)",
+      "Write(//Users/macmini2024/deve/InDesign/Sources/CCGaia/**)",
+      "Read",
+      "Skill(update-config)",
+      "Skill(update-config:*)"
+    ]
+  }
+}
