@@ -1,30 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
-    <ProjectConfiguration Include="Client-2021|x64"><Configuration>Client-2021</Configuration><Platform>x64</Platform></ProjectConfiguration>
-    <ProjectConfiguration Include="Server-2021|x64"><Configuration>Server-2021</Configuration><Platform>x64</Platform></ProjectConfiguration>
-    <ProjectConfiguration Include="Client-2022|x64"><Configuration>Client-2022</Configuration><Platform>x64</Platform></ProjectConfiguration>
-    <ProjectConfiguration Include="Server-2022|x64"><Configuration>Server-2022</Configuration><Platform>x64</Platform></ProjectConfiguration>
-    <ProjectConfiguration Include="Client-2023|x64"><Configuration>Client-2023</Configuration><Platform>x64</Platform></ProjectConfiguration>
-    <ProjectConfiguration Include="Server-2023|x64"><Configuration>Server-2023</Configuration><Platform>x64</Platform></ProjectConfiguration>
-    <ProjectConfiguration Include="Client-2024|x64"><Configuration>Client-2024</Configuration><Platform>x64</Platform></ProjectConfiguration>
-    <ProjectConfiguration Include="Server-2024|x64"><Configuration>Server-2024</Configuration><Platform>x64</Platform></ProjectConfiguration>
-    <ProjectConfiguration Include="Client-2025|x64"><Configuration>Client-2025</Configuration><Platform>x64</Platform></ProjectConfiguration>
-    <ProjectConfiguration Include="Server-2025|x64"><Configuration>Server-2025</Configuration><Platform>x64</Platform></ProjectConfiguration>
-    <ProjectConfiguration Include="Client-2026|x64"><Configuration>Client-2026</Configuration><Platform>x64</Platform></ProjectConfiguration>
-    <ProjectConfiguration Include="Server-2026|x64"><Configuration>Server-2026</Configuration><Platform>x64</Platform></ProjectConfiguration>
+    <ProjectConfiguration Include="Client-2021|x64">
+      <Configuration>Client-2021</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Server-2021|x64">
+      <Configuration>Server-2021</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Client-2022|x64">
+      <Configuration>Client-2022</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Server-2022|x64">
+      <Configuration>Server-2022</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Client-2023|x64">
+      <Configuration>Client-2023</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Server-2023|x64">
+      <Configuration>Server-2023</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Client-2024|x64">
+      <Configuration>Client-2024</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Server-2024|x64">
+      <Configuration>Server-2024</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Client-2025|x64">
+      <Configuration>Client-2025</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Server-2025|x64">
+      <Configuration>Server-2025</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Client-2026|x64">
+      <Configuration>Client-2026</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Server-2026|x64">
+      <Configuration>Server-2026</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{971A4E79-FBA2-4963-8B1E-A8A2BE1DC1B5}</ProjectGuid>
     <RootNamespace>XRailUI</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.19041.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v145</PlatformToolset>
   </PropertyGroup>
-  
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
   </ImportGroup>
@@ -32,13 +67,10 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="XRLUIReleaseX64.props" />
   </ImportGroup>
-  
   <PropertyGroup Label="UserMacros" />
-  
   <PropertyGroup>
     <SourcePath>$(ID_SDK_DIR)\source\sdksamples\common;$(SourcePath)</SourcePath>
   </PropertyGroup>
-  
   <ItemDefinitionGroup>
     <Midl>
       <PreprocessorDefinitions>_CRT_SECURE_NO_DEPRECATE;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -103,15 +135,12 @@
     <ClCompile Include="source\XRLUICommentsPinAdornment.cpp" />
     <ClCompile Include="source\XRLUICommentPinStore.cpp" />
     <ClCompile Include="source\TriggerResourceDeps.cpp">
-      
       <AdditionalOptions>/vmg %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <ClCompile Include="source\XRLUIID.cpp">
-      
       <AdditionalOptions>/vmg %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <ClCompile Include="source\XRLUINoStrip.cpp">
-      
       <AdditionalOptions>/vmg %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
   </ItemGroup>
@@ -125,9 +154,6 @@
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="source\XRLUI.fr">
-      
-      
-      
       <Command>odfrc -d SERVER=$(SERVER_VALUE) "%(FullPath)" -o "$(IntDir)%(Filename).fres"   -i "source" $(ODFRC_INC)
 </Command>
       <AdditionalInputs>$(IntDir)TriggerResourceDeps.obj;%(AdditionalInputs)</AdditionalInputs>
@@ -138,9 +164,6 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="source\XRLUI.rc">
-      
-      
-      
       <PreprocessorDefinitions>_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <Culture>0x0809</Culture>
       <AdditionalIncludeDirectories>source;source;$(ID_SDK_DIR)\source\precomp\msvc;$(ID_SDK_DIR)\source\public\includes;$(ID_SDK_DIR)\source\sdksamples\common;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>

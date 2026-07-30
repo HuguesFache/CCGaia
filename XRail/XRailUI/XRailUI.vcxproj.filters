@@ -78,15 +78,9 @@
     <ClCompile Include="source\XRLUINoStrip.cpp">
       <Filter>Source Files\Plugin</Filter>
     </ClCompile>
-    <ClCompile Include="C:\SDKs\adobe_indesign_CC2026\source\precomp\msvc\VCPlugInHeaders.cpp">
-      <Filter>Source Files\Plugin</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\SDKs\adobe_indesign_CC2026\source\sdksamples\common\SDKPlugInEntrypoint.cpp">
-      <Filter>Source Files\Plugin</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\SDKs\adobe_indesign_CC2026\source\public\libs\publiclib\statics\PlugInStatics.cpp">
-      <Filter>Source Files\Plugin</Filter>
-    </ClCompile>
+    <ClCompile Include="$(ID_SDK_DIR)\source\precomp\msvc\VCPlugInHeaders.cpp" />
+    <ClCompile Include="$(ID_SDK_DIR)\source\public\libs\publiclib\statics\PlugInStatics.cpp" />
+    <ClCompile Include="$(ID_SDK_DIR)\source\sdksamples\common\SDKPlugInEntrypoint.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\XRail\source\DocUtils.h">
