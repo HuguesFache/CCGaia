@@ -80,6 +80,7 @@
 #include "IURIUtils.h"
 #include "OpenPlaceID.h"
 #include "PageItemScrapID.h"
+#include "IPageItemTypeUtils.h"
 
 // Photos liées — choose-photo-carton dialog
 #include "IDialog.h"
@@ -540,6 +541,27 @@ void XPageUIUtils::UnpackCropPayload(const PMString& packed, PMReal& cropX, PMRe
 }
 
 
+// Collecte recursive des items feuilles d'un spread, en descendant dans les
+// groupes. ISpread::GetItemsOnPage ne renvoie que les items de premier niveau :
+// une photo ajoutee via un carton "Photo Xcol" est un GROUPE (photo + legende),
+// donc invisible a un scan plat. Sans cette descente, le calcul de maxPhotoIndex
+// rate les photos deja groupees et attribue un index en collision (cf. bug
+// legende ecrasee sur import de la 3e photo).
+static void CollectLeafItemsDeep(const UIDRef& ref, UIDList& out)
+{
+	if (Utils<IPageItemTypeUtils>()->IsGroup(ref)) {
+		InterfacePtr<IHierarchy> hier(ref, UseDefaultIID());
+		if (hier != nil) {
+			for (int32 i = 0; i < hier->GetChildCount(); ++i)
+				CollectLeafItemsDeep(UIDRef(ref.GetDataBase(), hier->GetChildUID(i)), out);
+		}
+	}
+	else {
+		out.Append(ref);
+	}
+}
+
+
 // ============================================================================
 // Photos liées — per-frame image import (extracted from drop target)
 // ============================================================================
@@ -648,8 +670,11 @@ ErrorCode XPageUIUtils::ImportPhotoIntoFrame(const UIDRef& photoFrameRef,
 				int16    maxPhotoIndex = -1;
 				bool16   foundRef      = kFalse;
 
+				UIDList itemsFlat(db);
+				imageSpread->GetItemsOnPage(0, &itemsFlat, kFalse, kTrue);
 				UIDList itemsOnSpread(db);
-				imageSpread->GetItemsOnPage(0, &itemsOnSpread, kFalse, kTrue);
+				for (int32 i = 0; i < itemsFlat.Length(); ++i)
+					CollectLeafItemsDeep(itemsFlat.GetRef(i), itemsOnSpread);
 				const int32 nbAll = itemsOnSpread.Length();
 				for (int32 i = 0; i < nbAll; ++i)
 				{

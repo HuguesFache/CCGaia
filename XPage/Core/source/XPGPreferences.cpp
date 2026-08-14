@@ -90,6 +90,11 @@ public:
 	virtual PMString GetPluginServerName() const;
 	virtual void SetPluginServerName(const PMString& name);
 
+	virtual PMString GetDernierClasseur() const;
+	virtual void SetDernierClasseur(const PMString& str);
+	virtual PMString GetDernierCarton() const;
+	virtual void SetDernierCarton(const PMString& str);
+
 private:
 
 	PMString racineArbo,  noUpdateFile;
@@ -100,6 +105,7 @@ private:
     PMString cheminFormes, cheminAssemblageCartons;
 	PMString urlXR, urlTEC;
 	PMString pluginServerName;
+	PMString dernierClasseur, dernierCarton;
 
 	K2Vector<Tag> matchingTagsList;
 	TagList tagList;
@@ -125,6 +131,7 @@ CREATE_PMINTERFACE(XPGPreferences, kXPGPreferencesImpl)
 	urlXR = kNullString;
 	urlTEC = kNullString;
 	pluginServerName = "0";
+	dernierClasseur = dernierCarton = kNullString;
 	matchingTagsList.clear();
 	etatsImages.clear();
 	etatsArticles.clear();
@@ -355,4 +362,24 @@ PMString XPGPreferences::GetPluginServerName() const
 void XPGPreferences::SetPluginServerName(const PMString& name)
 {
 	pluginServerName = name;
+}
+
+PMString XPGPreferences::GetDernierClasseur() const
+{
+	return dernierClasseur;
+}
+
+void XPGPreferences::SetDernierClasseur(const PMString& str)
+{
+	dernierClasseur = str;
+}
+
+PMString XPGPreferences::GetDernierCarton() const
+{
+	return dernierCarton;
+}
+
+void XPGPreferences::SetDernierCarton(const PMString& str)
+{
+	dernierCarton = str;
 }

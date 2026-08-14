@@ -73,6 +73,10 @@ private:
 	void FillClasseurList();
 	void FillCartonList();
 
+	// Vrai si (classeur, carton) sont renseignes et correspondent a une forme
+	// existante du modele.
+	bool8 IsCartonPairValid(const PMString& classeur, const PMString& carton);
+
 	bool8 firstInit;
 
 	// Carton par defaut issu du XML de l'article (DossierCarton -> classeur,
@@ -115,11 +119,14 @@ void XPGUILinkArtDialogObserver::AutoAttach()
 		this->AttachWidget(panelControlData, kXPGUIClasseurListWidgetID, IID_ISTRINGLISTCONTROLDATA);
 		this->AttachWidget(panelControlData, kXPGUICartonListWidgetID, IID_ISTRINGLISTCONTROLDATA);
 		
-		// Lecture des eventuelles valeurs de carton par defaut dans le XML de
-		// l'article (elements <DossierCarton> / <FichierCarton>), posees sur le
-		// boss du dialogue par DisplayLinkArticleDialog. A relire a CHAQUE
-		// ouverture : le boss de l'observateur est reutilise d'un glisser a
-		// l'autre, donc se limiter au premier appel figerait le choix.
+		// Choix du carton pre-selectionne, dans l'ordre :
+		//   1. le classeur/carton indique dans le XML de l'article
+		//      (elements <DossierCarton> / <FichierCarton>)
+		//   2. a defaut (valeur absente, vide, "0" ou carton inexistant),
+		//      le dernier classeur/carton utilise dans la session
+		//   3. sinon, premier element des listes (comportement par defaut).
+		// A relire a CHAQUE ouverture : le boss de l'observateur est reutilise
+		// d'un glisser a l'autre, donc se limiter au premier appel figerait le choix.
 		defaultClasseur = kNullString;
 		defaultCarton = kNullString;
 		InterfacePtr<IStringData> articleXMLFileData (this, IID_IARTICLEXMLFILEDATA);
@@ -130,7 +137,26 @@ void XPGUILinkArtDialogObserver::AutoAttach()
 				Utils<IXPageUtils>()->GetArticleCartonDefaults(articleFile, defaultClasseur, defaultCarton);
 			}
 		}
-		applyDefaults = (defaultClasseur != kNullString || defaultCarton != kNullString);
+
+		// Normalisation : "0" est traite comme une absence de valeur.
+		if(defaultClasseur == "0") defaultClasseur = kNullString;
+		if(defaultCarton == "0")   defaultCarton = kNullString;
+
+		// Repli sur le dernier carton utilise si le XML n'en fournit pas un valide.
+		if(!IsCartonPairValid(defaultClasseur, defaultCarton)){
+			InterfacePtr<IXPGPreferences> xpgPrefs (GetExecutionContextSession(), UseDefaultIID());
+			PMString lastClasseur = xpgPrefs->GetDernierClasseur();
+			PMString lastCarton   = xpgPrefs->GetDernierCarton();
+			if(IsCartonPairValid(lastClasseur, lastCarton)){
+				defaultClasseur = lastClasseur;
+				defaultCarton   = lastCarton;
+			}
+			else{
+				defaultClasseur = kNullString;
+				defaultCarton   = kNullString;
+			}
+		}
+		applyDefaults = (defaultClasseur != kNullString && defaultCarton != kNullString);
 
 		FillClasseurList();
 		firstInit = kFalse;
@@ -228,6 +254,19 @@ void XPGUILinkArtDialogObserver::DetachWidget(const InterfacePtr<IPanelControlDa
 		subject->DetachObserver(this, interfaceID);
 	}
 	while (false);
+}
+
+bool8 XPGUILinkArtDialogObserver::IsCartonPairValid(const PMString& classeur, const PMString& carton){
+
+	if(classeur == kNullString || carton == kNullString)
+		return kFalse;
+
+	InterfacePtr<IXPageMgrAccessor> pageMrgAccessor (GetExecutionContextSession(), UseDefaultIID());
+	InterfacePtr<IFormeDataModel> model (pageMrgAccessor->QueryFormeDataModel());
+	if(model == nil)
+		return kFalse;
+
+	return model->DoesFormeExist(carton, classeur);
 }
 
 void XPGUILinkArtDialogObserver::FillClasseurList(){

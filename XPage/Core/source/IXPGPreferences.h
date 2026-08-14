@@ -138,6 +138,14 @@ public:
 	// GetAsNumber()).
 	virtual PMString GetPluginServerName() const = 0;
 	virtual void SetPluginServerName(const PMString& name) = 0;
+
+	// Dernier classeur/carton choisi dans le dialogue de liaison d'article
+	// (glisser d'un article). Sert de repli quand le XML de l'article ne
+	// fournit pas de carton exploitable. Memoire de session uniquement.
+	virtual PMString GetDernierClasseur() const = 0;
+	virtual void SetDernierClasseur(const PMString& str) = 0;
+	virtual PMString GetDernierCarton() const = 0;
+	virtual void SetDernierCarton(const PMString& str) = 0;
 };
 
 #endif // __IXPGPreferences_h__

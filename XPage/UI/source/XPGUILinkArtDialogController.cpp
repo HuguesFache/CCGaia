@@ -219,6 +219,14 @@ void XPGUILinkArtDialogController::ApplyDialogFields(IActiveContext* myContext, 
 			if(!FileUtils::DoesFileExist(matchingFile))
 				break;
 
+			// Memorise ce choix comme dernier classeur/carton utilise : il servira
+			// de repli au prochain glisser d'article si le XML n'en fournit pas.
+			InterfacePtr<IXPGPreferences> xpgPrefs (GetExecutionContextSession(), UseDefaultIID());
+			if(xpgPrefs != nil){
+				xpgPrefs->SetDernierClasseur(classeur);
+				xpgPrefs->SetDernierCarton(carton);
+			}
+
 			articleSnippetFile = FileUtils::SysFileToPMString(formeFile);
 			changeForme = kTrue;
 		}  
