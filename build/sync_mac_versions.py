@@ -20,7 +20,7 @@ VERSIONS = [
     # Mac macmini2021 (Big Sur, Xcode 13) — SDK universels x86_64+arm64, pas de variante Intel separee
     ('2021', '/Users/macmini2021/AdobeSDKs/Adobe_InDesign_CC2021_Products_SDK', False),
     ('2022', '/Users/macmini2021/AdobeSDKs/Adobe_InDesign_CC2022_Products_SDK', False),
-    ('2023', '/Users/macmini2021/AdobeSDKs/Adobe_InDesign_CC2023_Products_SDK', False),
+    ('2023', '/Users/macmini2021/AdobeSDKs/Adobe_InDesign_CC2023_Products_SDK', True),
     ('2024', '/Users/macmini2021/AdobeSDKs/Adobe_InDesign_CC2024_Products_SDK', False),
     # Mac macmini2024 (Sequoia, Xcode 16) — universels + variante Intel (x86_64) pour InDesign Intel
     ('2025', '/Users/macmini2024/AdobeSDKs/Adobe_InDesign_CC2025_Products_SDK', True),

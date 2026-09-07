@@ -618,6 +618,64 @@
 			};
 			name = Server-2023;
 		};
+		B9E1B83E5AB299787C1ECA60 /* Client-2023-Intel */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 23647B1825293558BE03CD9B /* FrameLib_2023.xcconfig */;
+			buildSettings = {
+				BUILT_PRODUCTS_DIR = "$(ID_BUILT_SDK_SAMPLES_DIR)";
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_PARAMETER = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(HEADER_SEARCH_PATHS)",
+					$ID_SDK_ROOT/source/public/interfaces/tables,
+					$ID_SDK_ROOT/source/public/components/widgetbin/includes,
+					$ID_SDK_ROOT/source/public/interfaces/workgroup,
+					$ID_SDK_ROOT/source/public/interfaces/interactive,
+					$ID_SDK_ROOT/source/public/interfaces/interactive/ui,
+					$ID_SDK_ROOT/source/public/interfaces/colormgmt,
+					$ID_SDK_ROOT/source/public/interfaces/incopy,
+					$ID_SDK_ROOT/source/public/interfaces/cjk,
+					$ID_SDK_ROOT/source/public/facades/graphics,
+					$ID_SDK_ROOT/source/public/facades/text,
+					$ID_SDK_ROOT/source/public/facades/layout,
+					$ID_SDK_ROOT/source/public/components/publiclib/plugins,
+					$ID_SDK_ROOT/source/public/components/publiclib/files,
+					$ID_SDK_ROOT/source/public/components/publiclib/objectmodel,
+					$ID_SDK_ROOT/source/sdksamples/common,
+					$ID_SDK_ROOT/external/afl/includes,
+					source,
+				);
+				INFOPLIST_FILE = $ID_SDK_ROOT/source/sdksamples/common/Info.plist;
+				INFOPLIST_PREPROCESS = YES;
+				PLC_OUTPUT_TYPE = InDa;
+				PRODUCT_NAME = FrameLib;
+			};
+			name = Client-2023-Intel;
+		};
 		8A799DA036DD6CE6877D313E /* Client-2024 */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = EBB90F16F046B4E266012C61 /* FrameLib_2024.xcconfig */;
@@ -1526,6 +1584,81 @@
 			};
 			name = Server-2023;
 		};
+		E5610220279D59159E860A9E /* Client-2023-Intel */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = DA2326D61B7EE872E566FF4A /* FrameLibRelease_2023.xcconfig */;
+			buildSettings = {
+				ARCHS = x86_64;
+				ASL_HEADER_ROOT_SEARCH_PATH = "$(ADOBELIB_ROOT_SEARCH_PATH)/dva/third_party";
+				BUILT_PRODUCTS_DIR = "$(ID_BUILT_SDK_SAMPLES_DIR)";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CODE_SIGN_IDENTITY = "Developer ID Application";
+				CODE_SIGN_STYLE = Manual;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = 3WBLWC32YG;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(ID_SDK_ROOT)/build/mac/release_cocoa64/packagefolder/contents/macos",
+				);
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				HEADER_SEARCH_PATHS = (
+					"$(HEADER_SEARCH_PATHS)",
+					$ID_SDK_ROOT/source/public/interfaces/tables,
+					$ID_SDK_ROOT/source/public/components/widgetbin/includes,
+					$ID_SDK_ROOT/source/public/interfaces/workgroup,
+					$ID_SDK_ROOT/source/public/interfaces/interactive,
+					$ID_SDK_ROOT/source/public/interfaces/interactive/ui,
+					$ID_SDK_ROOT/source/public/interfaces/colormgmt,
+					$ID_SDK_ROOT/source/public/interfaces/incopy,
+					$ID_SDK_ROOT/source/public/interfaces/cjk,
+					$ID_SDK_ROOT/source/public/facades/graphics,
+					$ID_SDK_ROOT/source/public/facades/text,
+					$ID_SDK_ROOT/source/public/facades/layout,
+					$ID_SDK_ROOT/source/public/components/publiclib/plugins,
+					$ID_SDK_ROOT/source/public/components/publiclib/files,
+					$ID_SDK_ROOT/source/public/components/publiclib/objectmodel,
+					$ID_SDK_ROOT/source/sdksamples/common,
+					$ID_SDK_ROOT/external/afl/includes,
+					source,
+					../parser/source,
+					$ID_SDK_ROOT/external/dva/third_party/boost_libraries,
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(ID_SDK_ROOT)",
+					"$(ID_SDK_ROOT)/build/mac/release_cocoa64/packagefolder/contents/macos/libs",
+					"$(ID_SDK_ROOT)/build/mac/release_cocoa64/packagefolder/contents/macos",
+					"$(PROJECT_DIR)",
+				);
+				OTHER_LDFLAGS = (
+					"-Xlinker",
+					"-no_data_in_code_info",
+					"$(GAIA_LD_CLASSIC)",
+					"-framework",
+					CoreFoundation,
+					"-framework",
+					CFNetwork,
+					"-framework",
+					SystemConfiguration,
+					"-framework",
+					Security,
+					"-lz",
+					"-framework",
+					"InDesignModel",
+					"-lPublicPlugIn",
+				);
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				REZ_SEARCH_PATHS = (
+					"$(ID_COMMON_REZ_SEARCH_PATHS)",
+					"$(ID_SDK_ROOT)/external/palettes",
+					"$(ID_SDK_ROOT)/external/workflow",
+					icons,
+					"$ID_SDK_ROOT/source/**",
+				);
+				SDKROOT = macosx;
+			};
+			name = Client-2023-Intel;
+		};
 		F246A6184839CCC7103310A8 /* Client-2024 */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 9989A5EB1155B998877D347C /* FrameLibRelease_2024.xcconfig */;
@@ -2132,6 +2265,7 @@
 				01C4DCCED2705F7259AFBFF3 /* Server-2022 */,
 				0B9C00C61B43DD8B6C575ADD /* Client-2023 */,
 				4DB5F4E89E63ED3364D094E8 /* Server-2023 */,
+				B9E1B83E5AB299787C1ECA60 /* Client-2023-Intel */,
 				8A799DA036DD6CE6877D313E /* Client-2024 */,
 				3C01A0A01A7B3B51658C5E92 /* Server-2024 */,
 				46EAEC67F42EE4CA244FBD84 /* Client-2025 */,
@@ -2153,6 +2287,7 @@
 				9B36E994ECDA92A946C63B5C /* Server-2022 */,
 				1F032C672D6D3E30E47798FC /* Client-2023 */,
 				E09B0B56320FA48A61B04565 /* Server-2023 */,
+				E5610220279D59159E860A9E /* Client-2023-Intel */,
 				F246A6184839CCC7103310A8 /* Client-2024 */,
 				56B9A048014B70B74069D72C /* Server-2024 */,
 				E4C539B5C0C1424B06588AB9 /* Client-2025 */,
