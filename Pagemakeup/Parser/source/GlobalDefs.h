@@ -58,7 +58,7 @@
 //-------------------
 //  XRAIL OPTION
 //-------------------
-#define MULTIBASES		0
+#define MULTIBASES		1
 #define XRAIL			1
 //-------------------------
 //  CROSS REFERENCES OPTION

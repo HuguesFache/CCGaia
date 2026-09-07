@@ -51,7 +51,7 @@
 #define kXRLMissingPluginAlertValue		kSDKDefMissingPluginAlertValue // Message displayed in Missing Plug-in dialog - provide a string that instructs user how to solve their missing plug-in problem
 
 // Precompilation flag
-#define MULTIBASES			0
+#define MULTIBASES			1
 
 
 // PluginID:
