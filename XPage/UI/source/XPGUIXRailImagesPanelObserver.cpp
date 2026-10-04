@@ -61,6 +61,9 @@
 #include "ISpreadList.h"
 #include "ISpread.h"
 #include "IMultiColumnTextFrame.h"
+#include "IFrameList.h"
+#include "ITextFrameColumn.h"
+#include "ITextUtils.h"
 
 #if defined(WINDOWS) || defined(_WIN32)
 #include <windows.h> // OpenClipboard / SetClipboardData on the copy-button path.
@@ -683,17 +686,41 @@ void XPGUIXRailImagesPanelObserver::HandleSelectionChanged(const ISelectionMessa
 			idArticle = Utils<IXPageUtils>()->GetStoryIDFromAssignmentFile(assignFile);
 		}
 		// Try with placed story
-		if (assignFilePaths.size() == 0)
+		if (assignFilePaths.size() == 0 && storyFrames.Length() > 0)
 		{
-			InterfacePtr<IPlacedArticleData> placedArticleData(storyFrames.GetRef(0), UseDefaultIID());
-			if (placedArticleData)
+			// The article ID may be carried by only one frame of a threaded
+			// story: probe the selected frames, then every frame of their story.
+			IDataBase* db = storyFrames.GetDataBase();
+			UIDList candidates(storyFrames);
+			for (int32 i = 0; i < storyFrames.Length(); ++i)
 			{
-				if (placedArticleData->GetUniqueId() != kNullString)
+				InterfacePtr<IHierarchy> frameHier(storyFrames.GetRef(i), UseDefaultIID());
+				if (frameHier == nil || frameHier->GetChildCount() == 0)
+					continue;
+				InterfacePtr<IMultiColumnTextFrame> mcf(db, frameHier->GetChildUID(0), UseDefaultIID());
+				if (mcf == nil)
+					continue;
+				InterfacePtr<IFrameList> frameList(mcf->QueryFrameList());
+				if (frameList == nil)
+					continue;
+				for (int32 f = 0; f < frameList->GetFrameCount(); ++f)
+				{
+					InterfacePtr<ITextFrameColumn> column(frameList->QueryNthFrame(f));
+					InterfacePtr<IHierarchy> spline(Utils<ITextUtils>()->QuerySplineFromTextFrame(column));
+					if (spline != nil && candidates.Location(::GetUID(spline)) < 0)
+						candidates.Append(::GetUID(spline));
+				}
+			}
+
+			for (int32 i = 0; i < candidates.Length(); ++i)
+			{
+				InterfacePtr<IPlacedArticleData> placedArticleData(candidates.GetRef(i), UseDefaultIID());
+				if (placedArticleData && placedArticleData->GetUniqueId() != kNullString)
 				{
 					idArticle = placedArticleData->GetUniqueId();
 					assignFile = FileUtils::PMStringToSysFile(placedArticleData->GetStoryFolder());
 					FileUtils::AppendPath(&assignFile, idArticle + ".OBJRART.xml");
-					//CAlert::InformationAlert(FileUtils::SysFileToPMString(assignFile));
+					break;
 				}
 			}
 		}

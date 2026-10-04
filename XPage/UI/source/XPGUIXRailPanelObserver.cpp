@@ -95,6 +95,8 @@
 #include "ITextAttrUtils.h"
 #include "ITextModelCmds.h"
 #include "ITextFrameColumn.h"
+#include "ITextUtils.h"
+#include "IMultiColumnTextFrame.h"
 #include "ITextAttrBoolean.h"
 #include "TextAttributeRunIterator.h"
 #include "IScrapItem.h"
@@ -205,6 +207,44 @@ private:
 
 };
 CREATE_PMINTERFACE(XPGUIXRailPanelObserver, kXPGUIArticlePanelObserverImpl)
+
+/* FindPlacedArticleFrame
+	The article ID may be carried by only one frame of a threaded story:
+	probe the given frames, then every frame of their story. Returns
+	UIDRef::gNull if none carries a non-empty IPlacedArticleData.
+*/
+static UIDRef FindPlacedArticleFrame(const UIDList& frames)
+{
+	IDataBase* db = frames.GetDataBase();
+	UIDList candidates(frames);
+	for (int32 i = 0; i < frames.Length(); ++i)
+	{
+		InterfacePtr<IHierarchy> frameHier(frames.GetRef(i), UseDefaultIID());
+		if (frameHier == nil || frameHier->GetChildCount() == 0)
+			continue;
+		InterfacePtr<IMultiColumnTextFrame> mcf(db, frameHier->GetChildUID(0), UseDefaultIID());
+		if (mcf == nil)
+			continue;
+		InterfacePtr<IFrameList> frameList(mcf->QueryFrameList());
+		if (frameList == nil)
+			continue;
+		for (int32 f = 0; f < frameList->GetFrameCount(); ++f)
+		{
+			InterfacePtr<ITextFrameColumn> column(frameList->QueryNthFrame(f));
+			InterfacePtr<IHierarchy> spline(Utils<ITextUtils>()->QuerySplineFromTextFrame(column));
+			if (spline != nil && candidates.Location(::GetUID(spline)) < 0)
+				candidates.Append(::GetUID(spline));
+		}
+	}
+
+	for (int32 i = 0; i < candidates.Length(); ++i)
+	{
+		InterfacePtr<IPlacedArticleData> placedArticleData(candidates.GetRef(i), UseDefaultIID());
+		if (placedArticleData && placedArticleData->GetUniqueId() != kNullString)
+			return candidates.GetRef(i);
+	}
+	return UIDRef::gNull;
+}
 
 XPGUIXRailPanelObserver::XPGUIXRailPanelObserver(IPMUnknown* boss)
 	:ActiveSelectionObserver(boss),
@@ -870,9 +910,9 @@ void XPGUIXRailPanelObserver::UpdateSelectedStories() {
 		int32 idPage = readData->GetID();
 		UIDRef storyRef = textFrames.GetRef(0);
 
-		InterfacePtr<IPlacedArticleData> placedArticleData(storyRef, UseDefaultIID());
-		if (placedArticleData && placedArticleData->GetUniqueId() != kNullString) {
-			if (this->UpdatePlacedStory2(storyRef, idPage) != kSuccess) { // apapap message alert
+		UIDRef placedFrameRef = FindPlacedArticleFrame(textFrames);
+		if (placedFrameRef != UIDRef::gNull) {
+			if (this->UpdatePlacedStory2(placedFrameRef, idPage) != kSuccess) { // apapap message alert
 				break;
 			}
 		}
@@ -958,7 +998,9 @@ void XPGUIXRailPanelObserver::UpdateIDMS() {
 		if (itemCount == 0)
 			break;
 
-		UIDRef storyRef = textFrames.GetRef(0);
+		UIDRef storyRef = FindPlacedArticleFrame(textFrames);
+		if (storyRef == UIDRef::gNull)
+			storyRef = textFrames.GetRef(0);
         InterfacePtr<IXPGPreferences> xpgPrefs(GetExecutionContextSession(), UseDefaultIID());
 
 		InterfacePtr<IPlacedArticleData> placedArticleData(storyRef, UseDefaultIID());
