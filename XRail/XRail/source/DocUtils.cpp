@@ -412,14 +412,12 @@ PMString GetGoodUrlXR(PMString baseName)
 
 	PMString serverAddress = urlXR;
 #if MULTIBASES == 1
-	CAlert::InformationAlert(baseName);
 	//si le nom de la base est renseigne
 	if (baseName != "") {
 		for (i = 0; i < listeBases.size(); i++) {
 			if (listeBases[i] == baseName) {
 				serverAddress = IPBases[i];
 
-				CAlert::InformationAlert(serverAddress);
 				break;
 			}
 		}
