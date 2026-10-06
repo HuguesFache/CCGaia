@@ -18,6 +18,10 @@
 #include "FileUtils.h"
 #include "IXPageUtils.h"
 #include "IXPGPreferences.h"
+#include "IEventHandler.h"
+#include "IKeyFocusHandler.h"
+#include "IEventUtils.h"
+#include "Utils.h"
 #include "K2Vector.tpp" // For NodeIDList to compile
 
 class XPGUIArticleViewObserver : public CObserver{
@@ -62,7 +66,23 @@ void XPGUIArticleViewObserver::Update(const ClassID& theChange, ISubject* theSub
 	if(theChange == kListSelectionChangedMessage)
 	{
 		this->handleSelectionChanged();
-	}	
+	}
+
+	// Clic de l'utilisateur dans la liste (selection changee bouton souris
+	// enfonce ; le widget arbre n'envoie pas kListSelectionChangedByUserMessage) :
+	// elle prend le clavier pour la navigation aux fleches (XPGUIArticleViewEH).
+	// Jamais sur une selection programmatique, pour ne pas voler le clavier a la
+	// mise en page.
+	const bool16 mouseDown = Utils<IEventUtils>()->IsMouseButtonDown();
+	if(theChange == kListSelectionChangedByUserMessage || (theChange == kListSelectionChangedMessage && mouseDown))
+	{
+		InterfacePtr<IEventHandler> eh(this, UseDefaultIID());
+		IKeyFocusHandler* focusHandler = eh ? ::QueryKeyFocusHandler(eh) : nil;
+		if(focusHandler){
+			focusHandler->SetCurrentTargetEventHandler(eh);
+			focusHandler->Release();
+		}
+	}
 }
 
 

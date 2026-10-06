@@ -157,6 +157,7 @@
     <ClCompile Include="source\XPGUITECImagesPanelObserver.cpp" />
     <ClCompile Include="source\XPGUIArticleNodeID.cpp" />
     <ClCompile Include="source\XPGUIArticleViewObserver.cpp" />
+    <ClCompile Include="source\XPGUIArticleViewEH.cpp" />
     <ClCompile Include="source\XPGUIImageNodeButtonsObserver.cpp" />
     <ClCompile Include="source\XPGUITextesPanelView.cpp" />
     <ClCompile Include="source\XPGUIArticleTVHierarchyAdapter.cpp" />

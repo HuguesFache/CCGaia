@@ -1288,8 +1288,22 @@ ErrorCode XPageUtils::ImportCreditOrLegend(UIDRef storyRef, const PMString& text
 			styleUID = tag2styleMap->GetParaStyleMappedToTag(creditOrLegendTag);
 		}
 
-		// Insert new text		
-		boost::shared_ptr<WideString> data(new WideString(text));
+		// Insert new text, sans emojis : tout caractere hors plan de base (paire
+		// de substitution UTF-16) et le selecteur de variante U+FE0F sont retires,
+		// ils peuvent faire planter le Text Editor (meme filtre que l'import
+		// d'article, XPGTextImportHandler::Characters).
+		WideString wideText(text);
+		boost::shared_ptr<WideString> data(new WideString());
+		for (WideString::const_iterator_raw it = wideText.begin_raw(); it != wideText.end_raw(); ++it) {
+			const uint32 u = (uint32)*it;
+			if ((u >= 0xD800 && u <= 0xDFFF) || u == 0xFE0F)
+				continue;
+			data->Append(UTF32TextChar(u));
+		}
+		if (data->empty()) { // texte uniquement compose d'emojis : bloc laisse vide
+			status = kSuccess;
+			break;
+		}
 
 		InterfacePtr<ICommand> insertCmd(txtModelCmds->InsertCmd(0, data));
 		status = CmdUtils::ProcessCommand(insertCmd);

@@ -171,6 +171,9 @@ DECLARE_PMID(kInterfaceIDSpace, IID_IFIXEDCONTENTFRAMELIST,         kXPGUIPrefix
 // photo's current etatImage id before opening the dialog (for preselection);
 // the dialog controller overwrites it with the chosen etat id on OK.
 DECLARE_PMID(kInterfaceIDSpace, IID_IXPGETATCHOICE,                 kXPGUIPrefix + 40)
+// Gestionnaire d'evenements d'origine de la liste des articles (kTreeViewEventHandlerImpl),
+// auquel XPGUIArticleViewEH delegue tout sauf la navigation clavier.
+DECLARE_PMID(kInterfaceIDSpace, IID_IXPGUIORIGTREEEVENTHANDLER,     kXPGUIPrefix + 41)
 
 // ImplementationIDs:
 DECLARE_PMID(kImplementationIDSpace, kXPGUIActionComponentImpl,					kXPGUIPrefix + 0)
@@ -271,6 +274,8 @@ DECLARE_PMID(kImplementationIDSpace, kXPGUIChooseEtatImageDialogControllerImpl,	
 DECLARE_PMID(kImplementationIDSpace, kXPGUIImageEtatSwatchEHImpl,				kXPGUIPrefix + 149)
 // Alias → kIntDataImpl (declared in ImplementationAlias). Carries IID_IXPGETATCHOICE.
 DECLARE_PMID(kImplementationIDSpace, kXPGUIEtatChoiceDataImpl,					kXPGUIPrefix + 150)
+// Navigation clavier dans la liste des articles (palette XPage).
+DECLARE_PMID(kImplementationIDSpace, kXPGUIArticleViewEHImpl,					kXPGUIPrefix + 151)
 
 // ActionIDs:
 DECLARE_PMID(kActionIDSpace, kXPGUITextesPanelWidgetActionID,					kXPGUIPrefix + 5)
@@ -504,6 +509,8 @@ DECLARE_PMID(kWidgetIDSpace, kXPGUIChooseEtatImageListWidgetID,		kXPGUIPrefix + 
 // Palette XPage : classeur / forme (carton) de l'article selectionne, lus dans son XML.
 DECLARE_PMID(kWidgetIDSpace, kXPGUIArticleClasseurTextWidgetID,		kXPGUIPrefix + 247)
 DECLARE_PMID(kWidgetIDSpace, kXPGUIArticleFormeTextWidgetID,		kXPGUIPrefix + 248)
+// Liste des articles : colonne nombre de signes de chaque ligne.
+DECLARE_PMID(kWidgetIDSpace, kXPGUITextNbSignesWidgetID,			kXPGUIPrefix + 249)
 
 // Resource IDs of the InDesign Links panel's per-row "Atteindre le lien"
 // and "Modifier l'original" icons. The values come from LinksUIResDefs.h

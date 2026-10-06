@@ -239,6 +239,26 @@ bool16 XPGUIArticleTVWidgetMgr::ApplyNodeIDToWidget(const NodeID& node, IControl
 				pictureIconView->SetRsrcID(kXPGUIPictureIconResourceID);
 			}
 
+			// Nombre de signes (toujours ecrit : les widgets de ligne sont recycles)
+			InterfacePtr<ITextControlData> nbSignesData (panelControlData->FindWidget(kXPGUITextNbSignesWidgetID), UseDefaultIID());
+			if(nbSignesData){
+				PMString nbSignes;
+				int32 n = nodeID->GetArticleData()->artNbSignes;
+				if(n > 0){
+					// Separateur de milliers : espace (ex. 12 345)
+					PMString digits;
+					digits.AppendNumber(n);
+					const int32 len = digits.NumUTF16TextChars();
+					for(int32 i = 0 ; i < len ; ++i){
+						if(i > 0 && (len - i) % 3 == 0)
+							nbSignes.Append(" ");
+						nbSignes.Append(digits[i]);
+					}
+				}
+				nbSignes.SetTranslatable(kFalse);
+				nbSignesData->SetString(nbSignes);
+			}
+
 			// Adjust indenting- this may be temporary
 			this->indent(node, widget, displayStringView);
 		}		
@@ -281,7 +301,9 @@ void XPGUIArticleTVWidgetMgr::indent(const NodeID& node, IControlView* widget,	I
 		// Call window changed to force FittedStaticText to resize
 		staticTextWidget->WindowChanged();
 		PMRect staticTextFrame = staticTextWidget->GetFrame();
-		staticTextFrame.Right(widgetFrame.Right());
+		// Le titre s'arrete avant les colonnes de droite (signes, nb photos,
+		// icone photo : 90 px) pour etre coupe par "..." au lieu de passer dessous.
+		staticTextFrame.Right(widgetFrame.Right() - 90);
 
 		// Don't at present take account of scroll bar dimension?
 		staticTextWidget->SetFrame( staticTextFrame );

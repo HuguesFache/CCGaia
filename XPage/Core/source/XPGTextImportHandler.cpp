@@ -185,7 +185,19 @@ bool16 XPGTextImportHandler::HandlesSubElements() const
 
 void XPGTextImportHandler::Characters(const  WideString& chars, IIDXMLDOMNode* currentNode)
 {
-	boost::shared_ptr<WideString> data(new WideString(chars));
+	// Emojis supprimes : tout caractere hors plan de base (paire de substitution
+	// UTF-16, y compris une moitie isolee si le parseur a coupe l'emoji entre
+	// deux appels) et le selecteur de variante emoji U+FE0F. Ils faisaient
+	// planter l'import et n'ont pas d'interet dans la mise en page.
+	boost::shared_ptr<WideString> data(new WideString());
+	for (WideString::const_iterator_raw it = chars.begin_raw(); it != chars.end_raw(); ++it) {
+		const uint32 u = (uint32)*it;
+		if ((u >= 0xD800 && u <= 0xDFFF) || u == 0xFE0F)
+			continue;
+		data->Append(UTF32TextChar(u));
+	}
+	if (data->empty())
+		return;
 	InterfacePtr<ITextModelCmds> txtModelCmds(storyRef, UseDefaultIID());
 	if (tagFound && inParagraph) {
 		// GD 16.09.2022 ++
@@ -212,15 +224,13 @@ void XPGTextImportHandler::Characters(const  WideString& chars, IIDXMLDOMNode* c
             
 			InterfacePtr<ICommand> insertCmd(txtModelCmds->InsertCmd(insertPos, data));
 			CmdUtils::ProcessCommand(insertCmd);
-			insertPos += chars.NumUTF16TextChars();
+			insertPos += data->NumUTF16TextChars();
 
-			// GD 16.09.2022 ++
-			InterfacePtr<ITextSelectionSuite> textSelectionSuite(Utils<ISelectionUtils>()->QueryActiveTextSelectionSuite());
-			if (textSelectionSuite != nil) {
-				RangeData rangeToSelect(insertPos, RangeData::kLeanForward);
-				textSelectionSuite->SetTextSelection(storyRef, rangeToSelect, Selection::kDontScrollSelection, &rangeToSelect);
-			}
-			// GD 16.09.2022 --
+			// La selection texte n'est plus deplacee ici apres chaque bloc de
+			// caracteres : le parseur peut couper un emoji (paire de substitution
+			// UTF-16) entre deux appels, et placer le curseur au milieu faisait
+			// planter le Text Editor. Elle n'est utile que pour inserer une note
+			// de fin : PrepaEndnote la positionne juste avant.
 		}
 	}
 }
@@ -686,6 +696,16 @@ ErrorCode XPGTextImportHandler::PrepaEndnote(const boost::shared_ptr<WideString>
 		if (txtModel == nil) {
 			CAlert::InformationAlert("XPGTextImportHandler::InsertEndnote - txtModel = nil");
 			break;
+		}
+
+		// Creation de la note : InsertEndnote insere a la selection courante,
+		// on la place donc a la position d'insertion dans l'article.
+		if (create) {
+			InterfacePtr<ITextSelectionSuite> textSelectionSuite(iTextEditSuite, UseDefaultIID());
+			if (textSelectionSuite != nil) {
+				RangeData rangeToSelect(insertPos, RangeData::kLeanForward);
+				textSelectionSuite->SetTextSelection(storyRef, rangeToSelect, Selection::kDontScrollSelection, &rangeToSelect);
+			}
 		}
 
 		result = this->InsertEndnote(iTextEditSuite, endnoteString, insertPos, txtModel, create, insert, close);

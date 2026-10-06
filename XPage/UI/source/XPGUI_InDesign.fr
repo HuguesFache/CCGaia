@@ -170,6 +170,7 @@ resource IgnoreTags(1)
 		kXPGUIChooseEtatImageDialogControllerImpl,
 		kXPGUIImageEtatSwatchEHImpl,
 		kXPGUIEtatChoiceDataImpl,
+		kXPGUIArticleViewEHImpl,
 	}
 };
 
@@ -548,8 +549,11 @@ resource ClassDescriptionTable(kSDKDefClassDescriptionTableResourceID)
 		{
 			IID_ITREEVIEWWIDGETMGR,			kXPGUIArticleTVWidgetMgrImpl,			
 			IID_ITREEVIEWHIERARCHYADAPTER,  kXPGUIArticleTVHierarchyAdapterImpl,			
-			IID_IOBSERVER,					kXPGUIArticleViewObserverImpl,					
+			IID_IOBSERVER,					kXPGUIArticleViewObserverImpl,
 			IID_IDATAMODEL,					kPMUnknownDataImpl,
+			// Navigation clavier : notre EH delegue tout le reste a l'EH d'origine.
+			IID_IEVENTHANDLER,				kXPGUIArticleViewEHImpl,
+			IID_IXPGUIORIGTREEEVENTHANDLER,	kTreeViewEventHandlerImpl,
 		}
 	},	
 		
@@ -3105,10 +3109,27 @@ resource XPGUIArticleNodeWidget (kXPGUIArticleNodeWidgetRsrcID + index_enUS)
 			kTrue,
 			"", // The String value
 			0, // The Widget ID for associated control for shortcut focus
-			kDialogWindowSystemScriptFontId, 
+			kDialogWindowSystemScriptFontId,
 			kDialogWindowSystemScriptHiliteFontId,
-		),	
-		
+		),
+
+		InfoStaticTextWidget									// Nombre de signes de l'article
+		(
+			kXPGUITextNbSignesWidgetID, // The Identifier for this Widget
+			kPMRsrcID_None, // The Plugin ID
+			kBindRight, // Frame binding
+			Frame(120,0,160,18)
+			kTrue, // Is this visible
+			kTrue, // Is this enabled
+			kAlignRight, // The alignment of this field
+			kEllipsizeEnd, // Where to ellipsize the string if the size is larger than its frame
+			kTrue,
+			"", // The String value (rempli par XPGUIArticleTVWidgetMgr)
+			0, // The Widget ID for associated control for shortcut focus
+			kDialogWindowSystemScriptFontId,
+			kDialogWindowSystemScriptHiliteFontId,
+		),
+
 	}
 }
 
