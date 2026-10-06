@@ -129,10 +129,21 @@ bool16 XPGUIXRailTexteDragDropSource::doAddArticleDragContent(IDragDropControlle
 		}
 	
 		PMFlavor flavor = kNoFlavor;
+		// DONTASKFORM=1 : Alt ne sert plus a importer dans une forme existante,
+		// il force l'affichage du dialogue de choix du carton.
+		bool16 forceAskForm = kFalse;
 
 #if !INCOPY
-		if(controller->IsUserUsingCopyGesture()) // If user is pressing alt/option key
-			flavor = XPageTextOnlyFlavor;
+		InterfacePtr<IXPGPreferences> xpgPrefs(GetExecutionContextSession(), UseDefaultIID());
+		bool16 dontAskForm = xpgPrefs && xpgPrefs->GetDontAskForm();
+		if(controller->IsUserUsingCopyGesture()){ // If user is pressing alt/option key
+			if(dontAskForm){
+				flavor = XPageXMLWithFormeFlavor;
+				forceAskForm = kTrue;
+			}
+			else
+				flavor = XPageTextOnlyFlavor;
+		}
 		else
 			flavor = XPageXMLWithFormeFlavor;
 #else
@@ -163,7 +174,8 @@ bool16 XPGUIXRailTexteDragDropSource::doAddArticleDragContent(IDragDropControlle
 		articleData.push_back(articleCouleurStatus);
 		articleData.push_back(articleRubrique);
 		articleData.push_back(articleSsRubrique);	
-		articleData.push_back(articleFolio);	
+		articleData.push_back(articleFolio);
+		articleData.push_back(forceAskForm ? "1" : "0");
 
 		// Pass the article's article Snippet File to the handler for use at a later time
 		InterfacePtr<IStringListData> textData (dataExchangeHandler, IID_ISTRINGLISTDATA);

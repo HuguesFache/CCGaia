@@ -501,6 +501,9 @@ DECLARE_PMID(kWidgetIDSpace, kXPGUIPhotoPositionListWidgetID,	kXPGUIPrefix + 243
 // "Choose état image" dialog : root widget + état dropdown.
 DECLARE_PMID(kWidgetIDSpace, kXPGUIChooseEtatImageDialogWidgetID,	kXPGUIPrefix + 245)
 DECLARE_PMID(kWidgetIDSpace, kXPGUIChooseEtatImageListWidgetID,		kXPGUIPrefix + 246)
+// Palette XPage : classeur / forme (carton) de l'article selectionne, lus dans son XML.
+DECLARE_PMID(kWidgetIDSpace, kXPGUIArticleClasseurTextWidgetID,		kXPGUIPrefix + 247)
+DECLARE_PMID(kWidgetIDSpace, kXPGUIArticleFormeTextWidgetID,		kXPGUIPrefix + 248)
 
 // Resource IDs of the InDesign Links panel's per-row "Atteindre le lien"
 // and "Modifier l'original" icons. The values come from LinksUIResDefs.h

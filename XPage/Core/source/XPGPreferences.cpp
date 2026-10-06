@@ -40,6 +40,9 @@ public:
 	virtual bool16 GetCreationForme() const;
 	virtual void SetCreationForme(const bool16& b);
 
+	virtual bool16 GetDontAskForm() const;
+	virtual void SetDontAskForm(const bool16& b);
+
 	virtual void SetCheminAssemblageCartons(const PMString& b);
 	virtual PMString GetCheminAssemblageCartons();
 
@@ -98,7 +101,7 @@ public:
 private:
 
 	PMString racineArbo,  noUpdateFile;
-	bool16 creationForme;
+	bool16 creationForme, dontAskForm;
 	bool16 importCredit, importLegende, viderBlocSiVide;
 	int32 gestionIDMS, majIDMS, idmsAllBlocs, changePictureState;
 	PMString status;
@@ -128,6 +131,7 @@ CREATE_PMINTERFACE(XPGPreferences, kXPGPreferencesImpl)
 	defaultTag = Tag();
 	cheminFormes = cheminAssemblageCartons = kNullString;
 	creationForme = kFalse;
+	dontAskForm = kFalse;
 	urlXR = kNullString;
 	urlTEC = kNullString;
 	pluginServerName = "0";
@@ -213,6 +217,16 @@ bool16 XPGPreferences::GetCreationForme() const
 void XPGPreferences::SetCreationForme(const bool16& b)
 {
 	creationForme = b;
+}
+
+bool16 XPGPreferences::GetDontAskForm() const
+{
+	return dontAskForm;
+}
+
+void XPGPreferences::SetDontAskForm(const bool16& b)
+{
+	dontAskForm = b;
 }
 
 PMString XPGPreferences::GetXRail_URL() const

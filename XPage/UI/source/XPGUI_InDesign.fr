@@ -2796,6 +2796,34 @@ resource XPGUIArticlePanelWidget (kXPGUIArticlePanelResourceID + index_enUS)
 					kAlignLeft,						  // The alignment of the parent widget
 					kXPGUIDisplayStoryStatesKey,	  // The String value
 				),
+				StaticTextWidget								// Classeur de l'article selectionne
+				(
+					kXPGUIArticleClasseurTextWidgetID,
+					kSysStaticTextPMRsrcId,
+					kBindNone,
+					Frame(10, 55, 205, 71)
+					kTrue,			// Is this visible
+					kTrue,			// Is this enabled
+					kAlignLeft,
+					kEllipsizeEnd,
+					kTrue,
+					"",				// Rempli par XPGUIArticleViewObserver
+					0,
+				),
+				StaticTextWidget								// Forme (carton) de l'article selectionne
+				(
+					kXPGUIArticleFormeTextWidgetID,
+					kSysStaticTextPMRsrcId,
+					kBindNone,
+					Frame(10, 74, 205, 90)
+					kTrue,			// Is this visible
+					kTrue,			// Is this enabled
+					kAlignLeft,
+					kEllipsizeEnd,
+					kTrue,
+					"",				// Rempli par XPGUIArticleViewObserver
+					0,
+				),
 				ButtonWidget
 				(
 					// "Modifier les styles" — hidden but kept around in case

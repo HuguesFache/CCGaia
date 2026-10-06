@@ -87,6 +87,8 @@
 #include "IDialogMgr.h"
 #include "IFormeDataModel.h"
 #include "IXPageMgrAccessor.h"
+#include "IFrameType.h"
+#include "IMultiColumnTextFrame.h"
 
 ErrorCode XPageUIUtils::DisplayChooseMatchingDialog(IDFile& matchingFile)
 {
@@ -220,11 +222,40 @@ void XPageUIUtils::DisplayLinkArticleDialog(const PMString& articleId, const PMS
 											const PMString& idStatus, const PMString& libelleStatus,
 											const PMString& couleurStatus, 
 											UIDRef targetSpread, const int32 typeArt, 
-											const PMString& articleXMLFile, const PMString& artRub, const PMString& artSubRub)
+											const PMString& articleXMLFile, const PMString& artRub, const PMString& artSubRub,
+											bool16 forceAskForm)
 {
 	do
 	{
-		// Get the application interface and the DialogMgr.	
+		// DONTASKFORM : si le XML de l'article fournit un classeur/carton valide,
+		// on importe directement sans afficher le dialogue de choix du carton.
+		InterfacePtr<IXPGPreferences> xpgPrefs(GetExecutionContextSession(), UseDefaultIID());
+		if (!forceAskForm && xpgPrefs && xpgPrefs->GetDontAskForm() && articleXMLFile != kNullString && targetSpread != UIDRef::gNull) {
+			PMString classeur, carton;
+			Utils<IXPageUtils>()->GetArticleCartonDefaults(FileUtils::PMStringToSysFile(articleXMLFile), classeur, carton);
+			if (classeur != kNullString && classeur != "0" && carton != kNullString && carton != "0") {
+				InterfacePtr<IXPageMgrAccessor> pageMrgAccessor(GetExecutionContextSession(), UseDefaultIID());
+				InterfacePtr<IFormeDataModel> formeModel(pageMrgAccessor->QueryFormeDataModel());
+				IDFile formeFile, cartonMatchingFile;
+				PMString posX, posY;
+				if (formeModel && formeModel->GetForme(carton, classeur, formeFile, cartonMatchingFile, posX, posY)
+					&& FileUtils::DoesFileExist(formeFile) && FileUtils::DoesFileExist(cartonMatchingFile))
+				{
+					IDataBase * db = targetSpread.GetDataBase();
+					InterfacePtr<IDocument> doc(db, db->GetRootUID(), UseDefaultIID());
+					if (doc) {
+						xpgPrefs->SetDernierClasseur(classeur);
+						xpgPrefs->SetDernierCarton(carton);
+						if (!LinkArticleToPage(doc, articleId, articleSubject, FileUtils::SysFileToPMString(formeFile),
+											   currentPoint, targetSpread, cartonMatchingFile, articleXMLFile))
+							CAlert::InformationAlert(kXPGUIStoryLinkErrorKey);
+						break;
+					}
+				}
+			}
+		}
+
+		// Get the application interface and the DialogMgr.
 		InterfacePtr<IApplication> application(GetExecutionContextSession()->QueryApplication());
 		if (application == nil)
 			break;
@@ -237,7 +268,7 @@ void XPageUIUtils::DisplayLinkArticleDialog(const PMString& articleId, const PMS
 		PMLocaleId nLocale = LocaleSetting::GetLocale();
 		RsrcSpec dialogSpec
 		(
-			nLocale,						// Locale index from PMLocaleIDs.h. 
+			nLocale,						// Locale index from PMLocaleIDs.h.
 			kXPGUIPluginID,					// Plug-in ID
 			kViewRsrcType,					// This is the kViewRsrcType.
 			kXPGUILinkArtDialogResourceID,	// Resource ID for our dialog.
@@ -291,6 +322,93 @@ void XPageUIUtils::DisplayLinkArticleDialog(const PMString& articleId, const PMS
 		dialog->WaitForDialog();
 
 	} while(kFalse);
+}
+
+bool16 XPageUIUtils::LinkArticleToPage(IDocument * doc, const PMString& idArt, const PMString& articleSubject,
+									   const PMString& articleSnippet, const PMPoint& currentPoint,
+									   const UIDRef& targetSpread, const IDFile& matchingFile,
+									   const PMString& articleXMLFile)
+{
+	bool16 result = kFalse;
+	do{
+		IDataBase * db = ::GetDataBase(doc);
+
+		UIDList formeItemsToLink(db);
+		PMString error = kNullString;
+
+		if( targetSpread == UIDRef::gNull)
+			break;
+
+		// Import snippet
+		if(Utils<IXPageUtils>()->ImportForme(::GetUIDRef(doc),
+											FileUtils::PMStringToSysFile(articleSnippet),
+											currentPoint,
+											targetSpread,
+											matchingFile,
+											error,
+											&formeItemsToLink, kTrue, kTrue)!= kSuccess)
+		{
+			CAlert::InformationAlert(error);
+			break;
+		}
+
+		UIDList targetStories(db);
+		K2Vector<UIDRef> targetPictures;
+		for(int32 i = 0 ; i < formeItemsToLink.Length() ; ++i){
+            // GD 27.04.2023 ++
+            UIDRef parentUID = formeItemsToLink.GetRef(i);
+            InterfacePtr<IFormeData> formeData(parentUID, UseDefaultIID());
+            if (formeData != nil) {
+                if (formeData->GetType() == IFormeData::kFixedContent)
+                    continue;
+            }
+            // GD 27.04.2023 --
+			InterfacePtr<IFrameType> frameType (db, formeItemsToLink[i], UseDefaultIID());
+			if(frameType && frameType->IsTextFrame()){
+				InterfacePtr<IHierarchy> itemHier (frameType, UseDefaultIID());
+				InterfacePtr<IMultiColumnTextFrame> txtFrame (db, itemHier->GetChildUID(0), UseDefaultIID());
+				targetStories.Append(txtFrame->GetTextModelUID());
+			}
+			else if (frameType && frameType->IsGraphicFrame()) {
+				targetPictures.push_back(::GetUIDRef(frameType));
+			}
+		}
+
+		// Import article
+		error = kNullString;
+		IDFile xmlFileToImport = FileUtils::PMStringToSysFile(articleXMLFile);
+		if(Utils<IXPageUtils>()->ImportArticle(targetStories, xmlFileToImport, matchingFile, error, xmlFileToImport, idArt) != kSuccess){
+			CAlert::InformationAlert(error);
+			break;
+		}
+		result= kTrue;
+
+		error = kNullString;
+		if(Utils<IXPageUtils>()->ImportImages(targetPictures, xmlFileToImport, error) != kSuccess){
+			CAlert::InformationAlert(error);
+			break;
+		}
+
+		//Ajout par HF
+		//Comme on se fout de l'affectation (on est sur du drag n drop d'un article depuis la palette)
+		//on stocke de la persistence dans les blocs
+		InterfacePtr<ICommand> placedArticleDataCmd(CmdUtils::CreateCommand(kXPGSetPlacedArticleDataCmdBoss));
+		InterfacePtr<IPlacedArticleData> placedArticleData(placedArticleDataCmd, IID_IPLACEDARTICLEDATA);
+		placedArticleData->SetUniqueId(idArt);
+		IDFile xmlFolder = xmlFileToImport;
+		FileUtils::GetParentDirectory(xmlFolder, xmlFolder);
+		placedArticleData->SetStoryFolder(FileUtils::SysFileToPMString(xmlFolder));
+		placedArticleData->SetStoryTopic(articleSubject);
+		placedArticleDataCmd->SetItemList(formeItemsToLink);
+		if(CmdUtils::ProcessCommand(placedArticleDataCmd)!= kSuccess)
+			break;
+
+		// Invalidate document so that assignment adornments get paint
+		Utils<ILayoutUIUtils>()->InvalidateViews(doc);
+		result= kTrue;
+
+	}while(kFalse);
+	return result;
 }
 
 

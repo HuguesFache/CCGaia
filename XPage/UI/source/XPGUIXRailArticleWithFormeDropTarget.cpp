@@ -178,6 +178,7 @@ XPGUIXRailArticleWithFormeDropTarget::ProcessDragDropCommand(IDragDropTarget* ta
 		PMString artCouleurStatus = textData->GetStringList()[6];
 		PMString artRubrique = textData->GetStringList()[7];
 		PMString artSsRubrique = textData->GetStringList()[8];
+		bool16 forceAskForm = textData->GetStringList().size() > 10 && textData->GetStringList()[10] == "1";
 
 		// Get mouse location
 		InterfacePtr<IControlView> layoutView (target, UseDefaultIID());
@@ -206,7 +207,8 @@ XPGUIXRailArticleWithFormeDropTarget::ProcessDragDropCommand(IDragDropTarget* ta
 			// Article Java, show Dialog to link story 
 			XPageUIUtils::DisplayLinkArticleDialog(artId, artSnippetFile, artSubject, matchingFile, currentPoint, artIdStatus, 
 												   artLibelleStatus, artCouleurStatus, ::GetUIDRef(targetSpread), 
-												   kArtType, FileUtils::SysFileToPMString(xmlFileToImport), artRubrique, artSsRubrique);		
+												   kArtType, FileUtils::SysFileToPMString(xmlFileToImport), artRubrique, artSsRubrique,
+												   forceAskForm);
 		}			
 
 		// Send notification so that texte panel is updated
