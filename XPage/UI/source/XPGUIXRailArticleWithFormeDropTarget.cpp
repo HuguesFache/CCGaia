@@ -164,21 +164,8 @@ XPGUIXRailArticleWithFormeDropTarget::ProcessDragDropCommand(IDragDropTarget* ta
 		InterfacePtr<IDataExchangeHandler> handler (controller->QuerySourceHandler());			
 
 		InterfacePtr<ISysFileListData> fileData (handler, IID_ISYSFILELISTDATA);		
-		IDFile xmlFileToImport = fileData->GetSysFileItem(0);
-		IDFile formeFileToImport = fileData->GetSysFileItem(1);
-		IDFile matchingFile = fileData->GetSysFileItem(2);		
-
 		InterfacePtr<IStringListData> textData (handler, IID_ISTRINGLISTDATA);		
-		PMString artId = textData->GetStringList()[0];
-		PMString artType = textData->GetStringList()[1];
-		PMString artSnippetFile = textData->GetStringList()[2];
-		PMString artSubject = textData->GetStringList()[3];
-		PMString artIdStatus = textData->GetStringList()[4];
-		PMString artLibelleStatus = textData->GetStringList()[5];
-		PMString artCouleurStatus = textData->GetStringList()[6];
-		PMString artRubrique = textData->GetStringList()[7];
-		PMString artSsRubrique = textData->GetStringList()[8];
-		bool16 forceAskForm = textData->GetStringList().size() > 10 && textData->GetStringList()[10] == "1";
+		const K2Vector<PMString> stringList = textData->GetStringList();
 
 		// Get mouse location
 		InterfacePtr<IControlView> layoutView (target, UseDefaultIID());
@@ -196,20 +183,40 @@ XPGUIXRailArticleWithFormeDropTarget::ProcessDragDropCommand(IDragDropTarget* ta
 		IDataBase * db = ::GetDataBase(doc);
 		if(db == nil)	break;	
 
-		// Get Story Text type : MarbreGeneral, MarbreParution
-		PMString::ConversionError convError;
-		int8 kArtType = artType.GetAsNumber(&convError);
-		if (convError != PMString::kNoError)
-			break;
+		// Un ou plusieurs articles (multi-selection DONTASKFORM=1) : par article,
+		// 3 fichiers (xml, forme, matching) + 11 chaines. Tous deposes au meme point.
+		const int32 kNbStrings = 11;
+		const int32 nbArticles = (stringList.size() >= kNbStrings) ? stringList.size() / kNbStrings : 1;
+		for(int32 a = 0 ; a < nbArticles ; ++a){
+			const int32 s = a * kNbStrings;
+			IDFile xmlFileToImport = fileData->GetSysFileItem(a * 3);
+			IDFile matchingFile = fileData->GetSysFileItem(a * 3 + 2);		
 
-		
-		if(kArtType == kMEPJavaStory){			
-			// Article Java, show Dialog to link story 
-			XPageUIUtils::DisplayLinkArticleDialog(artId, artSnippetFile, artSubject, matchingFile, currentPoint, artIdStatus, 
-												   artLibelleStatus, artCouleurStatus, ::GetUIDRef(targetSpread), 
-												   kArtType, FileUtils::SysFileToPMString(xmlFileToImport), artRubrique, artSsRubrique,
-												   forceAskForm);
-		}			
+			PMString artId = stringList[s + 0];
+			PMString artType = stringList[s + 1];
+			PMString artSnippetFile = stringList[s + 2];
+			PMString artSubject = stringList[s + 3];
+			PMString artIdStatus = stringList[s + 4];
+			PMString artLibelleStatus = stringList[s + 5];
+			PMString artCouleurStatus = stringList[s + 6];
+			PMString artRubrique = stringList[s + 7];
+			PMString artSsRubrique = stringList[s + 8];
+			bool16 forceAskForm = stringList.size() > s + 10 && stringList[s + 10] == "1";
+
+			// Get Story Text type : MarbreGeneral, MarbreParution
+			PMString::ConversionError convError;
+			int8 kArtType = artType.GetAsNumber(&convError);
+			if (convError != PMString::kNoError)
+				continue;
+
+			if(kArtType == kMEPJavaStory){			
+				// Article Java, show Dialog to link story 
+				XPageUIUtils::DisplayLinkArticleDialog(artId, artSnippetFile, artSubject, matchingFile, currentPoint, artIdStatus, 
+													   artLibelleStatus, artCouleurStatus, ::GetUIDRef(targetSpread), 
+													   kArtType, FileUtils::SysFileToPMString(xmlFileToImport), artRubrique, artSsRubrique,
+													   forceAskForm);
+			}
+		}
 
 		// Send notification so that texte panel is updated
 		InterfacePtr<ISubject> sessionSubject(GetExecutionContextSession(), UseDefaultIID());

@@ -20,6 +20,8 @@
 #include "IWidgetUtils.h"
 #include "IXPageMgrAccessor.h"
 #include "IXPGPreferences.h"
+#include "ITreeViewController.h"
+#include "K2Vector.tpp" // For NodeIDList to compile
 
 // General includes:
 #include "CDragDropSource.h"
@@ -72,7 +74,7 @@ private:
 
 	bool16 doAddArticleDragContent(IDragDropController* controller);
 
-	bool16 GetArticleData(IDFile& articleFile, IDFile& formeFile, IDFile& matchingFile, PMString& articleId, 
+	bool16 GetArticleData(const NodeID& node, IDFile& articleFile, IDFile& formeFile, IDFile& matchingFile, PMString& articleId,
 						  IDFile& imageFile, PMString& legend, PMString& credit, int32& artType,
 						  PMString& articleSnippetFile, PMString& articleSubject, PMString& idStatus, PMString& libelleStatus,
 						  PMString& couleurStatus, PMString& rubrique, PMString& ssRubrique, PMString& artFolio) const;
@@ -114,20 +116,9 @@ bool16 XPGUIXRailTexteDragDropSource::doAddArticleDragContent(IDragDropControlle
 	
 	bool16 result = kFalse;
 	do{
-		// Stop if we can't determine the IDFile we are associated with.
-		IDFile articleFile, formeFile, matchingFile, imageFile;
+		InterfacePtr<ITreeNodeIDData> nodeData(this, UseDefaultIID());
+		NodeID draggedNode = nodeData->Get();
 
-		PMString articleId = kNullString, legend = kNullString, credit = kNullString, articleSnippetFile = kNullString, articleSubject = kNullString, 
-				 articleIdStatus = kNullString, articleLibelleStatus = kNullString, articleCouleurStatus = kNullString, 
-				 articleRubrique = kNullString, articleSsRubrique = kNullString, articleFolio = kNullString;
-					
-		int32 articleType = 0;	
-		if (this->GetArticleData(articleFile, formeFile, matchingFile, articleId, imageFile, legend, credit, articleType, articleSnippetFile, articleSubject, 
-								 articleIdStatus, articleLibelleStatus, articleCouleurStatus, articleRubrique, articleSsRubrique, articleFolio) == kFalse)
-		{
-			break;
-		}
-	
 		PMFlavor flavor = kNoFlavor;
 		// DONTASKFORM=1 : Alt ne sert plus a importer dans une forme existante,
 		// il force l'affichage du dialogue de choix du carton.
@@ -150,32 +141,66 @@ bool16 XPGUIXRailTexteDragDropSource::doAddArticleDragContent(IDragDropControlle
 		flavor = XPageTextOnlyFlavor;
 #endif
 		
+		// Articles a glisser : par defaut le seul noeud glisse. Avec DONTASKFORM=1
+		// et sans Alt (pas de forceAskForm), tous les articles selectionnes si le
+		// noeud glisse en fait partie. Pas de multi-depot avec Alt.
+		NodeIDList nodesToDrag;
+		nodesToDrag.push_back(draggedNode);
+#if !INCOPY
+		if(dontAskForm && !forceAskForm){
+			InterfacePtr<ITreeViewController> articleListController ((ITreeViewController*)Utils<IWidgetUtils>()->QueryRelatedWidget(this, kXPGUIArticleViewWidgetID, IID_ITREEVIEWCONTROLLER));
+			if(articleListController && articleListController->IsSelected(draggedNode)){
+				NodeIDList selectedItems;
+				articleListController->GetSelectedItemsDisplayOrder(selectedItems);
+				if(selectedItems.size() > 1)
+					nodesToDrag = selectedItems;
+			}
+		}
+#endif
+
 		InterfacePtr<IDataExchangeHandler> dataExchangeHandler (controller->QueryHandler(flavor));
 
 		controller->SetSourceHandler(dataExchangeHandler);
 		dataExchangeHandler->Clear();		 
 		
-		// Add the IDFiles to be dragged.
+		// Par article : 3 fichiers (xml, forme, matching) + 11 chaines, a la suite.
 		InterfacePtr<ISysFileListData> sysFileData(dataExchangeHandler, IID_ISYSFILELISTDATA);
-		sysFileData->Append(articleFile);
-		sysFileData->Append(formeFile);
-		sysFileData->Append(matchingFile);
-		
-		PMString articleTypeString;
-		articleTypeString.AppendNumber(articleType);
-
 		K2Vector<PMString> articleData;
-		articleData.push_back(articleId);
-		articleData.push_back(articleTypeString);
-		articleData.push_back(articleSnippetFile);
-		articleData.push_back(articleSubject);
-		articleData.push_back(articleIdStatus);
-		articleData.push_back(articleLibelleStatus);
-		articleData.push_back(articleCouleurStatus);
-		articleData.push_back(articleRubrique);
-		articleData.push_back(articleSsRubrique);	
-		articleData.push_back(articleFolio);
-		articleData.push_back(forceAskForm ? "1" : "0");
+
+		for(int32 n = 0 ; n < nodesToDrag.size() ; ++n){
+			IDFile articleFile, formeFile, matchingFile, imageFile;
+			PMString articleId = kNullString, legend = kNullString, credit = kNullString, articleSnippetFile = kNullString, articleSubject = kNullString, 
+					 articleIdStatus = kNullString, articleLibelleStatus = kNullString, articleCouleurStatus = kNullString, 
+					 articleRubrique = kNullString, articleSsRubrique = kNullString, articleFolio = kNullString;
+			int32 articleType = 0;	
+			if (this->GetArticleData(nodesToDrag[n], articleFile, formeFile, matchingFile, articleId, imageFile, legend, credit, articleType, articleSnippetFile, articleSubject, 
+									 articleIdStatus, articleLibelleStatus, articleCouleurStatus, articleRubrique, articleSsRubrique, articleFolio) == kFalse)
+			{
+				continue;
+			}
+
+			sysFileData->Append(articleFile);
+			sysFileData->Append(formeFile);
+			sysFileData->Append(matchingFile);
+			
+			PMString articleTypeString;
+			articleTypeString.AppendNumber(articleType);
+
+			articleData.push_back(articleId);
+			articleData.push_back(articleTypeString);
+			articleData.push_back(articleSnippetFile);
+			articleData.push_back(articleSubject);
+			articleData.push_back(articleIdStatus);
+			articleData.push_back(articleLibelleStatus);
+			articleData.push_back(articleCouleurStatus);
+			articleData.push_back(articleRubrique);
+			articleData.push_back(articleSsRubrique);	
+			articleData.push_back(articleFolio);
+			articleData.push_back(forceAskForm ? "1" : "0");
+		}
+
+		if(articleData.empty())
+			break;
 
 		// Pass the article's article Snippet File to the handler for use at a later time
 		InterfacePtr<IStringListData> textData (dataExchangeHandler, IID_ISTRINGLISTDATA);
@@ -195,16 +220,15 @@ bool16 XPGUIXRailTexteDragDropSource::doAddArticleDragContent(IDragDropControlle
 
 /* getXmlFiles
 */
-bool16 XPGUIXRailTexteDragDropSource::GetArticleData(IDFile& articleFile, IDFile& formeFile, IDFile& matchingFile, PMString& articleId, 
-													 IDFile& imageFile, PMString& legend, PMString& credit, int32& artType, PMString& articleSnippetFile, 
-													 PMString& articleSubject, PMString& idStatus, PMString& libelleStatus, PMString& couleurStatus, 
+bool16 XPGUIXRailTexteDragDropSource::GetArticleData(const NodeID& node, IDFile& articleFile, IDFile& formeFile, IDFile& matchingFile, PMString& articleId,
+													 IDFile& imageFile, PMString& legend, PMString& credit, int32& artType, PMString& articleSnippetFile,
+													 PMString& articleSubject, PMString& idStatus, PMString& libelleStatus, PMString& couleurStatus,
 													 PMString& rubrique, PMString& ssRubrique, PMString& artFolio) const
 {
 	bool16 result = kFalse;
-	
+
 	do {
-		InterfacePtr<ITreeNodeIDData> nodeData(this, UseDefaultIID());		
-		TreeNodePtr<XPGUIArticleNodeID> nodeID(nodeData->Get());
+		TreeNodePtr<XPGUIArticleNodeID> nodeID(node);
 		if(!nodeID)
 			break;
 
@@ -220,8 +244,10 @@ bool16 XPGUIXRailTexteDragDropSource::GetArticleData(IDFile& articleFile, IDFile
 		couleurStatus = nodeID->GetArticleData()->artCouleurStatus;
 		rubrique = nodeID->GetArticleData()->artRubrique;
 		ssRubrique = nodeID->GetArticleData()->artSsRubrique;
+		if(contentPath.IsEmpty()) // noeud sans article (ex. rubrique dans une multi-selection)
+			break;
 		articleFile = FileUtils::PMStringToSysFile(contentPath);
-		
+
 		if(!FileUtils::DoesFileExist(articleFile)){
 			ErrorUtils::PMSetGlobalErrorCode(kSuccess); // Reset global error code
             

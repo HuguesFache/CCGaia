@@ -17,6 +17,7 @@
 #include "ITreeViewController.h"
 #include "FileUtils.h"
 #include "IXPageUtils.h"
+#include "IXPGPreferences.h"
 #include "K2Vector.tpp" // For NodeIDList to compile
 
 class XPGUIArticleViewObserver : public CObserver{
@@ -74,7 +75,24 @@ void XPGUIArticleViewObserver::handleSelectionChanged()
 		InterfacePtr<ITreeViewController> controller(this, UseDefaultIID());
 	
 		NodeIDList selectedItems;
-		controller->GetSelectedItems(selectedItems);	
+		controller->GetSelectedItems(selectedItems);
+
+		// La multi-selection n'est autorisee qu'avec DONTASKFORM=1 : sinon on ne
+		// garde que l'element maitre (sans notifier, pour ne pas reboucler).
+		if(selectedItems.size() > 1){
+			InterfacePtr<IXPGPreferences> xpgPrefs(GetExecutionContextSession(), UseDefaultIID());
+			if(!xpgPrefs || !xpgPrefs->GetDontAskForm()){
+				NodeID master = controller->GetMasterItem();
+				controller->DeselectAll(kFalse, kTrue);
+				controller->Select(master, kFalse, kTrue);
+				selectedItems.clear();
+				selectedItems.push_back(master);
+			}
+		}
+
+		// Infos (apercu, signes, classeur/forme) : seulement si un seul article est selectionne
+		if(selectedItems.size() > 1)
+			selectedItems.clear();
 		PMString previewArt = kNullString, folioArt = kNullString, sheatsArt = kNullString;
 		PMString classeurArt = kNullString, formeArt = kNullString;
 

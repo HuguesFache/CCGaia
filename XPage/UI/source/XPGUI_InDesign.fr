@@ -2868,13 +2868,15 @@ resource XPGUIArticlePanelWidget (kXPGUIArticlePanelResourceID + index_enUS)
 					20, // fVThumbScrollIncrement
 					20, // fHScrollButtonIncrement
 					20, // fHThumbScrollIncrement
-					1, // Items selectable, 0 = No Selection, 1 = Single Selection, 2 = Multiple Selection
-					kFalse, // Allow children from multiple parents to be selected
-					kFalse, // Allow discontiguous selection
+					2, // Items selectable, 0 = No Selection, 1 = Single Selection, 2 = Multiple Selection
+					   // Multi-selection reservee a DONTASKFORM=1 : ramenee a une selection
+					   // simple par XPGUIArticleViewObserver sinon.
+					kTrue, // Allow children from multiple parents to be selected
+					kTrue, // Allow discontiguous selection
 					{
-					} 
+					}
 				),
-			} 
+			}
 		),
 		XPGUIDropDownListWidget										//Liste des parutions
 		(
