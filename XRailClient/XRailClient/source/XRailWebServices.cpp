@@ -1825,9 +1825,9 @@ bool XRailWebServices::CreateAffectation_v2(const PMString& address, const PMStr
 	doc.AddMember("onwindows", onwindows, allocator);
 	doc.AddMember("idUserDest", Value().SetString(idUserDest.GetPlatformString().c_str(), allocator), allocator);
 	doc.AddMember("sujet", Value().SetString(subject.GetPlatformString().c_str(), allocator), allocator);
-	doc.AddMember("nbsignes", Value().SetString(idSousSection.GetPlatformString().c_str(), allocator), allocator);
-	doc.AddMember("section",  Value().SetString(nbSignesEstim.GetPlatformString().c_str(), allocator), allocator);
-	doc.AddMember("soussection", Value().SetString(idSection.GetPlatformString().c_str(), allocator), allocator);
+	doc.AddMember("nbsignes", Value().SetString(nbSignesEstim.GetPlatformString().c_str(), allocator), allocator);
+	doc.AddMember("section",  Value().SetString(idSection.GetPlatformString().c_str(), allocator), allocator);
+	doc.AddMember("soussection", Value().SetString(idSousSection.GetPlatformString().c_str(), allocator), allocator);
 	doc.AddMember("nbphotos", nbPhotos, allocator);
 
 	StringBuffer buffer;
