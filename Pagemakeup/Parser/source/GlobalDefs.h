@@ -37,7 +37,7 @@
 //  SERVER OPTION
 //-------------------
 #ifndef SERVER
-#define SERVER 0
+#define SERVER 1
 #endif
 
 //-------------------
