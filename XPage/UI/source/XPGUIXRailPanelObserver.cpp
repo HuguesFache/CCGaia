@@ -1487,21 +1487,14 @@ void XPGUIXRailPanelObserver::SyncDisplayFormesCheckbox() {
 }
 
 
-// Per-frame helper: does this page item carry a Gaia identifier?
-//   - Text/InCopy frames: IPlacedArticleData::GetUniqueId() non-empty.
-//   - Graphic / forme frames: IFormeData::GetUniqueName() non-empty.
+// Per-frame helper: does this page item carry an article ID?
+//   IPlacedArticleData::GetUniqueId() non-empty. Forme IDs (blocks coming
+//   from a carton, IFormeData) are deliberately ignored.
 // NOT recursive on its own — sCountGaiaIDs handles groups.
 static bool16 sHasGaiaIDOnLeaf(const UIDRef& itemRef)
 {
 	InterfacePtr<IPlacedArticleData> placed(itemRef, UseDefaultIID());
-	if (placed != nil && placed->GetUniqueId() != kNullString)
-		return kTrue;
-
-	InterfacePtr<IFormeData> forme(itemRef, UseDefaultIID());
-	if (forme != nil && forme->GetUniqueName() != kNullString)
-		return kTrue;
-
-	return kFalse;
+	return (placed != nil && placed->GetUniqueId() != kNullString);
 }
 
 // Recursively count leaf items (going through InDesign groups, which
@@ -1542,8 +1535,8 @@ void XPGUIXRailPanelObserver::HandleSelectionChanged(const ISelectionMessage * m
 	const bool16 paletteUsable = this->IsPaletteUsable();
 
 	// === Step 2 — selection-driven button rules (only relevant when gate open) ===
-	// Ajouter / Ajouter à : enabled iff selection non-empty AND no LEAF item has a Gaia ID.
-	// MAJ                 : enabled iff selection non-empty AND every LEAF item has a Gaia ID.
+	// Ajouter / Ajouter à : enabled iff selection non-empty AND no LEAF item has an article ID.
+	// MAJ                 : enabled iff selection non-empty AND every LEAF item has an article ID.
 	// Délier              : enabled as soon as selection is non-empty (it only
 	//                       clears article info, no-ops on blocks without one).
 	// Groups are walked transparently — a group of two ID'd frames behaves
