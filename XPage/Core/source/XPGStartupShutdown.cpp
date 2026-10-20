@@ -206,6 +206,8 @@ void XPGStartupShutdown::ReadConfFile() {
 									serveurPlugin = valueBis;
 								else if (key->Compare(kFalse, "CreationForme") == 0)
 									xpgPrefs->SetCreationForme(Utils<IDataStringUtils>()->StringToBool(WideString(valueBis)));
+								else if (key->Compare(kFalse, "DONTASKFORM") == 0)
+									xpgPrefs->SetDontAskForm(Utils<IDataStringUtils>()->StringToBool(WideString(valueBis)));
 
 							}
 						}

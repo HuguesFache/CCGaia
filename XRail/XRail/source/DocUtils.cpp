@@ -412,14 +412,12 @@ PMString GetGoodUrlXR(PMString baseName)
 
 	PMString serverAddress = urlXR;
 #if MULTIBASES == 1
-	CAlert::InformationAlert(baseName);
 	//si le nom de la base est renseigne
 	if (baseName != "") {
 		for (i = 0; i < listeBases.size(); i++) {
 			if (listeBases[i] == baseName) {
 				serverAddress = IPBases[i];
 
-				CAlert::InformationAlert(serverAddress);
 				break;
 			}
 		}
@@ -700,7 +698,100 @@ ErrorCode ConvertToResaPub(UIDRef resaFrame, const PMString& resaID, const PMStr
 	return status;
 }
 
-void ImportPubFile(UIDRef resaPub, const IDFile& pubFile, PMString pubFileName, bool16 respectTemplateFitting)
+//----------------------------------------------------------------------------------------------------------------
+// ApplyPubFitting - fit the pub visual to its frame (or the frame to the
+// visual, depending on the "PubProp" preference) and reset the frame's fill.
+//
+// Extracted from ImportPubFile so it can also be run WITHOUT re-importing
+// the image: when XRail sends new dimensions for a pub that is already
+// placed with an up-to-date visual, the frame is resized by
+// SetPageItemGeometry and the content must then be re-fitted to it.
+//----------------------------------------------------------------------------------------------------------------
+static void ApplyPubFitting(UIDRef resaPub, bool16 respectTemplateFitting)
+{
+	do
+	{
+		IDataBase* db = resaPub.GetDataBase();
+		if (db == nil)
+			break;
+
+		// Resize reserve frame and reset backgroung color
+		UIDList frameList(resaPub);
+		InterfacePtr<IWorkspace> workspace(GetExecutionContextSession()->QueryWorkspace());
+		InterfacePtr<IXRailPrefsData>  xrailPrefsData((IXRailPrefsData*)workspace->QueryInterface(IID_IXRAILPREFSDATA));
+
+		// When respectTemplateFitting is set (IDMS-template path), we
+		// skip both auto-fit commands: the frame already carries the
+		// FrameFittingOption configured by the client in the template
+		// (e.g. "Remplir proportionnellement"), and
+		// kPlaceItemInGraphicFrameCmdBoss above honoured it when
+		// placing the image. Forcing kFitContent / kFitFrame here
+		// would override the template's choice and resize the frame
+		// to the visual's intrinsic dimensions, which is exactly the
+		// behaviour we want to avoid.
+		if (!respectTemplateFitting)
+		{
+			if (xrailPrefsData->GetPubProp() == 1) {
+				if (!Utils<IFrameContentUtils>()->DoesContainGraphicFrame(&frameList, kFalse))
+					break;
+
+				UIDList* contentList = nil;
+				contentList = Utils<IFrameContentUtils>()->CreateListOfContent(frameList);
+				UIDRef content = UIDRef(db, contentList->At(0));
+				InterfacePtr<ICommand> fitContentToFrameCmd(CmdUtils::CreateCommand(kFitContentToFrameCmdBoss));
+				fitContentToFrameCmd->SetUndoability(ICommand::kAutoUndo);
+				fitContentToFrameCmd->SetItemList(UIDList(content));
+
+				if (CmdUtils::ProcessCommand(fitContentToFrameCmd) != kSuccess)
+					break;
+			}
+			else {
+				InterfacePtr<ICommand> fitFrameToContentCmd(CmdUtils::CreateCommand(kFitFrameToContentCmdBoss));
+				fitFrameToContentCmd->SetUndoability(ICommand::kAutoUndo);
+				fitFrameToContentCmd->SetItemList(frameList);
+				if (CmdUtils::ProcessCommand(fitFrameToContentCmd) != kSuccess)
+					break;
+			}
+		}
+		else
+		{
+			// IDMS-template path: kPlaceItemInGraphicFrameCmd above
+			// places the image at 100% even when the frame's
+			// FrameFittingOption is "FillProportionally", so we
+			// re-apply the fitting explicitly here. The current
+			// implementation hardcodes kFillProportionally because
+			// that's the option the templates carry in practice; if
+			// later templates use kFitProportionally / kFitContents,
+			// we'll switch to reading the frame's existing
+			// FrameFittingOption attribute instead of forcing one.
+			// Reference point = center anchor (Adobe default for
+			// proportional fills); no crop adjustments.
+			InterfacePtr<ICommand> setFittingCmd(CmdUtils::CreateCommand(kSetFittingOptionsCmdBoss));
+			if (setFittingCmd != nil)
+			{
+				setFittingCmd->SetUndoability(ICommand::kAutoUndo);
+				InterfacePtr<ISetFittingOptionsCmdData> fittingData(setFittingCmd, IID_ISETFITTINGOPTIONSCMDDATA);
+				if (fittingData != nil)
+				{
+					fittingData->SetFittingOptionsData(
+						IReferencePointData::kCenterReferencePoint,
+						PMRect(0, 0, 0, 0),
+						ISetFittingOptionsCmdData::kFillProportionally,
+						kFalse);
+					setFittingCmd->SetItemList(frameList);
+					CmdUtils::ProcessCommand(setFittingCmd);
+				}
+			}
+		}
+
+		// Reset fill color
+		InterfacePtr<ICommand> fillCmd(Utils<IGraphicAttributeUtils>()->CreateFillRenderingCommand(
+			Utils<ISwatchUtils>()->GetNoneSwatchUID(db), &frameList, kTrue, kTrue));
+		CmdUtils::ProcessCommand(fillCmd);
+	} while (kFalse);
+}
+
+void ImportPubFile(UIDRef resaPub, const IDFile& pubFile, PMString pubFileName, bool16 respectTemplateFitting, bool16 forceRefit)
 {
 	do
 	{
@@ -895,79 +986,14 @@ void ImportPubFile(UIDRef resaPub, const IDFile& pubFile, PMString pubFileName, 
 			if (CmdUtils::ProcessCommand(placeItemCmd) != kSuccess)
 				break;
 
-			// Resize reserve frame and reset backgroung color
-			UIDList frameList(resaPub);
-			InterfacePtr<IWorkspace> workspace(GetExecutionContextSession()->QueryWorkspace());
-			InterfacePtr<IXRailPrefsData>  xrailPrefsData((IXRailPrefsData*)workspace->QueryInterface(IID_IXRAILPREFSDATA));
-
-			// When respectTemplateFitting is set (IDMS-template path), we
-			// skip both auto-fit commands: the frame already carries the
-			// FrameFittingOption configured by the client in the template
-			// (e.g. "Remplir proportionnellement"), and
-			// kPlaceItemInGraphicFrameCmdBoss above honoured it when
-			// placing the image. Forcing kFitContent / kFitFrame here
-			// would override the template's choice and resize the frame
-			// to the visual's intrinsic dimensions, which is exactly the
-			// behaviour we want to avoid.
-			if (!respectTemplateFitting)
-			{
-				if (xrailPrefsData->GetPubProp() == 1) {
-					if (!Utils<IFrameContentUtils>()->DoesContainGraphicFrame(&frameList, kFalse))
-						break;
-
-					UIDList* contentList = nil;
-					contentList = Utils<IFrameContentUtils>()->CreateListOfContent(frameList);
-					UIDRef content = UIDRef(db, contentList->At(0));
-					InterfacePtr<ICommand> fitContentToFrameCmd(CmdUtils::CreateCommand(kFitContentToFrameCmdBoss));
-					fitContentToFrameCmd->SetUndoability(ICommand::kAutoUndo);
-					fitContentToFrameCmd->SetItemList(UIDList(content));
-
-					if (CmdUtils::ProcessCommand(fitContentToFrameCmd) != kSuccess)
-						break;
-				}
-				else {
-					InterfacePtr<ICommand> fitFrameToContentCmd(CmdUtils::CreateCommand(kFitFrameToContentCmdBoss));
-					fitFrameToContentCmd->SetUndoability(ICommand::kAutoUndo);
-					fitFrameToContentCmd->SetItemList(frameList);
-					if (CmdUtils::ProcessCommand(fitFrameToContentCmd) != kSuccess)
-						break;
-				}
-			}
-			else
-			{
-				// IDMS-template path: kPlaceItemInGraphicFrameCmd above
-				// places the image at 100% even when the frame's
-				// FrameFittingOption is "FillProportionally", so we
-				// re-apply the fitting explicitly here. The current
-				// implementation hardcodes kFillProportionally because
-				// that's the option the templates carry in practice; if
-				// later templates use kFitProportionally / kFitContents,
-				// we'll switch to reading the frame's existing
-				// FrameFittingOption attribute instead of forcing one.
-				// Reference point = center anchor (Adobe default for
-				// proportional fills); no crop adjustments.
-				InterfacePtr<ICommand> setFittingCmd(CmdUtils::CreateCommand(kSetFittingOptionsCmdBoss));
-				if (setFittingCmd != nil)
-				{
-					setFittingCmd->SetUndoability(ICommand::kAutoUndo);
-					InterfacePtr<ISetFittingOptionsCmdData> fittingData(setFittingCmd, IID_ISETFITTINGOPTIONSCMDDATA);
-					if (fittingData != nil)
-					{
-						fittingData->SetFittingOptionsData(
-							IReferencePointData::kCenterReferencePoint,
-							PMRect(0, 0, 0, 0),
-							ISetFittingOptionsCmdData::kFillProportionally,
-							kFalse);
-						setFittingCmd->SetItemList(frameList);
-						CmdUtils::ProcessCommand(setFittingCmd);
-					}
-				}
-			}
-
-			// Reset fill color
-			InterfacePtr<ICommand> fillCmd(Utils<IGraphicAttributeUtils>()->CreateFillRenderingCommand(
-				Utils<ISwatchUtils>()->GetNoneSwatchUID(db), &frameList, kTrue, kTrue));
-			CmdUtils::ProcessCommand(fillCmd);
+			ApplyPubFitting(resaPub, respectTemplateFitting);
+		}
+		else if (forceRefit)
+		{
+			// The image itself is unchanged, so nothing was re-imported, but
+			// the frame has just been resized to the dimensions XRail sent:
+			// the visual still has to be re-fitted to it.
+			ApplyPubFitting(resaPub, respectTemplateFitting);
 		}
 	} while (kFalse);
 }
@@ -1162,6 +1188,106 @@ ErrorCode ImportAdTemplateBlock(UIDRef ownerSpreadLayer, const IDFile& templateF
 
 		outFrameUID = newItemRef.GetUID();
 		status = kSuccess;
+
+	} while (false);
+
+	return status;
+}
+
+
+//----------------------------------------------------------------------------------------------------------------
+// SetPageItemGeometry - move + resize an EXISTING page item so that its
+// stroke bounding box matches (leftTop, width, height) in pasteboard
+// coordinates, then apply the requested position-lock state.
+//
+// Used by ImportPublicites for pubs that are already placed in the document:
+// XRail remains the source of truth for the reservation geometry, so if the
+// order has been moved or resized on the XRail side we must reflect it in
+// InDesign instead of leaving the existing block untouched.
+//
+// A position-locked item cannot be transformed, so the lock is released
+// before the geometry commands and re-applied afterwards according to
+// `lockPosition` (which also propagates a lock/unlock change coming from
+// XRail).
+//
+// Returns kSuccess when nothing had to change or when both geometry
+// commands succeeded.
+//----------------------------------------------------------------------------------------------------------------
+ErrorCode SetPageItemGeometry(UIDRef itemRef, const PMPoint& leftTop,
+	const PMReal& width, const PMReal& height, bool16 lockPosition, bool16* outChanged)
+{
+	ErrorCode status = kFailure;
+
+	if (outChanged != nil)
+		*outChanged = kFalse;
+
+	do
+	{
+		InterfacePtr<IGeometry> frameGeo(itemRef, UseDefaultIID());
+		if (frameGeo == nil)
+			break;
+
+		// Current position/size, expressed the same way as the target.
+		PMRect innerBox = frameGeo->GetStrokeBoundingBox();
+		PMPoint currentTopLeft = innerBox.LeftTop();
+		::TransformInnerPointToPasteboard(frameGeo, &currentTopLeft);
+
+		const PMReal dx = leftTop.X() - currentTopLeft.X();
+		const PMReal dy = leftTop.Y() - currentTopLeft.Y();
+		const PMReal dw = (width > 0)  ? (width  - innerBox.Width())  : PMReal(0);
+		const PMReal dh = (height > 0) ? (height - innerBox.Height()) : PMReal(0);
+
+		// 1/100 pt tolerance: the resa coordinates come from XRail in
+		// millimeters, so a strict comparison would re-transform (and dirty
+		// the document) on every open because of rounding.
+		const PMReal kGeoTolerance(0.01);
+		const bool16 geometryUpToDate = (::abs(dx) < kGeoTolerance) && (::abs(dy) < kGeoTolerance)
+			&& (::abs(dw) < kGeoTolerance) && (::abs(dh) < kGeoTolerance);
+
+		InterfacePtr<ILockPosition> lockPos(itemRef, IID_ILOCKPOSITION);
+		const bool16 isLocked = (lockPos != nil) ? lockPos->IsLocked() : kFalse;
+
+		if (geometryUpToDate)
+		{
+			// Nothing to move, only make sure the lock state still matches.
+			if (lockPos != nil && isLocked != lockPosition)
+				LockPageItemCmd(itemRef, lockPosition, kTrue);
+			status = kSuccess;
+			break;
+		}
+
+		// Transform commands are refused on a position-locked item.
+		if (isLocked)
+			LockPageItemCmd(itemRef, kFalse, kTrue);
+
+		if (outChanged != nil)
+			*outChanged = kTrue;
+
+		status = kSuccess;
+
+		if (::abs(dx) >= kGeoTolerance || ::abs(dy) >= kGeoTolerance)
+		{
+			status = Utils<Facade::ITransformFacade>()->TransformItems(
+				UIDList(itemRef),
+				Transform::PasteboardCoordinates(),
+				kZeroPoint,
+				Transform::TranslateBy(dx, dy));
+		}
+
+		if (status == kSuccess && width > 0 && height > 0
+			&& (::abs(dw) >= kGeoTolerance || ::abs(dh) >= kGeoTolerance))
+		{
+			status = Utils<Facade::IGeometryFacade>()->ResizeItems(
+				UIDList(itemRef),
+				Transform::PasteboardCoordinates(),
+				Geometry::OuterStrokeBounds(),
+				leftTop,
+				Geometry::ResizeTo(width, height));
+		}
+
+		// Restore / apply the lock state whatever happened above.
+		if (lockPos != nil && lockPosition)
+			LockPageItemCmd(itemRef, kTrue, kTrue);
 
 	} while (false);
 

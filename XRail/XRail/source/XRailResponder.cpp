@@ -521,6 +521,58 @@ void XRailResponder::ImportPublicites(UIDRef doc, const K2Vector<int32>& IDPages
 				}
 			}
 
+			// XRail stays the source of truth for a reservation's geometry:
+			// a pub already present in the document may have been moved or
+			// resized on the XRail side since the last open, so re-apply the
+			// coordinates / dimensions it sends. Without this only creations
+			// and deletions were handled, and an existing block kept its
+			// previous position and size.
+			//
+			// The size is only re-applied when the frame isn't driven by its
+			// visual: with the "PubProp" preference set to
+			// fit-frame-to-content (GetPubProp() != 1) and a visual
+			// available, ImportPubFile resizes the frame to the image
+			// itself, so forcing the XRail dimensions here would be undone
+			// right after and would dirty the document on every open. In
+			// that case we only move the block.
+			bool16 forceRefitPub = kFalse;
+			if (placed && aPub.resaUID != kInvalidUID)
+			{
+				InterfacePtr<IWorkspace> wsForGeo(GetExecutionContextSession()->QueryWorkspace());
+				InterfacePtr<IXRailPrefsData> prefsForGeo(wsForGeo, IID_IXRAILPREFSDATA);
+				const int32 pubProp = (prefsForGeo != nil) ? prefsForGeo->GetPubProp() : 0;
+
+				const bool16 hasVisual = (TabCheminImage[i] != kNullString);
+				const bool16 sizeDrivenByVisual = hasVisual && !templateUsed && (pubProp != 1);
+
+				UID ownerPageUID = kInvalidUID;
+				InterfacePtr<IHierarchy> placedHier(db, aPub.resaUID, UseDefaultIID());
+				if (placedHier != nil)
+					ownerPageUID = Utils<ILayoutUtils>()->GetOwnerPageUID(placedHier);
+
+				if (ownerPageUID != kInvalidUID)
+				{
+					InterfacePtr<IGeometry> ownerPageGeo(db, ownerPageUID, UseDefaultIID());
+					if (ownerPageGeo != nil)
+					{
+						PMPoint resaLeftTop(uom->UnitsToPoints(TabX[i]), uom->UnitsToPoints(TabY[i]));
+						::TransformInnerPointToPasteboard(ownerPageGeo, &resaLeftTop);
+
+						bool16 geometryChanged = kFalse;
+						SetPageItemGeometry(UIDRef(db, aPub.resaUID), resaLeftTop,
+							sizeDrivenByVisual ? PMReal(0) : uom->UnitsToPoints(TabLargeurs[i]),
+							sizeDrivenByVisual ? PMReal(0) : uom->UnitsToPoints(TabHauteurs[i]),
+							TabVerrouPos[i], &geometryChanged);
+
+						// The frame changed size: the visual inside it has to
+						// be re-fitted even when the image file itself hasn't
+						// changed (ImportPubFile skips the whole import, and
+						// therefore the fitting, in that case).
+						forceRefitPub = geometryChanged && hasVisual && !sizeDrivenByVisual;
+					}
+				}
+			}
+
 			if (!placed) // Pub not placed yet, create it
 			{
 				// Get the page where the item for the resa must be created
@@ -676,7 +728,7 @@ void XRailResponder::ImportPublicites(UIDRef doc, const K2Vector<int32>& IDPages
 				{
 					IDFile pubFile = FileUtils::PMStringToSysFile(pubFilePath);
 					if (FileUtils::DoesFileExist(pubFile) && !FileUtils::IsDirectory(pubFile)) {
-						ImportPubFile(UIDRef(db, aPub.resaUID), pubFile, pubFilePath);
+						ImportPubFile(UIDRef(db, aPub.resaUID), pubFile, pubFilePath, kFalse, forceRefitPub);
 
 					}
 					else
@@ -699,7 +751,7 @@ void XRailResponder::ImportPublicites(UIDRef doc, const K2Vector<int32>& IDPages
 				(void)templateIsWithVisual;
 				IDFile pubFile = FileUtils::PMStringToSysFile(pubFilePath);
 				if (FileUtils::DoesFileExist(pubFile) && !FileUtils::IsDirectory(pubFile))
-					ImportPubFile(UIDRef(db, aPub.resaUID), pubFile, pubFilePath);
+					ImportPubFile(UIDRef(db, aPub.resaUID), pubFile, pubFilePath, kFalse, forceRefitPub);
 			}
 		}
 
@@ -1287,4 +1339,4 @@ void XRailResponder::MAJPublicites(UIDRef doc, PMString serverAdress)
 	} while (false);
 }
 
-// End, XRailResponder.cpp.
+// End, XRailResponder.cpp.

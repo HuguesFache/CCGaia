@@ -46,10 +46,21 @@ PMString GetGoodUrlXR(PMString baseName);
 		// kFalse runs the legacy GetPubProp()-driven fit (kFitContent /
 		// kFitFrame) so existing callers keep their behaviour.
 		void ImportPubFile(UIDRef resaPub, const IDFile& pubFile, PMString pubFileName,
-			bool16 respectTemplateFitting = kFalse);
+			bool16 respectTemplateFitting = kFalse,
+			bool16 forceRefit = kFalse);
 
 		// Verrouillage de position du bloc pub
 		void LockPageItemCmd(UIDRef itemToSet, const bool8 toLock, const bool8 allowUndo);
+
+		// Move + resize an existing page item to the given pasteboard
+		// rectangle, then apply `lockPosition` (position lock). No-op if the
+		// item is already at the requested geometry (1/100 pt tolerance), so
+		// it can be called on every document open without dirtying it.
+		// Used by ImportPublicites to re-sync pubs already placed in the
+		// document with the geometry sent by XRail.
+		ErrorCode SetPageItemGeometry(UIDRef itemRef, const PMPoint& leftTop,
+			const PMReal& width, const PMReal& height, bool16 lockPosition,
+			bool16* outChanged = nil);
 
 		// Import an IDMS template (single top-level frame expected) into the
 		// target spread layer, then move + resize it to the requested

@@ -5,6 +5,7 @@
 #include "IXPageUtils.h"
 
 class IPanelControlData;
+class IDocument;
 
 //========================================================================================
 // CLASS XPageUtils
@@ -48,7 +49,17 @@ public:
 										 const PMString& idStatus, const PMString& libelleStatus,
 										 const PMString& couleurStatus, 
 										 UIDRef targetSpread, const int32 typeArt, const PMString& articleXMLFile,
-										 const PMString& artRub, const PMString& artSubRub);
+										 const PMString& artRub, const PMString& artSubRub,
+										 bool16 forceAskForm = kFalse);
+
+	/** Place le carton `articleSnippet` sur `targetSpread` puis y importe l'article
+		(texte, images, persistance IPlacedArticleData). Partage entre le dialogue
+		de choix du carton et l'import direct (pref DONTASKFORM).
+	*/
+	static bool16 LinkArticleToPage(IDocument * doc, const PMString& idArt, const PMString& articleSubject,
+									const PMString& articleSnippet, const PMPoint& currentPoint,
+									const UIDRef& targetSpread, const IDFile& matchingFile,
+									const PMString& articleXMLFile);
 
 	static bool16 IsValidName(const PMString& fileName);
 

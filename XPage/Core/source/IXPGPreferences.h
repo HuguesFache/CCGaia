@@ -76,6 +76,12 @@ public:
 	virtual bool16 GetCreationForme() const = 0;
 	virtual void SetCreationForme(const bool16& b) = 0;
 
+	// DONTASKFORM (Gaia.ini) : si kTrue et que le XML de l'article fournit un
+	// classeur/carton valide, l'article est importe sans afficher le dialogue
+	// de choix du carton. Defaut = kFalse.
+	virtual bool16 GetDontAskForm() const = 0;
+	virtual void SetDontAskForm(const bool16& b) = 0;
+
 	virtual void SetCheminAssemblageCartons(const PMString& b) = 0;
 	virtual PMString GetCheminAssemblageCartons() = 0;
 

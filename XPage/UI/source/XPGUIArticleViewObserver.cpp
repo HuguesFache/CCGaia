@@ -16,6 +16,12 @@
 #include "ISysFileData.h"
 #include "ITreeViewController.h"
 #include "FileUtils.h"
+#include "IXPageUtils.h"
+#include "IXPGPreferences.h"
+#include "IEventHandler.h"
+#include "IKeyFocusHandler.h"
+#include "IEventUtils.h"
+#include "Utils.h"
 #include "K2Vector.tpp" // For NodeIDList to compile
 
 class XPGUIArticleViewObserver : public CObserver{
@@ -60,7 +66,23 @@ void XPGUIArticleViewObserver::Update(const ClassID& theChange, ISubject* theSub
 	if(theChange == kListSelectionChangedMessage)
 	{
 		this->handleSelectionChanged();
-	}	
+	}
+
+	// Clic de l'utilisateur dans la liste (selection changee bouton souris
+	// enfonce ; le widget arbre n'envoie pas kListSelectionChangedByUserMessage) :
+	// elle prend le clavier pour la navigation aux fleches (XPGUIArticleViewEH).
+	// Jamais sur une selection programmatique, pour ne pas voler le clavier a la
+	// mise en page.
+	const bool16 mouseDown = Utils<IEventUtils>()->IsMouseButtonDown();
+	if(theChange == kListSelectionChangedByUserMessage || (theChange == kListSelectionChangedMessage && mouseDown))
+	{
+		InterfacePtr<IEventHandler> eh(this, UseDefaultIID());
+		IKeyFocusHandler* focusHandler = eh ? ::QueryKeyFocusHandler(eh) : nil;
+		if(focusHandler){
+			focusHandler->SetCurrentTargetEventHandler(eh);
+			focusHandler->Release();
+		}
+	}
 }
 
 
@@ -73,18 +95,58 @@ void XPGUIArticleViewObserver::handleSelectionChanged()
 		InterfacePtr<ITreeViewController> controller(this, UseDefaultIID());
 	
 		NodeIDList selectedItems;
-		controller->GetSelectedItems(selectedItems);	
+		controller->GetSelectedItems(selectedItems);
+
+		// La multi-selection n'est autorisee qu'avec DONTASKFORM=1 : sinon on ne
+		// garde que l'element maitre (sans notifier, pour ne pas reboucler).
+		if(selectedItems.size() > 1){
+			InterfacePtr<IXPGPreferences> xpgPrefs(GetExecutionContextSession(), UseDefaultIID());
+			if(!xpgPrefs || !xpgPrefs->GetDontAskForm()){
+				NodeID master = controller->GetMasterItem();
+				controller->DeselectAll(kFalse, kTrue);
+				controller->Select(master, kFalse, kTrue);
+				selectedItems.clear();
+				selectedItems.push_back(master);
+			}
+		}
+
 		PMString previewArt = kNullString, folioArt = kNullString, sheatsArt = kNullString;
-		
-		// We've got single selection only		
+		PMString classeurArt = kNullString, formeArt = kNullString;
+
+		// Multi-selection : champ Signes = total des signes des articles
+		// selectionnes ; apercu et classeur/forme restent vides.
+		if(selectedItems.size() > 1){
+			int32 totalSignes = 0;
+			for(int32 i = 0 ; i < selectedItems.size() ; ++i){
+				TreeNodePtr<XPGUIArticleNodeID> node(selectedItems[i]);
+				if(node && node->GetArticleData())
+					totalSignes += node->GetArticleData()->artNbSignes;
+			}
+			sheatsArt.AppendNumber(totalSignes);
+			selectedItems.clear();
+		}
+
+		// We've got single selection only
 		if(selectedItems.size()>0){
 			TreeNodePtr<XPGUIArticleNodeID> nodeID(selectedItems[0]);
 			if(!nodeID)
 				break;
 
-			previewArt = nodeID->GetArticleData()->artPreview;		
+			previewArt = nodeID->GetArticleData()->artPreview;
 			sheatsArt.AppendNumber(nodeID->GetArticleData()->artNbSignes);
-		}			
+
+			// Classeur / forme associes a l'article (<DossierCarton> / <FichierCarton> du XML)
+#ifdef MACINTOSH
+			PMString artPath = FileUtils::DecomposeUnicode(nodeID->GetArticleData()->artPath);
+#else
+			PMString artPath = nodeID->GetArticleData()->artPath;
+#endif
+			IDFile articleFile = FileUtils::PMStringToSysFile(artPath);
+			if(artPath != kNullString && FileUtils::DoesFileExist(articleFile))
+				Utils<IXPageUtils>()->GetArticleCartonDefaults(articleFile, classeurArt, formeArt);
+			if(classeurArt == "0") classeurArt = kNullString;
+			if(formeArt == "0")    formeArt = kNullString;
+		}
 
 		InterfacePtr<IWidgetParent> widgetParent (this, UseDefaultIID());
 
@@ -100,7 +162,22 @@ void XPGUIArticleViewObserver::handleSelectionChanged()
 		// Show nb sheats
 	 	InterfacePtr<ITextControlData> articleSheatsData (panelCtrlData->FindWidget(kXPGUIArticleNbSignesWidgetID), UseDefaultIID());
 		sheatsArt.SetTranslatable(kFalse);
-		articleSheatsData->SetString(sheatsArt);	
+		articleSheatsData->SetString(sheatsArt);
+
+		// Show classeur / forme
+		PMString classeurLine("Classeur : ");
+		classeurLine.Append(classeurArt);
+		classeurLine.SetTranslatable(kFalse);
+		InterfacePtr<ITextControlData> classeurData (panelCtrlData->FindWidget(kXPGUIArticleClasseurTextWidgetID), UseDefaultIID());
+		if(classeurData)
+			classeurData->SetString(classeurLine);
+
+		PMString formeLine("Forme : ");
+		formeLine.Append(formeArt);
+		formeLine.SetTranslatable(kFalse);
+		InterfacePtr<ITextControlData> formeData (panelCtrlData->FindWidget(kXPGUIArticleFormeTextWidgetID), UseDefaultIID());
+		if(formeData)
+			formeData->SetString(formeLine);
 		
 	} while(kFalse);
 }

@@ -270,6 +270,9 @@
     <ClCompile Include="source\XPGUIArticleViewObserver.cpp">
       <Filter>Source Files\Articles</Filter>
     </ClCompile>
+    <ClCompile Include="source\XPGUIArticleViewEH.cpp">
+      <Filter>Source Files\Articles</Filter>
+    </ClCompile>
     <ClCompile Include="source\XPGUIImageNodeButtonsObserver.cpp">
       <Filter>Source Files\Images\XRail</Filter>
     </ClCompile>

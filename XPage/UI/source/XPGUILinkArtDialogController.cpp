@@ -98,16 +98,7 @@ class XPGUILinkArtDialogController : public CDialogController{
 	private :
 
 		int32  idPage;
-		bool16 DoStoryLink(const bool16& changeForme, IDocument * doc, const PMString& idArt, 
-							const PMString& rub, const PMString& ssRub, 
-							const PMString& rubName, const PMString& ssRubName,
-							const PMString& subject, const PMString& articleSnippet,
-							const PMString& recipient, const PMString& idStatus, 
-							const PMString& libelleStatus, const PMString& couleurStatus, 
-							const int32 typeArt,
-							const PMPoint& currentPoint, const UIDRef& targetSpread,
-							const IDFile& matchingFile, const PMString& articleXMLFile);
-		
+
 		UIDRef GetTargetStoryFromSnipet(const UIDList& formeItems);
 };
 
@@ -232,9 +223,8 @@ void XPGUILinkArtDialogController::ApplyDialogFields(IActiveContext* myContext, 
 		}  
 		
 		// Story Link		
-		if(!this->DoStoryLink(changeForme, doc, articleId, rubID, ssrubID, rubName, ssRubName, articleSubject, articleSnippetFile, 
-							  recipientID, idStatus, libelleStatus, couleurStatus, articleTypeData->Get(),
-							  currentPoint, targetSpread, matchingFile, articleXMLFile))
+		if(!XPageUIUtils::LinkArticleToPage(doc, articleId, articleSubject, articleSnippetFile,
+											currentPoint, targetSpread, matchingFile, articleXMLFile))
 		{
 			//Impossible de lier cet article a la page
 			CAlert::InformationAlert(kXPGUIStoryLinkErrorKey);
@@ -244,99 +234,6 @@ void XPGUILinkArtDialogController::ApplyDialogFields(IActiveContext* myContext, 
 
 	}													      
 	while(kFalse);
-}
-
-bool16 XPGUILinkArtDialogController::DoStoryLink(const bool16& changeForme, IDocument * doc, const PMString& idArt, const PMString& rub, 
-												 const PMString& ssRub, const PMString& rubName, const PMString& ssRubName,  
-												 const PMString& articleSubject, const PMString& articleSnippet, const PMString& recipient,
-												 const PMString& idStatus, const PMString& libelleStatus,
-												 const PMString& couleurStatus, 
-												 const int32 typeArt, const PMPoint& currentPoint, const UIDRef& targetSpread,
-												 const IDFile& matchingFile, const PMString& articleXMLFile)
-{
-	bool16 result = kFalse;
-	do{
-		
-		
-		IDataBase * db = ::GetDataBase(doc);
-	
-		UIDList formeItemsToLink(db);
-		PMString error = kNullString;
-
-		if( targetSpread == UIDRef::gNull)
-			break;
-	
-		// Import snippet 
-		if(Utils<IXPageUtils>()->ImportForme(::GetUIDRef(doc), 
-											FileUtils::PMStringToSysFile(articleSnippet), 
-											currentPoint,
-											targetSpread, 
-											matchingFile, 
-											error,
-											&formeItemsToLink, kTrue, kTrue)!= kSuccess)
-		{
-			CAlert::InformationAlert(error);
-			break;
-		}		
-		
-		UIDList targetStories(db);
-		K2Vector<UIDRef> targetPictures;
-		for(int32 i = 0 ; i < formeItemsToLink.Length() ; ++i){
-            // GD 27.04.2023 ++
-            UIDRef parentUID = formeItemsToLink.GetRef(i);
-            InterfacePtr<IFormeData> formeData(parentUID, UseDefaultIID());
-            if (formeData != nil) {
-                if (formeData->GetType() == IFormeData::kFixedContent)
-                    continue;
-            }
-            // GD 27.04.2023 --
-			InterfacePtr<IFrameType> frameType (db, formeItemsToLink[i], UseDefaultIID());
-			if(frameType && frameType->IsTextFrame()){
-				InterfacePtr<IHierarchy> itemHier (frameType, UseDefaultIID());
-				InterfacePtr<IMultiColumnTextFrame> txtFrame (db, itemHier->GetChildUID(0), UseDefaultIID());
-				targetStories.Append(txtFrame->GetTextModelUID());
-			}
-			else if (frameType && frameType->IsGraphicFrame()) {
-				targetPictures.push_back(::GetUIDRef(frameType));
-			}
-		}
-	    
-		// Import article
-		error = kNullString;		
-		IDFile xmlFileToImport = FileUtils::PMStringToSysFile(articleXMLFile);
-		if(Utils<IXPageUtils>()->ImportArticle(targetStories, xmlFileToImport, matchingFile, error, xmlFileToImport, idArt) != kSuccess){
-			CAlert::InformationAlert(error);
-			break;
-		}		
-		result= kTrue;
-
-		error = kNullString;
-		if(Utils<IXPageUtils>()->ImportImages(targetPictures, xmlFileToImport, error) != kSuccess){
-			CAlert::InformationAlert(error);
-			break;
-		}
-		
-		//Ajout par HF
-		//Comme on se fout de l'affectation (on est sur du drag n drop d'un article depuis la palette)
-		//on stocke de la persistence dans les blocs
-		InterfacePtr<ICommand> placedArticleDataCmd(CmdUtils::CreateCommand(kXPGSetPlacedArticleDataCmdBoss));
-		InterfacePtr<IPlacedArticleData> placedArticleData(placedArticleDataCmd, IID_IPLACEDARTICLEDATA);
-		placedArticleData->SetUniqueId(idArt);
-		IDFile xmlFolder = xmlFileToImport;
-		FileUtils::GetParentDirectory(xmlFolder, xmlFolder);
-		placedArticleData->SetStoryFolder(FileUtils::SysFileToPMString(xmlFolder));
-		placedArticleData->SetStoryTopic(articleSubject);
-		placedArticleDataCmd->SetItemList(formeItemsToLink);
-		if(CmdUtils::ProcessCommand(placedArticleDataCmd)!= kSuccess)
-			break; 
-		
-		
-		// Invalidate document so that assignment adornments get paint			
-		Utils<ILayoutUIUtils>()->InvalidateViews(doc);
-		result= kTrue;
-
-	}while(kFalse);
-	return result;
 }
 
 UIDRef XPGUILinkArtDialogController::GetTargetStoryFromSnipet(const UIDList& formeItems){
