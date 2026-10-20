@@ -110,11 +110,21 @@ void XPGUIArticleViewObserver::handleSelectionChanged()
 			}
 		}
 
-		// Infos (apercu, signes, classeur/forme) : seulement si un seul article est selectionne
-		if(selectedItems.size() > 1)
-			selectedItems.clear();
 		PMString previewArt = kNullString, folioArt = kNullString, sheatsArt = kNullString;
 		PMString classeurArt = kNullString, formeArt = kNullString;
+
+		// Multi-selection : champ Signes = total des signes des articles
+		// selectionnes ; apercu et classeur/forme restent vides.
+		if(selectedItems.size() > 1){
+			int32 totalSignes = 0;
+			for(int32 i = 0 ; i < selectedItems.size() ; ++i){
+				TreeNodePtr<XPGUIArticleNodeID> node(selectedItems[i]);
+				if(node && node->GetArticleData())
+					totalSignes += node->GetArticleData()->artNbSignes;
+			}
+			sheatsArt.AppendNumber(totalSignes);
+			selectedItems.clear();
+		}
 
 		// We've got single selection only
 		if(selectedItems.size()>0){
