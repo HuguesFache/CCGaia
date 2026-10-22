@@ -160,11 +160,11 @@ static bool16 TryAutoLogin()
 
 	// Connexion a XRail.
 	PMString baseName, result, userID("");
-	int previewResult = 0, pdfResult = 0;
+	int previewResult = 0, pdfResult = 0, noUpdateResult = 0;
 	PMString serverAddress = GetGoodUrlXR(baseName);
 
 	InterfacePtr<IWebServices> xrailHTTP(::CreateObject2<IWebServices>(kXRCXRailClientBoss));
-	bool16 connexionOK = xrailHTTP->VerifLogin_v2(serverAddress, theUser, thePassword, userID, result, pdfResult, previewResult);
+	bool16 connexionOK = xrailHTTP->VerifLogin_v2(serverAddress, theUser, thePassword, userID, result, pdfResult, previewResult, noUpdateResult);
 
 	if (!connexionOK || result != "loginOK")
 		return kFalse;
@@ -184,6 +184,9 @@ static bool16 TryAutoLogin()
 	else if (previewResult == 1) createPreviewBool->Set(kTrue);
 	if (pdfResult == 0) createPDFBool->Set(kFalse);
 	else if (pdfResult == 1) createPDFBool->Set(kTrue);
+
+	InterfacePtr<IIntData> noUpdateData(GetExecutionContextSession(), IID_IXRAILNOUPDATE);
+	if (noUpdateData) noUpdateData->Set(noUpdateResult);
 
 	// Rafraichir les prefs serveur (serveur joignable, VerifLogin vient de
 	// reussir). Silencieux en cas d'echec.

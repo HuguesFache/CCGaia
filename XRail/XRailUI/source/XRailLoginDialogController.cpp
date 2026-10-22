@@ -141,13 +141,13 @@ WidgetID XRailLoginDialogController::ValidateDialogFields(IActiveContext* dlgCon
 		}
 
 		// Connexion a XRail
-		int previewResult, pdfResult;
+		int previewResult, pdfResult, noUpdateResult = 0;
 		PMString baseName;
 
 		PMString serverAddress = GetGoodUrlXR(baseName);
 		InterfacePtr<IWebServices> xrailHTTP(::CreateObject2<IWebServices>(kXRCXRailClientBoss));
 		userID = "";
-		bool16 connexionOK = xrailHTTP->VerifLogin_v2(serverAddress, theUser, thePassword, userID, result, pdfResult, previewResult);
+		bool16 connexionOK = xrailHTTP->VerifLogin_v2(serverAddress, theUser, thePassword, userID, result, pdfResult, previewResult, noUpdateResult);
 
 		if (!connexionOK)
 		{
@@ -183,6 +183,10 @@ WidgetID XRailLoginDialogController::ValidateDialogFields(IActiveContext* dlgCon
 					createPDFBool->Set(kFalse);
 				else if (pdfResult == 1)
 					createPDFBool->Set(kTrue);
+
+				InterfacePtr<IIntData> noUpdateData(GetExecutionContextSession(), IID_IXRAILNOUPDATE);
+				if (noUpdateData)
+					noUpdateData->Set(noUpdateResult);
 
 				// Save login for next identification
 				PMString oldurlXR, user, baseName;

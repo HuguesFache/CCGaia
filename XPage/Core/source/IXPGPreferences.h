@@ -134,9 +134,9 @@ public:
 	virtual EtatArticleList GetEtatsArticles() const = 0;
 	virtual void SetEtatsArticles(const EtatArticleList& l) = 0;
 
-    // Don't create update file
-    virtual PMString GetNoUpdateFile() const =0;
-    virtual void SetNoUpdateFile(const PMString& str) =0;
+    // Don't create update file — NoUpdate renvoye par Plugin_Connection
+    // (stocke cote XRail sur la session). kFalse si absent / pas loggue.
+    virtual bool16 GetNoUpdateFile() const =0;
 
 	// "SERVEUR" value from Gaia.ini — identifies this client workstation to
 	// the server. Stored as PMString because XPage's web service takes it as

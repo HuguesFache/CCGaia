@@ -8,6 +8,9 @@
 
 // Project includes:
 #include "XPGID.h"
+#include "XRLID.h"       // IID_IXRAILNOUPDATE
+#include "IIntData.h"
+#include "ISession.h"
 
 
 /** Implements IStartupShutdownService; purpose is to install the idle task.
@@ -87,8 +90,7 @@ public:
 	virtual EtatArticleList GetEtatsArticles() const;
 	virtual void SetEtatsArticles(const EtatArticleList& l);
 
-    virtual PMString GetNoUpdateFile() const;
-    virtual void SetNoUpdateFile(const PMString& str);
+    virtual bool16 GetNoUpdateFile() const;
 
 	virtual PMString GetPluginServerName() const;
 	virtual void SetPluginServerName(const PMString& name);
@@ -100,7 +102,7 @@ public:
 
 private:
 
-	PMString racineArbo,  noUpdateFile;
+	PMString racineArbo;
 	bool16 creationForme, dontAskForm;
 	bool16 importCredit, importLegende, viderBlocSiVide;
 	int32 gestionIDMS, majIDMS, idmsAllBlocs, changePictureState;
@@ -358,14 +360,10 @@ void XPGPreferences::SetEtatsArticles(const EtatArticleList& l)
 	etatsArticles = l;
 }
 
-PMString XPGPreferences::GetNoUpdateFile() const
+bool16 XPGPreferences::GetNoUpdateFile() const
 {
-    return noUpdateFile;
-
-}
-void XPGPreferences::SetNoUpdateFile(const PMString& str)
-{
-    noUpdateFile = str;
+    InterfacePtr<IIntData> noUpdate(GetExecutionContextSession(), IID_IXRAILNOUPDATE);
+    return (noUpdate && noUpdate->Get() == 1) ? kTrue : kFalse;
 }
 
 PMString XPGPreferences::GetPluginServerName() const

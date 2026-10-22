@@ -99,7 +99,9 @@ DECLARE_PMID(kInterfaceIDSpace, IID_IAUTOCLOSINGDIALOG, kXRLPrefix + 10)
 // XRail so XRail-only installs (no XPage plugin) still work.
 DECLARE_PMID(kInterfaceIDSpace, IID_IXRAILFROMSERVEUR, kXRLPrefix + 11)
 //DECLARE_PMID(kInterfaceIDSpace, IID_IXRLINTERFACE, kXRLPrefix + 11)
-//DECLARE_PMID(kInterfaceIDSpace, IID_IXRLINTERFACE, kXRLPrefix + 12)
+// NoUpdate renvoye par Plugin_Connection — session-level IIntData on
+// kSessionBoss, lu par XPage : 1 => pas de fichier .update. Defaut 0.
+DECLARE_PMID(kInterfaceIDSpace, IID_IXRAILNOUPDATE, kXRLPrefix + 12)
 //DECLARE_PMID(kInterfaceIDSpace, IID_IXRLINTERFACE, kXRLPrefix + 13)
 //DECLARE_PMID(kInterfaceIDSpace, IID_IXRLINTERFACE, kXRLPrefix + 14)
 //DECLARE_PMID(kInterfaceIDSpace, IID_IXRLINTERFACE, kXRLPrefix + 15)

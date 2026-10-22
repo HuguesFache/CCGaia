@@ -1072,7 +1072,7 @@ void XPGUIXRailPanelObserver::UpdateIDMS() {
 					if (CmdUtils::ProcessCommand(placedArticleDataCmd) != kSuccess)
 						break;
                     
-                    if (xpgPrefs->GetNoUpdateFile() != "1") {
+                    if (!xpgPrefs->GetNoUpdateFile()) {
 					//on cree un fichier pour dire que le idms a ete mis a jour
 					IDFile updateFile = FileUtils::PMStringToSysFile(artPath + artToUpdate+".update");
 					InterfacePtr<IPMStream> writeStream(StreamUtil::CreateFileStreamWrite(updateFile, kOpenOut | kOpenTrunc, kTextType));
@@ -1288,7 +1288,7 @@ ErrorCode XPGUIXRailPanelObserver::UpdatePlacedStory2(const UIDRef& itemRef, int
                 break;
             }	
             
-            if (xpgPrefs->GetNoUpdateFile() != "1") {
+            if (!xpgPrefs->GetNoUpdateFile()) {
 			//on cree un fichier pour dire que le idms a ete mis a jour
 			IDFile updateFile = FileUtils::PMStringToSysFile(pathArt + idArt + ".update");
 			InterfacePtr<IPMStream> writeStream(StreamUtil::CreateFileStreamWrite(updateFile, kOpenOut | kOpenTrunc, kTextType));

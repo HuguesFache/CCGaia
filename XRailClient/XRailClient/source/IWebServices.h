@@ -25,7 +25,7 @@ public:
 
 	virtual bool CallWebServiceAndParseJson(const std::string& url, rapidjson::Document& doc) = 0;
 
-	virtual bool VerifLogin_v2(const PMString& address, const PMString& login, const PMString& pwd, PMString& userID, PMString& errorCode, int& VoirPDF, int& VoirVignettes) = 0;
+	virtual bool VerifLogin_v2(const PMString& address, const PMString& login, const PMString& pwd, PMString& userID, PMString& errorCode, int& VoirPDF, int& VoirVignettes, int& NoUpdate) = 0;
 
 	// adTemplateNoVisual/WithVisual: absolute paths to optional IDMS templates
 	// used by XRailResponder::ImportPublicites when inserting ad blocks. Empty

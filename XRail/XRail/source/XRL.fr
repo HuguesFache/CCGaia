@@ -208,6 +208,9 @@ IID_ILOGINSTRING, kXRLLoginStringDataImpl,
 // quand XPage n'est pas installé.
 IID_IXRAILFROMSERVEUR, kIntDataImpl,
 
+// NoUpdate renvoye par Plugin_Connection, lu par XPage.
+IID_IXRAILNOUPDATE, kIntDataImpl,
+
 // Droit des utilisateurs -> Menu XRail (Vignette + PDF)
 IID_ICREATEPDFBOOL, kXRLCreatePDFBoolDataImpl,
 IID_ICREATEPREVIEWBOOL, kXRLCreatePreviewBoolDataImpl,

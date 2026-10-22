@@ -112,7 +112,7 @@ public:
 
 	virtual ~XRailWebServices();
 
-	virtual bool VerifLogin_v2(const PMString& address, const PMString& login, const PMString& pwd, PMString& userID, PMString& errorCode, int& VoirPDF, int& VoirVignettes);
+	virtual bool VerifLogin_v2(const PMString& address, const PMString& login, const PMString& pwd, PMString& userID, PMString& errorCode, int& VoirPDF, int& VoirVignettes, int& NoUpdate);
 
 	virtual bool GetPrefsXRail_v2(const PMString& address, const int32& fromServeur, int32& prefs_ImportPub, int32& prefs_PubProp, int32& prefs_PDFMultipages, int32& prefs_ExportIDML, int32& prefs_MakePreview, PMString& prefs_AdTemplateNoVisual, PMString& prefs_AdTemplateWithVisual);
 
@@ -546,8 +546,10 @@ bool XRailWebServices::CallWebServiceAndParseJson(const std::string& url, rapidj
 // verification du login et du mot de passe
 //----------------------------------------------------------------------------------------------------------------
 
-bool XRailWebServices::VerifLogin_v2(const PMString& address, const PMString& login, const PMString& pwd, PMString& userID, PMString& errorCode, int& VoirPDF, int& VoirVignettes)
+bool XRailWebServices::VerifLogin_v2(const PMString& address, const PMString& login, const PMString& pwd, PMString& userID, PMString& errorCode, int& VoirPDF, int& VoirVignettes, int& NoUpdate)
 {
+	NoUpdate = 0;
+
 	std::string loginStr = login.GetPlatformString().c_str();
 	std::string pwdStr = pwd.GetPlatformString().c_str();
 	std::string serverURL = address.GetPlatformString().c_str();
@@ -575,6 +577,11 @@ bool XRailWebServices::VerifLogin_v2(const PMString& address, const PMString& lo
 
 	if (doc.HasMember("VoirVignettes") && doc["VoirVignettes"].IsInt()) {
 		VoirVignettes = doc["VoirVignettes"].GetInt();
+	}
+
+	// Absent => 0 (on cree le fichier .update).
+	if (doc.HasMember("NoUpdate") && doc["NoUpdate"].IsInt()) {
+		NoUpdate = doc["NoUpdate"].GetInt();
 	}
 
 	return true;

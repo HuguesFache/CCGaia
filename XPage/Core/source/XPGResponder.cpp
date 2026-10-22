@@ -328,7 +328,7 @@ void XPGResponder::ImportAutoArticles(UIDRef doc, const K2Vector<int32>& IDPages
                 }
 
 				//on cree un fichier pour dire que le idms a ete mis a jour
-                if (xpgPrefs->GetNoUpdateFile() != "1") {IDFile updateFile = FileUtils::PMStringToSysFile(TabIDMSpaths[i]);
+                if (!xpgPrefs->GetNoUpdateFile()) {IDFile updateFile = FileUtils::PMStringToSysFile(TabIDMSpaths[i]);
 				FileUtils::AppendPath(&updateFile, idArt + ".update");
 				InterfacePtr<IPMStream> writeStream(StreamUtil::CreateFileStreamWrite(updateFile, kOpenOut | kOpenTrunc, kTextType));
 				if (writeStream == nil)

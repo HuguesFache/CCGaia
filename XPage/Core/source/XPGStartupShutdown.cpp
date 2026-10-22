@@ -200,8 +200,6 @@ void XPGStartupShutdown::ReadConfFile() {
 								else if (key->Compare(kFalse, "URLTEC") == 0) {
 									xpgPrefs->SetTEC_URL(valueBis);
 								}
-								else if (key->Compare(kFalse, "NoUpdate") == 0)
-									xpgPrefs->SetNoUpdateFile(valueBis);
 								else if (key->Compare(kFalse, "SERVEUR") == 0)
 									serveurPlugin = valueBis;
 								else if (key->Compare(kFalse, "CreationForme") == 0)

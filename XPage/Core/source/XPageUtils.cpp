@@ -139,6 +139,7 @@
 #include <fstream>
 #include <algorithm>
 #include <map>
+#include <set>
 #include <vector>
 #include "ILayoutUIUtils.h"
 #include "ILinkManager.h"
@@ -583,6 +584,17 @@ ErrorCode XPageUtils::ImportImages(K2Vector<UIDRef> blocsImages, IDFile articleF
 				}
 			}
 
+			// Index deja pris par les blocs photo tagues. Un bloc graphique de
+			// l'article sans index photo (-1, ex. bloc hors carton ajoute a la
+			// main) recoit le premier index libre au lieu d'etre ignore.
+			std::set<int16> usedPhotoIndexes;
+			for (int32 i = 0; i < blocsImages.size(); ++i) {
+				InterfacePtr<IFormeData> fd(blocsImages[i], UseDefaultIID());
+				if (fd && fd->GetPhotoIndex() >= 0)
+					usedPhotoIndexes.insert(fd->GetPhotoIndex());
+			}
+			int16 nextFreePhotoIndex = 0;
+
 			for (int32 index = 0; index < blocsImages.size(); index++) {
 				// Get credit and legend frame (look for frames in the same spread)
 				UIDRef parentUID = blocsImages[index];
@@ -600,6 +612,12 @@ ErrorCode XPageUtils::ImportImages(K2Vector<UIDRef> blocsImages, IDFile articleF
 					
 					PMString formeName = photoFormeData->GetUniqueName();
 					int16 photoIndex = photoFormeData->GetPhotoIndex();
+					if (photoIndex < 0) {
+						while (usedPhotoIndexes.count(nextFreePhotoIndex) > 0)
+							++nextFreePhotoIndex;
+						photoIndex = nextFreePhotoIndex;
+						usedPhotoIndexes.insert(photoIndex);
+					}
 					if (photoIndex < newNode->GetArticleData()->images.size()) {
 						bool16 doImport = kTrue;
 
