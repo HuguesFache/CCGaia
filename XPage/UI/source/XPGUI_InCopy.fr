@@ -23,6 +23,7 @@
 
 #include "XPGID.h"
 #include "XPGUIID.h"
+#include "TipsID.h"			// IID_ITIP (infobulle des lignes articles)
 
 #ifdef __ODFRC__
 
@@ -255,8 +256,10 @@ resource ClassDescriptionTable(kSDKDefClassDescriptionTableResourceID)
 	{
 		kXPGUIArticleNodeWidgetBoss,
 		kTreeNodeWidgetBoss,
-		{			
+		{
 			IID_IDRAGDROPSOURCE,  kXPGUIXRailTexteDragDropSourceImpl,
+			// Infobulle = commentaire de l'article (vide = pas d'infobulle)
+			IID_ITIP,             kXPGUIArticleNodeTipImpl,
 		}
 	},
 	

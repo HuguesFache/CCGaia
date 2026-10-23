@@ -26,6 +26,7 @@ public:
 		PMString artFolio;				//folio de l'article
 		PMString artDossierCarton;		//classeur par defaut (element <DossierCarton> du XML), peut etre vide
 		PMString artFichierCarton;		//carton par defaut (element <FichierCarton> du XML), peut etre vide
+		PMString artCommentaire;		//commentaire(s) (elements <commentaires><commentaire> du XML), peut etre vide
 		int32 artNbPhotos, artType, artNbSignes;		//nb de photos, type de l'article et nb de signes
 		 		
 		K2Vector<PMString> images;		//liste des photos associees a l'article
@@ -112,7 +113,7 @@ public:
 								   const PMString& artLibStatus, const PMString& artNomProprietaire, const PMString& artRubrique, const PMString& artSsRubrique);
 	
 	void SetArticleDataFromXML(const PMString& artPreview, const int32& artNbPhotos, const int32& artNbSignes, const int32& artType, const PMString& folio, const K2Vector<PMString>& images,
-							   const PMString& dossierCarton = kNullString, const PMString& fichierCarton = kNullString);
+							   const PMString& dossierCarton = kNullString, const PMString& fichierCarton = kNullString, const PMString& commentaire = kNullString);
 
 	const ArticleData * GetArticleData() const; // Text data is data extracted from description file for kCorps or kHorsTexte nodes, it's nil for kRubrique nodes
 	

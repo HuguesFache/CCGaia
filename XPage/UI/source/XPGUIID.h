@@ -276,6 +276,8 @@ DECLARE_PMID(kImplementationIDSpace, kXPGUIImageEtatSwatchEHImpl,				kXPGUIPrefi
 DECLARE_PMID(kImplementationIDSpace, kXPGUIEtatChoiceDataImpl,					kXPGUIPrefix + 150)
 // Navigation clavier dans la liste des articles (palette XPage).
 DECLARE_PMID(kImplementationIDSpace, kXPGUIArticleViewEHImpl,					kXPGUIPrefix + 151)
+// Infobulle (commentaire de l'article) sur les lignes de la liste des articles.
+DECLARE_PMID(kImplementationIDSpace, kXPGUIArticleNodeTipImpl,					kXPGUIPrefix + 152)
 
 // ActionIDs:
 DECLARE_PMID(kActionIDSpace, kXPGUITextesPanelWidgetActionID,					kXPGUIPrefix + 5)

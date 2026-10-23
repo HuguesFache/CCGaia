@@ -343,6 +343,26 @@ void XPGTextImportHandler::EndElement(const WideString& uri, const WideString& l
 		++insertPos;
 		inParagraph = kFalse;
 	}
+	else if (depth == 1) // Fin de l'element racine : fin de l'import dans ce bloc
+	{
+		// Chaque paragraphe se termine par un CR insere ci-dessus, y compris le
+		// dernier ; or la story a deja son propre CR final, d'ou un paragraphe
+		// vide en trop. On supprime donc le dernier CR insere s'il est juste
+		// avant la fin de la story. Le style du dernier paragraphe est conserve :
+		// il a ete applique a ce paragraphe final avant l'insertion du texte.
+		InterfacePtr<ITextModel> txtModel(storyRef, UseDefaultIID());
+		if (txtModel && insertPos > 0 && insertPos == txtModel->GetPrimaryStoryThreadSpan() - 1)
+		{
+			TextIterator iter(txtModel, insertPos - 1);
+			if (*iter == kTextChar_CR)
+			{
+				InterfacePtr<ITextModelCmds> txtModelCmds(txtModel, UseDefaultIID());
+				InterfacePtr<ICommand> deleteCmd(txtModelCmds->DeleteCmd(insertPos - 1, 1));
+				if (CmdUtils::ProcessCommand(deleteCmd) == kSuccess)
+					--insertPos;
+			}
+		}
+	}
 	else if (depth > 3)
 	{
 		// No mapping, use font variants then

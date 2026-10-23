@@ -34,6 +34,7 @@ XPGArticleDataNode::XPGArticleDataNode(NodeType paramtype)
 	articleData->artFolio = kNullString;
 	articleData->artDossierCarton = kNullString;
 	articleData->artFichierCarton = kNullString;
+	articleData->artCommentaire = kNullString;
 	articleData->images.clear();
 }
 
@@ -88,7 +89,8 @@ bool XPGArticleDataNode::operator==(const XPGArticleDataNode& rhs) const
 				articleData->artFolio == rhs.articleData->artFolio &&
 				articleData->artNbPhotos == rhs.articleData->artNbPhotos &&
 				articleData->artType == rhs.articleData->artType &&
-				articleData->artNbSignes == rhs.articleData->artNbSignes;
+				articleData->artNbSignes == rhs.articleData->artNbSignes &&
+				articleData->artCommentaire == rhs.articleData->artCommentaire;
 		else
 			return equal;
 	}
@@ -126,6 +128,7 @@ void XPGArticleDataNode::deepcopy(const XPGArticleDataNode& rhs)
 	articleData->artFolio = rhs.articleData->artFolio;
 	articleData->artDossierCarton = rhs.articleData->artDossierCarton;
 	articleData->artFichierCarton = rhs.articleData->artFichierCarton;
+	articleData->artCommentaire = rhs.articleData->artCommentaire;
 	articleData->artNbPhotos = rhs.articleData->artNbPhotos;
 	articleData->artType = rhs.articleData->artType;
 	articleData->artNbSignes = rhs.articleData->artNbSignes;
@@ -238,10 +241,11 @@ XPGArticleDataNode::NodeType XPGArticleDataNode::GetType() const
 }
 
 void XPGArticleDataNode::SetArticleDataFromXML(const PMString& artPreview, const int32& artNbPhotos, const int32& artNbSignes, const int32& artType, const PMString& artFolio, const K2Vector<PMString>& images,
-											  const PMString& dossierCarton, const PMString& fichierCarton)
+											  const PMString& dossierCarton, const PMString& fichierCarton, const PMString& commentaire)
 {
 	if(articleData){
 		articleData->artPreview = artPreview;
+		articleData->artCommentaire = commentaire;
 		articleData->artNbPhotos = artNbPhotos;
 		articleData->artNbSignes = artNbSignes;
 		articleData->artFolio = artFolio;

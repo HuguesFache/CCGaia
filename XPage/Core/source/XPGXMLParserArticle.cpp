@@ -60,6 +60,7 @@ private:
 	static const WideString folioElement;
 	static const WideString dossierCartonElement;
 	static const WideString fichierCartonElement;
+	static const WideString commentaireElement;
 
 	// Max characters allowed in text preview
 	static const int32 maxChars;
@@ -77,6 +78,8 @@ private:
 	PMString subject, state, preview, folio;
 	// Carton par defaut declare dans <Proprietes> (peut rester vide)
 	PMString dossierCarton, fichierCarton;
+	// Commentaire(s) de l'article (<commentaires><commentaire id="..">), optionnel
+	PMString commentaire;
 	int32 nbChars, artNbPhotos, artType;
 
 	int32 nbCharsPreview;
@@ -104,6 +107,8 @@ const WideString XPGXMLParserArticle::typeElement = WideString("TypeArticle");
 const WideString XPGXMLParserArticle::folioElement = WideString("Folio");
 const WideString XPGXMLParserArticle::dossierCartonElement = WideString("DossierCarton");
 const WideString XPGXMLParserArticle::fichierCartonElement = WideString("FichierCarton");
+// Minuscule : ne pas confondre avec <Commentaire> porte par chaque <Image>
+const WideString XPGXMLParserArticle::commentaireElement = WideString("commentaire");
 
 const int32 XPGXMLParserArticle::maxChars = 100;
 
@@ -112,6 +117,7 @@ CSAXContentHandler(boss)
 { 
 	folio = subject = state = childId = articleId = parentId = kNullString;
 	dossierCarton = fichierCarton = kNullString;
+	commentaire = kNullString;
 	preview = kNullString;
 	nbChars = 0;
 	artNbPhotos = 0;
@@ -186,7 +192,14 @@ void XPGXMLParserArticle::StartElement(const WideString& uri, const WideString& 
 	{
 		isTextContent = kTrue;
 	}
-} 
+	else if(localname.compare(commentaireElement) == 0)
+	{
+		// Plusieurs commentaires : un par ligne
+		commentaire.StripWhiteSpace(PMString::kLeadingAndTrailingWhiteSpace);
+		if(!commentaire.IsEmpty())
+			commentaire.Append(kTextChar_CR);
+	}
+}
 
 void XPGXMLParserArticle::EndElement(const WideString& uri, 
 										  const WideString& localname, 
@@ -210,7 +223,8 @@ void XPGXMLParserArticle::EndElement(const WideString& uri,
 #else
 		contentPath = theNode->GetData();
 #endif
-		theNode->SetArticleDataFromXML(preview, artNbPhotos, nbChars, artType, folio, imageIDs, dossierCarton, fichierCarton);
+		commentaire.StripWhiteSpace(PMString::kLeadingAndTrailingWhiteSpace);
+		theNode->SetArticleDataFromXML(preview, artNbPhotos, nbChars, artType, folio, imageIDs, dossierCarton, fichierCarton, commentaire);
 	}
 	else if(localname.compare(paragraphElement) == 0)
 	{
@@ -240,4 +254,6 @@ void XPGXMLParserArticle::Characters(const WideString & chars) {
 		dossierCarton += chars;
 	else if(currentElt.compare(fichierCartonElement) == 0)
 		fichierCarton += chars;
+	else if(currentElt.compare(commentaireElement) == 0)
+		commentaire += chars;
 }

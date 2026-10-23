@@ -35,6 +35,7 @@ XPGUIArticleNodeID::XPGUIArticleNodeID(PMString id, PMString data, XPGArticleDat
 		this->articleData->artType = paramarticleData->artType;
 		this->articleData->artNbSignes = paramarticleData->artNbSignes;
 		this->articleData->artFolio = paramarticleData->artFolio;
+		this->articleData->artCommentaire = paramarticleData->artCommentaire;
 		this->articleData->images.assign(paramarticleData->images.begin(), paramarticleData->images.end());
 		
 	}
@@ -68,7 +69,8 @@ int32 XPGUIArticleNodeID::Compare(const NodeIDClass* nodeID) const
 				thisNode->articleData->artNbPhotos == fileNode->articleData->artNbPhotos &&
 				thisNode->articleData->artType == fileNode->articleData->artType &&
 				thisNode->articleData->artNbSignes == fileNode->articleData->artNbSignes &&
-				thisNode->articleData->artFolio == fileNode->articleData->artFolio;
+				thisNode->articleData->artFolio == fileNode->articleData->artFolio &&
+				thisNode->articleData->artCommentaire == fileNode->articleData->artCommentaire;
 
 			if(equal)
 				return 0;
@@ -122,6 +124,7 @@ void XPGUIArticleNodeID::Read(IPMStream* stream)
 		articleData->artRubrique.ReadWrite(stream);
 		articleData->artSsRubrique.ReadWrite(stream);
 		articleData->artFolio.ReadWrite(stream);
+		articleData->artCommentaire.ReadWrite(stream);
 		stream->XferInt32(articleData->artNbPhotos);
 		stream->XferInt32(articleData->artType);
 		stream->XferInt32(articleData->artNbSignes);
@@ -170,10 +173,11 @@ void XPGUIArticleNodeID::Write(IPMStream* stream) const
 		articleData->artRubrique.ReadWrite(stream);
 		articleData->artSsRubrique.ReadWrite(stream);
 		articleData->artFolio.ReadWrite(stream);
+		articleData->artCommentaire.ReadWrite(stream);
 		stream->XferInt32(articleData->artNbPhotos);
 		stream->XferInt32(articleData->artType);
 		stream->XferInt32(articleData->artNbSignes);
-		
+
 		int32 nbImages = articleData->images.size();
 		stream->XferInt32((int32&)nbImages);
 		for(int32 i = 0 ; i < nbImages ; ++i){

@@ -26,6 +26,7 @@
 // kLinksUIPluginID — used by the Photos liées per-row icons that reuse
 // InDesign's own Links panel artwork (goto-link / edit-original).
 #include "LinksUIID.h"
+#include "TipsID.h"			// IID_ITIP (infobulle des lignes articles)
 
 #ifdef __ODFRC__
 
@@ -171,6 +172,7 @@ resource IgnoreTags(1)
 		kXPGUIImageEtatSwatchEHImpl,
 		kXPGUIEtatChoiceDataImpl,
 		kXPGUIArticleViewEHImpl,
+		kXPGUIArticleNodeTipImpl,
 	}
 };
 
@@ -561,8 +563,10 @@ resource ClassDescriptionTable(kSDKDefClassDescriptionTableResourceID)
 	{
 		kXPGUIArticleNodeWidgetBoss,
 		kTreeNodeWidgetBoss,
-		{			
+		{
 			IID_IDRAGDROPSOURCE,  kXPGUIXRailTexteDragDropSourceImpl,
+			// Infobulle = commentaire de l'article (vide = pas d'infobulle)
+			IID_ITIP,             kXPGUIArticleNodeTipImpl,
 		}
 	},		
 	
@@ -3056,10 +3060,12 @@ resource XPGUIArticleNodeWidget (kXPGUIArticleNodeWidgetRsrcID + index_enUS)
 			kIconRaisedLook, // Sets the icon look -- (kIconRaisedLook | kIconFlushLook)
 			kFalse,  // Bool integer sets whether the icon draws a well.
 		),
-		StaticTextWidget
+		// InfoStaticTextWidget (et non StaticTextWidget) pour disposer de
+		// IUIFontSpec : titre en gras si l'article a un commentaire.
+		InfoStaticTextWidget
 		(
 			kXPGUITextSubjectWidgetID, // widget ID
-			kSysStaticTextPMRsrcId, // PMRsrc ID
+			kPMRsrcID_None, // PMRsrc ID
 			kBindNone, // frame binding
 			Frame(31,2,305,16) // left, top, right, bottom
 			kTrue,
@@ -3069,6 +3075,8 @@ resource XPGUIArticleNodeWidget (kXPGUIArticleNodeWidgetRsrcID + index_enUS)
 			kTrue,
 			"", // control label
 			0,  // associated widget ID
+			kPaletteWindowSystemScriptFontId,
+			kPaletteWindowSystemScriptHiliteFontId,
 		),
 		UIColorSwatchWidget /* portage CS7	UIColorPickerWidget */
 		(

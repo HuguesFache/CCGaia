@@ -21,6 +21,7 @@
 #include "OpenPlaceID.h"
 #include "IColorData.h"
 #include "ITip.h"
+#include "IUIFontSpec.h"
 
 // Project includes:
 #include "XPGUIID.h"
@@ -205,6 +206,21 @@ bool16 XPGUIArticleTVWidgetMgr::ApplyNodeIDToWidget(const NodeID& node, IControl
 				textSubject="Empty?";	
 			textSubject.SetTranslatable(kFalse);
 			textControlData->SetString(textSubject);
+
+			// Article commente : titre en gras (l'infobulle est geree par
+			// XPGUIArticleNodeTip). Toujours ecrit : les widgets de ligne sont recycles.
+			InterfacePtr<IUIFontSpec> fontSpec (displayStringView, UseDefaultIID());
+			if(fontSpec){
+				if(nodeID->GetArticleData()->artCommentaire.IsEmpty()){
+					fontSpec->SetFontID(kPaletteWindowSystemScriptFontId);
+					fontSpec->SetHiliteFontID(kPaletteWindowSystemScriptHiliteFontId);
+				}
+				else{
+					// Pas de "gras seul" a la taille palette dans le SDK : gras italique
+					fontSpec->SetFontID(kPaletteWindowBoldItalicsFontId);
+					fontSpec->SetHiliteFontID(kPaletteWindowBoldItalicsFontId);
+				}
+			}
 			
 			// Status pastille colour. The backend (PHP/Gaia) sends the etat's
 			// HTML colour ("#RRGGBB" or a French name), like the linked-photos
