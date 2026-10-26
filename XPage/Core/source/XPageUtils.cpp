@@ -608,7 +608,6 @@ ErrorCode XPageUtils::ImportImages(K2Vector<UIDRef> blocsImages, IDFile articleF
                     if (photoFormeData->GetType() == IFormeData::kFixedContent)
                         continue;
 
-					PMString currentPictFileName = GetImageFileName(db, parentUID.GetUID());
 					
 					PMString formeName = photoFormeData->GetUniqueName();
 					int16 photoIndex = photoFormeData->GetPhotoIndex();
@@ -632,11 +631,11 @@ ErrorCode XPageUtils::ImportImages(K2Vector<UIDRef> blocsImages, IDFile articleF
 						IDFile imageFileToImport = FileUtils::PMStringToSysFile(imgData.hrFile);
 						IDFile brFile            = FileUtils::PMStringToSysFile(imgData.brFile);
 
-						PMString currentPictFileName = GetImageFileName(db, parentUID.GetUID());
-						if (currentPictFileName == imgData.hrFile) {
-							//l'image est déjà importée, on réimporte pas
+						InterfacePtr<IHierarchy> containerFrame(parentUID, UseDefaultIID());
+
+						//le bloc contient deja une image, on ne reimporte rien dedans
+						if (containerFrame && containerFrame->GetChildCount() > 0)
 							doImport = kFalse;
-						}
 						//si le fichier image existe pas, on passe au coup de boucle suivant
 						if (!FileUtils::DoesFileExist(imageFileToImport))
 							doImport = kFalse;
@@ -649,7 +648,6 @@ ErrorCode XPageUtils::ImportImages(K2Vector<UIDRef> blocsImages, IDFile articleF
 						PMString creditData = imgData.credit;
 						PMString legendData = imgData.legend;
 
-						InterfacePtr<IHierarchy> containerFrame(parentUID, UseDefaultIID());
 						bool16 returnCode = kTrue;
 
 						if (doImport) {
