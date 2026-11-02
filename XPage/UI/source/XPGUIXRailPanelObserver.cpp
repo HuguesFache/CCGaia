@@ -246,6 +246,30 @@ static UIDRef FindPlacedArticleFrame(const UIDList& frames)
 	return UIDRef::gNull;
 }
 
+/* ResolvePlacedArticleFrame
+	Résout le cadre porteur de l'id article pour la sélection courante,
+	quelle que soit la façon de sélectionner :
+	  - cadres texte : via FindPlacedArticleFrame, qui remonte toute la
+	    story chaînée (un seul cadre de la chaîne suffit à porter l'id,
+	    les cadres de débordement ajoutés à la main n'en ont pas) ;
+	  - sinon : premier cadre graphique (image) portant un id non vide.
+	Renvoie UIDRef::gNull si la sélection n'appartient à aucun article placé.
+*/
+static UIDRef ResolvePlacedArticleFrame(const UIDList& textFrames, const UIDList& graphicFrames)
+{
+	UIDRef frameRef = FindPlacedArticleFrame(textFrames);
+	if (frameRef != UIDRef::gNull)
+		return frameRef;
+
+	for (int32 i = 0; i < graphicFrames.Length(); ++i)
+	{
+		InterfacePtr<IPlacedArticleData> placedArticleData(graphicFrames.GetRef(i), UseDefaultIID());
+		if (placedArticleData && placedArticleData->GetUniqueId() != kNullString)
+			return graphicFrames.GetRef(i);
+	}
+	return UIDRef::gNull;
+}
+
 XPGUIXRailPanelObserver::XPGUIXRailPanelObserver(IPMUnknown* boss)
 	:ActiveSelectionObserver(boss),
 	firstInit(kTrue),
@@ -908,15 +932,20 @@ void XPGUIXRailPanelObserver::UpdateSelectedStories() {
 			break;
 
 		int32 idPage = readData->GetID();
-		UIDRef storyRef = textFrames.GetRef(0);
 
-		UIDRef placedFrameRef = FindPlacedArticleFrame(textFrames);
+		UIDRef placedFrameRef = ResolvePlacedArticleFrame(textFrames, graphicFrames);
 		if (placedFrameRef != UIDRef::gNull) {
 			if (this->UpdatePlacedStory2(placedFrameRef, idPage) != kSuccess) { // apapap message alert
 				break;
 			}
 		}
 		else {
+
+			// Chemin assignment (InCopy) : on a besoin d'un cadre texte.
+			// Jamais de GetRef(0) sur une liste vide (plantage outil Flèche).
+			if (textFrames.IsEmpty())
+				break;
+			UIDRef storyRef = textFrames.GetRef(0);
 
 			InterfacePtr<IAssignmentMgr> assignMgr(GetExecutionContextSession(), UseDefaultIID());
 
@@ -998,9 +1027,17 @@ void XPGUIXRailPanelObserver::UpdateIDMS() {
 		if (itemCount == 0)
 			break;
 
-		UIDRef storyRef = FindPlacedArticleFrame(textFrames);
+		UIDRef storyRef = ResolvePlacedArticleFrame(textFrames, graphicFrames);
 		if (storyRef == UIDRef::gNull)
+		{
+			// Rien de taggé dans la sélection : on retombe sur le premier
+			// cadre texte si la liste n'est pas vide (comportement no-op :
+			// GetUniqueId sera vide), sinon on sort — surtout ne jamais
+			// appeler GetRef(0) sur une liste vide (plantage outil Flèche).
+			if (textFrames.IsEmpty())
+				break;
 			storyRef = textFrames.GetRef(0);
+		}
         InterfacePtr<IXPGPreferences> xpgPrefs(GetExecutionContextSession(), UseDefaultIID());
 
 		InterfacePtr<IPlacedArticleData> placedArticleData(storyRef, UseDefaultIID());
@@ -1536,7 +1573,12 @@ void XPGUIXRailPanelObserver::HandleSelectionChanged(const ISelectionMessage * m
 
 	// === Step 2 — selection-driven button rules (only relevant when gate open) ===
 	// Ajouter / Ajouter à : enabled iff selection non-empty AND no LEAF item has an article ID.
-	// MAJ                 : enabled iff selection non-empty AND every LEAF item has an article ID.
+	// MAJ                 : enabled iff the selection belongs to a placed article.
+	//                       On résout l'article comme le fait l'action (UpdateIDMS) via
+	//                       ResolvePlacedArticleFrame : la story chaînée est remontée et
+	//                       une image d'article est acceptée. Le bouton est donc cohérent
+	//                       entre l'outil Flèche et l'outil Texte, et tolère les cadres
+	//                       chaînés (débordement) qui ne portent pas l'id.
 	// Délier              : enabled as soon as selection is non-empty (it only
 	//                       clears article info, no-ops on blocks without one).
 	// Groups are walked transparently — a group of two ID'd frames behaves
@@ -1563,8 +1605,13 @@ void XPGUIXRailPanelObserver::HandleSelectionChanged(const ISelectionMessage * m
 			{
 				enableUnlink = kTrue;	// Délier : actif dès qu'au moins un bloc est sélectionné
 				if (withGaia == 0)        { enableNew = kTrue; enableAddTo = kTrue; }
-				if (withGaia == total)    { enableUpdate = kTrue; }
 			}
+
+			// MAJ : actif dès que la sélection appartient à un article placé.
+			// Même résolution que l'action (story chaînée + image), donc
+			// indépendant de l'outil et tolérant aux cadres chaînés non taggés.
+			if (ResolvePlacedArticleFrame(textFrames, graphicFrames) != UIDRef::gNull)
+				enableUpdate = kTrue;
 		}
 	}
 

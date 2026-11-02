@@ -57,6 +57,7 @@
 #include "IIntData.h"
 #include "IUIFlagData.h"
 #include "IDocumentUtils.h"
+#include "IDocumentUIState.h"
 
 #if !SERVER
 #include "ILayoutUIUtils.h"
@@ -1765,7 +1766,20 @@ void Func_DO::IDCall_DO(ITCLParser *  parser)
 		}
 
 		InterfacePtr<IDocument> openedDoc (docRef, UseDefaultIID());
-		parser->setCurDoc(openedDoc);       
+		parser->setCurDoc(openedDoc);
+
+#if XRAIL
+		// Reset saved scroll offset so the document reopens on its first page instead of a master spread
+		InterfacePtr<IDocumentUIState> uiState (openedDoc->GetDocWorkSpace(), UseDefaultIID());
+		if(uiState)
+		{
+			PMPoint invalidOffset(kInvalidScrollOffset, kInvalidScrollOffset);
+			IDataBase * uiDB = ::GetDataBase(openedDoc);
+			uiDB->BeginTransaction();
+			uiState->SetScrollOffset(invalidOffset);
+			uiDB->EndTransaction();
+		}
+#endif
 
 #if AFFECT
 
