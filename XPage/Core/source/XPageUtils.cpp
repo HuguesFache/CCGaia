@@ -507,6 +507,24 @@ ErrorCode XPageUtils::ImportArticle(UIDList targetStories, IDFile articleFile, I
 }
 
 
+// sGaiaIdFromImagePath : extrait l'id Gaia du chemin d'une image "<id>.HR.<ext>"
+// (nom de fichier isole, puis partie avant ".HR."). kNullString si le motif
+// ".HR." est absent (image non-Gaia).
+static PMString sGaiaIdFromImagePath(const PMString& fullPath)
+{
+	PMString leaf = fullPath;
+	int32 s1 = leaf.LastIndexOfString("/");
+	int32 s2 = leaf.LastIndexOfString("\\");
+	int32 sep = (s1 > s2) ? s1 : s2;
+	if (sep >= 0)
+		leaf.Remove(0, sep + 1);              // supprime le chemin, garde le nom de fichier
+	int32 hr = leaf.IndexOfString(".HR.");
+	if (hr < 0)
+		return kNullString;                   // pas une image Gaia
+	leaf.Remove(hr, leaf.CharCount() - hr);   // ne garde que <id>
+	return leaf;
+}
+
 ErrorCode XPageUtils::ImportImages(K2Vector<UIDRef> blocsImages, IDFile articleFile, PMString& error) {
 
 	ErrorCode status;
@@ -548,6 +566,7 @@ ErrorCode XPageUtils::ImportImages(K2Vector<UIDRef> blocsImages, IDFile articleF
 			// refonte : il passait un XPGImageDataNode* a un handler attendant un
 			// std::vector<ImageData>*).
 			std::vector<XPGImageDataNode::ImageData> outImages;
+			std::vector<PMString> imageIds;   // id Gaia brut par image (aligne sur outImages), pour appariement par nom
 			{
 				// ISAXServices dedie (on ne reutilise pas celui du parse article
 				// ci-dessus pour ne pas cumuler les enregistrements de handlers).
@@ -572,11 +591,13 @@ ErrorCode XPageUtils::ImportImages(K2Vector<UIDRef> blocsImages, IDFile articleF
 				// dans hrFile et l'extension dans brFile pendant le parsing).
 				PMString articleRoot;
 				FileUtils::GetPathOnly(articleFile, articleRoot, kTrue);
+				imageIds.resize(outImages.size());
 				for (int32 i = 0; i < outImages.size(); ++i) {
 					const PMString imgId = outImages[i].hrFile;    // id stocke par le handler
 					const PMString imgExt = outImages[i].brFile;   // extension stockee par le handler
 					if (imgId.IsEmpty())
 						continue;
+					imageIds[i] = imgId;                           // conserve l'id brut pour l'appariement par nom
 					PMString hrName(articleRoot); hrName.Append(imgId); hrName.Append(".HR"); hrName.Append(imgExt);
 					PMString brName(articleRoot); brName.Append(imgId); brName.Append(".BR.jpg");
 					outImages[i].hrFile = hrName;
@@ -634,7 +655,8 @@ ErrorCode XPageUtils::ImportImages(K2Vector<UIDRef> blocsImages, IDFile articleF
 						InterfacePtr<IHierarchy> containerFrame(parentUID, UseDefaultIID());
 
 						//le bloc contient deja une image, on ne reimporte rien dedans
-						if (containerFrame && containerFrame->GetChildCount() > 0)
+						const bool16 blockHasImage = (containerFrame && containerFrame->GetChildCount() > 0);
+						if (blockHasImage)
 							doImport = kFalse;
 						//si le fichier image existe pas, on passe au coup de boucle suivant
 						if (!FileUtils::DoesFileExist(imageFileToImport))
@@ -644,9 +666,37 @@ ErrorCode XPageUtils::ImportImages(K2Vector<UIDRef> blocsImages, IDFile articleF
 						PMReal cropX = imgData.cropX, cropY = imgData.cropY;
 						PMReal cropW = imgData.cropW, cropH = imgData.cropH;
 
-						// Import credit and legend
+						// Credit/legende a importer.
+						// - Bloc vide : on importe l'image de photoIndex, donc on prend le
+						//   credit/legende de cette meme image (comportement inchange).
+						// - Bloc contenant DEJA une image (posee/reordonnee a la main par
+						//   l'operateur) : on ne touche pas a l'image, mais on rafraichit
+						//   credit/legende en se basant sur le NOM de l'image presente
+						//   (<id>.HR.ext) -> on retrouve l'<Image> de meme id dans l'OBJRART.
+						//   Si l'image presente n'appartient pas a l'article, on ne touche
+						//   a rien (applyCreditLegend reste faux).
 						PMString creditData = imgData.credit;
 						PMString legendData = imgData.legend;
+						bool16 applyCreditLegend = kTrue;
+
+						if (blockHasImage)
+						{
+							applyCreditLegend = kFalse;
+							PMString presentId = sGaiaIdFromImagePath(this->GetImageFileName(db, parentUID.GetUID()));
+							if (!presentId.IsEmpty())
+							{
+								for (int32 k = 0; k < imageIds.size(); ++k)
+								{
+									if (imageIds[k] == presentId)
+									{
+										creditData = outImages[k].credit;
+										legendData = outImages[k].legend;
+										applyCreditLegend = kTrue;
+										break;
+									}
+								}
+							}
+						}
 
 						bool16 returnCode = kTrue;
 
@@ -712,27 +762,33 @@ ErrorCode XPageUtils::ImportImages(K2Vector<UIDRef> blocsImages, IDFile articleF
 
 						}
 
-						InterfacePtr<ISpread> imageSpread(db, containerFrame->GetSpreadUID(), UseDefaultIID());
-						if (imageSpread == nil)
-							continue;
+						// Credit/legende : seulement si on a resolu la bonne source
+						// (bloc vide -> photoIndex ; image deja presente -> appariee par
+						//  nom ; image etrangere -> on ne touche a rien).
+						if (applyCreditLegend)
+						{
+							InterfacePtr<ISpread> imageSpread(db, containerFrame->GetSpreadUID(), UseDefaultIID());
+							if (imageSpread == nil)
+								continue;
 
-						UIDList allFormeItems(db);
-						Utils<IXPageUtils>()->GetAllFormeItemsOnSpread(formeName, imageSpread, allFormeItems);
-						int32 nbItems = allFormeItems.Length();
-						for (int32 i = 0; i < nbItems; ++i) {
-							InterfacePtr<IFormeData> itemFormeData(allFormeItems.GetRef(i), UseDefaultIID());
-							int currentPhotoIndex = itemFormeData->GetPhotoIndex();
-							if (itemFormeData->GetType() == IFormeData::kCredit && currentPhotoIndex == photoIndex) {
-								// A credit frame associated with the photo has been found, import credit text in it
-								UIDRef targetStory = ::GetUIDRef(itemFormeData);
-								Utils<IXMLUtils>()->GetActualContent(targetStory);
-								Utils<IXPageUtils>()->ImportCreditOrLegend(targetStory, creditData, kTrue);
-							}
-							else if (itemFormeData->GetType() == IFormeData::kLegend && currentPhotoIndex == photoIndex) {
-								// A legend frame associated with the photo has been found, import credit text in it
-								UIDRef targetStory = ::GetUIDRef(itemFormeData);
-								Utils<IXMLUtils>()->GetActualContent(targetStory);
-								Utils<IXPageUtils>()->ImportCreditOrLegend(targetStory, legendData, kFalse);
+							UIDList allFormeItems(db);
+							Utils<IXPageUtils>()->GetAllFormeItemsOnSpread(formeName, imageSpread, allFormeItems);
+							int32 nbItems = allFormeItems.Length();
+							for (int32 i = 0; i < nbItems; ++i) {
+								InterfacePtr<IFormeData> itemFormeData(allFormeItems.GetRef(i), UseDefaultIID());
+								int currentPhotoIndex = itemFormeData->GetPhotoIndex();
+								if (itemFormeData->GetType() == IFormeData::kCredit && currentPhotoIndex == photoIndex) {
+									// A credit frame associated with the photo has been found, import credit text in it
+									UIDRef targetStory = ::GetUIDRef(itemFormeData);
+									Utils<IXMLUtils>()->GetActualContent(targetStory);
+									Utils<IXPageUtils>()->ImportCreditOrLegend(targetStory, creditData, kTrue);
+								}
+								else if (itemFormeData->GetType() == IFormeData::kLegend && currentPhotoIndex == photoIndex) {
+									// A legend frame associated with the photo has been found, import credit text in it
+									UIDRef targetStory = ::GetUIDRef(itemFormeData);
+									Utils<IXMLUtils>()->GetActualContent(targetStory);
+									Utils<IXPageUtils>()->ImportCreditOrLegend(targetStory, legendData, kFalse);
+								}
 							}
 						}
 						status = returnCode;
