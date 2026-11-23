@@ -255,20 +255,9 @@ void XPGUIActionComponent::UpdateActionStates(IActiveContext *  ac, IActionState
 						if(xpgSuite != nil){ // nil means no active selection => don't activate
 							UIDList textFrames, graphicFrames, selectedItems;
 							xpgSuite->GetSelectedItems(textFrames, graphicFrames, selectedItems);	
-							if(!textFrames.IsEmpty()){
+							// Plus de contrainte carton : toute selection non vide
+							if(!selectedItems.IsEmpty())
 								enabled = kEnabledAction;
-								UIDList allItems(textFrames);
-								allItems.Append(graphicFrames);
-								for(int32 j = 0 ; j < allItems.Length() ; ++j)
-								{
-									InterfacePtr<IFormeData> formeData (allItems.GetRef(j), UseDefaultIID());
-									if(!formeData || formeData->GetUniqueName() == kNullString)
-									{
-										enabled = kDisabled_Unselected;
-										break;
-									}
-								}
-							}	
 						}					
 						InterfacePtr<IXPGPreferences> xpgPrefs (GetExecutionContextSession(), UseDefaultIID());
 						listToUpdate->SetNthActionState(i, enabled && xpgPrefs->GetCreationForme());

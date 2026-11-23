@@ -119,19 +119,7 @@ void XPGUINewAssemblageDialogController::InitializeDialogFields(IActiveContext* 
 			}
 		}
 
-		// Check whether selection contains all forme items or not
-		std::map<PMString, UIDList>::iterator iter;
-		UIDList txtFrameListToCheck(db), graphicFrameListToCheck(db);
-		for (iter = selectedFormes.begin(); iter != selectedFormes.end(); ++iter)
-		{
-			UIDList formeItems = iter->second;
-			Utils<IXPageUtils>()->CategorizeItems(formeItems, txtFrameListToCheck, graphicFrameListToCheck);
-		}
-
-		if (txtFrameListToCheck.Length() != txtFrameList.Length() || graphicFrameListToCheck.Length() != graphicFrameList.Length())
-		{
-			forceCancel = kTrue;
-		}
+		// Plus de contrainte sur la selection : blocs hors carton et cartons partiels autorises
 
 		// Clear forme name
 		SetTextControlData(kXPGUIAssemblageNameWidgetID, kNullString);

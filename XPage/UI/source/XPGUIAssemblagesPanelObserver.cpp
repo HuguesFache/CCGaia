@@ -315,17 +315,10 @@ void XPGUIAssemblagesPanelObserver::HandleSelectionChanged(const ISelectionMessa
 	if(xpgSuite != nil) // nil means no active selection => don't activate
 	{
 		UIDList textFrames, graphicFrames, selectedItems;
-		xpgSuite->GetSelectedItems(textFrames, graphicFrames, selectedItems);		
-		
-		for(int32 i = 0 ; i < selectedItems.Length() ; ++i)
-		{
-			InterfacePtr<IFormeData> formeData (textFrames.GetRef(i), UseDefaultIID());
-			if(formeData && formeData->GetUniqueName() != kNullString)
-			{
-				enableNew = kTrue;
-				break;
-			}
-		}
+		xpgSuite->GetSelectedItems(textFrames, graphicFrames, selectedItems);
+
+		// Plus de contrainte carton : toute selection non vide permet de creer un assemblage
+		enableNew = !selectedItems.IsEmpty();
 	}	
 
 	InterfacePtr<IPanelControlData> panelControlData(this, UseDefaultIID());

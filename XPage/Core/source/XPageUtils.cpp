@@ -1100,6 +1100,8 @@ ErrorCode XPageUtils::ImportForme(UIDRef doc, IDFile formeFileToImport, PBPMPoin
 		for (int32 i = 0; i < newPageItems.Length(); ++i) {
 			InterfacePtr<IGeometry> itemGeo(newPageItems.GetRef(i), UseDefaultIID());
 			InterfacePtr<IFormeData> itemFormeData(itemGeo, UseDefaultIID());
+			if (!itemFormeData)
+				continue;
 			formeUniqueName = itemFormeData->GetUniqueName();
 			if (formeUniqueName != "") {
 				formeUniqueName += "_";
@@ -1128,9 +1130,7 @@ ErrorCode XPageUtils::ImportForme(UIDRef doc, IDFile formeFileToImport, PBPMPoin
 			}
 		}
 
-		if (formeUniqueName == "") {
-			break;
-		}
+		// formeUniqueName peut etre vide (assemblage sans carton) : on continue quand meme
 
 		for (int32 i = 0; i < newPageItems.Length(); ++i) {
 			InterfacePtr<IGeometry> itemGeo(newPageItems.GetRef(i), UseDefaultIID());
@@ -1166,9 +1166,10 @@ ErrorCode XPageUtils::ImportForme(UIDRef doc, IDFile formeFileToImport, PBPMPoin
 			// Set item's new forme name
 			InterfacePtr<IFormeData> itemFormeData(itemGeo, UseDefaultIID());
 
-			if (setFormeName) {
-			SetFormeData(::GetUIDRef(itemFormeData), formeUniqueName, itemFormeData->GetType(), itemFormeData->GetPhotoIndex());
-		}
+			// Ne jamais renommer un bloc hors carton (nom vide)
+			if (setFormeName && itemFormeData && formeUniqueName != "" && itemFormeData->GetUniqueName() != "") {
+				SetFormeData(::GetUIDRef(itemFormeData), formeUniqueName, itemFormeData->GetType(), itemFormeData->GetPhotoIndex());
+			}
 		}
 		if (doTranslate == kTrue) {
 			// Compute delta between required position and current position after importation

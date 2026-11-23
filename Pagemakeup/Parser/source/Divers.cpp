@@ -87,6 +87,14 @@
 #include "IWorkspace.h"
 #include "IGenStlEdtListMgr.h"
 
+#if XRAIL
+#include "ILinkManager.h"
+#include "ILink.h"
+#include "ILinkResource.h"
+#include "LinkQuery.h"
+#include "IMasterPage.h"
+#endif
+
 /* Constructor
 */
 Func_DU::Func_DU(ITCLParser *  parser)
@@ -3374,6 +3382,68 @@ void Func_AR::IDCall_AR(ITCLParser * parser)
 		throw TCLError(error);
 }
 
+#if XRAIL
+/* CheckMissingLinks
+	Look for missing links on pages startPage..endPage (and on the masters they use)
+	Returns kFalse if any, missingLinks then contains the missing link names
+*/
+static bool16 CheckMissingLinks(IDocument * doc, int32 startPage, int32 endPage, PMString& missingLinks)
+{
+	IDataBase * db = ::GetDataBase(doc);
+	InterfacePtr<IPageList> pageList (doc, UseDefaultIID());
+	InterfacePtr<ILinkManager> linkManager (doc, UseDefaultIID());
+	if(pageList == nil || linkManager == nil)
+		return kTrue;
+
+	// Exported pages, plus pages of the master spreads they use (nested masters included)
+	UIDList pagesToCheck(db);
+	for(int32 i = startPage-1 ; i < endPage ; ++i)
+		pagesToCheck.Append(pageList->GetNthPageUID(i));
+
+	UIDList usedMasters(db);
+	for(int32 i = 0 ; i < pagesToCheck.Length() ; ++i) // pagesToCheck grows while iterating
+	{
+		InterfacePtr<IMasterPage> masterPage (pagesToCheck.GetRef(i), UseDefaultIID());
+		UID masterUID = masterPage ? masterPage->GetMasterSpreadUID() : kInvalidUID;
+		if(masterUID == kInvalidUID || usedMasters.Contains(masterUID))
+			continue;
+
+		usedMasters.Append(masterUID);
+		InterfacePtr<ISpread> masterSpread (db, masterUID, UseDefaultIID());
+		for(int32 j = 0 ; masterSpread && j < masterSpread->GetNumPages() ; ++j)
+			pagesToCheck.Append(masterSpread->GetNthPageUID(j));
+	}
+
+	// Iterate through all document links
+	UIDList links(db);
+	linkManager->QueryLinks(LinkQuery(), links);
+	for(int32 i = 0 ; i < links.Length() ; ++i)
+	{
+		InterfacePtr<ILink> link (links.GetRef(i), UseDefaultIID());
+		if(link == nil)
+			continue;
+
+		InterfacePtr<ILinkResource> linkResource (linkManager->QueryResourceByUID(link->GetResource()));
+		if(linkResource == nil || linkResource->GetState() != ILinkResource::kMissing)
+			continue;
+
+		// Only page items (pasteboard items return the spread UID, so they are ignored)
+		InterfacePtr<IHierarchy> itemHier (db, link->GetObject(), UseDefaultIID());
+		if(itemHier == nil)
+			continue;
+
+		if(pagesToCheck.Contains(Utils<ILayoutUtils>()->GetOwnerPageUID(itemHier)))
+		{
+			if(!missingLinks.IsEmpty())
+				missingLinks.Append(", ");
+			missingLinks.Append(PMString(linkResource->GetShortName(true)));
+		}
+	}
+
+	return missingLinks.IsEmpty();
+}
+#endif
+
 /* Constructor
 */
 Func_DZ::Func_DZ(ITCLParser *  parser)
@@ -3464,6 +3534,21 @@ void Func_DZ::IDCall_DZ(ITCLParser * parser)
 				
 				endPage = pageList->GetPageCount();
 			}
+
+#if XRAIL
+			// Don't generate pdf if there are missing links on exported pages
+			PMString missingLinks;
+			if(!CheckMissingLinks(doc, startPage, endPage, missingLinks))
+			{
+				error = PMString(kErrEpsMissingLink);
+				error.Translate();
+				error.Append(" : ");
+				error.Append(missingLinks);
+				error.SetTranslatable(kFalse);
+				status = kFailure;
+				break;
+			}
+#endif
 		}
 
 		if((status = ExportUtils::PdfExport(doc,pdfFilename,eraseExisting,kFalse,startPage,endPage, UIDList(), bookRef, bookExportStyle)) != kSuccess) {
